@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Main from "./components/Main";
 
 
@@ -7,8 +7,10 @@ import Main from "./components/Main";
 function App() {
     return (
         <Routes>
-            <Route path={'/'} element={<Main/>}/>
+            <Route exact path="/" element={<Navigate to="/upcoming" replace />} />
             <Route path={'/:path'} element={<Main/>}/>
+            <Route path={'/project/:id'} element={<Main/>}/>
+            <Route path={'/list/:id'} element={<Main/>}/>
         </Routes>
     );
 }

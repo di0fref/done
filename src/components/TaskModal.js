@@ -50,7 +50,7 @@ export default function TaskModal(props) {
                         <div className={'w-full slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
                                 <div className={'ml-5 mr-2 mt-2'}>
-                                    <input onChange={changeHandler} className={'h-4 w-4 form-checkbox bg-gray-white rounded rounded-full'} type={'checkbox'}/>
+                                    <input onChange={changeHandler} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>

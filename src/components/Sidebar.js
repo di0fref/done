@@ -1,7 +1,7 @@
 import React from "react";
 import {Disclosure} from "@headlessui/react";
 import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import getIcon from "./helper"
 
 
@@ -21,6 +21,9 @@ function Avatar() {
 }
 
 function Sidebar() {
+
+    const location = useLocation();
+    console.log(location)
     return (
         <div>
             <Disclosure as="nav">
@@ -39,25 +42,25 @@ function Sidebar() {
                         <div className={'overflow-y-auto py-4 px-3'}>
                             <ul className={'space-y-1'}>
                                 <li>
-                                    <Link to={'/today'} className={'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700'}>
+                                    <Link to={'/today'} className={`${(location.pathname==="/today")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
                                         {getIcon("today")}
                                         <span className={'ml-3'}>Today</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/upcoming'} className={'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700'}>
+                                    <Link to={'/upcoming'} className={`${(location.pathname==="/upcoming")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
                                         {getIcon("upcoming")}
                                         <span className={'ml-3'}>Upcoming</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/anytime'} className={'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700'}>
+                                    <Link to={'/anytime'} className={`${(location.pathname==="/anytime")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
                                          {getIcon("anytime")}
                                         <span className={'ml-3'}>Anytime</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/someday'} className={'flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700'}>
+                                    <Link to={'/someday'} className={`${(location.pathname==="/someday")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
                                          {getIcon("someday")}
                                         <span className={'ml-3'}>Someday</span>
                                     </Link>

@@ -1,15 +1,22 @@
 import Sidebar from "./Sidebar";
-import Textinput from "./Textinput";
 import Task from "./Task";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 
+const paths = [
+    "/today",
+    "/upcoming",
+    "/anytime",
+    "/someday"
+];
 
 export default function Main() {
     const [tasks, setTasks] = useState([]);
 
-    let params = useParams();
+    const params = useParams();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     async function getToday() {
         const response = await fetch("http://localhost:8000/today")
@@ -22,6 +29,10 @@ export default function Main() {
     }
 
     useEffect(() => {
+
+        if(!paths.includes(location.pathname)){
+            navigate("/upcoming")
+        }
         switch (params.path) {
             case "today":
                 getToday().then((data) => {
@@ -33,6 +44,10 @@ export default function Main() {
                     setTasks([...data])
                 })
                 break;
+            default:
+                getUpcoming().then((data) => {
+                    setTasks([...data])
+                })
         }
     }, [params.path])
 
@@ -46,10 +61,10 @@ export default function Main() {
             <main id="content" className="flex-1 md:mx-6 lg:px-8">
                 <div className="max-w-4xl _mx-auto">
                     <div className="px-4 py-6 sm:px-0">
-                        <div className={'ml-3 font-semibold text-xl'}><TaskHeader path={params.path}/></div>
-                        <div className={"mb-4"}>
-                            {/*<Textinput addTask={addTask}/>*/}
+                        <div className={'ml-3 font-semibold text-xl'}>
+                            <TaskHeader path={params.path}/>
                         </div>
+                        <div className={"border-b"}></div>
                         {tasks.map(function (item, index) {
                             return (
                                 <Task task={item} key={index}/>

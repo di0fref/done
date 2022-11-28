@@ -1,7 +1,7 @@
 import {HiArchiveBox, HiCalendar, HiInbox, HiStar} from "react-icons/hi2";
 
 export default function getIcon(path){
-        switch (path) {
+        switch (path||"upcoming") {
             case "today":
                 return <HiStar className={'text-yellow-400'}/>
             case "upcoming":
