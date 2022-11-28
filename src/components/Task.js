@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import _Datepicker from "./_Datepicker";
 import {formatRelative} from "date-fns";
 import enGB from 'date-fns/locale/en-GB';
-import {HiBars2, HiBars4, HiDocument} from "react-icons/hi2";
+import {HiBars2, HiBars4, HiCalendar, HiDocument} from "react-icons/hi2";
 import TaskModal from "./TaskModal";
 
 function Task(props) {
@@ -53,19 +53,23 @@ function Task(props) {
     };
 
     const clickHandler = (e) => {
-        if(e.target.type !=="checkbox"){
+        if (e.target.type !== "checkbox") {
             setModalOpen(true)
         }
     }
 
     return (
 
-        <div onClick={clickHandler} className={'flex items-center _mb-2 px-4 py-2 hover:bg-gray-100 border-b hover:cursor-pointer'}>
-            <div className={'w-10 '}>
-                <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[2px] h-4 w-4 form-checkbox bg-white rounded rounded-full'}/>
+        <div onClick={clickHandler} className={'flex  px-4 py-2.5 hover:bg-gray-100 border-b hover:cursor-pointer'}>
+            <div className={'w-10'}>
+                <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[6px] h-4 w-4 form-checkbox bg-white rounded rounded-full'}/>
             </div>
-            <div className={'text-sm outline-0  flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
-                {task.name}
+            <div className={'text-task outline-0  flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
+                <div>{task.name}</div>
+                <div className={'flex items-center justify-start'}>
+                    <div className={'mb-[1px] mr-1 text-ss'}><HiCalendar/></div>
+                    <div className={'text-ss'}>{task.date ? formatRelative(new Date(task.date), new Date(), {locale}) : null}</div>
+                </div>
             </div>
             <div className={'w-32 ml-auto flex-shrink-0 text-xs text-right text-gray-400'}>
                 {task.date ? formatRelative(new Date(task.date), new Date(), {locale}) : null}

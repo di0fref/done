@@ -54,17 +54,18 @@ export default function TaskModal(props) {
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>
-                                        <input onChange={changeHandler} placeholder={"Title"} className={'w-full font-bold text-lg border-none focus:border-none focus:ring-0'} type={"text"} value={task.name}/>
+                                        <input onChange={changeHandler} placeholder={"Title"} className={'tracking-wide w-full font-bold text-lg border-none focus:border-none focus:ring-0'} type={"text"} value={task.name}/>
                                     </div>
-                                    <div className={'w-full'}>
-                                        <TextareaAutosize onChange={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.description}/>
+                                    <div className={'w-full mt-2'}>
+                                        <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
+                                        <TextareaAutosize id={"description"} onChange={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.description}/>
                                     </div>
                                 </div>
                             </div>
                             {isChanged ? (
                             <div className={'p-4 flex space-x-2 items-center justify-end mt-2'}>
                                 <div>
-                                    <button className={'w-20 bg-gray-200 p-1 rounded hover:bg-gray-300'}>Cancel</button>
+                                    <button onClick={closeModal} className={'w-20 bg-gray-200 p-1 rounded hover:bg-gray-300'}>Cancel</button>
                                 </div>
                                 <div>
                                     <button className={'w-20 bg-blue-500 p-1 rounded hover:bg-blue-600 text-white'}>Save</button>

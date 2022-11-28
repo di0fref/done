@@ -3,6 +3,7 @@ import Textinput from "./Textinput";
 import Task from "./Task";
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import TaskHeader from "./TaskHeader";
 
 
 export default function Main() {
@@ -45,14 +46,13 @@ export default function Main() {
             <main id="content" className="flex-1 md:mx-6 lg:px-8">
                 <div className="max-w-4xl _mx-auto">
                     <div className="px-4 py-6 sm:px-0">
+                        <div className={'ml-3 font-semibold text-xl'}><TaskHeader path={params.path}/></div>
                         <div className={"mb-4"}>
-                            <Textinput addTask={addTask}/>
+                            {/*<Textinput addTask={addTask}/>*/}
                         </div>
                         {tasks.map(function (item, index) {
-                            return(
+                            return (
                                 <Task task={item} key={index}/>
-
-
                             )
                         })}
                     </div>
