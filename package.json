@@ -19,6 +19,7 @@
     "react-icons": "^4.6.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "react-textarea-autosize": "^8.4.0",
     "slate": "^0.86.0",
     "slate-history": "^0.86.0",
     "slate-react": "^0.86.0"

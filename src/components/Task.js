@@ -62,12 +62,12 @@ function Task(props) {
 
         <div onClick={clickHandler} className={'flex items-center _mb-2 px-4 py-2 hover:bg-gray-100 border-b hover:cursor-pointer'}>
             <div className={'w-10 '}>
-                <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[2px] h-5 w-5 form-checkbox border-none bg-gray-300 rounded rounded-md'}/>
+                <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[2px] h-4 w-4 form-checkbox bg-white rounded rounded-full'}/>
             </div>
-            <div className={'text-sm   outline-0  flex-grow text-gray-700 focus:border-none focus:ring-0 border-none'}>
+            <div className={'text-sm outline-0  flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                 {task.name}
             </div>
-            <div className={'w-32 ml-auto flex-shrink-0 text-xs text-right'}>
+            <div className={'w-32 ml-auto flex-shrink-0 text-xs text-right text-gray-400'}>
                 {task.date ? formatRelative(new Date(task.date), new Date(), {locale}) : null}
             </div>
             <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task}/>
