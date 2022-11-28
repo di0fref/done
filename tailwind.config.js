@@ -8,11 +8,12 @@ module.exports = {
     theme: {
         fontFamily: {
             sans: ['Inter var', 'sans-serif'],
+            // sans: ["Montserrat", "sans-serif"]
         },
         extend: {
             fontSize: {
-                ss: "0.92em",
-                task: "0.97em"
+                ss: "0.88em",
+                task: "0.93em"
             },
             colors: {
                 s: "#f1f5f9"

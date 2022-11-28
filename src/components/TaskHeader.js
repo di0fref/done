@@ -12,7 +12,7 @@ export default function TaskHeader(props) {
     }, [props.path])
 
     return (
-        <div className={'flex items-center justify-start _border-b pb-1 mb-8'}>
+        <div className={'flex items-center justify-start pb-1 mb-8 ml-2'}>
             <div className={'h-6 mr-2 mt-[3px]'}>{icon}</div>
             <div>{name}</div>
         </div>

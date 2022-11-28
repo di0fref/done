@@ -64,7 +64,6 @@ export default function Main() {
                         <div className={'ml-3 font-semibold text-xl'}>
                             <TaskHeader path={params.path}/>
                         </div>
-                        <div className={"border-b"}></div>
                         {tasks.map(function (item, index) {
                             return (
                                 <Task task={item} key={index}/>
