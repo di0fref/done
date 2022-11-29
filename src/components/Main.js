@@ -4,7 +4,7 @@ import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import axios from "axios";
-import Task from "./Task";
+import ReactTooltip from "react-tooltip";
 
 const paths = [
     "/today",
@@ -43,11 +43,21 @@ export default function Main() {
 
 
     useEffect(() => {
-
-        (async () => {
-            let response = await http.get("/today");
-            setTasks([...response.data])
-        })();
+        if(!paths.includes(location.pathname)){
+            navigate("/upcoming")
+        }
+        switch (params.path) {
+            case "today":
+                getToday().then((data) => {
+                    setTasks([...data])
+                })
+                break;
+            case "upcoming":
+                getUpcoming().then((data) => {
+                    setTasks([...data])
+                })
+                break;
+        }
 
     }, [params, location])
 

@@ -63,9 +63,6 @@ export default function Task(props) {
                     <div className={`text-ss `}>{task.date ? format(new Date(task.date), "dd MMM YYY") : null}</div>
                 </div>
             </div>
-            {/*<div className={'border-b w-32 ml-auto flex-shrink-0 text-xs text-right text-gray-400'}>*/}
-            {/*    {task.date ? format(new Date(task.date), "w") : null}*/}
-            {/*</div>*/}
             <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task}/>
         </div>
     )

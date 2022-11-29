@@ -7,13 +7,14 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            sans: ['Inter var', 'sans-serif'],
-            // sans: ["Montserrat", "sans-serif"]
+            // sans: ['Inter var', 'sans-serif'],
+            sans: ["Roboto","Helvetica","Arial","sans-serif"]
         },
         extend: {
             fontSize: {
                 ss: "0.88em",
-                task: "0.93em"
+                task: "0.93em",
+                base: "15px"
             },
             colors: {
                 s: "#f1f5f9"

@@ -1,18 +1,22 @@
 import update from 'immutability-helper'
 import {useCallback, useEffect, useState} from 'react'
 import {Card} from './Card.js'
+import ReactTooltip from "react-tooltip";
 
 const style = {
-    width: 400,
+    // width: 400,
 }
 export const Container = (props) => {
     {
         const [cards, setCards] = useState(props.cards)
 
         useEffect(() => {
-            console.log(props);
             setCards(props.cards)
         },[props])
+
+        useEffect(() => {
+            ReactTooltip.rebuild();
+        });
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
             setCards((prevCards) =>
@@ -25,7 +29,6 @@ export const Container = (props) => {
             )
         }, [])
         const renderCard = useCallback((card, index) => {
-            console.log(card);
             return (
                 <Card
                     key={card.id}
@@ -33,6 +36,7 @@ export const Container = (props) => {
                     id={card.id}
                     text={card.name}
                     moveCard={moveCard}
+                    card={card}
                 />
             )
         }, [])

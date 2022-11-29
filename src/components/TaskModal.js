@@ -54,7 +54,7 @@ export default function TaskModal(props) {
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>
-                                        <input onChange={changeHandler} placeholder={"Title"} className={'tracking-wide w-full font-bold text-lg border-none focus:border-none focus:ring-0'} type={"text"} value={task.name}/>
+                                        <input onChange={changeHandler} placeholder={"Title"} className={'tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0'} type={"text"} value={task.name}/>
                                     </div>
                                     <div className={'w-full mt-2'}>
                                         <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
@@ -76,13 +76,13 @@ export default function TaskModal(props) {
 
                         <div className={'md:w-72 bg-gray-100 md:h-screen w-full'}>
                             <div className={'md:p-4 p-6'}>
-                                <p className={'tracking-wide text-[13px] font-semibold text-gray-500'}>Project</p>
+                                <p className={'text-black/50 font-medium text-[14px]'}>Project</p>
                             </div>
                             <div className={'md:p-4 p-6'}>
-                                <p className={'tracking-wide text-[13px] font-semibold text-gray-500'}>Due Date</p>
+                                <p className={'text-black/50 font-medium text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
-                                    <div><HiCalendar/></div>
-                                    <div className={'text-gray-600 text-sm font-thin'}>19 Dec 2022</div>
+                                    <div><HiCalendar className={'mb-[2px]'}/></div>
+                                    <div className={'text-gray-600 text-sm'}>19 Dec 2022</div>
                                 </div>
                             </div>
                             <div></div>

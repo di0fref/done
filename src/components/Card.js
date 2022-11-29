@@ -1,16 +1,23 @@
-import {useRef} from 'react'
+import {useRef, useState} from 'react'
 import {useDrag, useDrop} from 'react-dnd'
 import {ItemTypes} from './ItemTypes.js'
+import {GrDrag} from "react-icons/gr";
+import {HiCalendar, HiEllipsisHorizontal, HiOutlineFlag} from "react-icons/hi2";
+import {format} from "date-fns";
+import TaskModal from "./TaskModal";
+import {CiCalendar} from "react-icons/ci";
 
-const style = {
-    border: '1px dashed gray',
-    padding: '0.5rem 1rem',
-    marginBottom: '.5rem',
-    backgroundColor: 'white',
-    cursor: 'move',
-}
-export const Card = ({id, text, index, moveCard}) => {
-    const ref = useRef(null)
+
+export const Card = ({id, card, index, moveCard}) => {
+
+    const [modelOpen, setModalOpen] = useState(false)
+    const [task, setTask] = useState(card)
+    const [isHovering, setIsHovering] = useState(false)
+
+
+    const dragRef = useRef(null)
+    const previewRef = useRef(null)
+
     const [{handlerId}, drop] = useDrop({
         accept: ItemTypes.CARD,
         collect(monitor) {
@@ -19,7 +26,7 @@ export const Card = ({id, text, index, moveCard}) => {
             }
         },
         hover(item, monitor) {
-            if (!ref.current) {
+            if (!dragRef.current) {
                 return
             }
             const dragIndex = item.index
@@ -29,7 +36,7 @@ export const Card = ({id, text, index, moveCard}) => {
                 return
             }
             // Determine rectangle on screen
-            const hoverBoundingRect = ref.current?.getBoundingClientRect()
+            const hoverBoundingRect = dragRef.current?.getBoundingClientRect()
             // Get vertical middle
             const hoverMiddleY =
                 (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
@@ -57,7 +64,7 @@ export const Card = ({id, text, index, moveCard}) => {
             item.index = hoverIndex
         },
     })
-    const [{isDragging}, drag] = useDrag({
+    const [{isDragging}, drag, preview] = useDrag({
         type: ItemTypes.CARD,
         item: () => {
             return {id, index}
@@ -66,11 +73,52 @@ export const Card = ({id, text, index, moveCard}) => {
             isDragging: monitor.isDragging(),
         }),
     })
+
+    const clickHandler = (e) => {
+        if (e.target.type !== "checkbox") {
+            setModalOpen(true)
+        }
+        setIsHovering(false)
+    }
+
+    const onStatusChange = (e) => {
+        setTask({
+            ...task,
+            completed: !task.completed
+        })
+    }
+
     const opacity = isDragging ? 0 : 1
-    drag(drop(ref))
+
+    const style = {}
+    drag(dragRef)
+    drop(preview(previewRef))
+
+
     return (
-        <div ref={ref} style={{...style, opacity}} data-handler-id={handlerId}>
-            {text}
+        <div ref={previewRef}
+             style={{...style, opacity}}
+        >
+            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={'flex _px-4 _py-2.5 hover:bg-gray-100_ _border-b hover:cursor-pointer'}>
+                <div ref={dragRef} data-handler-id={handlerId}  className={`cursor-move w-6 py-4 ${isHovering ? "visible" : "invisible"}`}>
+                    <GrDrag className={'mt-[4px]'}/>
+                </div>
+                <div className={'w-7 border-b py-4'}>
+                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[2px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
+                </div>
+                <div onClick={clickHandler} className={'pt-4 text-task outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
+                    <div className={''}>{task.name}</div>
+                    <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.date) > new Date()) ? "" : "text-red-600"}`}>
+                        <div className={`mb-[1px] mr-1 text-ss `}><HiCalendar/></div>
+                        <div className={`text-ss `}>{task.date ? format(new Date(task.date), "dd MMM YYY") : null}</div>
+                    </div>
+                </div>
+                <div className={`border-b ${1 || isHovering ? "visible" : "invisible"} flex space-x-4 items-center`}>
+                    <button data-tip={"Set due date"}><CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/></button>
+                    <button><HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/></button>
+                </div>
+                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task}/>
+            </div>
         </div>
     )
 }

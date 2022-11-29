@@ -38,35 +38,57 @@ function Sidebar() {
                 <div className="border-r md:relative absolute p-6 w-1/2 h-screen bg-gray-100 z-20 fixed top-0 -left-72 md:left-0 md:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                     <Avatar/>
                     <div className="flex flex-col justify-start item-center">
-                        <div className={'overflow-y-auto py-4 px-3'}>
+                        <div className={'overflow-y-auto py-4 px-3_'}>
                             <ul className={'space-y-1'}>
                                 <li>
-                                    <Link to={'/today'} className={`${(location.pathname==="/today")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
+                                    <Link to={'/today'} className={`${(location.pathname === "/today") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         {getIcon("today")}
                                         <span className={'ml-3'}>Today</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/upcoming'} className={`${(location.pathname==="/upcoming")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
+                                    <Link to={'/upcoming'} className={`${(location.pathname === "/upcoming") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         {getIcon("upcoming")}
                                         <span className={'ml-3'}>Upcoming</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/anytime'} className={`${(location.pathname==="/anytime")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
-                                         {getIcon("anytime")}
+                                    <Link to={'/anytime'} className={`${(location.pathname === "/anytime") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                        {getIcon("anytime")}
                                         <span className={'ml-3'}>Anytime</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/someday'} className={`${(location.pathname==="/someday")?"bg-gray-300":""} flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-300 dark:hover:bg-gray-700`}>
-                                         {getIcon("someday")}
+                                    <Link to={'/someday'} className={`${(location.pathname === "/someday") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                        {getIcon("someday")}
                                         <span className={'ml-3'}>Someday</span>
                                     </Link>
                                 </li>
                             </ul>
                         </div>
+                        <div>
+                            <div className={'text-black/50 font-medium text-[14px] mb-2 '}>Projects</div>
+                            <ul className={'space-y-1 text-ss ml-2'}>
+                                <li>
+                                    <Link to={"/"} className={'flex items-center'}>
+                                        <span className={'bg-blue-400 w-2 h-2 rounded-full'}></span>
+                                        <span className={'ml-3 text-gray-600'}>Travel</span>
+                                    </Link>
+                                </li>
 
+                                <li>
+                                    <Link to={"/"} className={'flex items-center'}>
+                                        <span className={'bg-red-400 w-2 h-2 rounded-full'}></span>
+                                        <span className={'ml-3 text-gray-600'}>Work</span>
+                                    </Link>
+                                </li>             <li>
+                                <Link to={"/"} className={'flex items-center'}>
+                                    <span className={'bg-yellow-400 w-2 h-2 rounded-full'}></span>
+                                    <span className={'ml-3 text-gray-600'}>Home</span>
+                                </Link>
+                            </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </Disclosure>
