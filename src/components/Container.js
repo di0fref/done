@@ -7,11 +7,12 @@ const style = {
 }
 export const Container = (props) => {
     {
-        const [cards, setCards] = useState([])
+        const [cards, setCards] = useState(props.cards)
 
         useEffect(() => {
-            setCards([...props.tasks])
-        },[])
+            console.log(props);
+            setCards(props.cards)
+        },[props])
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
             setCards((prevCards) =>

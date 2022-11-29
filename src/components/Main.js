@@ -4,6 +4,7 @@ import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import axios from "axios";
+import Task from "./Task";
 
 const paths = [
     "/today",
@@ -15,7 +16,6 @@ const paths = [
 
 const api_config = {
     url: "http://localhost:8000",
-    // url: "http://backend.loc/api",
 }
 const http = axios.create({
     baseURL: api_config.url,
@@ -41,6 +41,7 @@ export default function Main() {
         return await response.json()
     }
 
+
     useEffect(() => {
 
         (async () => {
@@ -48,14 +49,12 @@ export default function Main() {
             setTasks([...response.data])
         })();
 
-    }, [])
+    }, [params, location])
 
 
     const addTask = (task) => {
         setTasks([...tasks, task])
     }
-    console.log(tasks);
-
     return (
         <div className="relative min-h-screen md:flex">
             <Sidebar/>
@@ -70,7 +69,7 @@ export default function Main() {
                         {/*        <Task task={item} key={index}/>*/}
                         {/*    )*/}
                         {/*})}*/}
-                        <Container tasks={[...tasks]}/>
+                        <Container cards={tasks}/>
                     </div>
                 </div>
             </main>
