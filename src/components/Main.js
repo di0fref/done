@@ -1,8 +1,9 @@
 import Sidebar from "./Sidebar";
-import Task from "./Task";
 import {useEffect, useState} from "react";
 import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
+import {Container} from "./Container";
+import axios from "axios";
 
 const paths = [
     "/today",
@@ -10,6 +11,18 @@ const paths = [
     "/anytime",
     "/someday"
 ];
+
+
+const api_config = {
+    url: "http://localhost:8000",
+    // url: "http://backend.loc/api",
+}
+const http = axios.create({
+    baseURL: api_config.url,
+    headers: {
+        "Content-type": "application/json",
+    },
+});
 
 export default function Main() {
     const [tasks, setTasks] = useState([]);
@@ -30,30 +43,18 @@ export default function Main() {
 
     useEffect(() => {
 
-        if(!paths.includes(location.pathname)){
-            navigate("/upcoming")
-        }
-        switch (params.path) {
-            case "today":
-                getToday().then((data) => {
-                    setTasks([...data])
-                })
-                break;
-            case "upcoming":
-                getUpcoming().then((data) => {
-                    setTasks([...data])
-                })
-                break;
-            default:
-                getUpcoming().then((data) => {
-                    setTasks([...data])
-                })
-        }
-    }, [params.path])
+        (async () => {
+            let response = await http.get("/today");
+            setTasks([...response.data])
+        })();
+
+    }, [])
+
 
     const addTask = (task) => {
         setTasks([...tasks, task])
     }
+    console.log(tasks);
 
     return (
         <div className="relative min-h-screen md:flex">
@@ -64,11 +65,12 @@ export default function Main() {
                         <div className={'ml-3 font-semibold text-xl'}>
                             <TaskHeader path={params.path}/>
                         </div>
-                        {tasks.map(function (item, index) {
-                            return (
-                                <Task task={item} key={index}/>
-                            )
-                        })}
+                        {/*{tasks.map(function (item, index) {*/}
+                        {/*    return  (*/}
+                        {/*        <Task task={item} key={index}/>*/}
+                        {/*    )*/}
+                        {/*})}*/}
+                        <Container tasks={[...tasks]}/>
                     </div>
                 </div>
             </main>

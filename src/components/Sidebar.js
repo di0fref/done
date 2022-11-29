@@ -23,7 +23,6 @@ function Avatar() {
 function Sidebar() {
 
     const location = useLocation();
-    console.log(location)
     return (
         <div>
             <Disclosure as="nav">

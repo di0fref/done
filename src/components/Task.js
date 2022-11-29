@@ -1,13 +1,12 @@
 import {useEffect, useRef, useState} from "react";
-import _Datepicker from "./_Datepicker";
-import {format, formatRelative} from "date-fns";
-import enGB from 'date-fns/locale/en-GB';
-import {HiBars2, HiBars4, HiCalendar, HiDocument} from "react-icons/hi2";
+import {format} from "date-fns";
+import {HiCalendar} from "react-icons/hi2";
+
 
 import TaskModal from "./TaskModal";
 import {GrDrag} from "react-icons/gr";
 
-function Task(props) {
+export default function Task(props) {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [task, setTask] = useState(props.task)
@@ -41,20 +40,6 @@ function Task(props) {
         })
     }
 
-    const formatRelativeLocale = {
-        lastWeek: "'Last' eeee",
-        yesterday: "'Yesterday'",
-        today: "'Today'",
-        tomorrow: "'Tomorrow'",
-        nextWeek: "'Next' eeee",
-        other: 'yyyy-MM-dd',
-    };
-
-    const locale = {
-        ...enGB,
-        formatRelative: (token) => formatRelativeLocale[token],
-    };
-
     const clickHandler = (e) => {
         if (e.target.type !== "checkbox") {
             setModalOpen(true)
@@ -64,8 +49,8 @@ function Task(props) {
 
     return (
 
-        <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}  className={'flex _px-4 _py-2.5 hover:bg-gray-100_ _border-b hover:cursor-pointer'}>
-            <div className={`w-6 py-4 ${isHovering?"visible":"invisible"}`}>
+        <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={'flex _px-4 _py-2.5 hover:bg-gray-100_ _border-b hover:cursor-pointer'}>
+            <div className={`w-6 py-4 ${isHovering ? "visible" : "invisible"}`}>
                 <GrDrag className={'mt-[4px]'}/>
             </div>
             <div className={'w-7 border-b py-4'}>
@@ -73,7 +58,7 @@ function Task(props) {
             </div>
             <div onClick={clickHandler} className={'pt-4 text-task outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                 <div className={''}>{task.name}</div>
-                <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.date) > new Date())?"":"text-red-700"}`}>
+                <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.date) > new Date()) ? "" : "text-red-600"}`}>
                     <div className={`mb-[1px] mr-1 text-ss `}><HiCalendar/></div>
                     <div className={`text-ss `}>{task.date ? format(new Date(task.date), "dd MMM YYY") : null}</div>
                 </div>
@@ -86,4 +71,3 @@ function Task(props) {
     )
 }
 
-export default Task
