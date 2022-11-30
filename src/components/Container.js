@@ -2,6 +2,7 @@ import update from 'immutability-helper'
 import {useCallback, useEffect, useState} from 'react'
 import {Card} from './Card.js'
 import ReactTooltip from "react-tooltip";
+import TaskForm from "./TaskForm";
 
 const style = {
     // width: 400,
@@ -12,29 +13,35 @@ export const Container = (props) => {
 
         useEffect(() => {
             setCards(props.cards)
-        },[props])
+        }, [props])
 
         useEffect(() => {
             ReactTooltip.rebuild();
         });
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
-            setCards((prevCards) =>
-                update(prevCards, {
-                    $splice: [
-                        [dragIndex, 1],
-                        [hoverIndex, 0, prevCards[dragIndex]],
-                    ],
-                }),
+
+            setCards((prevCards) => {
+
+                    prevCards[dragIndex].sort = hoverIndex;
+                    prevCards[hoverIndex].sort = dragIndex;
+
+                    return update(prevCards, {
+                        $splice: [
+                            [dragIndex, 1],
+                            [hoverIndex, 0, prevCards[dragIndex]],
+                        ],
+                    })
+                }
             )
         }, [])
+
         const renderCard = useCallback((card, index) => {
             return (
                 <Card
                     key={card.id}
                     index={index}
                     id={card.id}
-                    text={card.name}
                     moveCard={moveCard}
                     card={card}
                 />
@@ -42,7 +49,10 @@ export const Container = (props) => {
         }, [])
         return (
             <>
-                <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
+                <div>
+                    <div className={''}><TaskForm/></div>
+                    <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
+                </div>
             </>
         )
     }

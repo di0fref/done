@@ -1,3 +1,11 @@
 export const ItemTypes = {
-  CARD: 'card',
+    CARD: 'card',
 }
+
+export const taskTemplate = {
+    name: "",
+    id: "",
+    description: "",
+    sort: "",
+    date: ""
+};

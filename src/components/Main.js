@@ -4,7 +4,6 @@ import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import axios from "axios";
-import ReactTooltip from "react-tooltip";
 
 const paths = [
     "/today",

@@ -8,7 +8,7 @@ module.exports = {
     theme: {
         fontFamily: {
             // sans: ['Inter var', 'sans-serif'],
-            sans: ["Roboto","Helvetica","Arial","sans-serif"]
+            sans: ["Roboto", "Helvetica", "Arial", "sans-serif"]
         },
         extend: {
             fontSize: {
@@ -27,5 +27,6 @@ module.exports = {
     },
     plugins: [
         require('@tailwindcss/forms'),
+        require('flowbite/plugin')
     ],
 }

@@ -65,10 +65,10 @@ export default function TaskModal(props) {
                             {isChanged ? (
                             <div className={'p-4 flex space-x-2 items-center justify-end mt-2'}>
                                 <div>
-                                    <button onClick={closeModal} className={'w-20 bg-gray-200 p-1 rounded hover:bg-gray-300'}>Cancel</button>
+                                    <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
                                 </div>
                                 <div>
-                                    <button className={'w-20 bg-blue-500 p-1 rounded hover:bg-blue-600 text-white'}>Save</button>
+                                    <button className={'save-btn'}>Save</button>
                                 </div>
                             </div>
                         ) : ""}

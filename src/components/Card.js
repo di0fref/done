@@ -114,6 +114,7 @@ export const Card = ({id, card, index, moveCard}) => {
                     </div>
                 </div>
                 <div className={`border-b ${1 || isHovering ? "visible" : "invisible"} flex space-x-4 items-center`}>
+                    {task.sort}
                     <button data-tip={"Set due date"}><CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/></button>
                     <button><HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/></button>
                 </div>
