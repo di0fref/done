@@ -3,6 +3,7 @@ import {Disclosure} from "@headlessui/react";
 import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
 import getIcon from "./helper"
+import Usermenu from "./Usermenu";
 
 
 function Avatar() {
@@ -29,9 +30,9 @@ function Sidebar() {
 
                 {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
-                <Disclosure.Button className="absolute right-4 inline-flex items-center peer justify-center rounded-md p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+                <Disclosure.Button className="absolute top-4 right-4 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                     <HiBars3
-                        className="block md:hidden h-6 w-6"
+                        className="block md:hidden h-8 w-8"
                         aria-hidden="true"
                     />
                 </Disclosure.Button>

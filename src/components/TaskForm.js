@@ -8,7 +8,7 @@ import {format} from "date-fns";
 
 export default function TaskForm() {
 
-    const [isEditing, setIsEditing] = useState(true)
+    const [isEditing, setIsEditing] = useState(false)
     const [taskName, setTaskName] = useState("");
     const [taskDate, setTaskDate] = useState("");
     const [taskDescription, setTaskDescription] = useState("");

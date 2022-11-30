@@ -4,6 +4,8 @@ import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import axios from "axios";
+import {HiUserCircle} from "react-icons/hi2";
+import Usermenu from "./Usermenu";
 
 const paths = [
     "/today",
@@ -70,14 +72,10 @@ export default function Main() {
             <main id="content" className="flex-1 md:mx-6 lg:px-8">
                 <div className="max-w-4xl _mx-auto">
                     <div className="px-4 py-6 sm:px-0">
-                        <div className={'ml-3 font-semibold text-xl'}>
+                        <div className={'ml-3 font-semibold text-xl flex justify-between'}>
                             <TaskHeader path={params.path}/>
+                            <div><Usermenu/></div>
                         </div>
-                        {/*{tasks.map(function (item, index) {*/}
-                        {/*    return  (*/}
-                        {/*        <Task task={item} key={index}/>*/}
-                        {/*    )*/}
-                        {/*})}*/}
                         <Container cards={tasks}/>
                     </div>
                 </div>
