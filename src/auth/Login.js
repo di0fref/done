@@ -22,7 +22,7 @@ export default function Login() {
                 const credential = GoogleAuthProvider.credentialFromResult(result);
                 const user = result.user;
 
-                localStorage.setItem("api_token", result.payload.api_token)
+                localStorage.setItem("api_token", result.user.accessToken)
                 return redirect('/')
 
             }).catch((error) => {
