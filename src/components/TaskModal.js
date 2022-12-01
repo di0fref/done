@@ -35,7 +35,7 @@ export default function TaskModal(props) {
             {/* Full-screen container to center the panel */}
             <div className="fixed inset-0 flex items-center justify-center text-gray-600 ">
                 {/* The actual dialog panel  */}
-                <Dialog.Panel className="h-4/5 w-full max-w-4xl transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="h-4/5  md:max-w-4xl w-11/12 transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
                         <div className={'border-b h-10 flex items-center justify-end'}>
                             <div className={'flex items-center justify-end'}>
@@ -63,15 +63,15 @@ export default function TaskModal(props) {
                                 </div>
                             </div>
                             {isChanged ? (
-                            <div className={'p-4 flex space-x-2 items-center justify-end mt-2'}>
-                                <div>
-                                    <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
+                                <div className={'p-4 flex space-x-2 items-center justify-end mt-2'}>
+                                    <div>
+                                        <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
+                                    </div>
+                                    <div>
+                                        <button className={'save-btn'}>Save</button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button className={'save-btn'}>Save</button>
-                                </div>
-                            </div>
-                        ) : ""}
+                            ) : ""}
                         </div>
 
                         <div className={'md:w-72 bg-gray-100 md:h-screen w-full'}>

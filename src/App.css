@@ -4,6 +4,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .text-input{
+        @apply py-2 px-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+    }
+    .text-label{
+        @apply block mb-2 text-sm font-medium text-gray-900 dark:text-white
+    }
+    .cancel-btn{
+        @apply text-gray-700 hover:bg-gray-50 border-gray-300 border bg-white font-medium w-20 p-1 rounded text-sm
+    }
+    .save-btn{
+        @apply disabled:opacity-50 font-medium w-20 bg-blue-500 p-1 rounded hover:bg-blue-600 text-white text-sm
+    }
+    .ring-btn{
+        @apply border border-gray-300 p-1.5 rounded hover:bg-gray-50 text-sm
+    }
+    .sidebar-active{
+        @apply bg-gray-200
+    }
+}
+
 .loader {
 	border-top-color: #3498db;
 	-webkit-animation: spinner 1.5s linear infinite;
@@ -33,27 +55,6 @@
 body, html {
     @apply bg-white dark:bg-gray-700 min-h-full;
 }
-
-.cancel-btn{
-    @apply w-20 bg-gray-200 p-1 rounded hover:bg-gray-300 text-sm
-}
-
-.save-btn{
-    @apply w-20 bg-blue-500 p-1 rounded hover:bg-blue-600 text-white text-sm
-}
-
-.ring-btn{
-    @apply border p-1 rounded hover:bg-gray-100 text-sm
-}
-
-.sidebar-active{
-    @apply bg-gray-200
-}
-
-.isDraggingColor{
-    @apply bg-gray-700
-}
-
 
 
 div_ {

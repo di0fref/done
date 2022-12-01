@@ -67,7 +67,7 @@ export default function TaskForm() {
                 <div className={'ml-4'}>
                     <div className={'border border-gray-300 rounded-lg p-1 mb-2'}>
                         <div className={'w-full mb-2'}>
-                            <input onChange={(e) => setTaskName(e.currentTarget.value)} placeholder={"Task title"} className={'focus:border-none focus:ring-0 w-full border-none ring-0 rounded placeholder:text-sm'} type={"text"}/>
+                            <input onChange={(e) => setTaskName(e.currentTarget.value)} placeholder={"Title"} className={'focus:border-none focus:ring-0 w-full border-none ring-0 rounded placeholder:text-sm'} type={"text"}/>
                         </div>
                         <div className={'w-full'}>
                             <textarea onChange={(e) => setTaskDescription(e.currentTarget.value)} placeholder={"Description"} className={'focus:border-none focus:ring-0 w-full h-12 form-textarea w-full border-none ring-0 rounded resize-none placeholder:text-sm'}></textarea>
@@ -93,7 +93,7 @@ export default function TaskForm() {
                             setIsEditing(false)
                         }}>Cancel
                         </button>
-                        <button className={'save-btn'} onClick={saveHandler}>Save</button>
+                        <button disabled={!taskName?true:false} className={'save-btn'} onClick={saveHandler}>Save</button>
                     </div>
                 </div>
             )}

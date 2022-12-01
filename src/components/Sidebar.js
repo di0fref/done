@@ -3,7 +3,7 @@ import {Disclosure} from "@headlessui/react";
 import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
 import getIcon from "./helper"
-import AddProjectForm from "./AddProjectForm";
+import AddProjectForm from "./AddProjectButton";
 
 
 function Sidebar() {
