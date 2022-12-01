@@ -23,12 +23,7 @@ export default function TaskForm() {
             sort: 0,
             date: taskDate ? format(taskDate, "Y-MM-dd") : null
         }
-
-
-        console.log(format(new Date(taskDate), "Y-MM-dd"));
-        console.log(format(new Date(), "Y-MM-dd"));
     }
-
 
     useEffect(() => {
 
@@ -38,11 +33,10 @@ export default function TaskForm() {
 
             if (today === date) {
                 setDisplayDate("Today")
-            }
-            else{
+            } else {
                 setDisplayDate(date)
             }
-        }else {
+        } else {
             setDisplayDate("Due Date")
         }
 
@@ -62,11 +56,11 @@ export default function TaskForm() {
         <div className={'mt-3'}>
             {!isEditing ? (
                 <div className={'flex items-center justify-end ml-5 mb-2 text-sm'}>
-                    <button className={'flex items-center justify-start hover:text-red-600'} onClick={() => {
+                    <button className={'flex items-center justify-start hover:text-red-600_ mr-2 hover:bg-gray-200 p-1 rounded'} onClick={() => {
                         setIsEditing(true)
                     }}>
-                        <div className={'mr-3 text-red-600'}><HiPlus/></div>
-                        <div>Add task</div>
+                        <div className={'mr-1 text-red-600'}><HiPlus/></div>
+                        <div>Todo</div>
                     </button>
                 </div>
             ) : (

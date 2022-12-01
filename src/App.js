@@ -14,14 +14,19 @@ function App() {
 
     const auth = getAuth();
 
-    onAuthStateChanged(auth, (user) => {
-
-    });
-
-
     useEffect(() => {
         ReactTooltip.rebuild()
     }, [])
+
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("// User is signed in")
+        } else {
+            console.log("// No user is signed in");
+        }
+    });
+
 
     return (
         <DndProvider backend={HTML5Backend}>

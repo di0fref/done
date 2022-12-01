@@ -6,6 +6,7 @@ import {Container} from "./Container";
 import axios from "axios";
 import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
+import {useAuthState} from "react-firebase-hooks/auth";
 
 const paths = [
     "/today",
@@ -27,7 +28,6 @@ const http = axios.create({
 
 export default function Main() {
     const [tasks, setTasks] = useState([]);
-
     const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -48,19 +48,17 @@ export default function Main() {
                 getAuth().onAuthStateChanged(
                     user => {
                         if (user) {
-                            // User is signed in.
                             resolve(user)
                         } else {
-                            // No user is signed in.
                             reject('no user logged in')
                         }
                     },
-                    // Prevent console error
                     error => reject(error)
                 )
             )
             return true
         } catch (error) {
+            console.log(error);
             return false
         }
     }
@@ -97,20 +95,38 @@ export default function Main() {
     const addTask = (task) => {
         setTasks([...tasks, task])
     }
-    return (
-        <div className="relative min-h-screen md:flex">
-            <Sidebar/>
-            <main id="content" className="flex-1 md:mx-6 lg:px-8">
-                <div className="max-w-4xl _mx-auto">
-                    <div className="px-4 py-6 sm:px-0">
-                        <div className={'ml-3 flex justify-between'}>
-                            <TaskHeader path={params.path}/>
-                            <div><MainMenu/></div>
+    const auth = getAuth();
+
+    const [user, loading, error] = useAuthState(auth);
+
+    if(error){
+        navigate("/login")
+    }
+    if (loading) {
+        return (
+            <div className="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
+                <h2 className="text-center text-white text-xl font-semibold">Checking your login...</h2>
+                {/*<p className="w-1/3 text-center text-white">This may take a few seconds, please don't close this page.</p>*/}
+            </div>
+
+        )
+    } else {
+        return (
+            <div className="relative min-h-screen md:flex">
+                <Sidebar/>
+                <main id="content" className="flex-1 md:mx-6 lg:px-8">
+                    <div className="max-w-4xl _mx-auto">
+                        <div className="px-4 py-6 sm:px-0">
+                            <div className={'ml-3 flex justify-between'}>
+                                <TaskHeader path={params.path}/>
+                                <div><MainMenu/></div>
+                            </div>
+                            <Container cards={tasks}/>
                         </div>
-                        <Container cards={tasks}/>
                     </div>
-                </div>
-            </main>
-        </div>
-    )
+                </main>
+            </div>
+        )
+    }
 }

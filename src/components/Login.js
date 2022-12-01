@@ -16,8 +16,7 @@ export default function Login() {
             setPersistence(auth, browserLocalPersistence).then(() => {
                 signInWithPopup(auth, provider)
                     .then((result) => {
-
-                        // localStorage.setItem("accessToken", result.user.accessToken)
+                        localStorage.setItem("accessToken", result.user.accessToken)
                         navigate('/today')
                     })
             }).catch((error) => {
