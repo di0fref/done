@@ -20,17 +20,16 @@ export const app = initializeApp(firebaseConfig);
 const auth = getAuth()
 
 export const signOutFireBase = () => {
-    auth.signOut().then((res) =>{
 
-    })
+    return auth.signOut()
 }
 
-setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-        return auth;
-    })
-    .catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-    });
+// setPersistence(auth, browserLocalPersistence)
+//     .then(() => {
+//         return auth;
+//     })
+//     .catch((error) => {
+//         // Handle Errors here.
+//         const errorCode = error.code;
+//         const errorMessage = error.message;
+//     });

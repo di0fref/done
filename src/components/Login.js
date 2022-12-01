@@ -1,7 +1,7 @@
 import {FcGoogle} from "react-icons/fc";
-import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth";
+import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithPopup} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
-import { app } from "../auth/firebase";
+import {app} from "../auth/firebase";
 
 
 export default function Login() {
@@ -12,15 +12,21 @@ export default function Login() {
 
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
+        try {
+            setPersistence(auth, browserLocalPersistence).then(() => {
+                signInWithPopup(auth, provider)
+                    .then((result) => {
 
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                localStorage.setItem("accessToken", result.user.accessToken)
-                navigate('/upcoming')
+                        // localStorage.setItem("accessToken", result.user.accessToken)
+                        navigate('/today')
+                    })
             }).catch((error) => {
-            console.log(error)
+                console.log(error)
+            });
+        } catch (err) {
+            console.log(err);
+        }
 
-        });
     }
 
     return (

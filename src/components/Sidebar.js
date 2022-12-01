@@ -3,23 +3,7 @@ import {Disclosure} from "@headlessui/react";
 import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
 import getIcon from "./helper"
-import Usermenu from "./Usermenu";
 
-
-function Avatar() {
-    return (
-        <div>
-            <div className="flex items-center space-x-4">
-                <div className={'rounded-full text-5xl text-gray-400'}><HiUserCircle/></div>
-                <div className="font-medium dark:text-white">
-                    <div>Jese Leos</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">Joined in August 2014</div>
-                </div>
-            </div>
-            <div className={'border-b w-full h-1 mt-1'}></div>
-        </div>
-    );
-}
 
 function Sidebar() {
 
@@ -37,7 +21,7 @@ function Sidebar() {
                     />
                 </Disclosure.Button>
                 <div className="border-r md:relative absolute p-6 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-72 md:left-0 md:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
-                    <Avatar/>
+                    {/*<Avatar/>*/}
                     <div className="flex flex-col justify-start item-center">
                         <div className={'overflow-y-auto py-4 px-3_'}>
                             <ul className={'space-y-1'}>

@@ -4,8 +4,8 @@ import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import axios from "axios";
-import {HiUserCircle} from "react-icons/hi2";
-import Usermenu from "./Usermenu";
+import {getAuth} from "firebase/auth";
+import MainMenu from "./MainMenu";
 
 const paths = [
     "/today",
@@ -42,9 +42,40 @@ export default function Main() {
         return await response.json()
     }
 
+    async function isLoggedIn() {
+        try {
+            await new Promise((resolve, reject) =>
+                getAuth().onAuthStateChanged(
+                    user => {
+                        if (user) {
+                            // User is signed in.
+                            resolve(user)
+                        } else {
+                            // No user is signed in.
+                            reject('no user logged in')
+                        }
+                    },
+                    // Prevent console error
+                    error => reject(error)
+                )
+            )
+            return true
+        } catch (error) {
+            return false
+        }
+    }
 
     useEffect(() => {
-        if(!paths.includes(location.pathname)){
+        isLoggedIn().then((response) => {
+            if (!response) {
+                navigate("/login")
+            }
+        })
+    }, [])
+
+
+    useEffect(() => {
+        if (!paths.includes(location.pathname)) {
             navigate("/upcoming")
         }
         switch (params.path) {
@@ -72,9 +103,9 @@ export default function Main() {
             <main id="content" className="flex-1 md:mx-6 lg:px-8">
                 <div className="max-w-4xl _mx-auto">
                     <div className="px-4 py-6 sm:px-0">
-                        <div className={'ml-3 font-semibold text-xl flex justify-between'}>
+                        <div className={'ml-3 flex justify-between'}>
                             <TaskHeader path={params.path}/>
-                            <div><Usermenu/></div>
+                            <div><MainMenu/></div>
                         </div>
                         <Container cards={tasks}/>
                     </div>
