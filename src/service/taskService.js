@@ -16,7 +16,13 @@ const mtasks = [
         description: "Writing documentation is enough to make you rip your hair out without worrying about the design. Let us help you keep a few strands.",
         date: "2022-11-26",
         id: "1",
-        sort:"1"
+        sort: "1",
+        project: {
+            id: 1,
+            name: "Work",
+            color: "#dddddd"
+        }
+
     },
     {
         completed: false,
@@ -24,7 +30,12 @@ const mtasks = [
         description: "Writing documentation is enough to make you rip your hair out without worrying about the design. Let us help you keep a few strands.",
         date: "2022-12-01",
         id: "2",
-        sort:"2"
+        sort: "2",
+        project: {
+            id: 1,
+            name: "Work",
+            color: "#dddddd"
+        }
     },
     {
         completed: false,
@@ -32,14 +43,25 @@ const mtasks = [
         description: "Writing documentation is enough to make you rip your hair out without worrying about the design. Let us help you keep a few strands.",
         date: "2022-12-11",
         id: "3",
-        sort:"3"
+        sort: "3", project: {
+            id: 1,
+            name: "Home",
+            color: "#66b6d2"
+        }
+
     }, {
         completed: false,
         name: "TODAY - This is the name",
         description: "Writing documentation is enough to make you rip your hair out without worrying about the design. Let us help you keep a few strands.",
         date: "2022-11-26",
         id: "4",
-        sort:"4"
+        sort: "4",
+        project: {
+            id: 1,
+            name: "Customer",
+            color: "#be2596"
+        }
+
     }
 ];
 

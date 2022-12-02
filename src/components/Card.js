@@ -91,7 +91,7 @@ export const Card = ({id, card, index, moveCard}) => {
     }
 
     const onDateChange = (date) => {
-              setTask({
+        setTask({
             ...task,
             date: format(new Date(date), "Y-M-d")
         })
@@ -108,11 +108,10 @@ export const Card = ({id, card, index, moveCard}) => {
         <button className={'ring-btn_ flex items-center'} onClick={onClick}>
             {/*<div className={'text-green-600 pl-2 mr-1'}><CiCalendar/></div>*/}
             <div className={'text-black/70 px-2 text-sm'}>
-               <CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
+                <CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
             </div>
         </button>
     ))
-
     return (
         <div ref={previewRef}
              style={{...style, opacity}}
@@ -131,24 +130,55 @@ export const Card = ({id, card, index, moveCard}) => {
                         <div className={`text-ss `}>{task.date ? format(new Date(task.date), "dd MMM YYY") : null}</div>
                     </div>
                 </div>
-                <div className={`border-b ${1 || isHovering ? "visible" : "invisible"} flex space-x-4 items-center`}>
-                    <button data-tip={"Set due date"}>
-                        {/*<CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>*/}
 
-                        <DatePicker
-                            selected={taskDate}
-                            onChange={onDateChange}
-                            customInput={
-                                <DateCustomInput/>
-                            }
-                            dateFormat={"yyyy-MM-dd"}
-                        />
-
-                    </button>
-                    <button>
-                        <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
-                    </button>
+                <div className={'flex flex-col border-t border-b'}>
+                    <div className={'flex h-1/2 items-center'}>
+                        <div className={'bg-amber-400_ flex-grow'}>
+                            <button data-tip={"Set due date"}>
+                                <DatePicker
+                                    selected={taskDate}
+                                    onChange={onDateChange}
+                                    customInput={
+                                        <DateCustomInput/>
+                                    }
+                                    dateFormat={"yyyy-MM-dd"}
+                                />
+                            </button>
+                        </div>
+                        <div className={'bg-amber-900_ flex-grow'}>
+                            <button>
+                                <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
+                            </button>
+                        </div>
+                    </div>
+                    <div className={'bg-amber-200_ w-20'}>
+                        <div className={'flex justify-end items-center space-x-1'}>
+                            <div className={'text-sm text-gray-600'}>{task.project.name}</div>
+                            <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>
+                        </div>
+                    </div>
                 </div>
+
+
+                {/*<div className={`border-b ${1 || isHovering ? "visible" : "invisible"} flex space-x-4 items-center`}>*/}
+                {/*    <button data-tip={"Set due date"}>*/}
+                {/*        <DatePicker*/}
+                {/*            selected={taskDate}*/}
+                {/*            onChange={onDateChange}*/}
+                {/*            customInput={*/}
+                {/*                <DateCustomInput/>*/}
+                {/*            }*/}
+                {/*            dateFormat={"yyyy-MM-dd"}*/}
+                {/*        />*/}
+                {/*    </button>*/}
+                {/*    <button>*/}
+                {/*        <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>*/}
+                {/*    </button>*/}
+                {/*    <div className={'flex justify-between items-center space-x-1'}>*/}
+                {/*        <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>*/}
+                {/*        <div className={'text-sm text-gray-600'}>{task.project.name}</div>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task}/>
             </div>
         </div>
