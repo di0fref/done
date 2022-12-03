@@ -9,6 +9,7 @@ import {CiCalendar} from "react-icons/ci";
 import DatePicker from "react-datepicker";
 import {dateFormat} from "../service/config";
 import {formatDate} from "./helper";
+import {useSelector} from "react-redux";
 
 
 export const Card = ({id, card, index, moveCard}) => {
@@ -16,6 +17,10 @@ export const Card = ({id, card, index, moveCard}) => {
     const [modelOpen, setModalOpen] = useState(false)
     const [task, setTask] = useState(card)
     const [isHovering, setIsHovering] = useState(false)
+
+    const project = useSelector(state => state.projects.filter(
+        project => task.project_id === project.id
+    ))
 
     const [taskDate, setTaskDate] = useState(false)
 
@@ -123,16 +128,21 @@ export const Card = ({id, card, index, moveCard}) => {
                 <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 ${isHovering ? "visible" : "invisible"}`}>
                     <GrDrag className={'mt-[4px]'}/>
                 </div>
-                <div className={'w-7 border-b py-4'}>
-                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[2px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
+                <div className={'border-b_ py-4'}>
+                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
                 </div>
-                <div onClick={clickHandler} className={'pt-4 text-task outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
-                    <div className={''}>{task.name}</div>
-                    <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.due).setHours(0,0,0,0) < new Date().setHours(0,0,0,0)) ? "text-red-600" : ""}`}>
+                <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
+                    <div>
+                        <p className={'text-task font-medium_'}>{task.name}</p>
+                        <p className={'text-s2 mt-1 text-gray-400 whitespace-pre-wrap'}>{task.text ? task.text.substring(0, 100) : null}</p>
+                    </div>
+                    <div className={`pb-4 border-b mt-1 flex items-center justify-start 
+                        ${(new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? "text-red-600" : ""}`}
+                    >
                         <div className={`mb-[1px] mr-1 text-ss `}>
-                            {task.due?<HiCalendar/>:null}
+                            {task.due ? <HiCalendar/> : null}
                         </div>
-                        <div className={`text-ss `}>{task.due ? formatDate(task.due) : null}</div>
+                        <div className={`text-ss`}>{task.due ? formatDate(task.due) : null}</div>
                     </div>
                 </div>
 
@@ -164,27 +174,7 @@ export const Card = ({id, card, index, moveCard}) => {
                     </div>
                 </div>
 
-
-                {/*<div className={`border-b ${1 || isHovering ? "visible" : "invisible"} flex space-x-4 items-center`}>*/}
-                {/*    <button data-tip={"Set due date"}>*/}
-                {/*        <DatePicker*/}
-                {/*            selected={taskDate}*/}
-                {/*            onChange={onDateChange}*/}
-                {/*            customInput={*/}
-                {/*                <DateCustomInput/>*/}
-                {/*            }*/}
-                {/*            dateFormat={"yyyy-MM-dd"}*/}
-                {/*        />*/}
-                {/*    </button>*/}
-                {/*    <button>*/}
-                {/*        <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>*/}
-                {/*    </button>*/}
-                {/*    <div className={'flex justify-between items-center space-x-1'}>*/}
-                {/*        <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>*/}
-                {/*        <div className={'text-sm text-gray-600'}>{task.project.name}</div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task}/>
+                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task} project={project[0]}/>
             </div>
         </div>
     )

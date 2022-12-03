@@ -4,7 +4,6 @@ import {Card} from './Card.js'
 import ReactTooltip from "react-tooltip";
 import TaskForm from "./TaskForm";
 import {useSelector} from "react-redux";
-import {format} from "date-fns";
 import {formatDate} from "./helper";
 
 export const Container = (props) => {
@@ -27,9 +26,6 @@ export const Container = (props) => {
             )),
             anytime: useSelector((state) => state.tasks),
         }
-
-        console.log(_data_.upcoming)
-
 
         useEffect(() => {
             ReactTooltip.rebuild();
@@ -71,31 +67,27 @@ export const Container = (props) => {
                 return (
                     <div>
                         <div><TaskForm/></div>
-                        {/*{Object.values(_data_.upcoming).map((card, i) => renderCard(card, i))}*/}
-
                         {
                             Object.values(_data_.upcoming).map((card, i) => {
 
                                 if (prev !== card.due) {
                                     prev = card.due;
                                     return (
-                                        <>
-                                            <div className={'ml-4 font-bold text-sm_ mt-4 border-b pb-1'}>
-                                                {formatDate(card.due)}
+                                        <div key={card.id}>
+                                            <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                                {formatDate(card.due, true)}
                                             </div>
                                             {renderCard(card, i)}
-                                        </>
+                                        </div>
                                     )
                                 } else {
                                     return (
-                                        <>
+                                        <div key={card.id}>
                                             {renderCard(card, i)}
-                                        </>
+                                        </div>
                                     )
                                 }
                             })}
-
-
                     </div>
                 );
             case "inbox":
@@ -116,9 +108,9 @@ export const Container = (props) => {
                 return (
                     <div>
                         <div><TaskForm/></div>
-                        {_data_.overdue ? (
-                                <div className={'mb-12'}>
-                                    <div className={'ml-4 font-bold text-sm_ mt-4 border-b pb-1'}>
+                        {Object.keys(_data_.overdue).length ? (
+                                <div className={''}>
+                                    <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
                                         Overdue
                                     </div>
                                     {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
@@ -126,9 +118,9 @@ export const Container = (props) => {
                             )
                             : null}
 
-                        {_data_.overdue ? (
+                        {Object.keys(_data_.overdue).length ? (
                             <>
-                                <div className={'ml-4 font-bold text-sm_ mt-6 border-b pb-1'}>
+                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
                                     Today
                                 </div>
                             </>

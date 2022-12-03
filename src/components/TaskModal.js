@@ -7,6 +7,9 @@ import {formatDate} from "./helper";
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
     const [task, setTask] = useState(props.task)
+    const [project, setProject] = useState(props.project)
+
+    console.log(project)
     const [isChanged, setIsChanged] = useState(false)
 
     useEffect(() => {
@@ -78,11 +81,19 @@ export default function TaskModal(props) {
                         <div className={'md:w-72 bg-gray-100 md:h-screen w-full'}>
                             <div className={'md:p-4 p-6'}>
                                 <p className={'text-black/50 font-medium text-[14px]'}>Project</p>
+
+                                {project?(
+                                <div className={'flex items-center mt-2'}>
+                                    <span style={{background: project.color}} className={'ml-2 w-2 h-2 rounded-full'}></span>
+                                    <span className={'ml-2 text-gray-600 text-s2'}>{project.name}</span>
+                                </div>):null}
+
+
                             </div>
                             <div className={'md:p-4 p-6'}>
                                 <p className={'text-black/50 font-medium text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
-                                    <div><HiCalendar className={'mb-[2px]'}/></div>
+                                    <div><HiCalendar className={'mr-2 mb-[2px]'}/></div>
                                     <div className={'text-gray-600 text-sm'}>{formatDate(task.due)}</div>
                                 </div>
                             </div>

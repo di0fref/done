@@ -1,14 +1,25 @@
 import {useState} from "react";
-import {CirclePicker, GithubPicker, SketchPicker, TwitterPicker} from "react-color";
+import {TwitterPicker} from "react-color";
+import {useDispatch} from "react-redux";
+import {toast} from "react-toastify";
+import {addProject} from "../redux/projectSlice";
 
 export default function ProjectForm(props) {
 
-    const [value, setValue] = useState("")
+    const [name, setName] = useState("")
     const [displayColorPicker, setDisplayColorPicker] = useState(false)
     const [color, setColor] = useState("#abb8c3")
+    const dispatch = useDispatch()
 
-    const saveTask = () => {
-
+    const saveProject = () => {
+        dispatch(addProject(
+            {
+                name: name,
+                color: color,
+            }
+        )).then((result) => {
+            toast.success(`Project ${name} added`)
+        })
     }
 
     const handleClick = () => {
@@ -27,7 +38,7 @@ export default function ProjectForm(props) {
         <div className={''}>
             <div className={'p-4'}>
                 <label htmlFor={"name"} className={'text-label'}>Name</label>
-                <input placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setValue(e.currentTarget.value)}/>
+                <input placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setName(e.currentTarget.value)}/>
             </div>
             <div>
                 <div className={'px-4'}>
@@ -48,7 +59,7 @@ export default function ProjectForm(props) {
             </div>
             <div className={'bg-gray-50 flex justify-end space-x-2 p-4'}>
                 <button onClick={props.closeModal} className={'cancel-btn'}>Cancel</button>
-                <button disabled={!value ? true : ""} className={'save-btn'} onClick={saveTask}>Save</button>
+                <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>Save</button>
             </div>
         </div>
     )

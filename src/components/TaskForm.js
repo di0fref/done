@@ -1,10 +1,13 @@
 import {HiPlus, HiSun} from "react-icons/hi2";
-import {forwardRef, useEffect, useState} from "react";
+import {forwardRef, useEffect, useRef, useState} from "react";
 import {CiCalendar, CiInboxIn} from "react-icons/ci";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {format} from "date-fns";
 import {formatDate} from "./helper";
+import {useDispatch} from "react-redux";
+import {addTask} from "../redux/taskSlice";
+import {toast} from "react-toastify";
 
 export default function TaskForm() {
 
@@ -14,6 +17,9 @@ export default function TaskForm() {
     const [taskDescription, setTaskDescription] = useState("");
     const [taskProject, setTaskProject] = useState("");
     const [displayDate, setDisplayDate] = useState("");
+    const inputReference = useRef(null);
+
+    const dispatch = useDispatch()
 
     const saveHandler = () => {
         const task = {
@@ -21,8 +27,23 @@ export default function TaskForm() {
             id: null,
             description: taskDescription,
             sort: 0,
-            date: taskDate ? format(taskDate, "Y-MM-dd") : null
+            due: taskDate ? format(taskDate, "Y-MM-dd") : null,
+            prio: "high"
         }
+
+        dispatch(addTask(task)).then((result) => {
+            setIsEditing(false)
+            resetState();
+            toast.success("Task added")
+        })
+    }
+
+    const resetState = () => {
+        setTaskName("")
+        setTaskDate("")
+        setTaskDescription("")
+        setTaskProject("")
+        setDisplayDate("")
     }
 
     useEffect(() => {
@@ -42,6 +63,12 @@ export default function TaskForm() {
 
     }, [taskDate])
 
+
+    useEffect(() => {
+        if (isEditing)
+            inputReference.current.focus()
+    }, [isEditing])
+
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
         <button className={'ring-btn flex items-center'} onClick={onClick}>
             <div className={'text-green-600 pl-2 mr-1'}><CiCalendar/></div>
@@ -53,9 +80,9 @@ export default function TaskForm() {
 
 
     return (
-        <div className={'mt-3'}>
+        <div className={'mt-3_'}>
             {!isEditing ? (
-                <div className={'flex items-center justify-end ml-5 mb-2 text-sm'}>
+                <div className={'flex items-center justify-end ml-5 mb-2_ text-sm'}>
                     <button className={'flex items-center justify-start hover:text-red-600_ mr-2 hover:bg-gray-200 p-1 rounded'} onClick={() => {
                         setIsEditing(true)
                     }}>
@@ -64,10 +91,10 @@ export default function TaskForm() {
                     </button>
                 </div>
             ) : (
-                <div className={'ml-4'}>
-                    <div className={'border border-gray-300 rounded-lg p-1 mb-2'}>
+                <div className={'ml-4 mt-8'}>
+                    <div className={'border border-gray-300 rounded-lg p-1 _mb-2'}>
                         <div className={'w-full mb-2'}>
-                            <input onChange={(e) => setTaskName(e.currentTarget.value)} placeholder={"Title"} className={'focus:border-none focus:ring-0 w-full border-none ring-0 rounded placeholder:text-sm'} type={"text"}/>
+                            <input ref={inputReference} onChange={(e) => setTaskName(e.currentTarget.value)} placeholder={"Title"} className={'focus:border-none focus:ring-0 w-full border-none ring-0 rounded placeholder:text-sm'} type={"text"}/>
                         </div>
                         <div className={'w-full'}>
                             <textarea onChange={(e) => setTaskDescription(e.currentTarget.value)} placeholder={"Description"} className={'focus:border-none focus:ring-0 w-full h-12 form-textarea w-full border-none ring-0 rounded resize-none placeholder:text-sm'}></textarea>
@@ -88,12 +115,12 @@ export default function TaskForm() {
 
                         </div>
                     </div>
-                    <div className={'flex space-x-2 justify-end'}>
+                    <div className={'flex space-x-2 justify-end mt-4'}>
                         <button className={'cancel-btn'} onClick={() => {
                             setIsEditing(false)
                         }}>Cancel
                         </button>
-                        <button disabled={!taskName?true:false} className={'save-btn'} onClick={saveHandler}>Save</button>
+                        <button disabled={!taskName ? true : false} className={'save-btn'} onClick={saveHandler}>Save</button>
                     </div>
                 </div>
             )}

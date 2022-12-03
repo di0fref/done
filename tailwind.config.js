@@ -7,15 +7,17 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            // sans: ['Inter var', 'sans-serif'],
-            sans: ["Roboto", "Helvetica", "Arial", "sans-serif"]
+            sans: ['Inter var', 'sans-serif'],
+            // sans: ["Roboto", "Helvetica", "Arial", "sans-serif"]
+            // sans: ["-apple-system","BlinkMacSystemFont","Segoe UI","Roboto","Apple Color Emoji","Helvetica","Arial","sans-serif"]
         },
         extend: {
             fontSize: {
                 ss: "0.88em",
                 task: "0.93em",
                 base: "15px",
-                project: "0.85em"
+                project: "0.90em",
+                s2: "0.83em"
             },
             colors: {
                 s: "#f1f5f9"

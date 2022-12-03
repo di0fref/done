@@ -16,12 +16,15 @@ export function getIcon(path) {
 export const dateFormat = "dd MMM"
 
 
-export function formatDate(date) {
+export function formatDate(date, includeDay) {
     if(!date){
         return null;
     }
     date = new Date(date);
     return format(
         new Date(date),
-        dateFormat + (date.getFullYear() === new Date().getFullYear() ? '' : ' YYY'))
+        dateFormat +
+            (date.getFullYear() === new Date().getFullYear() ? '' : ' YYY') +
+            (includeDay?" ‧ EEEE":"")
+    )
 }

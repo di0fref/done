@@ -1,16 +1,26 @@
 import React, {useState} from "react";
 import {Disclosure} from "@headlessui/react";
-import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
+import {
+    HiInbox,
+    HiArchiveBox,
+    HiCalendar,
+    HiStar,
+    HiBars3,
+    HiUser,
+    HiUserCircle,
+    HiEllipsisHorizontal
+} from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
 import {getIcon} from "./helper"
 import AddProjectForm from "./AddProjectButton";
+import {useSelector} from "react-redux";
 
 
 function Sidebar() {
 
-    const [isHovering, setIsHovering] = useState(false)
-
     const location = useLocation();
+    const projects = useSelector(state => state.projects)
+
     return (
         <div>
             <Disclosure as="nav">
@@ -61,26 +71,43 @@ function Sidebar() {
                                 <AddProjectForm/>
 
                             </div>
-                            <ul className={'space-y-1 text-ss ml-2'}>
-                                <li>
-                                    <Link to={"/"} className={'flex items-center'}>
-                                        <span className={'bg-blue-400 w-2 h-2 rounded-full'}></span>
-                                        <span className={'ml-3 text-gray-600'}>Travel</span>
-                                    </Link>
-                                </li>
+                            <ul className={'space-y-1'}>
 
-                                <li>
-                                    <Link to={"/"} className={'flex items-center'}>
-                                        <span className={'bg-red-400 w-2 h-2 rounded-full'}></span>
-                                        <span className={'ml-3 text-gray-600'}>Work</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to={"/"} className={'flex items-center'}>
-                                        <span className={'bg-yellow-400 w-2 h-2 rounded-full'}></span>
-                                        <span className={'ml-3 text-gray-600'}>Home</span>
-                                    </Link>
-                                </li>
+                                {
+                                    Object.values(projects).map((project, i) => {
+                                        return(
+                                            <li className={'pl-2 px-1 py-0.5 hover:bg-gray-200 rounded'}>
+                                                <Link to={"/project/"+project.id} className={'flex items-center'}>
+                                                    <div style={{
+                                                        background: project.color
+                                                    }} className={'w-2 h-2 rounded-full'}> </div>
+                                                    <div className={'hover:text-gray-600 ml-3 text-gray-500 text-project flex-grow tracking-wide_'}>{project.name}</div>
+                                                    <div className={'mr-1'}><HiEllipsisHorizontal/></div>
+                                                </Link>
+                                            </li>
+                                        )
+                                    })
+                                }
+
+                                {/*<li>*/}
+                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
+                                {/*        <span className={'bg-blue-400 w-2 h-2 rounded-full'}></span>*/}
+                                {/*        <span className={'ml-3 text-gray-600'}>Travel</span>*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
+
+                                {/*<li>*/}
+                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
+                                {/*        <span className={'bg-red-400 w-2 h-2 rounded-full'}></span>*/}
+                                {/*        <span className={'ml-3 text-gray-600'}>Work</span>*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
+                                {/*<li>*/}
+                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
+                                {/*        <span className={'bg-yellow-400 w-2 h-2 rounded-full'}></span>*/}
+                                {/*        <span className={'ml-3 text-gray-600'}>Home</span>*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
                             </ul>
                         </div>
 

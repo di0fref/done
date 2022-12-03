@@ -1,32 +1,35 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {all} from "../service/api";
+import {allTasks, createTask} from "../service/api";
 
 const initialState = []
 
 export const getTasks = createAsyncThunk(
     'tasks/getTasks',
-    async (folderId = 0, thunkAPI) => {
-        return await all()
+    async (thunkAPI) => {
+        return await allTasks()
     }
 )
-
+export const addTask = createAsyncThunk(
+    'tasks/addTask',
+    async (task, thunkAPI) => {
+        return await createTask(task)
+    }
+)
 export const taskSlice = createSlice({
-    name: 'counter',
+    name: 'task',
     initialState,
     reducers: {
-        add: (state) => {
-
-        },
+        add: (state) => {},
     },
     extraReducers: (builder) => {
         builder
             .addCase(getTasks.fulfilled, (state, action) => {
                 return action.payload
             })
+            .addCase(addTask.fulfilled, (state, action) => {
+                state.unshift(action.payload)
+            })
     }
 })
-
-// Action creators are generated for each case reducer function
-export const {add} = taskSlice.actions
 
 export default taskSlice.reducer

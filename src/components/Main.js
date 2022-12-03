@@ -6,9 +6,9 @@ import {Container} from "./Container";
 import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {anytime, inbox, today, upcoming} from "../service/api";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
+import {getProjects} from "../redux/projectSlice";
 
 const paths = [
     "/today",
@@ -19,8 +19,6 @@ const paths = [
 
 
 export default function Main() {
-    const [tasks, setTasks] = useState([]);
-    const [overdue, setOverdue] = useState([])
 
     const params = useParams();
     const location = useLocation();
@@ -59,44 +57,9 @@ export default function Main() {
 
     useEffect(() =>{
         dispatch(getTasks())
+        dispatch(getProjects())
     },[])
 
-    useEffect(() => {
-        // if (!paths.includes(location.pathname)) {
-        //     navigate("/upcoming")
-        // }
-        // switch (params.path) {
-        //     case "today":
-        //         today().then((response) => {
-        //             setTasks(response)
-        //             console.log(response)
-        //
-        //         })
-        //         break;
-            // case "upcoming":
-            //     upcoming().then((response) => {
-            //         setTasks(response)
-            //     })
-            //     break;
-            // case "anytime":
-            //     anytime().then((response) => {
-            //         setTasks(response)
-            //
-            //     })
-            //     break;
-            // case "inbox":
-            //     inbox().then((response) => {
-            //         setTasks(response)
-            //     })
-            //     break;
-        // }
-
-    }, [params, location])
-
-
-    const addTask = (task) => {
-        setTasks([...tasks, task])
-    }
     const auth = getAuth();
 
     const [user, loading, error] = useAuthState(auth);
@@ -118,11 +81,11 @@ export default function Main() {
         return (
             <div className="relative min-h-screen md:flex">
                 <Sidebar/>
-                <main id="content" className="flex-1 md:mx-6 lg:px-8">
-                    <div className="max-w-4xl _mx-auto">
+                <main id="content" className="flex-1 md:ml-6 lg:px-8 h-screen overflow-y-auto">
+                    <div className="max-w-4xl">
                         <div className="px-4 py-6 sm:px-0">
                             <div className={'ml-3 flex justify-between'}>
-                                <TaskHeader path={params.path}/>
+                                <div><TaskHeader path={params.path}/></div>
                                 <div><MainMenu/></div>
                             </div>
                             <Container filter={params.path}/>
