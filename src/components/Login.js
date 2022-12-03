@@ -16,8 +16,24 @@ export default function Login() {
             setPersistence(auth, browserLocalPersistence).then(() => {
                 signInWithPopup(auth, provider)
                     .then((result) => {
-                        localStorage.setItem("accessToken", result.user.accessToken)
-                        navigate('/today')
+
+                        const credential = GoogleAuthProvider.credentialFromResult(result);
+                        const user = result.user;
+
+                        fetch("http://localhost:8000/api/users/login", {
+                            method: "POST",
+                            headers: {
+                                "Content-type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                idToken: credential.idToken,
+                                user: user
+                            })
+                        }).then(response => response.json())
+                            .then((result) => {
+                                localStorage.setItem("api_token", result.api_token)
+                                navigate('/today')
+                            })
                     })
             }).catch((error) => {
                 console.log(error)

@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {HiBars4, HiCalendar, HiOutlineXMark} from "react-icons/hi2";
 import TextareaAutosize from 'react-textarea-autosize';
+import {formatDate} from "./helper";
 
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
@@ -58,7 +59,7 @@ export default function TaskModal(props) {
                                     </div>
                                     <div className={'w-full mt-2'}>
                                         <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
-                                        <TextareaAutosize id={"description"} onChange={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.description}/>
+                                        <TextareaAutosize id={"description"} onChange={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.text}/>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +83,7 @@ export default function TaskModal(props) {
                                 <p className={'text-black/50 font-medium text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
                                     <div><HiCalendar className={'mb-[2px]'}/></div>
-                                    <div className={'text-gray-600 text-sm'}>19 Dec 2022</div>
+                                    <div className={'text-gray-600 text-sm'}>{formatDate(task.due)}</div>
                                 </div>
                             </div>
                             <div></div>

@@ -14,7 +14,8 @@ module.exports = {
             fontSize: {
                 ss: "0.88em",
                 task: "0.93em",
-                base: "15px"
+                base: "15px",
+                project: "0.85em"
             },
             colors: {
                 s: "#f1f5f9"

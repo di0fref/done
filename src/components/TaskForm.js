@@ -3,8 +3,8 @@ import {forwardRef, useEffect, useState} from "react";
 import {CiCalendar, CiInboxIn} from "react-icons/ci";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {taskTemplate} from "./ItemTypes";
 import {format} from "date-fns";
+import {formatDate} from "./helper";
 
 export default function TaskForm() {
 
@@ -29,7 +29,7 @@ export default function TaskForm() {
 
         if (taskDate !== "") {
             const today = format(new Date(), "Y-MM-dd")
-            const date = format(new Date(taskDate), "Y-MM-dd")
+            const date = formatDate(taskDate)
 
             if (today === date) {
                 setDisplayDate("Today")

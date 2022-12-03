@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import getIcon from "./helper"
+import {getIcon} from "./helper"
 
 export default function TaskHeader(props) {
 
@@ -13,7 +13,7 @@ export default function TaskHeader(props) {
 
     return (
         <div className={'flex items-center justify-start pb-1 mb- ml-2'}>
-            <div className={'h-6 mr-2 mt-[3px]'}>{icon}</div>
+            <div className={'mr-2'}>{icon}</div>
             <div className={'font-semibold text-xl'}>{name}</div>
         </div>
     )

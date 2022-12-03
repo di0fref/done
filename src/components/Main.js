@@ -3,44 +3,30 @@ import {useEffect, useState} from "react";
 import {useNavigate, useLocation, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
-import axios from "axios";
 import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
 import {useAuthState} from "react-firebase-hooks/auth";
+import {anytime, inbox, today, upcoming} from "../service/api";
+import {useDispatch, useSelector} from "react-redux";
+import {getTasks} from "../redux/taskSlice";
 
 const paths = [
     "/today",
     "/upcoming",
     "/anytime",
-    "/someday"
+    "/inbox"
 ];
 
 
-const api_config = {
-    url: "http://localhost:8000",
-}
-const http = axios.create({
-    baseURL: api_config.url,
-    headers: {
-        "Content-type": "application/json",
-    },
-});
-
 export default function Main() {
     const [tasks, setTasks] = useState([]);
+    const [overdue, setOverdue] = useState([])
+
     const params = useParams();
     const location = useLocation();
     const navigate = useNavigate();
 
-    async function getToday() {
-        const response = await fetch("http://localhost:8000/today")
-        return await response.json()
-    }
-
-    async function getUpcoming() {
-        const response = await fetch("http://localhost:8000/upcoming")
-        return await response.json()
-    }
+    const dispatch = useDispatch()
 
     async function isLoggedIn() {
         try {
@@ -71,23 +57,39 @@ export default function Main() {
         })
     }, [])
 
+    useEffect(() =>{
+        dispatch(getTasks())
+    },[])
 
     useEffect(() => {
-        if (!paths.includes(location.pathname)) {
-            navigate("/upcoming")
-        }
-        switch (params.path) {
-            case "today":
-                getToday().then((data) => {
-                    setTasks([...data])
-                })
-                break;
-            case "upcoming":
-                getUpcoming().then((data) => {
-                    setTasks([...data])
-                })
-                break;
-        }
+        // if (!paths.includes(location.pathname)) {
+        //     navigate("/upcoming")
+        // }
+        // switch (params.path) {
+        //     case "today":
+        //         today().then((response) => {
+        //             setTasks(response)
+        //             console.log(response)
+        //
+        //         })
+        //         break;
+            // case "upcoming":
+            //     upcoming().then((response) => {
+            //         setTasks(response)
+            //     })
+            //     break;
+            // case "anytime":
+            //     anytime().then((response) => {
+            //         setTasks(response)
+            //
+            //     })
+            //     break;
+            // case "inbox":
+            //     inbox().then((response) => {
+            //         setTasks(response)
+            //     })
+            //     break;
+        // }
 
     }, [params, location])
 
@@ -123,7 +125,7 @@ export default function Main() {
                                 <TaskHeader path={params.path}/>
                                 <div><MainMenu/></div>
                             </div>
-                            <Container cards={tasks}/>
+                            <Container filter={params.path}/>
                         </div>
                     </div>
                 </main>

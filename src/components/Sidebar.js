@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Disclosure} from "@headlessui/react";
 import {HiInbox, HiArchiveBox, HiCalendar, HiStar, HiBars3, HiUser, HiUserCircle} from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
-import getIcon from "./helper"
+import {getIcon} from "./helper"
 import AddProjectForm from "./AddProjectButton";
 
 
@@ -28,6 +28,12 @@ function Sidebar() {
                         <div className={'overflow-y-auto py-4 px-3_'}>
                             <ul className={'space-y-1'}>
                                 <li>
+                                    <Link to={'/inbox'} className={`${(location.pathname === "/inbox") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                        <div>{getIcon("inbox")}</div>
+                                        <span className={'ml-3'}>Inbox</span>
+                                    </Link>
+                                </li>
+                                <li>
                                     <Link to={'/today'} className={`${(location.pathname === "/today") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         {getIcon("today")}
                                         <span className={'ml-3'}>Today</span>
@@ -45,12 +51,7 @@ function Sidebar() {
                                         <span className={'ml-3'}>Anytime</span>
                                     </Link>
                                 </li>
-                                <li>
-                                    <Link to={'/someday'} className={`${(location.pathname === "/someday") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
-                                        {getIcon("someday")}
-                                        <span className={'ml-3'}>Someday</span>
-                                    </Link>
-                                </li>
+
                             </ul>
                         </div>
                         <div>

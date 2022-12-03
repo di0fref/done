@@ -3,17 +3,33 @@ import {useCallback, useEffect, useState} from 'react'
 import {Card} from './Card.js'
 import ReactTooltip from "react-tooltip";
 import TaskForm from "./TaskForm";
+import {useSelector} from "react-redux";
+import {format} from "date-fns";
+import {formatDate} from "./helper";
 
-const style = {
-    // width: 400,
-}
 export const Container = (props) => {
     {
-        const [cards, setCards] = useState(props.cards)
+        const [data, setData] = useState([])
 
-        useEffect(() => {
-            setCards(props.cards)
-        }, [props])
+
+        const _data_ = {
+            today: useSelector(state => state.tasks.filter(
+                task => new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
+            )),
+            inbox: useSelector(state => state.tasks.filter(
+                task => task.due === null
+            )),
+            overdue: useSelector(state => state.tasks.filter(
+                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && task.due != null
+            )),
+            upcoming: useSelector(state => state.tasks.filter(
+                task => new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+            )),
+            anytime: useSelector((state) => state.tasks),
+        }
+
+        console.log(_data_.upcoming)
+
 
         useEffect(() => {
             ReactTooltip.rebuild();
@@ -21,7 +37,7 @@ export const Container = (props) => {
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
 
-            setCards((prevCards) => {
+            setData((prevCards) => {
 
                     prevCards[dragIndex].sort = hoverIndex;
                     prevCards[hoverIndex].sort = dragIndex;
@@ -47,13 +63,80 @@ export const Container = (props) => {
                 />
             )
         }, [])
-        return (
-            <>
-                <div>
-                    <div className={''}><TaskForm/></div>
-                    <div style={style}>{cards.map((card, i) => renderCard(card, i))}</div>
-                </div>
-            </>
-        )
+
+        let prev = "";
+
+        switch (props.filter) {
+            case "upcoming":
+                return (
+                    <div>
+                        <div><TaskForm/></div>
+                        {/*{Object.values(_data_.upcoming).map((card, i) => renderCard(card, i))}*/}
+
+                        {
+                            Object.values(_data_.upcoming).map((card, i) => {
+
+                                if (prev !== card.due) {
+                                    prev = card.due;
+                                    return (
+                                        <>
+                                            <div className={'ml-4 font-bold text-sm_ mt-4 border-b pb-1'}>
+                                                {formatDate(card.due)}
+                                            </div>
+                                            {renderCard(card, i)}
+                                        </>
+                                    )
+                                } else {
+                                    return (
+                                        <>
+                                            {renderCard(card, i)}
+                                        </>
+                                    )
+                                }
+                            })}
+
+
+                    </div>
+                );
+            case "inbox":
+                return (
+                    <div>
+                        <div><TaskForm/></div>
+                        {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
+                    </div>
+                );
+            case "anytime":
+                return (
+                    <div>
+                        <div><TaskForm/></div>
+                        {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
+                    </div>
+                );
+            default:
+                return (
+                    <div>
+                        <div><TaskForm/></div>
+                        {_data_.overdue ? (
+                                <div className={'mb-12'}>
+                                    <div className={'ml-4 font-bold text-sm_ mt-4 border-b pb-1'}>
+                                        Overdue
+                                    </div>
+                                    {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
+                                </div>
+                            )
+                            : null}
+
+                        {_data_.overdue ? (
+                            <>
+                                <div className={'ml-4 font-bold text-sm_ mt-6 border-b pb-1'}>
+                                    Today
+                                </div>
+                            </>
+                        ) : null}
+                        {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
+
+                    </div>
+                );
+        }
     }
 }

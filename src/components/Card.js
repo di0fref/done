@@ -1,4 +1,4 @@
-import {forwardRef, useRef, useState} from 'react'
+import {forwardRef, useEffect, useRef, useState} from 'react'
 import {useDrag, useDrop} from 'react-dnd'
 import {ItemTypes} from './ItemTypes.js'
 import {GrDrag} from "react-icons/gr";
@@ -7,6 +7,8 @@ import {format} from "date-fns";
 import TaskModal from "./TaskModal";
 import {CiCalendar} from "react-icons/ci";
 import DatePicker from "react-datepicker";
+import {dateFormat} from "../service/config";
+import {formatDate} from "./helper";
 
 
 export const Card = ({id, card, index, moveCard}) => {
@@ -93,7 +95,7 @@ export const Card = ({id, card, index, moveCard}) => {
     const onDateChange = (date) => {
         setTask({
             ...task,
-            date: format(new Date(date), "Y-M-d")
+            due: format(new Date(date), "Y-M-d")
         })
     }
 
@@ -112,11 +114,12 @@ export const Card = ({id, card, index, moveCard}) => {
             </div>
         </button>
     ))
+
     return (
         <div ref={previewRef}
              style={{...style, opacity}}
         >
-            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={'flex _px-4 _py-2.5 hover:bg-gray-100_ _border-b hover:cursor-pointer'}>
+            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={'flex hover:cursor-pointer'}>
                 <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 ${isHovering ? "visible" : "invisible"}`}>
                     <GrDrag className={'mt-[4px]'}/>
                 </div>
@@ -125,37 +128,39 @@ export const Card = ({id, card, index, moveCard}) => {
                 </div>
                 <div onClick={clickHandler} className={'pt-4 text-task outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                     <div className={''}>{task.name}</div>
-                    <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.date) > new Date()) ? "" : "text-red-600"}`}>
-                        <div className={`mb-[1px] mr-1 text-ss `}><HiCalendar/></div>
-                        <div className={`text-ss `}>{task.date ? format(new Date(task.date), "dd MMM YYY") : null}</div>
+                    <div className={`pb-4 border-b mt-1 flex items-center justify-start ${(new Date(task.due).setHours(0,0,0,0) < new Date().setHours(0,0,0,0)) ? "text-red-600" : ""}`}>
+                        <div className={`mb-[1px] mr-1 text-ss `}>
+                            {task.due?<HiCalendar/>:null}
+                        </div>
+                        <div className={`text-ss `}>{task.due ? formatDate(task.due) : null}</div>
                     </div>
                 </div>
 
-                <div className={'flex flex-col border-t border-b'}>
-                    <div className={'flex h-1/2 items-center'}>
-                        <div className={'bg-amber-400_ flex-grow'}>
-                            <button data-tip={"Set due date"}>
-                                <DatePicker
-                                    selected={taskDate}
-                                    onChange={onDateChange}
-                                    customInput={
-                                        <DateCustomInput/>
-                                    }
-                                    dateFormat={"yyyy-MM-dd"}
-                                />
-                            </button>
+                <div className={`flex flex-col border-b`}>
+                    <div className={`flex h-1/2 items-center pt-4  ${isHovering ? "visible" : "invisible"}`}>
+                        <div className={`flex-grow`}>
+                            {/*<button data-tip={"Set due date"}>*/}
+                            <DatePicker
+                                selected={taskDate}
+                                onChange={onDateChange}
+                                customInput={
+                                    <DateCustomInput/>
+                                }
+                                dateFormat={"yyyy-MM-dd"}
+                            />
+                            {/*</button>*/}
                         </div>
-                        <div className={'bg-amber-900_ flex-grow'}>
+                        <div className={'flex-grow'}>
                             <button>
                                 <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
                             </button>
                         </div>
                     </div>
-                    <div className={'bg-amber-200_ w-20'}>
-                        <div className={'flex justify-end items-center space-x-1'}>
-                            <div className={'text-sm text-gray-600'}>{task.project.name}</div>
-                            <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>
-                        </div>
+                    <div className={'mt-1 w-20'}>
+                        {/*<div className={'flex justify-end items-center space-x-1'}>*/}
+                        {/*    <div className={'text-project text-gray-600'}>{task.project.name}</div>*/}
+                        {/*    <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
 
