@@ -27,7 +27,7 @@ function Sidebar() {
 
                 {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
-                <Disclosure.Button className="absolute top-4 right-20 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+                <Disclosure.Button className="z-50 absolute top-1 left-2 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                     <HiBars3
                         className="block md:hidden h-8 w-8"
                         aria-hidden="true"
