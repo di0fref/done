@@ -9,7 +9,6 @@ export default function TaskModal(props) {
     const [task, setTask] = useState(props.task)
     const [project, setProject] = useState(props.project)
 
-    console.log(project)
     const [isChanged, setIsChanged] = useState(false)
 
     useEffect(() => {

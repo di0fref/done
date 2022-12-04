@@ -32,6 +32,7 @@ export default function Login() {
                         }).then(response => response.json())
                             .then((result) => {
                                 localStorage.setItem("api_token", result.api_token)
+                                localStorage.setItem("showCompletedTasks", "1")
                                 navigate('/today')
                             })
                     })

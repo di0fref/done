@@ -1,28 +1,30 @@
 import update from 'immutability-helper'
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useEffect, useRef, useState} from 'react'
 import {Card} from './Card.js'
 import ReactTooltip from "react-tooltip";
 import TaskForm from "./TaskForm";
 import {useSelector} from "react-redux";
 import {formatDate} from "./helper";
+import { motion, AnimatePresence } from "framer-motion"
 
 export const Container = (props) => {
     {
         const [data, setData] = useState([])
 
+        const [showCompleted, setShowCompleted] = useState(false)
 
         const _data_ = {
             today: useSelector(state => state.tasks.filter(
-                task => new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
+                task => new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0) && !task.completed
             )),
             inbox: useSelector(state => state.tasks.filter(
-                task => task.due === null
+                task => (task.due === null && !task.completed)
             )),
             overdue: useSelector(state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && task.due != null
+                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && task.due != null && !task.completed
             )),
             upcoming: useSelector(state => state.tasks.filter(
-                task => new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+                task => new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) && !task.completed
             )),
             anytime: useSelector((state) => state.tasks),
         }
@@ -50,13 +52,19 @@ export const Container = (props) => {
 
         const renderCard = useCallback((card, index) => {
             return (
-                <Card
-                    key={card.id}
-                    index={index}
-                    id={card.id}
-                    moveCard={moveCard}
-                    card={card}
-                />
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                >
+                    <Card
+                        key={card.id}
+                        index={index}
+                        id={card.id}
+                        moveCard={moveCard}
+                        card={card}
+                    />
+                </motion.div>
             )
         }, [])
 
@@ -69,7 +77,6 @@ export const Container = (props) => {
                         <div><TaskForm/></div>
                         {
                             Object.values(_data_.upcoming).map((card, i) => {
-
                                 if (prev !== card.due) {
                                     prev = card.due;
                                     return (
@@ -94,7 +101,9 @@ export const Container = (props) => {
                 return (
                     <div>
                         <div><TaskForm/></div>
-                        {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
+                        <AnimatePresence>
+                            {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
+                        </AnimatePresence>
                     </div>
                 );
             case "anytime":

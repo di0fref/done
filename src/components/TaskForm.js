@@ -25,7 +25,7 @@ export default function TaskForm() {
         const task = {
             name: taskName,
             id: null,
-            description: taskDescription,
+            text: taskDescription,
             sort: 0,
             due: taskDate ? format(taskDate, "Y-MM-dd") : null,
             prio: "high"

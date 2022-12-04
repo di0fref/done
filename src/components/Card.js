@@ -7,22 +7,28 @@ import {format} from "date-fns";
 import TaskModal from "./TaskModal";
 import {CiCalendar} from "react-icons/ci";
 import DatePicker from "react-datepicker";
-import {dateFormat} from "../service/config";
 import {formatDate} from "./helper";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleCompleted} from "../redux/taskSlice";
+import {motion, AnimatePresence} from "framer-motion"
+import {toast} from "react-toastify";
 
 
 export const Card = ({id, card, index, moveCard}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [task, setTask] = useState(card)
-    const [isHovering, setIsHovering] = useState(false)
+    const [taskDate, setTaskDate] = useState(false)
 
-    const project = useSelector(state => state.projects.filter(
+    const project = useSelector(state => state.projects.find(
         project => task.project_id === project.id
     ))
 
-    const [taskDate, setTaskDate] = useState(false)
+    const __task = useSelector(state => state.tasks.find(
+        task => task.id === card.id
+    ))
+    const dispatch = useDispatch()
+
 
     const dragRef = useRef(null)
     const previewRef = useRef(null)
@@ -87,13 +93,22 @@ export const Card = ({id, card, index, moveCard}) => {
         if (e.target.type !== "checkbox") {
             setModalOpen(true)
         }
-        setIsHovering(false)
     }
 
+    const undo = (id) => {
+        dispatch(toggleCompleted({
+            id: id,
+            completed: 1
+        }))
+    }
     const onStatusChange = (e) => {
-        setTask({
-            ...task,
-            completed: !task.completed
+        setTask(
+            {...task, completed: !task.completed}
+        )
+        const id = task.id
+        delay(500).then(() => {
+            dispatch(toggleCompleted(task))
+            toast.success(<div>1 task was completed <button className={'ml-4 hover:underline text-red-700'} onClick={() => {undo(id)}}>undo</button></div>)
         })
     }
 
@@ -104,8 +119,11 @@ export const Card = ({id, card, index, moveCard}) => {
         })
     }
 
-    const opacity = isDragging ? 0 : 1
+    const delay = (time) => {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
 
+    const opacity = isDragging ? 0 : 1
 
     const style = {}
     drag(dragRef)
@@ -121,37 +139,39 @@ export const Card = ({id, card, index, moveCard}) => {
     ))
 
     return (
+
         <div ref={previewRef}
              style={{...style, opacity}}
         >
-            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={'flex hover:cursor-pointer'}>
-                <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 ${isHovering ? "visible" : "invisible"}`}>
+            <div className={`flex hover:cursor-pointer group ${task.completed ? "opacity-40" : ""}`}>
+                <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 group-hover:visible invisible`}>
                     <GrDrag className={'mt-[4px]'}/>
                 </div>
                 <div className={'border-b_ py-4'}>
-                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
+                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
                 </div>
                 <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                     <div>
-                        <p className={'text-task font-medium_'}>{task.name}</p>
-                        <p className={'text-s2 mt-1 text-gray-400 whitespace-pre-wrap'}>{task.text ? task.text.substring(0, 100) : null}</p>
+                        <p className={''}>{task.name}</p>
+                        <p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{task.text ? task.text.substring(0, 100) : null}</p>
+                        {/*{task.id}*/}
                     </div>
                     <div className={`pb-4 border-b mt-1 flex items-center justify-start 
                         ${(new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? "text-red-600" : ""}`}
                     >
-                        <div className={`mb-[1px] mr-1 text-ss `}>
+                        <div className={`mb-[1px] mr-1 text-sm `}>
                             {task.due ? <HiCalendar/> : null}
                         </div>
-                        <div className={`text-ss`}>{task.due ? formatDate(task.due) : null}</div>
+                        <div className={`text-sm`}>{task.due ? formatDate(task.due) : null}</div>
                     </div>
                 </div>
 
                 <div className={`flex flex-col border-b`}>
-                    <div className={`flex h-1/2 items-center pt-4  ${isHovering ? "visible" : "invisible"}`}>
+                    <div className={`flex h-1/2 items-center pt-4 group-hover:visible invisible`}>
                         <div className={`flex-grow`}>
                             {/*<button data-tip={"Set due date"}>*/}
                             <DatePicker
-                                selected={taskDate}
+                                selected={""}
                                 onChange={onDateChange}
                                 customInput={
                                     <DateCustomInput/>
@@ -160,21 +180,21 @@ export const Card = ({id, card, index, moveCard}) => {
                             />
                             {/*</button>*/}
                         </div>
-                        <div className={'flex-grow'}>
+                        <div className={'flex-grow group-hover:visible invisible'}>
                             <button>
                                 <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
                             </button>
                         </div>
                     </div>
-                    <div className={'mt-1 w-20'}>
-                        {/*<div className={'flex justify-end items-center space-x-1'}>*/}
-                        {/*    <div className={'text-project text-gray-600'}>{task.project.name}</div>*/}
-                        {/*    <div style={{background: task.project.color}} className={`w-2 h-2 rounded-full`}></div>*/}
-                        {/*</div>*/}
+                    <div className={'mt-1 w-20_'}>
+                        <div className={'flex justify-end items-center space-x-1'}>
+                            <div style={{background: task.project_color}} className={`w-2 h-2 rounded-full`}></div>
+                            <div className={'text-sm text-gray-500'}>{task.project}</div>
+                        </div>
                     </div>
                 </div>
 
-                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task} project={project[0]}/>
+                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task} project={project}/>
             </div>
         </div>
     )

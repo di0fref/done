@@ -5,6 +5,8 @@ import {useNavigate} from "react-router-dom";
 import {getAuth} from "firebase/auth";
 import {format} from "date-fns";
 import {HiLogout} from "react-icons/hi";
+import {useDispatch} from "react-redux";
+import {getTasks} from "../redux/taskSlice";
 
 function Avatar() {
 
@@ -33,10 +35,16 @@ export default function MainMenu() {
     const navigate = useNavigate();
     const user = getAuth();
 
+    const dispatch = useDispatch()
+
     const signOut = () => {
         signOutFireBase().then(() => {
             navigate("/login")
         })
+    }
+
+    const toggle = () => {
+        dispatch(getTasks())
     }
 
     return (
@@ -73,6 +81,19 @@ export default function MainMenu() {
 
                                         <Menu.Item as={"div"}>
                                             <Avatar/>
+                                        </Menu.Item>
+
+                                        <Menu.Item>
+                                            {({active}) => (
+                                                <button onClick={toggle}
+                                                        className={`${
+                                                            active ? 'bg-gray-100' : 'text-gray-900'
+                                                        } group flex w-full items-center px-4 py-2 text-sm space-x-2`}
+                                                >
+                                                    <div><HiLogout className={'text-blue-500'}/></div>
+                                                    <div>Show/hide completed</div>
+                                                </button>
+                                            )}
                                         </Menu.Item>
 
                                         <div className="py-1">
