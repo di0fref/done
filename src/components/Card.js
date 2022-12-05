@@ -192,14 +192,14 @@ export const Card = ({id, card, index, moveCard}) => {
                         </div>
                     </div>
                     <div className={'mt-1 w-20_'}>
-                        <div className={'flex justify-end items-center space-x-1'}>
+                        <div className={'flex justify-end items-center space-x-2'}>
                             <div style={{background: _task_.project_color}} className={`w-2 h-2 rounded-full`}></div>
                             <div className={'text-sm text-gray-500'}>{_task_.project}</div>
                         </div>
                     </div>
                 </div>
 
-                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={_task_} project={project}/>
+                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={{..._task_}}/>
             </div>
         </div>
     )

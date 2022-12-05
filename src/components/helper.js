@@ -41,7 +41,7 @@ export function getDateColor(date) {
     }
     return new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
         ? "text-red-600"
-        : new Date(date).setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0)
+        : new Date(date).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
             ? "text-green-600"
             : ""
 }

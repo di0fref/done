@@ -4,18 +4,22 @@ import {HiBars4, HiCalendar, HiOutlineXMark} from "react-icons/hi2";
 import TextareaAutosize from 'react-textarea-autosize';
 import {delay, formatDate} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleCompleted} from "../redux/taskSlice";
+import {toggleCompleted, updateTask} from "../redux/taskSlice";
 
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
 
-    const [task, setTask] = useState(props.task || []);
+    const [task, setTask] = useState({})
     const [isChanged, setIsChanged] = useState(false)
     const dispatch = useDispatch()
 
     const _project_ = useSelector(state => state.projects.find(
         project => task.project_id ? (task.project_id === project.id) : null
     ))
+
+    useEffect(() => {
+        setTask(props.task)
+    }, [props.task])
 
     useEffect(() => {
         setIsOpen(props.open)
@@ -38,8 +42,13 @@ export default function TaskModal(props) {
         dispatch(toggleCompleted(task))
     }
 
+    const saveHandler = () => {
+        dispatch(updateTask({...task, "completed":task.completed?1:0}))
+        closeModal()
+    }
     return (
         <Dialog
+            unmount={true}
             open={isOpen}
             onClose={closeModal}
             className="relative z-50"
@@ -65,15 +74,21 @@ export default function TaskModal(props) {
                         <div className={'w-full slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
                                 <div className={'ml-5 mr-2 mt-2'}>
-                                    <input checked={task.completed} onChange={onStatusChange} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
+                                    <input onChange={(e) => setTask({
+                                        ...task,
+                                        "completed": !task.completed
+                                    })} checked={task.completed} onClick={changeHandler} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>
-                                        <input onChange={changeHandler} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0`} type={"text"} value={task.name}/>
+                                        <input onClick={changeHandler} onChange={(e) => setTask({
+                                            ...task,
+                                            "name": e.currentTarget.value
+                                        })} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0`} type={"text"} value={task.name}/>
                                     </div>
                                     <div className={'w-full mt-2'}>
                                         <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
-                                        <TextareaAutosize id={"description"} onChange={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.text}/>
+                                        <TextareaAutosize id={"description"} onClick={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.text}/>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +98,7 @@ export default function TaskModal(props) {
                                         <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
                                     </div>
                                     <div>
-                                        <button className={'save-btn'}>Save</button>
+                                        <button onClick={saveHandler} className={'save-btn'}>Save</button>
                                     </div>
                                 </div>
                             ) : ""}
