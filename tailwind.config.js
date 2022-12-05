@@ -35,7 +35,7 @@ module.exports = {
             fontSize: {
                 // ss: "0.88em",
                 // task: "0.93em",
-                // base: "1px",
+                base: "14px",
                 // project: "0.90em",
                 // s2: "0.83em"
             },

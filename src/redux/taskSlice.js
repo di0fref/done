@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {tasksAll, taskUpdate} from "../service/api";
+import {taskCreate, tasksAll, taskUpdate} from "../service/api";
 import {apiConfig} from "../service/config";
 import http from "../service/http-common";
 
@@ -16,7 +16,7 @@ export const getTasks = createAsyncThunk(
 export const addTask = createAsyncThunk(
     'tasks/addTask',
     async (task, thunkAPI) => {
-        return await taskUpdate(task)
+        return await taskCreate(task)
     }
 )
 

@@ -11,23 +11,56 @@ import {useReadLocalStorage} from "usehooks-ts";
 export const Container = (props) => {
     {
         const [data, setData] = useState([])
-
         const showCompleted = useReadLocalStorage("showCompletedTasks")
 
         const _data_ = {
-            today: useSelector(state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted?true:!task.completed)
-            )),
-            inbox: useSelector(state => state.tasks.filter(
-                task => (task.due === null && !task.completed)
-            )),
-            overdue: useSelector(state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (showCompleted?true:!task.completed)
-            )),
-            upcoming: useSelector(state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted?true:!task.completed)
-            )),
-            anytime: useSelector((state) => state.tasks.filter(task => (showCompleted?true:!task.completed))),
+
+            today: [...useSelector(state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            }),
+
+            inbox: [...useSelector(
+                state => state.tasks.filter(
+                    task => (task.due === null && !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            }),
+
+            overdue: [...useSelector(
+                state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (showCompleted ? true : !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
+
+            upcoming: [...useSelector(
+                state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
+
+            anytime: [...useSelector(
+                state => state.tasks.filter(
+                    task => (showCompleted ? true : !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
+
+            project: [...useSelector(
+                state => state.tasks.filter(
+                    task => task.project_id === props.id && (showCompleted ? true : !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
         }
 
         useEffect(() => {
@@ -58,87 +91,89 @@ export const Container = (props) => {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
-                    <Card
-                        key={card.id}
-                        index={index}
-                        id={card.id}
-                        moveCard={moveCard}
-                        card={card}
-                    />
+                    <AnimatePresence>
+                        <Card
+                            key={card.id}
+                            index={index}
+                            id={card.id}
+                            moveCard={moveCard}
+                            card={card}
+                        />
+                    </AnimatePresence>
                 </motion.div>
             )
         }, [])
 
         let prev = "";
 
-        switch (props.filter) {
-            case "upcoming":
-                return (
-                    <div>
-                        <div><TaskForm/></div>
-                        {
-                            Object.values(_data_.upcoming).map((card, i) => {
-                                if (prev !== card.due) {
-                                    prev = card.due;
-                                    return (
-                                        <div key={card.id}>
-                                            <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
-                                                {formatDate(card.due, true)}
+        return (
+            <div>
+                <TaskForm/>
+                {(() => {
+                    switch (props.filter) {
+                        case "upcoming":
+                            return (
+                                Object.values(_data_.upcoming).map((card, i) => {
+                                    if (prev !== card.due) {
+                                        prev = card.due;
+                                        return (
+                                            <div key={card.id}>
+                                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                                    {formatDate(card.due, true)}
+                                                </div>
+                                                {renderCard(card, i)}
                                             </div>
-                                            {renderCard(card, i)}
-                                        </div>
-                                    )
-                                } else {
-                                    return (
-                                        <div key={card.id}>
-                                            {renderCard(card, i)}
-                                        </div>
-                                    )
-                                }
-                            })}
-                    </div>
-                );
-            case "inbox":
-                return (
-                    <div>
-                        <div><TaskForm/></div>
-                        <AnimatePresence>
-                            {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
-                        </AnimatePresence>
-                    </div>
-                );
-            case "anytime":
-                return (
-                    <div>
-                        <div><TaskForm/></div>
-                        {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
-                    </div>
-                );
-            default:
-                return (
-                    <div>
-                        <div><TaskForm/></div>
-                        {Object.keys(_data_.overdue).length ? (
-                                <div className={''}>
-                                    <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
-                                        Overdue
-                                    </div>
-                                    {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
+                                        )
+                                    } else {
+                                        return (
+                                            <div key={card.id}>
+                                                {renderCard(card, i)}
+                                            </div>
+                                        )
+                                    }
+                                })
+                            )
+                        case "inbox":
+                            return (
+                                <div>
+                                    {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
                                 </div>
                             )
-                            : null}
-
-                        {Object.keys(_data_.overdue).length ? (
-                            <>
-                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
-                                    Today
+                        case "anytime":
+                            return (
+                                <div>
+                                    {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
                                 </div>
-                            </>
-                        ) : null}
-                        {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
-
-                    </div>
-                );
-        }
+                            )
+                        case "project":
+                            return (
+                                <div>
+                                    {Object.values(_data_.project).map((card, i) => renderCard(card, i))}
+                                </div>
+                            )
+                        default:
+                            return (
+                                <div>
+                                    {Object.keys(_data_.overdue).length ? (
+                                            <div className={''}>
+                                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                                    Overdue
+                                                </div>
+                                                {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
+                                            </div>
+                                        )
+                                        : null}
+                                    {Object.keys(_data_.overdue).length ? (
+                                        <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                            Today
+                                        </div>
+                                    ) : null}
+                                    {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
+                                </div>
+                            )
+                    }
+                })()}
+            </div>
+        )
     }
 }

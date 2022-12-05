@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar";
-import {useEffect, useState} from "react";
-import {useNavigate, useLocation, useParams} from "react-router-dom";
+import {useEffect} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import {getAuth} from "firebase/auth";
@@ -21,7 +21,6 @@ const paths = [
 export default function Main() {
 
     const params = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
 
     const dispatch = useDispatch()
@@ -101,11 +100,11 @@ export default function Main() {
                     </div>
                 </header>
                 <main className={"relative flex h-full flex-grow"}>
-                    <Sidebar/>
+                    <Sidebar id={params.id?params.id:null}/>
                     <div className={'bg-white w-full overflow-y-auto pt-14'}>
                         <div className={"max-w-4xl bg-white h-full md:px-12 pl-4 pr-8"}>
-                            <TaskHeader path={params.path}/>
-                            <Container filter={params.path}/>
+                            <TaskHeader path={params.path} id={params.id?params.id:null}/>
+                            <Container filter={params.path} id={params.id?params.id:null}/>
                         </div>
                     </div>
                 </main>

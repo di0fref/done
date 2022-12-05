@@ -1,13 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import {Disclosure} from "@headlessui/react";
 import {
-    HiInbox,
-    HiArchiveBox,
-    HiCalendar,
-    HiStar,
     HiBars3,
-    HiUser,
-    HiUserCircle,
     HiEllipsisHorizontal
 } from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
@@ -16,10 +10,11 @@ import AddProjectForm from "./AddProjectButton";
 import {useSelector} from "react-redux";
 
 
-function Sidebar() {
+function Sidebar(props) {
 
     const location = useLocation();
     const projects = useSelector(state => state.projects)
+    const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
 
     return (
         <div>
@@ -67,17 +62,17 @@ function Sidebar() {
                         <div>
                             <div className={' flex justify-between'}>
                                 <div className={'text-black/50 font-medium text-[14px] mb-2'}>Projects</div>
-
                                 <AddProjectForm/>
-
                             </div>
                             <ul className={'space-y-1'}>
 
                                 {
                                     Object.values(projects).map((project, i) => {
-                                        return(
-                                            <li key={project.id} className={'pl-2 px-1 py-0.5 hover:bg-gray-200 rounded'}>
-                                                <Link to={"/project/"+project.id} className={'flex items-center'}>
+                                        return (
+                                            <li key={project.id} className={`
+                                                    ${(currentProject && project.id === currentProject.id)?"sidebar-active":""} 
+                                                pl-2 px-1 py-2 hover:bg-gray-200 rounded`}>
+                                                <Link to={"/project/" + project.id} className={'flex items-center'}>
                                                     <div style={{
                                                         background: project.color
                                                     }} className={'w-2 h-2 rounded-full'}> </div>

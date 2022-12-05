@@ -42,8 +42,7 @@ function App() {
                     effect={"solid"}
                 />
                 <Routes>
-                    <Route path={'/project/:id'} element={<Main/>}/>
-
+                    <Route path={'/:path/:id'} element={<Main/>}/>
                     <Route path={'/:path'} element={<Main/>}/>
                     <Route exact path="/" element={<Navigate to="/today" replace/>}/>
                     <Route exact path={"/login"} element={<Login/>}/>
