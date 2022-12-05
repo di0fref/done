@@ -7,6 +7,8 @@ import {format} from "date-fns";
 import {HiLogout} from "react-icons/hi";
 import {useDispatch} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
+import {useLocalStorage} from "usehooks-ts";
+import ToggleCompletedButton from "./ToggleCompletedButton";
 
 function Avatar() {
 
@@ -35,16 +37,10 @@ export default function MainMenu() {
     const navigate = useNavigate();
     const user = getAuth();
 
-    const dispatch = useDispatch()
-
     const signOut = () => {
         signOutFireBase().then(() => {
             navigate("/login")
         })
-    }
-
-    const toggle = () => {
-        dispatch(getTasks())
     }
 
     return (
@@ -76,7 +72,7 @@ export default function MainMenu() {
                                     leaveTo="transform opacity-0 scale-95">
                                     <Menu.Items
                                         static
-                                        className="absolute right-0 w-56 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
+                                        className="absolute right-0 w-64 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
                                     >
 
                                         <Menu.Item as={"div"}>
@@ -84,16 +80,7 @@ export default function MainMenu() {
                                         </Menu.Item>
 
                                         <Menu.Item>
-                                            {({active}) => (
-                                                <button onClick={toggle}
-                                                        className={`${
-                                                            active ? 'bg-gray-100' : 'text-gray-900'
-                                                        } group flex w-full items-center px-4 py-2 text-sm space-x-2`}
-                                                >
-                                                    <div><HiLogout className={'text-blue-500'}/></div>
-                                                    <div>Show/hide completed</div>
-                                                </button>
-                                            )}
+                                            <ToggleCompletedButton/>
                                         </Menu.Item>
 
                                         <div className="py-1">

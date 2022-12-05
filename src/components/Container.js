@@ -5,28 +5,29 @@ import ReactTooltip from "react-tooltip";
 import TaskForm from "./TaskForm";
 import {useSelector} from "react-redux";
 import {formatDate} from "./helper";
-import { motion, AnimatePresence } from "framer-motion"
+import {motion, AnimatePresence} from "framer-motion"
+import {useReadLocalStorage} from "usehooks-ts";
 
 export const Container = (props) => {
     {
         const [data, setData] = useState([])
 
-        const [showCompleted, setShowCompleted] = useState(false)
+        const showCompleted = useReadLocalStorage("showCompletedTasks")
 
         const _data_ = {
             today: useSelector(state => state.tasks.filter(
-                task => new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0) && !task.completed
+                task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted?true:!task.completed)
             )),
             inbox: useSelector(state => state.tasks.filter(
                 task => (task.due === null && !task.completed)
             )),
             overdue: useSelector(state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && task.due != null && !task.completed
+                task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (showCompleted?true:!task.completed)
             )),
             upcoming: useSelector(state => state.tasks.filter(
-                task => new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0) && !task.completed
+                task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted?true:!task.completed)
             )),
-            anytime: useSelector((state) => state.tasks),
+            anytime: useSelector((state) => state.tasks.filter(task => (showCompleted?true:!task.completed))),
         }
 
         useEffect(() => {
@@ -53,9 +54,9 @@ export const Container = (props) => {
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                    initial={{opacity: 0}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}
                 >
                     <Card
                         key={card.id}

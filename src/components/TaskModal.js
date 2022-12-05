@@ -2,14 +2,20 @@ import {Fragment, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {HiBars4, HiCalendar, HiOutlineXMark} from "react-icons/hi2";
 import TextareaAutosize from 'react-textarea-autosize';
-import {formatDate} from "./helper";
+import {delay, formatDate} from "./helper";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleCompleted} from "../redux/taskSlice";
 
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
-    const [task, setTask] = useState(props.task)
-    const [project, setProject] = useState(props.project)
 
+    const [task, setTask] = useState(props.task || []);
     const [isChanged, setIsChanged] = useState(false)
+    const dispatch = useDispatch()
+
+    const _project_ = useSelector(state => state.projects.find(
+        project => task.project_id ? (task.project_id === project.id) : null
+    ))
 
     useEffect(() => {
         setIsOpen(props.open)
@@ -22,8 +28,14 @@ export default function TaskModal(props) {
     }
 
     const changeHandler = (e) => {
-
         setIsChanged(true);
+    }
+
+    const onStatusChange = (e) => {
+        setTask(
+            {...task, completed: !task.completed}
+        )
+        dispatch(toggleCompleted(task))
     }
 
     return (
@@ -53,11 +65,11 @@ export default function TaskModal(props) {
                         <div className={'w-full slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
                                 <div className={'ml-5 mr-2 mt-2'}>
-                                    <input onChange={changeHandler} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
+                                    <input checked={task.completed} onChange={onStatusChange} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>
-                                        <input onChange={changeHandler} placeholder={"Title"} className={'tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0'} type={"text"} value={task.name}/>
+                                        <input onChange={changeHandler} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0`} type={"text"} value={task.name}/>
                                     </div>
                                     <div className={'w-full mt-2'}>
                                         <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
@@ -81,11 +93,11 @@ export default function TaskModal(props) {
                             <div className={'md:p-4 p-6'}>
                                 <p className={'text-black/50 font-medium text-[14px]'}>Project</p>
 
-                                {project?(
-                                <div className={'flex items-center mt-2'}>
-                                    <span style={{background: project.color}} className={'ml-2 w-2 h-2 rounded-full'}></span>
-                                    <span className={'ml-2 text-gray-600 text-s2'}>{project.name}</span>
-                                </div>):null}
+                                {_project_ ? (
+                                    <div className={'flex items-center mt-2'}>
+                                        <span style={{background: _project_.color}} className={'ml-2 w-2 h-2 rounded-full'}></span>
+                                        <span className={'ml-2 text-gray-600 text-sm'}>{_project_.name}</span>
+                                    </div>) : null}
 
 
                             </div>
@@ -98,7 +110,6 @@ export default function TaskModal(props) {
                             </div>
                             <div></div>
                         </div>
-
                     </div>
                 </Dialog.Panel>
             </div>

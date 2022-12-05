@@ -94,17 +94,16 @@ export default function Main() {
             //     </main>
             // </div>
 
-            <div className={"h-screen md:flex"}>
+            <div className={"relative min-h-screen md:flex"}>
                 <header className="absolute h-10 w-full left-0 top-0 z-50 border-b bg-white">
                     <div className={'flex justify-between'}>
-
-                        {/*<MainMenu/>*/}
+                        <MainMenu/>
                     </div>
                 </header>
-                <main className={"relative flex h-full"}>
+                <main className={"relative flex h-full flex-grow"}>
                     <Sidebar/>
                     <div className={'bg-white w-full overflow-y-auto pt-14'}>
-                        <div className={"max-w-4xl mx-auto bg-white h-full md:px-12 pl-4 pr-8"}>
+                        <div className={"max-w-4xl bg-white h-full md:px-12 pl-4 pr-8"}>
                             <TaskHeader path={params.path}/>
                             <Container filter={params.path}/>
                         </div>

@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {allTasks, createTask, updateTask} from "../service/api";
+import {tasksAll, taskUpdate} from "../service/api";
 import {apiConfig} from "../service/config";
 import http from "../service/http-common";
 
@@ -9,14 +9,14 @@ export const getTasks = createAsyncThunk(
     'tasks/getTasks',
     async (thunkAPI) => {
         const showCompleted = localStorage.getItem("showCompletedTasks")
-        return await allTasks(showCompleted)
+        return await tasksAll(showCompleted)
     }
 )
 
 export const addTask = createAsyncThunk(
     'tasks/addTask',
     async (task, thunkAPI) => {
-        return await createTask(task)
+        return await taskUpdate(task)
     }
 )
 
@@ -26,6 +26,13 @@ export const toggleCompleted = createAsyncThunk(
         return await http.put(apiConfig.url + "/tasks/" + task.id, {
             completed: task.completed ? 0 : 1
         }).then(response => response.data)
+    }
+)
+
+export const updateTask = createAsyncThunk(
+    'tasks/updateTask',
+    async (task, thunkAPI) => {
+        return await http.put(apiConfig.url + "/tasks/" + task.id, task).then(response => response.data)
     }
 )
 
@@ -48,6 +55,13 @@ export const taskSlice = createSlice({
             .addCase(toggleCompleted.fulfilled, (state, action) => {
                 const task = Object.values(state).find(task => task.id == action.payload.id)
                 task.completed = action.payload.completed
+            })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                const index = state.findIndex(tutorial => tutorial.id === action.payload.id);
+                state[index] = {
+                    ...state[index],
+                    ...action.payload,
+                };
             })
     }
 })

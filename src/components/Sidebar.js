@@ -33,7 +33,7 @@ function Sidebar() {
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="border-r md:relative absolute p-6 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-72 md:left-0 md:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+                <div className="border-r md:relative absolute p-6 pt-10 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-72 md:left-0 md:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                     <div className="flex flex-col justify-start item-center">
                         <div className={'overflow-y-auto py-4 px-3_'}>
                             <ul className={'space-y-1'}>

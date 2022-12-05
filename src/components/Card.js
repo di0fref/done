@@ -7,26 +7,27 @@ import {format} from "date-fns";
 import TaskModal from "./TaskModal";
 import {CiCalendar} from "react-icons/ci";
 import DatePicker from "react-datepicker";
-import {formatDate} from "./helper";
+import {delay, formatDate, getDateColor} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleCompleted} from "../redux/taskSlice";
-import {motion, AnimatePresence} from "framer-motion"
+import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
+import {useReadLocalStorage} from "usehooks-ts";
 
 
 export const Card = ({id, card, index, moveCard}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
-    const [task, setTask] = useState(card)
+    const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [taskDate, setTaskDate] = useState(false)
 
-    const project = useSelector(state => state.projects.find(
-        project => task.project_id === project.id
-    ))
-
-    const __task = useSelector(state => state.tasks.find(
+    const _task_ = useSelector(state => state.tasks.find(
         task => task.id === card.id
     ))
+    const project = useSelector(state => state.projects.find(
+        project => _task_.project_id === project.id
+    ))
+    const showCompleted = useReadLocalStorage("showCompletedTasks")
+
     const dispatch = useDispatch()
 
 
@@ -102,25 +103,29 @@ export const Card = ({id, card, index, moveCard}) => {
         }))
     }
     const onStatusChange = (e) => {
-        setTask(
-            {...task, completed: !task.completed}
-        )
-        const id = task.id
-        delay(500).then(() => {
-            dispatch(toggleCompleted(task))
-            toast.success(<div>1 task was completed <button className={'ml-4 hover:underline text-red-700'} onClick={() => {undo(id)}}>undo</button></div>)
-        })
+        // setTask(
+        //     {...task, completed: !_task_.completed}
+        // )
+
+        setTaskCompleted(!_task_.completed);
+        const id = _task_.id
+        dispatch(toggleCompleted(_task_))
+        toast.success(
+            <div>1 task was completed <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
+                undo(id)
+            }}>undo</button></div>)
     }
 
     const onDateChange = (date) => {
-        setTask({
-            ...task,
-            due: format(new Date(date), "Y-M-d")
-        })
-    }
+        // setTask({
+        //     ...task,
+        //     due: format(new Date(date), "YYY-MM-dd")
+        // })
 
-    const delay = (time) => {
-        return new Promise(resolve => setTimeout(resolve, time));
+        dispatch(updateTask({
+            ..._task_, due: format(new Date(date), "Y-M-dd")
+        }))
+
     }
 
     const opacity = isDragging ? 0 : 1
@@ -143,26 +148,26 @@ export const Card = ({id, card, index, moveCard}) => {
         <div ref={previewRef}
              style={{...style, opacity}}
         >
-            <div className={`flex hover:cursor-pointer group ${task.completed ? "opacity-40" : ""}`}>
+            <div className={`flex hover:cursor-pointer group ${_task_.completed ? "opacity-60" : ""}`}>
                 <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 group-hover:visible invisible`}>
                     <GrDrag className={'mt-[4px]'}/>
                 </div>
                 <div className={'border-b_ py-4'}>
-                    <input checked={task.completed} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
+                    <input checked={_task_.completed&&taskCompleted} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
                 </div>
                 <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                     <div>
-                        <p className={''}>{task.name}</p>
-                        <p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{task.text ? task.text.substring(0, 100) : null}</p>
-                        {/*{task.id}*/}
+                        <p className={`${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
+                        <p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{_task_.text ? _task_.text.substring(0, 100) : null}</p>
+                        {/*{_task_.id}*/}
                     </div>
                     <div className={`pb-4 border-b mt-1 flex items-center justify-start 
-                        ${(new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) ? "text-red-600" : ""}`}
+                        ${getDateColor(_task_.due)}`}
                     >
                         <div className={`mb-[1px] mr-1 text-sm `}>
-                            {task.due ? <HiCalendar/> : null}
+                            {_task_.due ? <HiCalendar/> : null}
                         </div>
-                        <div className={`text-sm`}>{task.due ? formatDate(task.due) : null}</div>
+                        <div className={`text-sm`}>{_task_.due ? formatDate(_task_.due) : null}</div>
                     </div>
                 </div>
 
@@ -188,13 +193,13 @@ export const Card = ({id, card, index, moveCard}) => {
                     </div>
                     <div className={'mt-1 w-20_'}>
                         <div className={'flex justify-end items-center space-x-1'}>
-                            <div style={{background: task.project_color}} className={`w-2 h-2 rounded-full`}></div>
-                            <div className={'text-sm text-gray-500'}>{task.project}</div>
+                            <div style={{background: _task_.project_color}} className={`w-2 h-2 rounded-full`}></div>
+                            <div className={'text-sm text-gray-500'}>{_task_.project}</div>
                         </div>
                     </div>
                 </div>
 
-                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={task} project={project}/>
+                <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={_task_} project={project}/>
             </div>
         </div>
     )

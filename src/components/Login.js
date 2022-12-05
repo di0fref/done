@@ -2,9 +2,19 @@ import {FcGoogle} from "react-icons/fc";
 import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithPopup} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import {app} from "../auth/firebase";
+import {apiConfig} from "../service/config";
 
 
 export default function Login() {
+
+    function CheckError(response) {
+        if (response.status >= 200 && response.status <= 299) {
+            return response.json();
+        } else {
+            throw Error(response.statusText);
+        }
+    }
+
 
     const navigate = useNavigate();
 
@@ -20,7 +30,8 @@ export default function Login() {
                         const credential = GoogleAuthProvider.credentialFromResult(result);
                         const user = result.user;
 
-                        fetch("http://localhost:8000/api/users/login", {
+
+                        fetch(apiConfig.url + "/users/login", {
                             method: "POST",
                             headers: {
                                 "Content-type": "application/json",
@@ -29,12 +40,17 @@ export default function Login() {
                                 idToken: credential.idToken,
                                 user: user
                             })
-                        }).then(response => response.json())
+                        })
+                            .then(CheckError)
                             .then((result) => {
                                 localStorage.setItem("api_token", result.api_token)
                                 localStorage.setItem("showCompletedTasks", "1")
                                 navigate('/today')
-                            })
+
+                            }).catch((error) => {
+                            console.log(error);
+                        });
+
                     })
             }).catch((error) => {
                 console.log(error)
