@@ -82,12 +82,12 @@ export default function TaskForm() {
     return (
         <div className={'mt-3_'}>
             {!isEditing ? (
-                <div className={'flex items-center justify-end ml-5 mb-2_ text-sm'}>
-                    <button className={'flex items-center justify-start hover:text-red-600_ mr-2 hover:bg-gray-200 p-1 rounded'} onClick={() => {
+                <div className={'flex items-center justify-end ml-5 mb-2_ text-sm_'}>
+                    <button className={'flex items-center justify-start group mr-2  p-1 rounded'} onClick={() => {
                         setIsEditing(true)
                     }}>
-                        <div className={'mr-1 text-red-600'}><HiPlus/></div>
-                        <div>Todo</div>
+                        <div className={'mr-1 text-red-600 group-hover:bg-red-600 group-hover:text-white rounded-full p-0.5'}><HiPlus className={'h-5 w-5'}/></div>
+                        <div>Task</div>
                     </button>
                 </div>
             ) : (

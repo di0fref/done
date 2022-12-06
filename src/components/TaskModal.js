@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from 'react'
+import {Fragment, useEffect, useRef, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {HiBars4, HiCalendar, HiOutlineXMark} from "react-icons/hi2";
 import TextareaAutosize from 'react-textarea-autosize';
@@ -12,6 +12,7 @@ export default function TaskModal(props) {
     const [task, setTask] = useState({})
     const [isChanged, setIsChanged] = useState(false)
     const dispatch = useDispatch()
+    const inputReference = useRef(null);
 
     const _project_ = useSelector(state => state.projects.find(
         project => task.project_id ? (task.project_id === project.id) : null
@@ -23,6 +24,7 @@ export default function TaskModal(props) {
 
     useEffect(() => {
         setIsOpen(props.open)
+         inputReference.current&&inputReference.current.focus()
     }, [props.open])
 
     function closeModal() {
@@ -81,7 +83,7 @@ export default function TaskModal(props) {
                                 </div>
                                 <div className={'flex-grow'}>
                                     <div className={'w-full'}>
-                                        <input onClick={changeHandler} onChange={(e) => setTask({
+                                        <input ref={inputReference}  onClick={changeHandler} onChange={(e) => setTask({
                                             ...task,
                                             "name": e.currentTarget.value
                                         })} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0`} type={"text"} value={task.name}/>

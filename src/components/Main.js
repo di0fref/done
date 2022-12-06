@@ -101,8 +101,8 @@ export default function Main() {
                 </header>
                 <main className={"relative flex h-full flex-grow"}>
                     <Sidebar id={params.id?params.id:null}/>
-                    <div className={'bg-white w-full overflow-y-auto pt-14'}>
-                        <div className={"max-w-4xl bg-white h-full md:px-12 pl-4 pr-8"}>
+                    <div className={'bg-white w-full overflow-y-auto pt-20'}>
+                        <div className={"max-w-4xl mx-auto bg-white h-full md:px-12 pl-4 pr-8"}>
                             <TaskHeader path={params.path} id={params.id?params.id:null}/>
                             <Container filter={params.path} id={params.id?params.id:null}/>
                         </div>

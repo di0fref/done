@@ -11,6 +11,8 @@ export default function TaskHeader(props) {
         project => props.id ? (props.id === project.id) : null
     ))
 
+
+
     useEffect(() => {
         if(props.path === "project"){
             setName(project.name.charAt(0).toUpperCase() + project.name.slice(1));
@@ -24,12 +26,12 @@ export default function TaskHeader(props) {
             setName(props.path.charAt(0).toUpperCase() + props.path.slice(1));
             // setIcon(getIcon(props.path))
         }
-    }, [props.path])
+    }, [props.path, props.id])
 
     return (
         <div className={'flex items-center justify-start pb-1 ml-2'}>
             {/*<div className={'mr-2 ml-3'}>{icon}</div>*/}
-            <div className={'font-semibold text-xl ml-4'}>{name}</div>
+            <div className={'font-semibold text-2xl ml-4'}>{name}</div>
         </div>
     )
 }

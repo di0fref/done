@@ -87,6 +87,7 @@ export const Container = (props) => {
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
+                    key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
@@ -118,7 +119,7 @@ export const Container = (props) => {
                                         prev = card.due;
                                         return (
                                             <div key={card.id}>
-                                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                                <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
                                                     {formatDate(card.due, true)}
                                                 </div>
                                                 {renderCard(card, i)}
@@ -156,7 +157,7 @@ export const Container = (props) => {
                                 <div>
                                     {Object.keys(_data_.overdue).length ? (
                                             <div className={''}>
-                                                <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                                <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
                                                     Overdue
                                                 </div>
                                                 {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
@@ -164,7 +165,7 @@ export const Container = (props) => {
                                         )
                                         : null}
                                     {Object.keys(_data_.overdue).length ? (
-                                        <div className={'ml-6 font-bold text-sm mt-4 border-b_ pb-1'}>
+                                        <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
                                             Today
                                         </div>
                                     ) : null}

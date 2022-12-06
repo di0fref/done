@@ -13,12 +13,13 @@ import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
 import {useReadLocalStorage} from "usehooks-ts";
 
-
 export const Card = ({id, card, index, moveCard}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [taskDate, setTaskDate] = useState(false)
+
+    const error = useSelector(state => state.error)
 
     const _task_ = useSelector(state => state.tasks.find(
         task => task.id === card.id
@@ -102,30 +103,45 @@ export const Card = ({id, card, index, moveCard}) => {
             completed: 1
         }))
     }
-    const onStatusChange = (e) => {
-        // setTask(
-        //     {...task, completed: !_task_.completed}
-        // )
+    const _onStatusChange = (e) => {
 
         setTaskCompleted(!_task_.completed);
         const id = _task_.id
+
         dispatch(toggleCompleted(_task_))
+
         toast.success(
             <div>1 task was completed <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
                 undo(id)
             }}>undo</button></div>)
     }
 
-    const onDateChange = (date) => {
-        // setTask({
-        //     ...task,
-        //     due: format(new Date(date), "YYY-MM-dd")
-        // })
 
+    const onStatusChange = async (userId) => {
+        try {
+            setTaskCompleted(!_task_.completed);
+            const id = _task_.id
+            const task = await dispatch(toggleCompleted(_task_)).unwrap()
+
+                task.completed && toast.success(
+                    <div>1 task was completed
+                        <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
+                            undo(id)
+                        }}>undo
+                        </button>
+                    </div>)
+
+
+        } catch (err) {
+            console.log(err);
+            toast.error(`Something went wrong. Please contact support`)
+        }
+    }
+
+    const onDateChange = (date) => {
         dispatch(updateTask({
             ..._task_, due: format(new Date(date), "Y-M-dd")
         }))
-
     }
 
     const opacity = isDragging ? 0 : 1
@@ -143,8 +159,13 @@ export const Card = ({id, card, index, moveCard}) => {
         </button>
     ))
 
-    return (
+    if (error) {
+        return (
+            <div>{error}</div>
+        )
+    }
 
+    return (
         <div ref={previewRef}
              style={{...style, opacity}}
         >
@@ -152,16 +173,15 @@ export const Card = ({id, card, index, moveCard}) => {
                 <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 group-hover:visible invisible`}>
                     <GrDrag className={'mt-[4px]'}/>
                 </div>
-                <div className={'border-b_ py-4'}>
-                    <input checked={_task_.completed&&taskCompleted} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-4 w-4 form-checkbox bg-white rounded-full'}/>
+                <div className={'mt-0.5 py-4'}>
+                    <input checked={_task_.completed && taskCompleted} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-5 w-5 form-checkbox bg-white rounded-full'}/>
                 </div>
                 <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
                     <div>
-                        <p className={`${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
-                        <p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{_task_.text ? _task_.text.substring(0, 100) : null}</p>
-                        {/*{_task_.id}*/}
+                        <p className={`text-md ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
+                        {/*<p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{_task_.text ? _task_.text.substring(0, 100)+"..." : null}</p>*/}
                     </div>
-                    <div className={`pb-4 border-b mt-1 flex items-center justify-start 
+                    <div className={`pb-4 border-b mt-1 flex items-center justify-start opacity-60
                         ${getDateColor(_task_.due)}`}
                     >
                         <div className={`mb-[1px] mr-1 text-sm `}>

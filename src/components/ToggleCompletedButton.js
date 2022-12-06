@@ -7,28 +7,18 @@ import {Switch} from '@headlessui/react'
 
 export default function ToggleCompletedButton() {
 
-    const [enabled, setEnabled] = useState(false)
-    const [showCompleted, setShowCompleted] = useLocalStorage("showCompletedTasks")
-
-    const toggleShowCompletedTasks = (value) => {
-        setShowCompleted(value)
-    }
+    const [enabled, setEnabled] =  useLocalStorage("showCompletedTasks")
 
     useEffect(()=> {
-        console.log(enabled);
-        setShowCompleted(enabled?1:0)
+        setEnabled(enabled?1:0)
     },[enabled])
-
-    const onChange = (e) => {
-      console.log(e.currentTarget);
-    }
 
     return (
         <div className='py-2 px-3 flex items-center justify-start space-x-2'>
             <Switch
                 checked={enabled}
                 onChange={setEnabled}
-                className={`${enabled ? 'bg-blue-800' : 'bg-gray-400'} relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
+                className={`${enabled ? 'bg-green-600' : 'bg-gray-400'} relative inline-flex h-5 w-10 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
             >
                 <span
                     aria-hidden="true"

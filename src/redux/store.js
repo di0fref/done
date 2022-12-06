@@ -5,7 +5,7 @@ import projectReducer from "./projectSlice"
 export const store = configureStore({
     reducer: {
         tasks: taskReducer,
-        projects: projectReducer
+        projects: projectReducer,
     },
 })
 

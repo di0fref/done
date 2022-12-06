@@ -33,11 +33,8 @@ module.exports = {
         },
         extend: {
             fontSize: {
-                // ss: "0.88em",
-                // task: "0.93em",
                 base: "14px",
-                // project: "0.90em",
-                // s2: "0.83em"
+                md: "0.97em",
             },
             colors: {
                 s: "#f1f5f9"
@@ -45,6 +42,7 @@ module.exports = {
             width: {
                 '100': '28rem',
                 '128': '32rem',
+                '90': "19rem"
             }
         },
     },
