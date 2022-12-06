@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {formatDate} from "./helper";
 import {motion, AnimatePresence} from "framer-motion"
 import {useReadLocalStorage} from "usehooks-ts";
+import {Card2} from "./Card2";
 
 export const Container = (props) => {
     {
@@ -93,7 +94,7 @@ export const Container = (props) => {
                     exit={{opacity: 0}}
                 >
                     <AnimatePresence>
-                        <Card
+                        <Card2
                             key={card.id}
                             index={index}
                             id={card.id}
@@ -110,6 +111,13 @@ export const Container = (props) => {
         return (
             <div>
                 <TaskForm/>
+                <div className={'flex justify-between text-center bg-gray-50 p-2 font-medium'}>
+                    <div className={'w-72 text-left pl-8'}>Title</div>
+                    <div className={'w-32'}>Status</div>
+                    <div className={'w-32'}>Priority</div>
+                    <div className={'w-32'}>Due</div>
+                    <div className={'w-32'}>Project</div>
+                </div>
                 {(() => {
                     switch (props.filter) {
                         case "upcoming":
