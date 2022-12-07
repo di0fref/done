@@ -99,12 +99,14 @@ export default function Main() {
                         <MainMenu/>
                     </div>
                 </header>
-                <main className={"relative flex h-full flex-grow"}>
-                    <Sidebar id={params.id?params.id:null}/>
-                    <div className={'bg-white w-full overflow-y-auto pt-20'}>
-                        <div className={"w-full mx-auto bg-white h-full md:px-12 pl-4 pr-8"}>
-                            <TaskHeader path={params.path} id={params.id?params.id:null}/>
-                            <Container filter={params.path} id={params.id?params.id:null}/>
+                <main className={"relative flex h-full flex-grow "}>
+                    <Sidebar id={params.id ? params.id : null}/>
+                    <div className={'h-screen overflow-y-auto w-full'}>
+                        <div className={'bg-white mx-auto pt-20 flex-grow max-w-4xl'}>
+                            <div className={"w-full bg-white h-full md:px-12 px-4"}>
+                                <TaskHeader path={params.path} id={params.id ? params.id : null}/>
+                                <Container filter={params.path} id={params.id ? params.id : null}/>
+                            </div>
                         </div>
                     </div>
                 </main>

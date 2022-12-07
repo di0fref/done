@@ -166,25 +166,23 @@ export const Card = ({id, card, index, moveCard}) => {
     }
 
     return (
-        <div ref={previewRef}
-             style={{...style, opacity}}
-        >
+        <div>
             <div className={`flex hover:cursor-pointer group ${_task_.completed ? "opacity-60" : ""}`}>
-                <div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 group-hover:visible invisible`}>
-                    <GrDrag className={'mt-[4px]'}/>
-                </div>
+                {/*<div ref={dragRef} data-handler-id={handlerId} className={`cursor-move w-6 py-4 group-hover:visible invisible`}>*/}
+                {/*    <GrDrag className={'mt-[4px]'}/>*/}
+                {/*</div>*/}
                 <div className={'mt-0.5 py-4'}>
                     <input checked={_task_.completed && taskCompleted} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-5 w-5 form-checkbox bg-white rounded-full'}/>
                 </div>
-                <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
+                <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow focus:border-none focus:ring-0 border-none'}>
                     <div>
-                        <p className={`text-md ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
+                        <p className={`text-md text-gray-900 ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
                         {/*<p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{_task_.text ? _task_.text.substring(0, 100)+"..." : null}</p>*/}
                     </div>
-                    <div className={`pb-4 border-b mt-1 flex items-center justify-start opacity-60
+                    <div className={`pb-4 border-b mt-1 flex items-center justify-start
                         ${getDateColor(_task_.due)}`}
                     >
-                        <div className={`mb-[1px] mr-1 text-sm `}>
+                        <div className={`mb-[1px] mr-1 text-sm`}>
                             {_task_.due ? <HiCalendar/> : null}
                         </div>
                         <div className={`text-sm`}>{_task_.due ? formatDate(_task_.due) : null}</div>

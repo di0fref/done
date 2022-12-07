@@ -3,8 +3,8 @@ import {apiConfig} from "./config";
 
 
 /* Tasks */
-export async function tasksAll(showCompleted) {
-    return await http.get(apiConfig.url + "/tasks?showCompleted=" + showCompleted).then(response => response.data)
+export async function tasksAll() {
+    return await http.get(apiConfig.url + "/tasks").then(response => response.data)
 }
 
 export async function taskCreate(task) {

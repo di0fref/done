@@ -6,13 +6,13 @@ const http = axios.create({
     baseURL: apiConfig.url,
     headers: {
         "Content-type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem("AccessToken")}`,
     },
 });
 
 // const auth = getAuth();
 
 http.interceptors.request.use(function (config) {
-    config.headers.token = localStorage.getItem("api_token")
     return config;
 }, function (error) {
     return Promise.reject(error);

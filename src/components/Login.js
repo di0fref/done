@@ -3,13 +3,14 @@ import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, si
 import {useNavigate} from "react-router-dom";
 import {app} from "../auth/firebase";
 import {apiConfig} from "../service/config";
+import axios from "axios";
 
 
 export default function Login() {
 
     function CheckError(response) {
         if (response.status >= 200 && response.status <= 299) {
-            return response.json();
+            return response;
         } else {
             throw Error(response.statusText);
         }
@@ -30,26 +31,55 @@ export default function Login() {
                         const credential = GoogleAuthProvider.credentialFromResult(result);
                         const user = result.user;
 
-
-                        fetch(apiConfig.url + "/users/login", {
-                            method: "POST",
-                            headers: {
-                                "Content-type": "application/json",
-                            },
-                            body: JSON.stringify({
-                                idToken: credential.idToken,
-                                user: user
-                            })
+                        axios.post("http://localhost:8000/api/login", {
+                            password: user.uid,
+                            email: user.email,
+                            user: user,
+                            idToken: credential.idToken
                         })
                             .then(CheckError)
-                            .then((result) => {
-                                localStorage.setItem("api_token", result.api_token)
+                            .then((response) => {
+                                localStorage.setItem("AccessToken", response.data.access_token)
                                 localStorage.setItem("showCompletedTasks", "1")
                                 navigate('/today')
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                            })
+                        /* Try to login */
+                        // fetch(apiConfig.url + "/users/login", {
+                        //     method: "POST",
+                        //     headers: {
+                        //         "Content-type": "application/json",
+                        //     },
+                        //     body: JSON.stringify({
+                        //         idToken: credential.idToken,
+                        //         user: user
+                        //     })
+                        // }).then((result) => {
+                        //     console.log(result)
+                        // })
+                        /* Create user and then login */
 
-                            }).catch((error) => {
-                            console.log(error);
-                        });
+                        // fetch(apiConfig.url + "/users/login", {
+                        //     method: "POST",
+                        //     headers: {
+                        //         "Content-type": "application/json",
+                        //     },
+                        //     body: JSON.stringify({
+                        //         idToken: credential.idToken,
+                        //         user: user
+                        //     })
+                        // })
+                        //     .then(CheckError)
+                        //     .then((result) => {
+                        //         localStorage.setItem("api_token", result.api_token)
+                        //         localStorage.setItem("showCompletedTasks", "1")
+                        //         navigate('/today')
+                        //
+                        //     }).catch((error) => {
+                        //     console.log(error);
+                        // });
 
                     })
             }).catch((error) => {

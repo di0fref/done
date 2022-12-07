@@ -67,13 +67,13 @@ export const Card2 = ({id, card, index, moveCard}) => {
             const id = _task_.id
             const task = await dispatch(toggleCompleted(_task_)).unwrap()
 
-                task.completed && toast.success(
-                    <div>1 task was completed
-                        <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
-                            undo(id)
-                        }}>undo
-                        </button>
-                    </div>)
+            task.completed && toast.success(
+                <div>1 task was completed
+                    <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
+                        undo(id)
+                    }}>undo
+                    </button>
+                </div>)
 
 
         } catch (err) {
@@ -105,75 +105,26 @@ export const Card2 = ({id, card, index, moveCard}) => {
     }
 
     return (
-        <div className={`${_task_.completed?"line-through opacity-40":""} hover:bg-gray-50 cursor-pointer flex items-center justify-between border-b h-14 text-center px-3`}>
-            <div className={'w-72 text-left whitespace-nowrap overflow-hidden text-ellipsis flex items-center space-x-4'}>
-                <input checked={_task_.completed} type={"checkbox"} className={'focus:ring-0 h-5 w-5 form-checkbox bg-white rounded-full'}/>
-                <div>{_task_.name}</div>
-            </div>
-            <div className={'w-32'}>High</div>
-            <div className={'w-32'}>{_task_.prio}</div>
-            <div className={`w-32 flex items-center justify-start opacity-60 ${getDateColor(_task_.due)}`}>
-                <div className={`mb-[1px] mr-1 `}>
-                    {_task_.due ? <HiCalendar/> : null}
+        <div className={'border-b hover:cursor-pointer hover:bg-gray-50 px-4'} onClick={clickHandler} >
+            <div className={'flex items-center h-20 mb-2'}>
+                <div className={'flex-grow flex-row'}>
+                    <div className={'flex space-x-4'}>
+                        <div>
+                            <input checked={_task_.completed && taskCompleted} onChange={onStatusChange} className={'focus:ring-0 mb-[1px] h-5 w-5 form-checkbox bg-white rounded-full'} type={"checkbox"}/>
+                        </div>
+                        <div>{_task_.name}</div>
+                    </div>
+                    <div className={`ml-9 mt-2 text-sm ${getDateColor(_task_.due)} flex items-center space-x-1`}>
+                        <div>{_task_.due ? <HiCalendar/> : null}</div>
+                        <div>{_task_.due ? formatDate(_task_.due) : null}</div>
+                    </div>
                 </div>
-                <div className={`text-sm_`}>{_task_.due ? formatDate(_task_.due) : null}</div>
-
+                <div className={'flex justify-end items-center space-x-2'}>
+                    <div style={{background: _task_.project_color}} className={`w-2 h-2 rounded-full`}></div>
+                    <div className={'text-sm text-gray-500'}>{_task_.project}</div>
+                </div>
             </div>
-            <div className={'w-32'}>{_task_.project}</div>
+            <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={{..._task_}}/>
         </div>
-        // <div>
-        //     <div className={`flex hover:cursor-pointer group ${_task_.completed ? "opacity-60" : ""}`}>
-        //         <div  className={`cursor-move w-6 py-4 group-hover:visible invisible`}>
-        //             <GrDrag className={'mt-[4px]'}/>
-        //         </div>
-        //         <div className={'mt-0.5 py-4'}>
-        //             <input checked={_task_.completed && taskCompleted} onChange={onStatusChange} type={"checkbox"} className={'focus:ring-0 mb-[5px] h-5 w-5 form-checkbox bg-white rounded-full'}/>
-        //         </div>
-        //         <div onClick={clickHandler} className={'ml-4 pt-4 outline-0 flex-grow text-gray-600 focus:border-none focus:ring-0 border-none'}>
-        //             <div>
-        //                 <p className={`text-md ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</p>
-        //                 {/*<p className={'text-sm mt-1 text-gray-400 whitespace-pre-wrap'}>{_task_.text ? _task_.text.substring(0, 100)+"..." : null}</p>*/}
-        //             </div>
-        //             <div className={`pb-4 border-b mt-1 flex items-center justify-start opacity-60
-        //                 ${getDateColor(_task_.due)}`}
-        //           >
-        //                 <div className={`mb-[1px] mr-1 text-sm `}>
-        //                     {_task_.due ? <HiCalendar/> : null}
-        //                 </div>
-        //                 <div className={`text-sm`}>{_task_.due ? formatDate(_task_.due) : null}</div>
-        //             </div>
-        //         </div>
-        //
-        //         <div className={`flex flex-col border-b`}>
-        //             <div className={`flex h-1/2 items-center pt-4 group-hover:visible invisible`}>
-        //                 <div className={`flex-grow`}>
-        //                     {/*<button data-tip={"Set due date"}>*/}
-        //                     <DatePicker
-        //                         selected={""}
-        //                         onChange={onDateChange}
-        //                         customInput={
-        //                             <DateCustomInput/>
-        //                         }
-        //                         dateFormat={"yyyy-MM-dd"}
-        //                     />
-        //                     {/*</button>*/}
-        //                 </div>
-        //                 <div className={'flex-grow group-hover:visible invisible'}>
-        //                     <button>
-        //                         <HiEllipsisHorizontal data-tip={"Task actions"} className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
-        //                     </button>
-        //                 </div>
-        //             </div>
-        //             <div className={'mt-1 w-20_'}>
-        //                 <div className={'flex justify-end items-center space-x-2'}>
-        //                     <div style={{background: _task_.project_color}} className={`w-2 h-2 rounded-full`}></div>
-        //                     <div className={'text-sm text-gray-500'}>{_task_.project}</div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //
-        //         <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={{..._task_}}/>
-        //     </div>
-        // </div>
     )
 }

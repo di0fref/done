@@ -111,13 +111,7 @@ export const Container = (props) => {
         return (
             <div>
                 <TaskForm/>
-                <div className={'flex justify-between text-center bg-gray-50 p-2 font-medium'}>
-                    <div className={'w-72 text-left pl-8'}>Title</div>
-                    <div className={'w-32'}>Status</div>
-                    <div className={'w-32'}>Priority</div>
-                    <div className={'w-32'}>Due</div>
-                    <div className={'w-32'}>Project</div>
-                </div>
+
                 {(() => {
                     switch (props.filter) {
                         case "upcoming":
@@ -127,7 +121,7 @@ export const Container = (props) => {
                                         prev = card.due;
                                         return (
                                             <div key={card.id}>
-                                                <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
+                                                <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
                                                     {formatDate(card.due, true)}
                                                 </div>
                                                 {renderCard(card, i)}
@@ -165,7 +159,7 @@ export const Container = (props) => {
                                 <div>
                                     {Object.keys(_data_.overdue).length ? (
                                             <div className={''}>
-                                                <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
+                                                <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
                                                     Overdue
                                                 </div>
                                                 {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
@@ -173,7 +167,7 @@ export const Container = (props) => {
                                         )
                                         : null}
                                     {Object.keys(_data_.overdue).length ? (
-                                        <div className={'ml-6 font-bold text-lg mt-4 border-b_ pb-1'}>
+                                        <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
                                             Today
                                         </div>
                                     ) : null}
