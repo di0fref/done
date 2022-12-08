@@ -27,7 +27,8 @@
 }
 
 .check{
-    @apply w-5 h-5 rounded-md border-0 ring-0 outline-0 bg-gray-200 text-green-400 checked:bg-green-400 focus:bg-gray-300 focus:ring-0 focus:border-0 shadow
+    @apply w-5 h-5 rounded-md border-0
+    ring-0 outline-0 bg-gray-200  focus:ring-0 focus:border-0
 }
 
 .loader {

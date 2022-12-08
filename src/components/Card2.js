@@ -107,7 +107,7 @@ export const Card2 = ({id, card, index, moveCard}) => {
 
     return (
         <div className={'flex items-center w-full h-16 border-b mb-3 bg-white rounded-2xl shadow'}>
-            <input className={'ml-4 mr-4 check'} type={"checkbox"}/>
+            <input checked={_task_.completed} className={'ml-4 mr-4 check'} type={"checkbox"}/>
             <div className={`flex-grow ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</div>
             <div><DateBadge date={_task_.due}/></div>
             <div style={{backgroundColor: _task_.project_color}} className={'h-3 w-3 rounded-full ml-3 mr-6'}> </div>

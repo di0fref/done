@@ -76,7 +76,7 @@ function Sidebar(props) {
                                                     <div style={{
                                                         background: project.color
                                                     }} className={'w-2 h-2 rounded-full'}> </div>
-                                                    <div className={'hover:text-gray-600 ml-3 text-gray-500 text-sm flex-grow tracking-wide_'}>{project.name}</div>
+                                                    <div className={'hover:text-gray-600 ml-3 text-gray-500 text-md flex-grow tracking-wide_'}>{project.name}</div>
                                                     <div className={'mr-1'}><HiEllipsisHorizontal/></div>
                                                 </Link>
                                             </li>
