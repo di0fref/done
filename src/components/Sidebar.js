@@ -50,12 +50,12 @@ function Sidebar(props) {
                                         <span className={'ml-3'}>Upcoming</span>
                                     </Link>
                                 </li>
-                                {/*<li>*/}
-                                {/*    <Link to={'/anytime'} className={`${(location.pathname === "/anytime") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>*/}
-                                {/*        {getIcon("anytime")}*/}
-                                {/*        <span className={'ml-3'}>Anytime</span>*/}
-                                {/*    </Link>*/}
-                                {/*</li>*/}
+                                <li>
+                                    <Link to={'/anytime'} className={`${(location.pathname === "/anytime") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                        {getIcon("anytime")}
+                                        <span className={'ml-3'}>Anytime</span>
+                                    </Link>
+                                </li>
 
                             </ul>
                         </div>

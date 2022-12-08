@@ -8,6 +8,7 @@ import {formatDate} from "./helper";
 import {motion, AnimatePresence} from "framer-motion"
 import {useReadLocalStorage} from "usehooks-ts";
 import {Card2} from "./Card2";
+import AddTask from "./AddTask";
 
 export const Container = (props) => {
     {
@@ -110,8 +111,9 @@ export const Container = (props) => {
 
         return (
             <div>
-                <TaskForm/>
+                {/*<TaskForm/>*/}
 
+                <AddTask/>
                 {(() => {
                     switch (props.filter) {
                         case "upcoming":

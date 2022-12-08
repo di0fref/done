@@ -93,7 +93,7 @@ export default function Main() {
             //     </main>
             // </div>
 
-            <div className={"relative min-h-screen md:flex"}>
+            <div className={"relative min-h-screen md:flex bg-back"}>
                 <header className="absolute h-10 w-full left-0 top-0 z-50 border-b bg-white">
                     <div className={'flex justify-between'}>
                         <MainMenu/>
@@ -102,8 +102,8 @@ export default function Main() {
                 <main className={"relative flex h-full flex-grow "}>
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full'}>
-                        <div className={'bg-white mx-auto pt-20 flex-grow max-w-4xl'}>
-                            <div className={"w-full bg-white h-full md:px-12 px-4"}>
+                        <div className={'bg-white_ mx-auto pt-20 flex-grow max-w-4xl'}>
+                            <div className={"w-full bg-white_ h-full md:px-12 px-4"}>
                                 <TaskHeader path={params.path} id={params.id ? params.id : null}/>
                                 <Container filter={params.path} id={params.id ? params.id : null}/>
                             </div>

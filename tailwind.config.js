@@ -37,8 +37,10 @@ module.exports = {
                 md: "0.97em",
             },
             colors: {
-                s: "#f1f5f9",
-                bo: "#808080"
+                back: "#E3E4E8",
+                inp:"#D5DDDF",
+                dd: "#F6F6F9",
+                check: "#DFEAEE"
             },
             width: {
                 '100': '28rem',

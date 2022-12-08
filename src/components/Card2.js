@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
 import {useReadLocalStorage} from "usehooks-ts";
+import DateBadge from "./DateBadge";
 
 export const Card2 = ({id, card, index, moveCard}) => {
 
@@ -90,7 +91,7 @@ export const Card2 = ({id, card, index, moveCard}) => {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <button className={'ring-btn_ flex items-center'} onClick={onClick}>
+        <button className={'flex items-center'} onClick={onClick}>
             {/*<div className={'text-green-600 pl-2 mr-1'}><CiCalendar/></div>*/}
             <div className={'text-black/70 px-2 text-sm'}>
                 <CiCalendar className={'h-5 w-5 text-gray-400 hover:text-gray-500 hover:bg-gray-200 rounded'}/>
@@ -105,26 +106,11 @@ export const Card2 = ({id, card, index, moveCard}) => {
     }
 
     return (
-        <div className={'border-b hover:cursor-pointer hover:bg-gray-50 px-4'} onClick={clickHandler} >
-            <div className={'flex items-center h-20 mb-2'}>
-                <div className={'flex-grow flex-row'}>
-                    <div className={'flex space-x-4'}>
-                        <div>
-                            <input checked={_task_.completed && taskCompleted} onChange={onStatusChange} className={'focus:ring-0 mb-[1px] h-5 w-5 form-checkbox bg-white rounded-full'} type={"checkbox"}/>
-                        </div>
-                        <div>{_task_.name}</div>
-                    </div>
-                    <div className={`ml-9 mt-2 text-sm ${getDateColor(_task_.due)} flex items-center space-x-1`}>
-                        <div>{_task_.due ? <HiCalendar/> : null}</div>
-                        <div>{_task_.due ? formatDate(_task_.due) : null}</div>
-                    </div>
-                </div>
-                <div className={'flex justify-end items-center space-x-2'}>
-                    <div style={{background: _task_.project_color}} className={`w-2 h-2 rounded-full`}></div>
-                    <div className={'text-sm text-gray-500'}>{_task_.project}</div>
-                </div>
-            </div>
-            <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={{..._task_}}/>
+        <div className={'flex items-center w-full h-16 border-b mb-3 bg-white rounded-2xl shadow'}>
+            <input className={'ml-4 mr-4 check'} type={"checkbox"}/>
+            <div className={`flex-grow ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</div>
+            <div><DateBadge date={_task_.due}/></div>
+            <div style={{backgroundColor: _task_.project_color}} className={'h-3 w-3 rounded-full ml-3 mr-6'}> </div>
         </div>
     )
 }

@@ -23,11 +23,11 @@ function App() {
 
 
     onAuthStateChanged(auth, (user) => {
-        // if (user) {
-        //     console.log("// User is signed in")
-        // } else {
-        //     console.log("// No user is signed in");
-        // }
+        if (user) {
+            console.log("// User is signed in")
+        } else {
+            console.log("// No user is signed in");
+        }
     });
 
 
