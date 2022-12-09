@@ -123,7 +123,7 @@ export const Container = (props) => {
                                         prev = card.due;
                                         return (
                                             <div key={card.id}>
-                                                <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
+                                                <div className={'ml-6_ font-bold text-lg mb-3  mt-6 ml-2'}>
                                                     {formatDate(card.due, true)}
                                                 </div>
                                                 {renderCard(card, i)}

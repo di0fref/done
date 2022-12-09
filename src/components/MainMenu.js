@@ -44,7 +44,7 @@ export default function MainMenu() {
     }
 
     return (
-        <div className={'absolute top-2 right-4 _right-16'}>
+        <div className={'absolute top-0 right-6 _right-16'}>
             <div className="flex items-center justify-center p-12_">
                 <div className="relative inline-block text-left">
                     <Menu>

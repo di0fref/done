@@ -9,6 +9,7 @@ import {useAuthState} from "react-firebase-hooks/auth";
 import {useDispatch} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
+import {onAuthStateChanged} from "firebase/auth"
 
 const paths = [
     "/today",
@@ -22,8 +23,18 @@ export default function Main() {
 
     const params = useParams();
     const navigate = useNavigate();
-
     const dispatch = useDispatch()
+    const auth = getAuth();
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            dispatch(getTasks())
+            dispatch(getProjects())
+        } else {
+            console.log("No user is signed in");
+        }
+    });
+
 
     async function isLoggedIn() {
         try {
@@ -54,12 +65,6 @@ export default function Main() {
         })
     }, [])
 
-    useEffect(() => {
-        dispatch(getTasks())
-        dispatch(getProjects())
-    }, [])
-
-    const auth = getAuth();
 
     const [user, loading, error] = useAuthState(auth);
 
@@ -94,7 +99,7 @@ export default function Main() {
             // </div>
 
             <div className={"relative min-h-screen md:flex bg-back"}>
-                <header className="absolute h-10 w-full left-0 top-0 z-50 border-b bg-white">
+                <header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">
                     <div className={'flex justify-between'}>
                         <MainMenu/>
                     </div>

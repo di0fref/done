@@ -9,26 +9,29 @@ import {onAuthStateChanged, getAuth} from "firebase/auth"
 import Login from "./components/Login";
 import {store} from './redux/store'
 import {Provider} from 'react-redux'
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-
+import {useDispatch} from "react-redux";
+// import {getTasks} from "./redux/taskSlice";
+// import {getProjects} from "./redux/projectSlice";
 function App() {
 
 
-    const auth = getAuth();
+    // const auth = getAuth();
 
     useEffect(() => {
         ReactTooltip.rebuild()
     }, [])
 
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log("// User is signed in")
-        } else {
-            console.log("// No user is signed in");
-        }
-    });
+    // onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //         dispatch(getTasks())
+    //         dispatch(getProjects())
+    //     } else {
+    //         console.log("No user is signed in");
+    //     }
+    // });
 
 
     return (
