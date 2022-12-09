@@ -104,7 +104,7 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div  onClick={() => setEditing(true)} ref={ref} className={'my-4 min-h-[50px] rounded-xl bg-white flex items-center space-x-2 px-2'}>
+            <div  onClick={() => setEditing(true)} ref={ref} className={'my-4 min-h-[50px] rounded-xl bg-white flex items-center space-x-2 pr-2'}>
                 <div className={'flex-grow'}>
                     <input
                         onKeyDown={onKeyDownHandler}

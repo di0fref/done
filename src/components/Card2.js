@@ -37,7 +37,7 @@ export const Card2 = ({id, card, index, moveCard}) => {
 
 
     const clickHandler = (e) => {
-        if (e.target.type !== "checkbox") {
+        if (e.target.classList.contains("click")) {
             setModalOpen(true)
         }
     }
@@ -93,8 +93,15 @@ export const Card2 = ({id, card, index, moveCard}) => {
 
     }
 
-    const onProjectChange = () => {
+    const onProjectChange = (selected) => {
+        if (selected.id) {
+            dispatch(updateTask({
+                ..._task_,
+                project_id: selected.id
+            }))
+        }
 
+        console.log(selected);
     }
 
     const onDateChange = (date) => {
@@ -110,9 +117,9 @@ export const Card2 = ({id, card, index, moveCard}) => {
     }
 
     return (
-        <div className={`hover:bg-gray-50 flex items-center w-full h-16 border-b mb-3 bg-white rounded-2xl shadow-sm ${taskCompleted ? "opacity-40" : ""}`}>
+        <div onClick={clickHandler} className={`click hover:cursor-pointer hover:bg-gray-50_ flex items-center w-full h-16 border-b mb-3 bg-white rounded-2xl shadow-sm ${taskCompleted ? "opacity-40" : ""}`}>
             <input checked={taskCompleted} onChange={onStatusChange} className={'ml-4 mr-4 check'} type={"checkbox"}/>
-            <div className={`flex-grow ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</div>
+            <div className={`flex-grow hover:cursor-pointer click ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</div>
             <div>
                 <DatePicker
                     selected={due}
@@ -132,11 +139,10 @@ export const Card2 = ({id, card, index, moveCard}) => {
 
             <ProjectSelect outsideClicked={outsideClicked} onProjectChange={onProjectChange}>
                 <Listbox.Button>
-                    <div style={{backgroundColor: _task_.project_color}} className={'h-2 w-2 rounded-full ml-3 mr-6'}>
-                        
-                    </div>
+                    <div style={{backgroundColor: _task_.project_color}} className={'h-2 w-2 rounded-full ml-3 mr-6'}></div>
                 </Listbox.Button>
             </ProjectSelect>
+            <TaskModal setModalOpen={setModalOpen} open={modelOpen} task={{..._task_}}/>
         </div>
     )
 }

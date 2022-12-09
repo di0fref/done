@@ -26,14 +26,15 @@ export default function Main() {
     const dispatch = useDispatch()
     const auth = getAuth();
 
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            dispatch(getTasks())
-            dispatch(getProjects())
-        } else {
-            console.log("No user is signed in");
-        }
-    });
+    // onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //         dispatch(getTasks())
+    //         dispatch(getProjects())
+    //     } else {
+    //         console.log("User logged out firebase");
+    //         localStorage.removeItem("AccessToken")
+    //     }
+    // });
 
 
     async function isLoggedIn() {
@@ -42,8 +43,12 @@ export default function Main() {
                 getAuth().onAuthStateChanged(
                     user => {
                         if (user) {
+                            dispatch(getTasks())
+                            dispatch(getProjects())
                             resolve(user)
                         } else {
+                            console.log("User logged out firebase");
+                            localStorage.removeItem("AccessToken")
                             reject('no user logged in')
                         }
                     },
