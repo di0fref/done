@@ -15,6 +15,9 @@ const firebaseConfig = {
     messagingSenderId: "71711370142",
     appId: "1:71711370142:web:dc53314b44a9140c4d848f"
 };
+
+// https://noteer-c97df-default-rtdb.europe-west1.firebasedatabase.app/
+
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 const auth = getAuth()

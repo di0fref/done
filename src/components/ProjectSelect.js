@@ -7,22 +7,32 @@ import {useSelector} from "react-redux";
 export default function ProjectSelect(props) {
 
     const extracted = useSelector(state => state.projects)
+
     const projects = [{
         id: null,
         name: "No project",
     }, ...extracted]
 
-    const [selected, setSelected] = useState(projects[0])
+    const [selected, setSelected] = useState(props.initial.name ? props.initial : projects[0])
 
 
     useEffect(() => {
         props.onProjectChange(selected)
     }, [selected])
 
+
     useEffect(() => {
-        // setSelected(projects[0])
-        // console.log(selected)
-    }, [props.outsideClicked, selected])
+        // if (props.initial) {
+        //     setSelected(props.initial)
+        // }
+        setSelected(props.initial.name ? props.initial : projects[0])
+    }, [props.initial])
+
+
+    // useEffect(() => {
+    // setSelected(projects[0])
+    // console.log(selected)
+    // }, [props.outsideClicked, selected])
 
     return (
         <div className=" mr-2">
@@ -31,10 +41,17 @@ export default function ProjectSelect(props) {
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-gray-200/70 py-1.5 pl-3 pr-10 text-left shadow-md_ focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-light-gray py-1.5 pl-3 pr-10 text-left shadow-md_ focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 
                                 <div>
-                                    <span className="block truncate text-sm text-gray-600">{selected.name}</span>
+                                    <span className="block truncate text-sm text-gray-600">
+                                                <div className={'flex items-center space-x-2'}>
+                                                    <div style={{
+                                                        background: selected.color
+                                                    }} className={'h-2 w-2 rounded-full'}></div>
+                                                    <div>{selected.name}</div>
+                                                </div>
+                                    </span>
                                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                         <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
                                         </span>

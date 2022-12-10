@@ -1,10 +1,7 @@
 import {FcGoogle} from "react-icons/fc";
 import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithPopup} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
-import {app} from "../auth/firebase";
-import {apiConfig} from "../service/config";
 import axios from "axios";
-
 
 export default function Login() {
 
@@ -30,6 +27,7 @@ export default function Login() {
 
                         const credential = GoogleAuthProvider.credentialFromResult(result);
                         const user = result.user;
+                        console.log("Firebase: user logged in")
 
                         axios.post("http://localhost:8000/api/login", {
                             password: user.uid,
@@ -41,6 +39,9 @@ export default function Login() {
                             .then((response) => {
                                 localStorage.setItem("AccessToken", response.data.access_token)
                                 localStorage.setItem("showCompletedTasks", "1")
+
+                                console.log("API: user logged in")
+
                                 navigate('/today')
                             })
                             .catch((error) => {

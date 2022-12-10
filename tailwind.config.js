@@ -40,7 +40,11 @@ module.exports = {
                 back: "#E3E4E8",
                 inp:"#D5DDDF",
                 dd: "#F6F6F9",
-                check: "#DFEAEE"
+                check: "#DFEAEE",
+                primary: "#4772FA",
+                warning: "#E03131",
+                hov:"#F6F8FE",
+                "light-gray": "#F3F3F3"
             },
             width: {
                 '100': '28rem',

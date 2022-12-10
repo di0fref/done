@@ -26,9 +26,16 @@
     }
 }
 
-.check{
-    @apply w-5 h-5 rounded-md border-0
-    ring-0 outline-0 bg-gray-200  focus:ring-0 focus:border-0
+.bg-1{
+    background-color: #f8f8ff;
+}
+
+.bg-2{
+ background-color: #ecedf6;
+}
+
+.checkbox{
+    @apply border-neutral-400 rounded-sm hover:bg-gray-200 hover:cursor-pointer focus:ring-0 focus:border-neutral-400
 }
 
 .loader {

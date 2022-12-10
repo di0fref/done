@@ -1,19 +1,26 @@
 import update from 'immutability-helper'
-import {useCallback, useEffect, useRef, useState} from 'react'
-import {Card} from './Card.js'
+import {useCallback, useEffect, useState} from 'react'
 import ReactTooltip from "react-tooltip";
-import TaskForm from "./TaskForm";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {formatDate} from "./helper";
 import {motion, AnimatePresence} from "framer-motion"
 import {useReadLocalStorage} from "usehooks-ts";
-import {Card2} from "./Card2";
 import AddTask from "./AddTask";
+import {Card4} from "./Card4";
+import TaskDetail from "./TaskDetail";
+import TaskHeader from "./TaskHeader";
+import {useParams} from "react-router-dom";
+import {setCurrentTask} from "../redux/currentTaskSlice"
 
 export const Container = (props) => {
     {
+        const params = useParams()
         const [data, setData] = useState([])
         const showCompleted = useReadLocalStorage("showCompletedTasks")
+
+        const selectedTask = useSelector(state => state.currentTask)
+
+        const dispatch = useDispatch()
 
         const _data_ = {
 
@@ -86,16 +93,22 @@ export const Container = (props) => {
             )
         }, [])
 
+        const onClickCard = (e, card) => {
+            dispatch(setCurrentTask(card))
+
+        }
+
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
+                    onClick={(e) => dispatch(setCurrentTask(card))}
                     key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                 >
                     <AnimatePresence>
-                        <Card2
+                        <Card4
                             key={card.id}
                             index={index}
                             id={card.id}
@@ -110,74 +123,80 @@ export const Container = (props) => {
         let prev = "";
 
         return (
-            <div>
-                {/*<TaskForm/>*/}
+            <div className={'flex h-full '}>
+                <div className={'flex-grow px-8 mt-6 '}>
+                    <TaskHeader path={params.path} id={params.id ? params.id : null}/>
+                    <AddTask/>
+                    {(() => {
+                        switch (props.filter) {
+                            case "upcoming":
+                                return (
+                                    Object.values(_data_.upcoming).map((card, i) => {
+                                        if (prev !== card.due) {
+                                            prev = card.due;
+                                            return (
+                                                <div key={card.id}>
+                                                    <div className={'font-medium mb-2 mt-8'}>
+                                                        {formatDate(card.due, true)}
+                                                    </div>
+                                                    {renderCard(card, i)}
+                                                </div>
+                                            )
+                                        } else {
+                                            return (
+                                                <div key={card.id}>
+                                                    {renderCard(card, i)}
+                                                </div>
+                                            )
+                                        }
+                                    })
+                                )
+                            case "inbox":
+                                return (
+                                    <div>
+                                        {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
+                                    </div>
+                                )
+                            case "anytime":
+                                return (
+                                    <div>
+                                        {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
+                                    </div>
+                                )
+                            case "project":
+                                return (
+                                    <div>
+                                        {Object.values(_data_.project).map((card, i) => renderCard(card, i))}
+                                    </div>
+                                )
+                            default:
+                                return (
+                                    <div>
+                                        {Object.keys(_data_.overdue).length ? (
+                                                <div className={''}>
+                                                    <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
+                                                        Overdue
+                                                    </div>
+                                                    {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
+                                                </div>
+                                            )
+                                            : null}
+                                        {Object.keys(_data_.overdue).length ? (
+                                            <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
+                                                Today
+                                            </div>
+                                        ) : null}
+                                        {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
+                                    </div>
+                                )
+                        }
+                    })()}
 
-                <AddTask/>
-                {(() => {
-                    switch (props.filter) {
-                        case "upcoming":
-                            return (
-                                Object.values(_data_.upcoming).map((card, i) => {
-                                    if (prev !== card.due) {
-                                        prev = card.due;
-                                        return (
-                                            <div key={card.id}>
-                                                <div className={'ml-6_ font-bold text-lg mb-3  mt-6 ml-2'}>
-                                                    {formatDate(card.due, true)}
-                                                </div>
-                                                {renderCard(card, i)}
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div key={card.id}>
-                                                {renderCard(card, i)}
-                                            </div>
-                                        )
-                                    }
-                                })
-                            )
-                        case "inbox":
-                            return (
-                                <div>
-                                    {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
-                                </div>
-                            )
-                        case "anytime":
-                            return (
-                                <div>
-                                    {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
-                                </div>
-                            )
-                        case "project":
-                            return (
-                                <div>
-                                    {Object.values(_data_.project).map((card, i) => renderCard(card, i))}
-                                </div>
-                            )
-                        default:
-                            return (
-                                <div>
-                                    {Object.keys(_data_.overdue).length ? (
-                                            <div className={''}>
-                                                <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
-                                                    Overdue
-                                                </div>
-                                                {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
-                                            </div>
-                                        )
-                                        : null}
-                                    {Object.keys(_data_.overdue).length ? (
-                                        <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
-                                            Today
-                                        </div>
-                                    ) : null}
-                                    {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
-                                </div>
-                            )
-                    }
-                })()}
+                </div>
+                {/*<div className={'border-r md:relative absolute p-6 pt-10 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-96 md:left-0 md:w-90  peer-focus:left-0 peer:transition ease-out delay-150 duration-200'}>*/}
+                {/*    <TaskDetail card={selectedTask}/>*/}
+                {/*</div>*/}
+                <TaskDetail card={selectedTask}/>
             </div>
         )
     }

@@ -84,25 +84,6 @@ function Sidebar(props) {
                                     })
                                 }
 
-                                {/*<li>*/}
-                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
-                                {/*        <span className={'bg-blue-400 w-2 h-2 rounded-full'}></span>*/}
-                                {/*        <span className={'ml-3 text-gray-600'}>Travel</span>*/}
-                                {/*    </Link>*/}
-                                {/*</li>*/}
-
-                                {/*<li>*/}
-                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
-                                {/*        <span className={'bg-red-400 w-2 h-2 rounded-full'}></span>*/}
-                                {/*        <span className={'ml-3 text-gray-600'}>Work</span>*/}
-                                {/*    </Link>*/}
-                                {/*</li>*/}
-                                {/*<li>*/}
-                                {/*    <Link to={"/"} className={'flex items-center'}>*/}
-                                {/*        <span className={'bg-yellow-400 w-2 h-2 rounded-full'}></span>*/}
-                                {/*        <span className={'ml-3 text-gray-600'}>Home</span>*/}
-                                {/*    </Link>*/}
-                                {/*</li>*/}
                             </ul>
                         </div>
 

@@ -100,8 +100,6 @@ export const Card2 = ({id, card, index, moveCard}) => {
                 project_id: selected.id
             }))
         }
-
-        console.log(selected);
     }
 
     const onDateChange = (date) => {
@@ -117,7 +115,7 @@ export const Card2 = ({id, card, index, moveCard}) => {
     }
 
     return (
-        <div onClick={clickHandler} className={`click hover:cursor-pointer hover:bg-gray-50_ flex items-center w-full h-16 border-b mb-3 bg-white rounded-2xl shadow-sm ${taskCompleted ? "opacity-40" : ""}`}>
+        <div onClick={clickHandler} className={`click hover:cursor-pointer hover:bg-gray-50_ flex items-center w-full h-16 border-b mb-3 bg-white rounded-xl shadow-sm ${taskCompleted ? "opacity-40" : ""}`}>
             <input checked={taskCompleted} onChange={onStatusChange} className={'ml-4 mr-4 check'} type={"checkbox"}/>
             <div className={`flex-grow hover:cursor-pointer click ${_task_.completed ? "line-through" : ""}`}>{_task_.name}</div>
             <div>

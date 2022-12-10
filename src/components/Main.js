@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar";
-import {useEffect} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import {getAuth} from "firebase/auth";
@@ -10,6 +10,8 @@ import {useDispatch} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
+import TaskDetail from "./TaskDetail";
+import {useReadLocalStorage} from "usehooks-ts";
 
 const paths = [
     "/today",
@@ -22,19 +24,50 @@ const paths = [
 export default function Main() {
 
     const params = useParams();
+    const location = useLocation()
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const auth = getAuth();
 
-    // onAuthStateChanged(auth, (user) => {
-    //     if (user) {
+
+    function waitForLocalStorage(key, cb, timer) {
+        console.log("Waiting for LocalStorage")
+        if (!localStorage.getItem(key)) {
+
+            return timer = setTimeout(
+                waitForLocalStorage.bind(null, key, cb),
+                100
+            )
+        }
+        clearTimeout(timer)
+        if (typeof cb !== 'function') {
+            return localStorage.getItem(key)
+        }
+        console.log("LocalStorage done")
+
+        return cb(localStorage.getItem(key))
+    }
+
+    // useEffect(() => {
+    //     waitForLocalStorage("AccessToken", function (value){
     //         dispatch(getTasks())
     //         dispatch(getProjects())
-    //     } else {
-    //         console.log("User logged out firebase");
-    //         localStorage.removeItem("AccessToken")
-    //     }
-    // });
+    //     })
+    // },[])
+
+    const showTaskDetail = (id) => {
+        console.log(id)
+    }
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            dispatch(getTasks())
+            dispatch(getProjects())
+        } else {
+            console.log("User logged out firebase");
+            localStorage.removeItem("AccessToken")
+        }
+    });
 
 
     async function isLoggedIn() {
@@ -43,13 +76,12 @@ export default function Main() {
                 getAuth().onAuthStateChanged(
                     user => {
                         if (user) {
-                            dispatch(getTasks())
-                            dispatch(getProjects())
                             resolve(user)
                         } else {
-                            console.log("User logged out firebase");
+                            // console.log("User logged out firebase");
                             localStorage.removeItem("AccessToken")
                             reject('no user logged in')
+                            navigate("login")
                         }
                     },
                     error => reject(error)
@@ -103,21 +135,24 @@ export default function Main() {
             //     </main>
             // </div>
 
-            <div className={"relative min-h-screen md:flex bg-back"}>
-                <header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">
-                    <div className={'flex justify-between'}>
-                        <MainMenu/>
-                    </div>
-                </header>
-                <main className={"relative flex h-full flex-grow "}>
+            <div className={"relative min-h-screen md:flex bg-white"}>
+                {/*<header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">*/}
+                {/*    <div className={'flex justify-between'}>*/}
+                {/*        <MainMenu/>*/}
+                {/*    </div>*/}
+                {/*</header>*/}
+                <main className={" flex h-full flex-grow "}>
                     <Sidebar id={params.id ? params.id : null}/>
-                    <div className={'h-screen overflow-y-auto w-full'}>
-                        <div className={'bg-white_ mx-auto pt-20 flex-grow max-w-4xl'}>
-                            <div className={"w-full bg-white_ h-full md:px-12 px-4"}>
-                                <TaskHeader path={params.path} id={params.id ? params.id : null}/>
-                                <Container filter={params.path} id={params.id ? params.id : null}/>
+                    <div className={'h-screen overflow-y-auto w-full flex'}>
+                        <div className={'_pt-12 flex-grow '}>
+                            <div className={"w-full h-full _md:px-12 "}>
+                                {/*<TaskHeader path={params.path} id={params.id ? params.id : null}/>*/}
+                                <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>
                         </div>
+                        {/*<div className={'w-96 bg-blue-600'}>*/}
+                        {/*    <TaskDetail task={detailTask}/>*/}
+                        {/*</div>*/}
                     </div>
                 </main>
             </div>

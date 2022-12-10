@@ -10,7 +10,6 @@ const http = axios.create({
     },
 });
 
-// const auth = getAuth();
 
 http.interceptors.request.use(function (config) {
     return config;
@@ -22,11 +21,19 @@ http.interceptors.response.use(function (config) {
     return config;
 }, function (error) {
     if(error.response.status === 401){
-        signOut(getAuth()).then(() => {
-            console.log("Signed out Firebase");
-        }).catch((error) => {
-            console.log("ERROR::Signed out Firebase");
-        });
+
+
+
+       // /* Try refresh token */
+       //  http.post("refresh").then((response) => {
+       //      console.log(response)
+       //  })
+
+        // signOut(getAuth()).then(() => {
+        //     console.log("Signed out Firebase");
+        // }).catch((error) => {
+        //     console.log("ERROR::Signed out Firebase");
+        // });
     }
     return Promise.reject(error);
 });
