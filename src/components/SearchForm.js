@@ -7,7 +7,7 @@ import DateBadge from "./DateBadge";
 import {Link} from "react-router-dom";
 
 
-export default function SearchForm() {
+export default function SearchForm({closeModel}) {
 
 
     const tasks = useSelector(state => state.tasks)
@@ -17,7 +17,7 @@ export default function SearchForm() {
 
     const filteredTasks =
         query === ''
-            ? tasks
+            ? []
             : tasks.filter((task) => {
                 return task.name.toLowerCase().includes(query.toLowerCase())
             })
@@ -42,7 +42,7 @@ export default function SearchForm() {
                             value={task}
                             disabled={task.unavailable}
                         >
-                            <Link to={"/task/" + task.id}>
+                            <Link to={"/all/task/" + task.id} onClick={closeModel}>
                                 <li className="hover:bg-hov flex items-center justify-between p-4" role="option" tabIndex="-1">
                                 <span className="whitespace-nowrap font-semibold text-slate-900">
                                     {task.name}

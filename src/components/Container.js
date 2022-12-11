@@ -54,7 +54,7 @@ export const Container = (props) => {
                 return new Date(b.due) < new Date(a.due) ? 1 : -1;
             }),
 
-            anytime: [...useSelector(
+            all: [...useSelector(
                 state => state.tasks.filter(
                     task => (showCompleted ? true : !task.completed)
                 )
@@ -152,10 +152,10 @@ export const Container = (props) => {
                                         {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
                                     </div>
                                 )
-                            case "anytime":
+                            case "all":
                                 return (
                                     <div>
-                                        {Object.values(_data_.anytime).map((card, i) => renderCard(card, i))}
+                                        {Object.values(_data_.all).map((card, i) => renderCard(card, i))}
                                     </div>
                                 )
                             case "project":
@@ -169,7 +169,7 @@ export const Container = (props) => {
                                     <div>
                                         {Object.keys(_data_.overdue).length ? (
                                                 <div className={''}>
-                                                    <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
+                                                    <div className={'font-bold text-lg mt-4_ border-b_ pb-1'}>
                                                         Overdue
                                                     </div>
                                                     {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
@@ -188,10 +188,7 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                {/*<div className={'border-r md:relative absolute p-6 pt-10 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-96 md:left-0 md:w-90  peer-focus:left-0 peer:transition ease-out delay-150 duration-200'}>*/}
-                {/*    <TaskDetail card={selectedTask}/>*/}
-                {/*</div>*/}
-                <TaskDetail card={selectedTask}/>
+                <TaskDetail card={{...selectedTask}}/>
             </div>
         )
     }

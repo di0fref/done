@@ -33,20 +33,20 @@ export default function ProjectSelect(props) {
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-light-gray py-1.5 pl-3 pr-10 text-left shadow-md_ focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <Listbox.Button className="relative shadow-sm w-full cursor-pointer rounded-lg bg-light-gray py-1.5 pl-3_ pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 
                                 <div>
                                     <span className="block truncate text-sm text-gray-600">
-                                                <div className={'flex items-center space-x-2'}>
-                                                    <div style={{
-                                                        background: selected.color
-                                                    }} className={'h-2 w-2 rounded-full'}></div>
-                                                    <div>{selected.name}</div>
-                                                </div>
+                                        <div className={'flex items-center space-x-2'}>
+                                            <div style={{
+                                                background: selected.color
+                                            }} className={'h-2 w-2 rounded-full ml-2'}> </div>
+                                            <div>{selected.name}</div>
+                                        </div>
                                     </span>
                                     <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                         <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
-                                        </span>
+                                    </span>
                                 </div>
 
                             </Listbox.Button>
@@ -64,8 +64,8 @@ export default function ProjectSelect(props) {
                                 <Listbox.Option
                                     key={id}
                                     className={({active}) =>
-                                        `elative cursor-default select-none py-2 pl-10 pr-4 ${
-                                            active ? 'bg-gray-200 text-gray-800' : 'text-gray-800'
+                                        `relative cursor-pointer select-none py-2 pl-4 pr-4 ${
+                                            active ? 'bg-hov text-gray-800' : 'text-gray-800'
                                         }`
                                     }
                                     value={project}>
@@ -78,7 +78,7 @@ export default function ProjectSelect(props) {
                                                 <div className={'flex items-center space-x-2'}>
                                                     <div style={{
                                                         background: project.color
-                                                    }} className={'h-2 w-2 rounded-full'}></div>
+                                                    }} className={'h-2 w-2 rounded-full'}> </div>
                                                     <div>{project.name}</div>
                                                 </div>
 

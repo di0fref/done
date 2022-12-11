@@ -44,7 +44,7 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     }
 
     const saveNameHandler = (e) => {
-        if (e.target.value !== card.name) {
+        if (e.currentTarget.value !== card.name) {
             dispatch(updateTask({
                 ...card,
                 name: name

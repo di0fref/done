@@ -1,16 +1,21 @@
-import {forwardRef, useEffect, useState} from "react";
+import {forwardRef, useEffect, useRef, useState} from "react";
 import ProjectSelect from "./ProjectSelect";
 import DateBadge from "./DateBadge";
 import DatePicker from "react-datepicker";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Disclosure} from "@headlessui/react";
 import {HiBars3} from "react-icons/hi2";
+import TextareaAutosize from "react-textarea-autosize";
+import {updateTask} from "../redux/taskSlice";
 
 export default function TaskDetail({card}) {
 
-    const _task_ = useSelector(state => state.current.task)
+    const [name, setName] = useState("");
+    const [due, setDue] = useState(null);
+    const [text, setText] = useState("");
 
-    const [due, setDue] = useState(_task_.due ? new Date(_task_.due) : null);
+    const dispatch = useDispatch()
+    const inputRef = useRef(null)
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
         <div onClick={onClick} className={'flex items-center space-x-2'}>
@@ -18,25 +23,61 @@ export default function TaskDetail({card}) {
         </div>
     ))
 
-
     const _project_ = useSelector(state => state.projects.find(
-        project => _task_ ? (_task_.project_id === project.id) : null
+        project => card ? (card.project_id === project.id) : null
     ))
 
-    const onProjectChange = () => {
+    useEffect(() =>{
+        setName(card.name)
+        setDue(card.due ? new Date(card.due) : null)
+        setText(card.text)
+    },[card])
 
+    const onProjectChange = (project) => {
+        // dispatch(updateTask({
+        //     ...task,
+        //     project_id: project.id
+        // }))
+
+        // console.log(project.id)
     }
 
-    useEffect(() => {
-        if (_task_.due) {
-            setDue(new Date(_task_.due))
-        } else {
-            setDue(null)
-        }
-    }, [_task_])
+    const saveNameHandler = (e) => {
+
+        // setTask({
+        //     ...task,
+        //     name: e.currentTarget.value
+        // })
+        console.log(e.currentTarget)
+
+        dispatch(updateTask({
+            ...card,
+            name: name
+        }))
+    }
+
+    // const onTextChange = (e) => {
+    //     setTask({
+    //         ...task,
+    //         text: e.currentTarget.value
+    //     })
+    // }
+
+    const onDueChange = (e) => {
+        // setDue()
+    }
+    // useEffect(() => {
+    //     if (task.due) {
+    //         setDue(new Date(task.due))
+    //     } else {
+    //         setDue(null)
+    //     }
+    //
+    //     inputRef.current.focus()
+    // }, [task])
 
 
-    if (!_task_) {
+    if (!card) {
         return (
             <div>kjbuj</div>
         )
@@ -78,9 +119,11 @@ export default function TaskDetail({card}) {
                         </div>
                     </div>
                     <div className={'font-bold text-lg mt-4 px-5'}>
-                        {_task_.name}
+                        <input onBlur={saveNameHandler} onChange={(e) => setName(e.currentTarget.value)} ref={inputRef} className={'rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
                     </div>
-                    <div className={'whitespace-pre-wrap mt-4 px-5'}>{_task_.text}</div>
+                    <div className={'whitespace-pre-wrap mt-4 px-5'}>
+                        <TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>
+                    </div>
                 </div>
             </Disclosure>
         </div>

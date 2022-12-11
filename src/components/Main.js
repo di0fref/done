@@ -165,13 +165,9 @@ export default function Main() {
                     <div className={'h-screen overflow-y-auto w-full flex'}>
                         <div className={'_pt-12 flex-grow '}>
                             <div className={"w-full h-full _md:px-12 "}>
-                                {/*<TaskHeader path={params.path} id={params.id ? params.id : null}/>*/}
                                 <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>
                         </div>
-                        {/*<div className={'w-96 bg-blue-600'}>*/}
-                        {/*    <TaskDetail task={detailTask}/>*/}
-                        {/*</div>*/}
                     </div>
                 </main>
             </div>

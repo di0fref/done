@@ -33,7 +33,7 @@ export default function MyModal() {
 
                 <Dialog.Panel className="mx-auto max-w-xl transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-md transition-all">
 
-                    <SearchForm/>
+                    <SearchForm closeModel={closeModal}/>
 
                 </Dialog.Panel>
             </Dialog>

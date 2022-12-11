@@ -14,10 +14,6 @@ export default function TaskHeader(props) {
         project => params.id ? (params.id === project.id) : null
     ))
 
-    useEffect(()=> {
-        console.log(params)
-
-    },[params])
 
     useEffect(() => {
         if (params.path === "project") {
@@ -28,7 +24,14 @@ export default function TaskHeader(props) {
             //     }} className={'w-4 h-4 rounded-full'}> </div>
             // )
         } else {
-            setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));
+            switch (params.path){
+                case "all":
+                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1) + " Tasks")
+                    break
+                default:
+                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));
+            }
+
             // setIcon(getIcon(props.path))
         }
     }, [params.path, params.id])

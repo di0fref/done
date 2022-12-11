@@ -7,7 +7,7 @@ export function getIcon(path) {
             return <HiStar className={'text-yellow-300'}/>
         case "upcoming":
             return <HiCalendar className={'text-red-400'}/>
-        case "anytime":
+        case "all":
             return <HiArchiveBox className={'text-green-500'}/>
         case "inbox":
             return <HiInbox className={'text-sky-600'}/>
