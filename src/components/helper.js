@@ -16,6 +16,12 @@ export function getIcon(path) {
 
 export const dateFormat = "dd MMM"
 
+export const paths = [
+    "today",
+    "upcoming",
+    "inbox",
+    "all"
+];
 
 export function formatDate(date, includeDay) {
     if (!date) {

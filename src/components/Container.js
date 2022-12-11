@@ -1,6 +1,5 @@
 import update from 'immutability-helper'
 import {useCallback, useEffect, useState} from 'react'
-import ReactTooltip from "react-tooltip";
 import {useDispatch, useSelector} from "react-redux";
 import {formatDate} from "./helper";
 import {motion, AnimatePresence} from "framer-motion"
@@ -10,7 +9,7 @@ import {Card4} from "./Card4";
 import TaskDetail from "./TaskDetail";
 import TaskHeader from "./TaskHeader";
 import {useParams} from "react-router-dom";
-import {setCurrentTask} from "../redux/currentTaskSlice"
+// import {setCurrent} from "../redux/currentSlice"
 
 export const Container = (props) => {
     {
@@ -18,7 +17,7 @@ export const Container = (props) => {
         const [data, setData] = useState([])
         const showCompleted = useReadLocalStorage("showCompletedTasks")
 
-        const selectedTask = useSelector(state => state.currentTask)
+        const selectedTask = useSelector(state => state.current.task)
 
         const dispatch = useDispatch()
 
@@ -72,9 +71,6 @@ export const Container = (props) => {
             }),
         }
 
-        useEffect(() => {
-            ReactTooltip.rebuild();
-        });
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
 
@@ -93,15 +89,14 @@ export const Container = (props) => {
             )
         }, [])
 
-        const onClickCard = (e, card) => {
-            dispatch(setCurrentTask(card))
-
-        }
+        // const onClickCard = (e, card) => {
+        //     dispatch(setCurrentTask(card))
+        // }
 
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
-                    onClick={(e) => dispatch(setCurrentTask(card))}
+                    // onClick={(e) => dispatch(setCurrentTask(card))}
                     key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
@@ -125,7 +120,7 @@ export const Container = (props) => {
         return (
             <div className={'flex h-full '}>
                 <div className={'flex-grow px-8 mt-6 '}>
-                    <TaskHeader path={params.path} id={params.id ? params.id : null}/>
+                    <TaskHeader/>
                     <AddTask/>
                     {(() => {
                         switch (props.filter) {

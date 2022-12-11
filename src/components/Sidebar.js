@@ -8,6 +8,8 @@ import {Link, useLocation} from "react-router-dom";
 import {getIcon} from "./helper"
 import AddProjectForm from "./AddProjectButton";
 import {useSelector} from "react-redux";
+import SearchDialog from "./SearchDialog";
+import SearchForm from "./SearchForm";
 
 
 function Sidebar(props) {
@@ -15,7 +17,6 @@ function Sidebar(props) {
     const location = useLocation();
     const projects = useSelector(state => state.projects)
     const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
-
     return (
         <div>
             <Disclosure as="nav">
@@ -28,32 +29,33 @@ function Sidebar(props) {
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="border-r md:relative absolute p-6 pt-10 w-1/2 h-screen bg-gray-100 _z-20 fixed top-0 -left-96 md:left-0 md:w-90  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+                <div className="border-r md:relative absolute p-6 w-72 h-screen bg-gray-100 _z-20 fixed top-0 -left-72 md:left-0 md:w-52 lg:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+                    <SearchDialog/>
                     <div className="flex flex-col justify-start item-center">
-                        <div className={'overflow-y-auto py-4 px-3_'}>
+                        <div className={'overflow-y-auto py-3'}>
                             <ul className={'space-y-1'}>
                                 <li>
-                                    <Link to={'/inbox'} className={`${(location.pathname === "/inbox") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         <div>{getIcon("inbox")}</div>
                                         <span className={'ml-3'}>Inbox</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/today'} className={`${(location.pathname === "/today") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         {getIcon("today")}
                                         <span className={'ml-3'}>Today</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/upcoming'} className={`${(location.pathname === "/upcoming") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
                                         {getIcon("upcoming")}
                                         <span className={'ml-3'}>Upcoming</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/anytime'} className={`${(location.pathname === "/anytime") ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
-                                        {getIcon("anytime")}
-                                        <span className={'ml-3'}>Anytime</span>
+                                    <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                        {getIcon("all")}
+                                        <span className={'ml-3'}>All Tasks</span>
                                     </Link>
                                 </li>
 
@@ -61,7 +63,7 @@ function Sidebar(props) {
                         </div>
                         <div>
                             <div className={' flex justify-between'}>
-                                <div className={'text-black/50 font-medium text-[14px] mb-2'}>Projects</div>
+                                <div className={'text-black/50 font-medium text-[14px] mb-2'}>Lists</div>
                                 <AddProjectForm/>
                             </div>
                             <ul className={'space-y-1'}>

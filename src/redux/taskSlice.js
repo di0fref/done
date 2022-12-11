@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {taskCreate, tasksAll, taskUpdate} from "../service/api";
 import {apiConfig} from "../service/config";
 import http from "../service/http-common";
+import {currentTaskSlice} from "./currentSlice";
 
 const initialState = []
 
@@ -67,7 +68,12 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
-        add: (state) => {},
+        // setCurrentTask: (state, action) => {
+        //    return  state.find(task => task.id === action.payload)
+        //
+        //     console.log(JSON.stringify(state.tasks))
+        //
+        // },
     },
     extraReducers: (builder) => {
         builder
@@ -93,7 +99,7 @@ export const taskSlice = createSlice({
                 }
             })
             .addCase(updateTask.fulfilled, (state, action) => {
-                const index = state.findIndex(tutorial => tutorial.id === action.payload.id);
+                const index = state.findIndex(task => task.id === action.payload.id);
                 state[index] = {
                     ...state[index],
                     ...action.payload,
@@ -101,5 +107,5 @@ export const taskSlice = createSlice({
             })
     }
 })
-
+export const {setCurrentTask} = taskSlice.actions
 export default taskSlice.reducer

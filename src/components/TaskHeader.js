@@ -1,19 +1,26 @@
 import {useEffect, useState} from "react";
 import {getIcon} from "./helper"
 import {useSelector} from "react-redux";
+import {useParams} from "react-router-dom";
+import {format} from "date-fns";
 
 export default function TaskHeader(props) {
 
     const [icon, setIcon] = useState("")
     const [name, setName] = useState("")
+    const params = useParams()
 
     const project = useSelector(state => state.projects.find(
-        project => props.id ? (props.id === project.id) : null
+        project => params.id ? (params.id === project.id) : null
     ))
 
+    useEffect(()=> {
+        console.log(params)
+
+    },[params])
 
     useEffect(() => {
-        if (props.path === "project") {
+        if (params.path === "project") {
             setName(project.name.charAt(0).toUpperCase() + project.name.slice(1));
             // setIcon(
             //     <div style={{
@@ -21,10 +28,10 @@ export default function TaskHeader(props) {
             //     }} className={'w-4 h-4 rounded-full'}> </div>
             // )
         } else {
-            setName(props.path.charAt(0).toUpperCase() + props.path.slice(1));
+            setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));
             // setIcon(getIcon(props.path))
         }
-    }, [props.path, props.id])
+    }, [params.path, params.id])
 
     return (
         <div>
@@ -32,7 +39,11 @@ export default function TaskHeader(props) {
                 {/*<div className={'mr-2 ml-3'}>{icon}</div>*/}
                 <div className={'font-semibold text-2xl'}>{name}</div>
             </div>
-            <span className={'text-2xl text-gray-500'}>It's wednesday, feb 22</span>
+            {params.path==="today"?
+                <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d ")}</span>
+                :""}
         </div>
+
+    // wednesday, feb 22
     )
 }

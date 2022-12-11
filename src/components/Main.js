@@ -1,59 +1,50 @@
 import Sidebar from "./Sidebar";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import TaskHeader from "./TaskHeader";
 import {Container} from "./Container";
 import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
 import {useAuthState} from "react-firebase-hooks/auth";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
-import TaskDetail from "./TaskDetail";
-import {useReadLocalStorage} from "usehooks-ts";
-
-const paths = [
-    "/today",
-    "/upcoming",
-    "/anytime",
-    "/inbox"
-];
+import {setCurrent} from "../redux/currentSlice";
+import {paths} from "./helper";
 
 
 export default function Main() {
 
     const params = useParams();
-    const location = useLocation()
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const auth = getAuth();
 
+    const allTasks = useSelector(state => state.tasks)
+    const allProjects = useSelector(state => state.projects)
 
     function waitForLocalStorage(key, cb, timer) {
-        console.log("Waiting for LocalStorage")
+
+        // console.log("waiting")
         if (!localStorage.getItem(key)) {
 
-            return timer = setTimeout(
-                waitForLocalStorage.bind(null, key, cb),
-                100
-            )
+            return timer = setTimeout(waitForLocalStorage.bind(null, key, cb), 100)
         }
         clearTimeout(timer)
         if (typeof cb !== 'function') {
             return localStorage.getItem(key)
         }
-        console.log("LocalStorage done")
-
+        // console.log("done")
         return cb(localStorage.getItem(key))
     }
 
-    // useEffect(() => {
-    //     waitForLocalStorage("AccessToken", function (value){
-    //         dispatch(getTasks())
-    //         dispatch(getProjects())
-    //     })
-    // },[])
+    useEffect(() => {
+        waitForLocalStorage("AccessToken", function (value) {
+            dispatch(getTasks())
+            dispatch(getProjects())
+        })
+    }, [])
 
     const showTaskDetail = (id) => {
         console.log(id)
@@ -61,8 +52,6 @@ export default function Main() {
 
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            dispatch(getTasks())
-            dispatch(getProjects())
         } else {
             console.log("User logged out firebase");
             localStorage.removeItem("AccessToken")
@@ -103,6 +92,50 @@ export default function Main() {
     }, [])
 
 
+    useEffect(() => {
+
+        if (params.path === "project" && params.path2 === "task") {
+            dispatch(setCurrent({
+                    task: allTasks.find(task => task.id === params.id2),
+                    project: allProjects.find(project => project.id === params.id)
+                }
+            ))
+            return
+        }
+
+
+        if (params.path === "project") {
+            dispatch(setCurrent({
+                    task: {},
+                    project: allProjects.find(project => project.id === params.id)
+                }
+            ))
+            return
+        }
+
+
+        if (paths.find(p => params.path === p) && params.path2 === "task") {
+            dispatch(setCurrent({
+                    task: allTasks.find(task => task.id === params.id2),
+                    project: {}
+                }
+            ))
+            return
+        }
+
+        if (paths.find(p => params.path === p)) {
+            dispatch(setCurrent({
+                    task:{},
+                    project: {}
+                }
+            ))
+            return
+        }
+
+
+    }, [params, allTasks, allProjects])
+
+
     const [user, loading, error] = useAuthState(auth);
 
     if (error) {
@@ -120,20 +153,6 @@ export default function Main() {
         )
     } else {
         return (
-            // <div className="relative min-h-screen md:flex">
-            //     <Sidebar/>
-            //     <main id="content" className="flex-1 md:ml-6 lg:px-8 h-screen overflow-y-auto">
-            //         <div className="max-w-4xl">
-            //             <div className="px-4 py-6 sm:px-0">
-            //                 <div className={'ml-3 flex justify-between'}>
-            //                     <div><TaskHeader path={params.path}/></div>
-            //                     <div><MainMenu/></div>
-            //                 </div>
-            //                 <Container filter={params.path}/>
-            //             </div>
-            //         </div>
-            //     </main>
-            // </div>
 
             <div className={"relative min-h-screen md:flex bg-white"}>
                 {/*<header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">*/}

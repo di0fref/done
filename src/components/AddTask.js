@@ -3,7 +3,7 @@ import {BsCalendar} from "react-icons/bs";
 import ProjectSelect from "./ProjectSelect";
 import DatePicker from "react-datepicker";
 import DateBadge from "./DateBadge";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import TextareaAutosize from "react-textarea-autosize";
@@ -43,6 +43,8 @@ export default function AddTask() {
     const ref = useRef(null)
     const dispatch = useDispatch()
 
+    const _project_ = useSelector(state => state.current.project)
+
 
     const [name, setName] = useState("");
     const [project, setProject] = useState("");
@@ -54,7 +56,7 @@ export default function AddTask() {
         if (editing) {
             inputReference.current.focus()
         }
-        }, [editing])
+    }, [editing])
 
     const handleClickOutside = (e) => {
         setEditing(false)
@@ -64,6 +66,10 @@ export default function AddTask() {
     const onKeyDownHandler = (e) => {
 
         if (e.key === 'Enter') {
+            if (!name) {
+                alert("Please give your task a title")
+                return
+            }
             (async () => {
                 try {
                     const task = await dispatch(addTask({
@@ -75,9 +81,9 @@ export default function AddTask() {
                     })).unwrap()
 
 
-                task && toast.success(
-                    <div>1 task was created</div>
-                )
+                    task && toast.success(
+                        <div>1 task was created</div>
+                    )
 
                 } catch (err) {
                     console.log(err);
@@ -133,7 +139,7 @@ export default function AddTask() {
 
                 </div>
                 <div className={''}>
-                    <ProjectSelect initial={false} outsideClicked={editing} onProjectChange={onProjectChange}/>
+                    <ProjectSelect initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>
                 </div>
             </div>
         )

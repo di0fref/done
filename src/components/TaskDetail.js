@@ -8,7 +8,9 @@ import {HiBars3} from "react-icons/hi2";
 
 export default function TaskDetail({card}) {
 
-    const [due, setDue] = useState(card.due ? new Date(card.due) : null);
+    const _task_ = useSelector(state => state.current.task)
+
+    const [due, setDue] = useState(_task_.due ? new Date(_task_.due) : null);
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
         <div onClick={onClick} className={'flex items-center space-x-2'}>
@@ -16,11 +18,9 @@ export default function TaskDetail({card}) {
         </div>
     ))
 
-    const _task_ = useSelector(state => state.tasks.find(
-        task => card ? (task.id === card.id) : null
-    ))
+
     const _project_ = useSelector(state => state.projects.find(
-        project => card ? (card.project_id === project.id) : null
+        project => _task_ ? (_task_.project_id === project.id) : null
     ))
 
     const onProjectChange = () => {
@@ -28,12 +28,12 @@ export default function TaskDetail({card}) {
     }
 
     useEffect(() => {
-        if (card.due) {
-            setDue(new Date(card.due))
+        if (_task_.due) {
+            setDue(new Date(_task_.due))
         } else {
             setDue(null)
         }
-    }, [card])
+    }, [_task_])
 
 
     if (!_task_) {
@@ -50,7 +50,7 @@ export default function TaskDetail({card}) {
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className={'border-r md:relative border-l bg-white pt-1 w-100 h-screen fixed top-0 -right-[28rem] md:right-0 md:w-72 lg:w-100  peer-focus:right-0 peer:transition ease-out delay-150 duration-200'}>
+                <div className={'border-r md:relative border-l bg-white pt-1 w-100 h-screen fixed top-0 -right-[28rem] md:right-0 md:w-96 lg:w-100  peer-focus:right-0 peer:transition ease-out delay-150 duration-200'}>
                     <div className={'h-12 border-b mt-4'}>
                         <div className={'flex items-center space-x-2'}>
                             <div className={'ml-4 flex-grow'}>

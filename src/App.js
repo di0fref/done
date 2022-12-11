@@ -49,20 +49,28 @@ function App() {
                     effect={"solid"}
                 />
                 <Routes>
-                    <Route path={'/:path'} element={<Main/>}/>
+                    {/*<Route path={'/:path'} element={<Main/>}/>*/}
                     {/*<Route exact path={'inbox'} element={<Main/>}/>*/}
                     {/*<Route exact path={'today'} element={<Main/>}/>*/}
                     {/*<Route exact path={'upcoming'} element={<Main/>}/>*/}
                     {/*<Route exact path={'anytime'} element={<Main/>}/>*/}
 
 
-                    <Route exact path={'/:path/:id'} element={<Main/>}/>
+                    {/*<Route path={'/:module'} element={<Main/>}/>*/}
+                    {/*<Route exact path={'/:path/task/:id'} element={<Main/>}/>*/}
+                    {/*<Route exact path={'/:path/:id'} element={<Main/>}/>*/}
+
+                    {/*<Route exact path={'/:module/:id'} element={<Main/>}/>*/}
+                    {/*<Route exact path={'/:module/:id/task/:tid'} element={<Main/>}/>*/}
+                    {/*<Route exact path={'/:module/task/:id'} element={<Main/>}/>*/}
 
                     {/*<Route exact path={'/project/:id'} element={<Main/>}/>*/}
-                    {/*<Route exact path={'/project/:projectId/task/:taskId'} element={<Main/>}/>*/}
+                    {/*<Route exact path={'/:path/:projectId/:sub/:taskId'} element={<Main/>}/>*/}
 
 
-                    {/*<Route path={'/:path/:id'} element={<Main/>}/>*/}
+                    <Route path={'/:path/:id'} element={<Main/>}/>
+                    <Route path={'/:path/:id/:path2/:id2'} element={<Main/>}/>
+                    <Route path={'/:path/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path'} element={<Main/>}/>
 
                     <Route exact path="/" element={<Navigate to="/today" replace/>}/>

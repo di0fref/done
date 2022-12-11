@@ -22,17 +22,9 @@ export default function ProjectSelect(props) {
 
 
     useEffect(() => {
-        // if (props.initial) {
-        //     setSelected(props.initial)
-        // }
         setSelected(props.initial.name ? props.initial : projects[0])
     }, [props.initial])
 
-
-    // useEffect(() => {
-    // setSelected(projects[0])
-    // console.log(selected)
-    // }, [props.outsideClicked, selected])
 
     return (
         <div className=" mr-2">
