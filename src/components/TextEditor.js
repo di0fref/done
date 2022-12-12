@@ -29,7 +29,7 @@ function Placeholder() {
     return <div className="editor-placeholder">Enter some text...</div>;
 }
 
-const exampleTheme = {
+const listTheme = {
     ltr: "ltr",
     rtl: "rtl",
     placeholder: "editor-placeholder",
@@ -58,7 +58,7 @@ export default function Editor(props) {
     return (
 
         <LexicalComposer initialConfig={{
-            theme: exampleTheme,
+            theme: listTheme,
             editorState: props.initial,
             nodes: [
                 HeadingNode,
@@ -74,18 +74,18 @@ export default function Editor(props) {
                 LinkNode
             ],
         }}>
-            <div className="editor-container prose">
+            <div className="editor-container prose_">
                 <ToolbarPlugin />
                 <div className="editor-inner">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className="editor-input  focus:ring-0"/>}
+                        contentEditable={<ContentEditable className="editor-input "/>}
                         placeholder={<Placeholder/>}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     {/*<HistoryPlugin />*/}
                     {/*<TreeViewPlugin />*/}
                     <AutoFocusPlugin/>
-                    <OnChangePlugin onChange={props.onChange}/>
+                    <OnChangePlugin onChange={props.onTextChange}/>
                     {/*<CodeHighlightPlugin />*/}
                     <ListPlugin/>
                     <LinkPlugin/>

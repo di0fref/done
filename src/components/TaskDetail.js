@@ -9,12 +9,13 @@ import TextareaAutosize from "react-textarea-autosize";
 import {updateTask} from "../redux/taskSlice";
 import Editor from "./TextEditor";
 import {$getRoot, $getSelection} from "lexical";
+import {format} from "date-fns";
 // import Editor from "./Editor";
 
 export default function TaskDetail(props) {
 
     const [name, setName] = useState(props.card.name);
-    const [due, setDue] = useState(props.card.due?new Date(props.card.due):null);
+    const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
     const [text, setText] = useState(props.card.text);
 
     const dispatch = useDispatch()
@@ -30,29 +31,19 @@ export default function TaskDetail(props) {
         project => props.card ? (props.card.project_id === project.id) : null
     ))
 
-    // useEffect(() =>{
-    //     setName(card.name)
-    //     setDue(card.due ? new Date(card.due) : null)
-    //     setText(card.text)
-    // },[card])
-    // useEffect(() => { setName(propName) }, [props.card.name]);
-
     const onProjectChange = (project) => {
-        // dispatch(updateTask({
-        //     ...task,
-        //     project_id: project.id
-        // }))
-
+        if(project.id !== props.card.project_id) {
+            dispatch(updateTask({
+                id: props.card.id,
+                project_id: project.id
+            }))
+        }
+        console.log(project.id)
+        console.log(props.card.project_id)
         // console.log(project.id)
     }
 
     const saveNameHandler = (e) => {
-
-        // setTask({
-        //     ...task,
-        //     name: e.currentTarget.value
-        // })
-        console.log(e.currentTarget)
 
         dispatch(updateTask({
             id: props.card.id,
@@ -60,42 +51,22 @@ export default function TaskDetail(props) {
         }))
     }
 
-    // const onTextChange = (e) => {
-    //     setTask({
-    //         ...task,
-    //         text: e.currentTarget.value
-    //     })
-    // }
+    const onDateChange = (date) => {
 
-    const onDueChange = (e) => {
-        // setDue()
+        setDue(date)
+        dispatch(updateTask({
+            id: props.card.id,
+            due: format(new Date(date), "Y-M-dd")
+        }))
     }
-    // useEffect(() => {
-    //     if (task.due) {
-    //         setDue(new Date(task.due))
-    //     } else {
-    //         setDue(null)
-    //     }
-    //
-    //     inputRef.current.focus()
-    // }, [task])
 
-    function onChange(editorState) {
-        // editorState.read(() => {
-        //     // Read the contents of the EditorState here.
-        //     const root = $getRoot();
-        //     const selection = $getSelection();
-        //
-        //     console.log(root, selection);
-        // });
-
+    function onTextChange(editorState) {
 
         dispatch(updateTask({
-            id:props.card.id,
+            id: props.card.id,
             text: JSON.stringify(editorState)
         }))
 
-        // console.log(JSON.stringify(editorState))
     }
 
     if (!props.card) {
@@ -112,7 +83,7 @@ export default function TaskDetail(props) {
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className={'border-r md:relative border-l bg-white pt-1 w-100 h-screen fixed top-0 -right-[28rem] md:right-0 md:w-96 lg:w-100  peer-focus:right-0 peer:transition ease-out delay-150 duration-200'}>
+                <div className={'border-r md:relative border-l bg-white pt-1 w-128 h-screen fixed top-0 -right-[32rem] md:right-0 md:w-96 lg:w-128  peer-focus:right-0 peer:transition ease-out delay-150 duration-200'}>
                     <div className={'h-12 border-b mt-4'}>
                         <div className={'flex items-center space-x-2'}>
                             <div className={'ml-4 flex-grow'}>
@@ -121,7 +92,7 @@ export default function TaskDetail(props) {
                             <div>
                                 <DatePicker
                                     selected={due}
-                                    onChange={setDue}
+                                    onChange={onDateChange}
                                     customInput={
                                         <DateCustomInput/>
                                     }
@@ -144,7 +115,7 @@ export default function TaskDetail(props) {
                     </div>
                     <div className={'px-5'}>
 
-                        <Editor onChange={onChange} initial={props.card.text}/>
+                        <Editor onTextChange={onTextChange} initial={props.card.text}/>
                         {/*<TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>*/}
                     </div>
                 </div>

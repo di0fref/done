@@ -16,9 +16,14 @@ export default function ProjectSelect(props) {
     const [selected, setSelected] = useState(props.initial.name ? props.initial : projects[0])
 
 
-    useEffect(() => {
-        props.onProjectChange(selected)
-    }, [selected])
+    const onChange = (project) => {
+        console.log(project)
+        setSelected(project)
+        props.onProjectChange(project)
+    }
+    // useEffect(() => {
+    //     props.onProjectChange(selected)
+    // }, [selected])
 
 
     useEffect(() => {
@@ -28,7 +33,7 @@ export default function ProjectSelect(props) {
 
     return (
         <div className=" mr-2">
-            <Listbox value={selected} onChange={setSelected}>
+            <Listbox value={selected} onChange={onChange}>
                 <div className="relative">
                     {props.children ?
                         props.children : (
