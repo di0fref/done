@@ -7,6 +7,7 @@ import {Disclosure} from "@headlessui/react";
 import {HiBars3} from "react-icons/hi2";
 import TextareaAutosize from "react-textarea-autosize";
 import {updateTask} from "../redux/taskSlice";
+import Editor from "./Editor";
 
 export default function TaskDetail({card}) {
 
@@ -122,7 +123,9 @@ export default function TaskDetail({card}) {
                         <input onBlur={saveNameHandler} onChange={(e) => setName(e.currentTarget.value)} ref={inputRef} className={'rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
                     </div>
                     <div className={'whitespace-pre-wrap mt-4 px-5'}>
-                        <TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>
+
+                        <Editor/>
+                        {/*<TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>*/}
                     </div>
                 </div>
             </Disclosure>
