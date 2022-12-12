@@ -6,7 +6,7 @@ import {HistoryPlugin} from "@lexical/react/LexicalHistoryPlugin";
 import {AutoFocusPlugin} from "@lexical/react/LexicalAutoFocusPlugin";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
 import TreeViewPlugin from "./plugins/TreeViewPlugin";
-import ToolbarPlugin from "./plugins/ToolbarPlugin";
+// import ToolbarPlugin from "./plugins/ToolbarPlugin";
 import {HeadingNode, QuoteNode} from "@lexical/rich-text";
 import {TableCellNode, TableNode, TableRowNode} from "@lexical/table";
 import {ListItemNode, ListNode} from "@lexical/list";
@@ -16,43 +16,49 @@ import {LinkPlugin} from "@lexical/react/LexicalLinkPlugin";
 import {ListPlugin} from "@lexical/react/LexicalListPlugin";
 import {MarkdownShortcutPlugin} from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import {TRANSFORMERS} from "@lexical/markdown";
+import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
 
 import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
 import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
 import {$createParagraphNode, $getRoot, $getSelection} from "lexical";
 import {OnChangePlugin} from "@lexical/react/LexicalOnChangePlugin";
+import ToolbarPlugin from "./plugins/ListToolbar";
 
 function Placeholder() {
     return <div className="editor-placeholder">Enter some text...</div>;
 }
 
-const editorConfig = {
-    // The editor theme
-    theme: ExampleTheme,
-    // Handling of errors during update
-    onError(error) {
-        throw error;
-    },
-    // Any custom nodes go here
-    nodes: [
-        ListNode,
-        ListItemNode,
-        AutoLinkNode,
-        LinkNode
-    ],
-    // editorState: props.initial
+const exampleTheme = {
+    ltr: "ltr",
+    rtl: "rtl",
+    placeholder: "editor-placeholder",
+    paragraph: "editor-paragraph",
+    list: {
+        listitem: "PlaygroundEditorTheme__listItem",
+        listitemChecked: "PlaygroundEditorTheme__listItemChecked",
+        listitemUnchecked: "PlaygroundEditorTheme__listItemUnchecked",
+        nested: {
+            listitem: "PlaygroundEditorTheme__nestedListItem"
+        },
+        olDepth: [
+            "PlaygroundEditorTheme__ol1",
+            "PlaygroundEditorTheme__ol2",
+            "PlaygroundEditorTheme__ol3",
+            "PlaygroundEditorTheme__ol4",
+            "PlaygroundEditorTheme__ol5"
+        ],
+        ul: "PlaygroundEditorTheme__ul"
+    }
 };
-// This is some crazy shit
-// Item 1
-// item 2
-// item 3
-// https://github.com/facebook/lexical#working-with-lexical
+
+
 export default function Editor(props) {
 
     return (
 
         <LexicalComposer initialConfig={{
+            theme: exampleTheme,
             editorState: props.initial,
             nodes: [
                 HeadingNode,
@@ -69,7 +75,7 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container prose">
-                {/*<ToolbarPlugin />*/}
+                <ToolbarPlugin />
                 <div className="editor-inner">
                     <RichTextPlugin
                         contentEditable={<ContentEditable className="editor-input  focus:ring-0"/>}
@@ -84,6 +90,7 @@ export default function Editor(props) {
                     <ListPlugin/>
                     <LinkPlugin/>
                     <AutoLinkPlugin/>
+                    <CheckListPlugin/>
                     {/*<ListMaxIndentLevelPlugin maxDepth={7} />*/}
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS}/>
                 </div>

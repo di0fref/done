@@ -144,3 +144,225 @@ pre::-webkit-scrollbar-thumb {
     width: 20px;
     vertical-align: -0.25em;
 }
+
+
+button.item.dropdown-item-active {
+    background-color: rgba(223, 232, 250, 0.3);
+}
+
+button.item.dropdown-item-active i {
+    opacity: 1;
+}
+
+.App {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 0 5%;
+}
+
+.editor-container {
+    background: #fff;
+    margin: 20px auto 20px auto;
+    border-radius: 2px;
+    max-width: 600px;
+    color: #000;
+    position: relative;
+    line-height: 20px;
+    font-weight: 400;
+    text-align: left;
+    border-radius: 10px;
+}
+
+.editor-input {
+    min-height: 150px;
+    resize: none;
+    font-size: 15px;
+    caret-color: rgb(5, 5, 5);
+    position: relative;
+    tab-size: 1;
+    outline: 0;
+    padding: 0px 10px 20px;
+    caret-color: #444;
+}
+
+.editor-placeholder {
+    color: #999;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 45px;
+    left: 10px;
+    font-size: 15px;
+    user-select: none;
+    display: inline-block;
+    pointer-events: none;
+}
+
+.editor-paragraph {
+    margin: 0 0 15px 0;
+    position: relative;
+}
+
+.toolbar {
+    display: flex;
+    margin-bottom: 1px;
+    background: #fff;
+    padding: 4px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    vertical-align: middle;
+    overflow: auto;
+    height: 36px;
+}
+
+.toolbar button.toolbar-item {
+    border: 0;
+    display: flex;
+    background: none;
+    border-radius: 10px;
+    padding: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(223, 223, 223);
+}
+
+.toolbar button.toolbar-item.spaced {
+    margin: 5px;
+}
+
+.toolbar .toolbar-item:hover:not([disabled]) {
+    background-color: #eee;
+}
+
+.toolbar .toolbar-item.font-family .text {
+    display: block;
+    max-width: 40px;
+}
+
+.toolbar .toolbar-item .text {
+    display: flex;
+    line-height: 20px;
+    vertical-align: middle;
+    font-size: 14px;
+    color: rgb(104, 104, 104);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 20px;
+    text-align: left;
+}
+
+
+.PlaygroundEditorTheme__ol1 {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__ol2 {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-type: upper-alpha;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__ol3 {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-type: lower-alpha;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__ol4 {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-type: upper-roman;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__ol5 {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-type: lower-roman;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__ul {
+    padding: 0;
+    margin: 0;
+    margin-left: 16px;
+    list-style-position: inside;
+}
+.PlaygroundEditorTheme__listItem {
+    margin: 0 32px;
+}
+.PlaygroundEditorTheme__listItemChecked,
+.PlaygroundEditorTheme__listItemUnchecked {
+    position: relative;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding-left: 24px;
+    padding-right: 24px;
+    list-style-type: none;
+    outline: none;
+}
+.PlaygroundEditorTheme__listItemChecked {
+    text-decoration: line-through;
+}
+.PlaygroundEditorTheme__listItemUnchecked:before,
+.PlaygroundEditorTheme__listItemChecked:before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    left: 0;
+    cursor: pointer;
+    display: block;
+    background-size: cover;
+    position: absolute;
+}
+.PlaygroundEditorTheme__listItemUnchecked[dir="rtl"]:before,
+.PlaygroundEditorTheme__listItemChecked[dir="rtl"]:before {
+    left: auto;
+    right: 0;
+}
+.PlaygroundEditorTheme__listItemUnchecked:focus:before,
+.PlaygroundEditorTheme__listItemChecked:focus:before {
+    box-shadow: 0 0 0 2px #a6cdfe;
+    border-radius: 2px;
+}
+.PlaygroundEditorTheme__listItemUnchecked:before {
+    border: 1px solid #999;
+    border-radius: 2px;
+}
+.PlaygroundEditorTheme__listItemChecked:before {
+    border: 1px solid rgb(61, 135, 245);
+    border-radius: 2px;
+    background-color: #3d87f5;
+    background-repeat: no-repeat;
+}
+.PlaygroundEditorTheme__listItemChecked:after {
+    content: "";
+    cursor: pointer;
+    border-color: #fff;
+    border-style: solid;
+    position: absolute;
+    display: block;
+    top: 6px;
+    width: 3px;
+    left: 7px;
+    height: 6px;
+    transform: rotate(45deg);
+    border-width: 0 2px 2px 0;
+}
+.PlaygroundEditorTheme__nestedListItem {
+    list-style-type: none;
+}
+.PlaygroundEditorTheme__nestedListItem:before,
+.PlaygroundEditorTheme__nestedListItem:after {
+    display: none;
+}
