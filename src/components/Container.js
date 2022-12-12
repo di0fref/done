@@ -97,7 +97,7 @@ export const Container = (props) => {
             return (
                 <motion.div
                     // onClick={(e) => dispatch(setCurrentTask(card))}
-                    key={card.id}
+                    key={card.name + card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
@@ -188,7 +188,7 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                <TaskDetail card={{...selectedTask}}/>
+                <TaskDetail card={selectedTask} key={selectedTask.id}/>
             </div>
         )
     }

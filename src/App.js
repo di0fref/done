@@ -11,6 +11,7 @@ import {store} from './redux/store'
 import {Provider} from 'react-redux'
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import "./editor.css"
 
 import "react-datepicker/dist/react-datepicker.css";
 

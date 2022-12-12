@@ -163,7 +163,7 @@ export default function Main() {
                 <main className={" flex h-full flex-grow "}>
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>
-                        <div className={'_pt-12 flex-grow '}>
+                        <div className={'flex-grow '}>
                             <div className={"w-full h-full _md:px-12 "}>
                                 <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>

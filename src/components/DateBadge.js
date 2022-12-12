@@ -15,13 +15,13 @@ export default function DateBadge(props){
     }
 
     const color = new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
-        ? "whitespace-nowrap text-warning text-xs "
+        ? "whitespace-nowrap text-warning  "
         : new Date(date).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
-            ? "whitespace-nowrap text-green-800 text-xs"
-            : "whitespace-nowrap text-xs text-primary "
+            ? "whitespace-nowrap text-green-800 "
+            : "whitespace-nowrap text-primary "
 
     return(
-        <div className={`${color} text-center hover:underline hover:cursor-pointer`}>{formatDate(date)}</div>
+        <div className={`${color} text-sm text-center hover:underline hover:cursor-pointer`}>{formatDate(date)}</div>
     )
 }
 // <span className="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-red-200 dark:text-red-900">Red</span>

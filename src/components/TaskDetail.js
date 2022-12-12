@@ -7,13 +7,15 @@ import {Disclosure} from "@headlessui/react";
 import {HiBars3} from "react-icons/hi2";
 import TextareaAutosize from "react-textarea-autosize";
 import {updateTask} from "../redux/taskSlice";
-import Editor from "./Editor";
+import Editor from "./TextEditor";
+import {$getRoot, $getSelection} from "lexical";
+// import Editor from "./Editor";
 
-export default function TaskDetail({card}) {
+export default function TaskDetail(props) {
 
-    const [name, setName] = useState("");
-    const [due, setDue] = useState(null);
-    const [text, setText] = useState("");
+    const [name, setName] = useState(props.card.name);
+    const [due, setDue] = useState(props.card.due?new Date(props.card.due):null);
+    const [text, setText] = useState(props.card.text);
 
     const dispatch = useDispatch()
     const inputRef = useRef(null)
@@ -25,14 +27,15 @@ export default function TaskDetail({card}) {
     ))
 
     const _project_ = useSelector(state => state.projects.find(
-        project => card ? (card.project_id === project.id) : null
+        project => props.card ? (props.card.project_id === project.id) : null
     ))
 
-    useEffect(() =>{
-        setName(card.name)
-        setDue(card.due ? new Date(card.due) : null)
-        setText(card.text)
-    },[card])
+    // useEffect(() =>{
+    //     setName(card.name)
+    //     setDue(card.due ? new Date(card.due) : null)
+    //     setText(card.text)
+    // },[card])
+    // useEffect(() => { setName(propName) }, [props.card.name]);
 
     const onProjectChange = (project) => {
         // dispatch(updateTask({
@@ -52,7 +55,7 @@ export default function TaskDetail({card}) {
         console.log(e.currentTarget)
 
         dispatch(updateTask({
-            ...card,
+            id: props.card.id,
             name: name
         }))
     }
@@ -77,8 +80,25 @@ export default function TaskDetail({card}) {
     //     inputRef.current.focus()
     // }, [task])
 
+    function onChange(editorState) {
+        // editorState.read(() => {
+        //     // Read the contents of the EditorState here.
+        //     const root = $getRoot();
+        //     const selection = $getSelection();
+        //
+        //     console.log(root, selection);
+        // });
 
-    if (!card) {
+
+        dispatch(updateTask({
+            id:props.card.id,
+            text: JSON.stringify(editorState)
+        }))
+
+        // console.log(JSON.stringify(editorState))
+    }
+
+    if (!props.card) {
         return (
             <div>kjbuj</div>
         )
@@ -119,12 +139,12 @@ export default function TaskDetail({card}) {
                             </div>
                         </div>
                     </div>
-                    <div className={'font-bold text-lg mt-4 px-5'}>
-                        <input onBlur={saveNameHandler} onChange={(e) => setName(e.currentTarget.value)} ref={inputRef} className={'rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
+                    <div className={'mt-4 px-2'}>
+                        <input onBlur={saveNameHandler} onChange={(e) => setName(e.currentTarget.value)} className={'font-bold text-xl rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
                     </div>
-                    <div className={'whitespace-pre-wrap mt-4 px-5'}>
+                    <div className={'px-5'}>
 
-                        <Editor/>
+                        <Editor onChange={onChange} initial={props.card.text}/>
                         {/*<TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>*/}
                     </div>
                 </div>
