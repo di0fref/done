@@ -46,7 +46,7 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     const saveNameHandler = (e) => {
         if (e.currentTarget.value !== card.name) {
             dispatch(updateTask({
-                ...card,
+                id:card.id,
                 name: name
             }))
         }
@@ -103,8 +103,9 @@ export const Card4 = ({id, card, index, moveCard,}) => {
                 </div>
                 <div className={'text-neutral-900 flex-grow'}>
                     <div>
-                        <input onBlur={saveNameHandler} onChange={(e) => setName(e.target.value)} className={'focus:ring-0 p-0 border-none bg-transparent w-full'} type={"text"} value={name}/>
+                        {/*<input onBlur={saveNameHandler} onChange={(e) => setName(e.target.value)} className={'focus:ring-0 p-0 border-none bg-transparent w-full'} type={"text"} value={name}/>*/}
                         {/*<div className={'text-xs'}> 25 oct</div>*/}
+                        <div className={''}>{name}</div>
                     </div>
 
                 </div>

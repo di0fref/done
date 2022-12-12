@@ -17,14 +17,9 @@ export default function ProjectSelect(props) {
 
 
     const onChange = (project) => {
-        console.log(project)
         setSelected(project)
         props.onProjectChange(project)
     }
-    // useEffect(() => {
-    //     props.onProjectChange(selected)
-    // }, [selected])
-
 
     useEffect(() => {
         setSelected(props.initial.name ? props.initial : projects[0])

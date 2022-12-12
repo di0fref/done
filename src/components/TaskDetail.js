@@ -69,7 +69,7 @@ export default function TaskDetail(props) {
 
     }
 
-    if (!props.card) {
+    if (!props.card.id) {
         return (
             <div>kjbuj</div>
         )
