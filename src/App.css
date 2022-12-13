@@ -74,6 +74,13 @@ div_ {
     border: 1px solid #ccc;
 }
 
+.ellipsify {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
 #sidebar {
     --tw-translate-x: -100%;
 }

@@ -59,7 +59,7 @@ export default function Editor(props) {
 
         <LexicalComposer initialConfig={{
             theme: listTheme,
-            editorState: props.initial,
+            // editorState: props.initial,
             nodes: [
                 HeadingNode,
                 ListNode,

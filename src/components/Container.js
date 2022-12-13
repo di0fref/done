@@ -16,6 +16,7 @@ export const Container = (props) => {
         const params = useParams()
         const [data, setData] = useState([])
         const showCompleted = useReadLocalStorage("showCompletedTasks")
+        const [open, setOpen] = useState(false)
 
         const selectedTask = useSelector(state => state.current.task)
 
@@ -96,7 +97,7 @@ export const Container = (props) => {
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
-                    // onClick={(e) => dispatch(setCurrentTask(card))}
+                    onClick={(e) => setOpen(true)}
                     key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
@@ -104,6 +105,7 @@ export const Container = (props) => {
                 >
                     <AnimatePresence>
                         <Card4
+
                             key={card.name+card.id}
                             index={index}
                             id={card.id}
@@ -188,7 +190,7 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                <TaskDetail card={selectedTask} key={selectedTask.id}/>
+                <TaskDetail card={selectedTask} key={selectedTask.id} open={open}/>
             </div>
         )
     }

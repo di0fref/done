@@ -97,15 +97,15 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     return (
 
         <Link to={link}>
-            <div className={`${currentTask.id === card.id ? "bg-hov" : ""} hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2`}>
+            <div className={`${currentTask.id === card.id ? "bg-hov" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
                 <div className={'mr-2'}>
                     <input className={'checkbox ml-2'} type={"checkbox"}/>
                 </div>
-                <div className={'text-neutral-900 flex-grow'}>
-                    <div>
+                <div className={'text-neutral-900 flex-grow overflow-hidden'}>
+                    <div className={' overflow-hidden '}>
                         {/*<input onBlur={saveNameHandler} onChange={(e) => setName(e.target.value)} className={'focus:ring-0 p-0 border-none bg-transparent w-full'} type={"text"} value={name}/>*/}
                         {/*<div className={'text-xs'}> 25 oct</div>*/}
-                        <div className={''}>{name}</div>
+                        <div className={'min-w-10 max-w-4xl overflow-hidden text-clip truncate whitespace-pre'}>{name}</div>
                     </div>
 
                 </div>
