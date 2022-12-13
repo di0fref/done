@@ -97,9 +97,9 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     return (
 
         <Link to={link}>
-            <div className={`${currentTask.id === card.id ? "bg-hov" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
+            <div className={`${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
                 <div className={'mr-2'}>
-                    <input className={'checkbox ml-2'} type={"checkbox"}/>
+                    <input className={'checkbox ml-2 mb-1'} type={"checkbox"}/>
                 </div>
                 <div className={'text-neutral-900 flex-grow overflow-hidden'}>
                     <div className={' overflow-hidden '}>

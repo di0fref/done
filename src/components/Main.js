@@ -155,11 +155,11 @@ export default function Main() {
         return (
 
             <div className={"relative h-screen md:flex bg-white"}>
-                <header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">
-                    <div className={'flex justify-between'}>
-                        <MainMenu/>
-                    </div>
-                </header>
+                {/*<header className="absolute h-12 w-full left-0 top-0 z-50 border-b bg-white">*/}
+                {/*    <div className={'flex justify-between'}>*/}
+                {/*        <MainMenu/>*/}
+                {/*    </div>*/}
+                {/*</header>*/}
                 <main className={"flex h-full flex-grow _pt-12"}>
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>

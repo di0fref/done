@@ -44,7 +44,8 @@ module.exports = {
                 primary: "#4772FA",
                 warning: "#E03131",
                 hov:"#F6F8FE",
-                "light-gray": "#F3F3F3"
+                "light-gray": "#F3F3F3",
+                tgray: "#191919"
             },
             width: {
                 '100': '28rem',

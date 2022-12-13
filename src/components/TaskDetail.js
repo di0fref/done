@@ -10,7 +10,9 @@ import {updateTask} from "../redux/taskSlice";
 import Editor from "./TextEditor";
 import {$getRoot, $getSelection} from "lexical";
 import {format} from "date-fns";
-import {BsArrowBarRight} from "react-icons/bs";
+import {BsArrowBarRight, BsCalendar} from "react-icons/bs";
+import {getDateColor} from "./helper";
+import {FaCalendarAlt} from "react-icons/fa";
 // import Editor from "./Editor";
 
 export default function TaskDetail(props) {
@@ -23,11 +25,10 @@ export default function TaskDetail(props) {
     const dispatch = useDispatch()
     const inputRef = useRef(null)
 
-    const [isOpen, setIsopen] = useState(true)
-
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={'flex items-center space-x-2'}>
-            <div className={`whitespace-nowrap text-center text-sm`}><DateBadge date={due}/></div>
+        <div onClick={onClick} className={` ${getDateColor(due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mr-2`}>
+            <FaCalendarAlt/>
+            <div className={`whitespace-nowrap text-center text-sm`}>{format(due, "EEE, d MMM")}</div>
         </div>
     ))
 
@@ -72,13 +73,14 @@ export default function TaskDetail(props) {
 
 
     useEffect(() => {
-        console.log(customOpen)
         setCustomOpen(props.open)
-    }, [props.open])
+
+    }, [props])
 
 
     function buttonClicked() {
         setCustomOpen(prev => !prev);
+        props.setOpen(prev => !prev)
     }
 
 
@@ -101,12 +103,12 @@ export default function TaskDetail(props) {
                 w-4/5 
                 h-screen 
                 fixed 
-                top-12
+                top-12_
                 md:top-0 
                 ${customOpen ? "right-0" : "-right-[32rem]"} 
                 md:right-0 
                 md:w-96 
-                lg:w-128  
+                lg:w-100
                 peer-focus:right-0 
                 peer:transition
                 ease-out 
@@ -119,7 +121,6 @@ export default function TaskDetail(props) {
                             <HiOutlineXMark className={'h-7 w-7 text-gray-500 ml-4 mr-4 mt-[1px]'}/>
                         </button>
                         <div className={'ml-4 flex-grow'}>
-
                             <input className={"checkbox"} type={"checkbox"}/>
                         </div>
                         <div>

@@ -43,7 +43,7 @@ export default function TaskHeader(props) {
                 <div className={'font-semibold text-2xl'}>{name}</div>
             </div>
             {params.path==="today"?
-                <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d ")}</span>
+                <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d")}</span>
                 :""}
         </div>
 

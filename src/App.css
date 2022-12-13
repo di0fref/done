@@ -21,9 +21,11 @@
     .ring-btn{
         @apply border border-gray-300 p-1.5 rounded hover:bg-gray-50 text-sm
     }
-    .sidebar-active{
-        @apply bg-gray-200
-    }
+
+}
+
+.sidebar-active{
+    background-color: rgb(71,114,250, 0.1);
 }
 
 .bg-1{

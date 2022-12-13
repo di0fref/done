@@ -2,6 +2,7 @@ import {Fragment, useEffect, useState} from 'react'
 import {Listbox, Transition} from '@headlessui/react'
 import {CheckIcon, ChevronUpDownIcon} from '@heroicons/react/20/solid'
 import {useSelector} from "react-redux";
+import {BsBraces} from "react-icons/bs";
 
 
 export default function ProjectSelect(props) {
@@ -10,7 +11,7 @@ export default function ProjectSelect(props) {
 
     const projects = [{
         id: null,
-        name: "No project",
+        name: "Inbox",
     }, ...extracted]
 
     const [selected, setSelected] = useState(props.initial.name ? props.initial : projects[0])
@@ -33,21 +34,14 @@ export default function ProjectSelect(props) {
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className="relative shadow-sm w-full cursor-pointer rounded-lg bg-light-gray py-1.5 pl-3_ pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                            <Listbox.Button className=" hover:bg-light-gray w-full cursor-pointer rounded-md  ">
 
-                                <div>
-                                    <span className="block truncate text-sm text-gray-600">
-                                        <div className={'flex items-center space-x-2'}>
-                                            <div style={{
-                                                background: selected.color
-                                            }} className={'h-2 w-2 rounded-full ml-2'}> </div>
-                                            <div>{selected.name}</div>
-                                        </div>
-                                    </span>
-                                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                        <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true"/>
-                                    </span>
-                                </div>
+                                {/*<div className="">*/}
+                                    <div className={'text-md text-tgray/60 py-0.5 px-2 flex items-center space-x-2 justify-between'}>
+                                        <div><BsBraces/></div>
+                                        <div>{selected.name}</div>
+                                    </div>
+                                {/*</div>*/}
 
                             </Listbox.Button>
                         )}

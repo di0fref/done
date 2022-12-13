@@ -29,31 +29,31 @@ function Sidebar(props) {
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="border-r md:relative absolute p-6 w-72 h-full bg-gray-100 _z-20 fixed top-0 -left-72 md:left-0 md:w-52 lg:w-72  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+                <div className="border-r md:relative absolute p-6 w-80 h-screen _bg-gray-100 _z-20 fixed top-0 -left-80 md:left-0 md:w-52 lg:w-80  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                     <SearchDialog/>
                     <div className="flex flex-col justify-start item-center">
                         <div className={'overflow-y-auto py-3'}>
                             <ul className={'space-y-1'}>
                                 <li>
-                                    <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
                                         <div>{getIcon("inbox")}</div>
                                         <span className={'ml-3'}>Inbox</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
                                         {getIcon("today")}
                                         <span className={'ml-3'}>Today</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
                                         {getIcon("upcoming")}
                                         <span className={'ml-3'}>Upcoming</span>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700`}>
+                                    <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
                                         {getIcon("all")}
                                         <span className={'ml-3'}>All Tasks</span>
                                     </Link>
@@ -73,7 +73,7 @@ function Sidebar(props) {
                                         return (
                                             <li key={project.id} className={`
                                                     ${(currentProject && project.id === currentProject.id)?"sidebar-active":""} 
-                                                pl-2 px-1 py-2 hover:bg-gray-200 rounded`}>
+                                                pl-2 px-1 py-2 hover:bg-hov rounded`}>
                                                 <Link to={"/project/" + project.id} className={'flex items-center'}>
                                                     <div style={{
                                                         background: project.color

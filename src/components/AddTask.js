@@ -8,6 +8,8 @@ import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import TextareaAutosize from "react-textarea-autosize";
 import {toast} from "react-toastify";
+import {getDateColor} from "./helper";
+import {FaCalendarAlt} from "react-icons/fa";
 
 function useOnClickOutside(ref, handler) {
     useEffect(
@@ -61,6 +63,7 @@ export default function AddTask() {
     const handleClickOutside = (e) => {
         setEditing(false)
         setDue(null)
+        setName("")
     }
 
     const onKeyDownHandler = (e) => {
@@ -71,6 +74,9 @@ export default function AddTask() {
                 return
             }
             (async () => {
+                setName("")
+                setEditing(false)
+                setDue(null)
                 try {
                     const task = await dispatch(addTask({
                         name: name,
@@ -79,7 +85,6 @@ export default function AddTask() {
                         text: "",
                         prio: "high"
                     })).unwrap()
-
 
                     task && toast.success(
                         <div>1 task was created</div>
@@ -91,22 +96,26 @@ export default function AddTask() {
                 }
             })()
         }
-
     }
 
     const onProjectChange = (p) => {
         setProject(p)
     }
 
+    // const DateCustomInput = forwardRef(({value, onClick}, ref) => (
+    //     <div onClick={onClick} className={'flex items-center space-x-2'}>
+    //         <div className={`whitespace-nowrap text-center text-sm `}><DateBadge date={value}/></div>
+    //         <div className={'h-8 w-10 rounded-lg bg-light-gray relative hover:cursor-pointer'}>
+    //             <BsCalendar className={'h-4 w-4 text-gray-500 absolute top-2 left-3'}/>
+    //         </div>
+    //     </div>
+    // ))
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={'flex items-center space-x-2'}>
-            <div className={`whitespace-nowrap text-center text-sm `}><DateBadge date={value}/></div>
-            <div className={'h-8 w-10 rounded-lg bg-light-gray relative hover:cursor-pointer'}>
-                <BsCalendar className={'h-4 w-4 text-gray-500 absolute top-2 left-3'}/>
-            </div>
+        <div onClick={onClick} className={`${getDateColor(due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
+            <FaCalendarAlt/>
+            <div className={`whitespace-nowrap text-center text-sm`}>{due?format(due, "EEE, d MMM"):null}</div>
         </div>
     ))
-
 
     if (editing) {
         return (
@@ -118,7 +127,8 @@ export default function AddTask() {
                         ref={inputReference}
                         onChange={(e) => setName(e.target.value)}
                         className={'w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl'}
-                        placeholder={"Write a new task"}>
+                        placeholder={"Write a new task"}
+                        value={name}>
                     </input>
                 </div>
                 <div className={'-mt-0.5'}>

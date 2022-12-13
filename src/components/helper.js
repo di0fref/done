@@ -43,11 +43,11 @@ export const delay = (time) => {
 
 export function getDateColor(date) {
     if (!date) {
-        return null;
+        return  "text-gray-500"
     }
-    return new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
-        ? "text-red-600"
+    return  new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+        ? "whitespace-nowrap text-warning  "
         : new Date(date).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
-            ? "text-green-600"
-            : ""
+            ? "whitespace-nowrap text-green-600 "
+            : "whitespace-nowrap text-primary "
 }
