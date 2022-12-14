@@ -16,17 +16,23 @@ import {LinkPlugin} from "@lexical/react/LexicalLinkPlugin";
 import {ListPlugin} from "@lexical/react/LexicalListPlugin";
 import {MarkdownShortcutPlugin} from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import {TRANSFORMERS} from "@lexical/markdown";
-import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
+import {CheckListPlugin} from "@lexical/react/LexicalCheckListPlugin";
 
-import ListMaxIndentLevelPlugin from "./plugins/ListMaxIndentLevelPlugin";
-import CodeHighlightPlugin from "./plugins/CodeHighlightPlugin";
+
 import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
-import {$createParagraphNode, $getRoot, $getSelection} from "lexical";
+
 import {OnChangePlugin} from "@lexical/react/LexicalOnChangePlugin";
 import ToolbarPlugin from "./plugins/ListToolbar";
 
+import {BsTextLeft} from "react-icons/bs";
+
 function Placeholder() {
-    return <div className="editor-placeholder">Enter some text...</div>;
+    return (
+        <div className="editor-placeholder flex items-center space-x-2">
+            <div><BsTextLeft/></div>
+            <div>Description</div>
+        </div>
+    )
 }
 
 const listTheme = {
@@ -55,11 +61,24 @@ const listTheme = {
 
 export default function Editor(props) {
 
+
+
+    //
+    // useEffect(() => {
+    //     (async () => {
+    //         const content = await loadContent()
+    //
+    //         console.log(content);
+    //
+    //         setEditorState(content)
+    //     })();
+    // }, [props])
+
     return (
 
         <LexicalComposer initialConfig={{
             theme: listTheme,
-            // editorState: props.initial,
+            editorState: props.initial,
             nodes: [
                 HeadingNode,
                 ListNode,
@@ -75,16 +94,16 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container prose_">
-                <ToolbarPlugin />
+                {/*<ToolbarPlugin/>*/}
                 <div className="editor-inner">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className="editor-input "/>}
+                        contentEditable={<ContentEditable className="editor-input"/>}
                         placeholder={<Placeholder/>}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     {/*<HistoryPlugin />*/}
                     {/*<TreeViewPlugin />*/}
-                    <AutoFocusPlugin/>
+                    {/*<AutoFocusPlugin/>*/}
                     <OnChangePlugin onChange={props.onTextChange}/>
                     {/*<CodeHighlightPlugin />*/}
                     <ListPlugin/>

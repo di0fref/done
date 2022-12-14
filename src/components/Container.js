@@ -9,6 +9,7 @@ import {Card4} from "./Card4";
 import TaskDetail from "./TaskDetail";
 import TaskHeader from "./TaskHeader";
 import {useParams} from "react-router-dom";
+import TaskModal from "./TaskModal";
 // import {setCurrent} from "../redux/currentSlice"
 
 export const Container = (props) => {
@@ -190,7 +191,8 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
+                {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
+                <TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>
             </div>
         )
     }

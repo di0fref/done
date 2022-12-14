@@ -38,7 +38,7 @@
     left: 0;
     font-size: 15px;
     user-select: none;
-    display: inline-block;
+    /*display: inline-block;*/
     pointer-events: none;
 }
 

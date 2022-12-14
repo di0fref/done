@@ -13,7 +13,6 @@ import {format} from "date-fns";
 import {BsArrowBarRight, BsCalendar} from "react-icons/bs";
 import {getDateColor} from "./helper";
 import {FaCalendarAlt} from "react-icons/fa";
-// import Editor from "./Editor";
 
 export default function TaskDetail(props) {
 

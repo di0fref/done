@@ -2,7 +2,7 @@ import {Fragment, useEffect, useState} from 'react'
 import {Listbox, Transition} from '@headlessui/react'
 import {CheckIcon, ChevronUpDownIcon} from '@heroicons/react/20/solid'
 import {useSelector} from "react-redux";
-import {BsBraces} from "react-icons/bs";
+import {BsBraces, BsList} from "react-icons/bs";
 
 
 export default function ProjectSelect(props) {
@@ -38,7 +38,7 @@ export default function ProjectSelect(props) {
 
                                 {/*<div className="">*/}
                                     <div className={'text-md text-tgray/60 py-0.5 px-2 flex items-center space-x-2 justify-between'}>
-                                        <div><BsBraces/></div>
+                                        <div><BsList/></div>
                                         <div>{selected.name}</div>
                                     </div>
                                 {/*</div>*/}

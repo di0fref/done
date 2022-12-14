@@ -105,7 +105,7 @@ export const Card4 = ({id, card, index, moveCard,}) => {
                     <div className={' overflow-hidden '}>
                         {/*<input onBlur={saveNameHandler} onChange={(e) => setName(e.target.value)} className={'focus:ring-0 p-0 border-none bg-transparent w-full'} type={"text"} value={name}/>*/}
                         {/*<div className={'text-xs'}> 25 oct</div>*/}
-                        <div className={'min-w-10 max-w-4xl overflow-hidden text-clip truncate whitespace-pre'}>{name}</div>
+                        <div className={''}>{name}</div>
                     </div>
 
                 </div>

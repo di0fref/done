@@ -1,10 +1,16 @@
-import {Fragment, useEffect, useRef, useState} from 'react'
+import {forwardRef, Fragment, useEffect, useRef, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {HiBars4, HiCalendar, HiOutlineXMark} from "react-icons/hi2";
 import TextareaAutosize from 'react-textarea-autosize';
-import {delay, formatDate} from "./helper";
+import {delay, formatDate, getDateColor} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
+import Editor from "./TextEditor";
+import ProjectSelect from "./ProjectSelect";
+import {FaCalendarAlt} from "react-icons/fa";
+import {format} from "date-fns";
+import DatePicker from "react-datepicker";
+import CustomDatePicker from "./CustomDatePicker";
 
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
@@ -24,8 +30,22 @@ export default function TaskModal(props) {
 
     useEffect(() => {
         setIsOpen(props.open)
-         inputReference.current&&inputReference.current.focus()
+        inputReference.current && inputReference.current.focus()
     }, [props.open])
+
+    const DateCustomInput = forwardRef(({value, onClick}, ref) => (
+        <div onClick={onClick} className={`${getDateColor(task.due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
+            <FaCalendarAlt/>
+            <div className={`whitespace-nowrap text-center text-sm`}>{task.due ? format(new Date(task.due), "EEE, d MMM") : null}</div>
+        </div>
+    ))
+
+    function onTextChange(editorState) {
+        setTask({
+            ...task,
+            text: editorState
+        })
+    }
 
     function closeModal() {
         setIsOpen(false)
@@ -37,16 +57,19 @@ export default function TaskModal(props) {
         setIsChanged(true);
     }
 
-    const onStatusChange = (e) => {
-        setTask(
-            {...task, completed: !task.completed}
-        )
-        dispatch(toggleCompleted(task))
-    }
 
     const saveHandler = () => {
-        dispatch(updateTask({...task, "completed":task.completed?1:0}))
+
+        dispatch(updateTask(task))
         closeModal()
+    }
+
+    const onDueChange = (date) => {
+        setTask({
+            ...task,
+            due: date?format(date, "yyyy-MM-dd"):null
+        })
+        console.log(date);
     }
     return (
         <Dialog
@@ -63,12 +86,17 @@ export default function TaskModal(props) {
                 {/* The actual dialog panel  */}
                 <Dialog.Panel className="h-4/5  md:max-w-4xl w-11/12 transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
-                        <div className={'border-b h-10 flex items-center justify-end'}>
-                            <div className={'flex items-center justify-end'}>
+                        <div className={'border-b h-10_ py-2'}>
+                            <div className={'flex items-center justify-between'}>
+                                <div className={'ml-4'}>
+                                    {task.project}
+                                </div>
                                 <button onClick={closeModal}>
                                     <HiOutlineXMark className={'h-6 w-6 text-gray-400 mx-3 hover:bg-gray-200 rounded'}/>
                                 </button>
                             </div>
+
+
                         </div>
                     </Dialog.Title>
 
@@ -79,20 +107,38 @@ export default function TaskModal(props) {
                                     <input onChange={(e) => setTask({
                                         ...task,
                                         "completed": !task.completed
-                                    })} checked={task.completed} onClick={changeHandler} className={'h-4 w-4 form-checkbox bg-gray-white rounded-full'} type={'checkbox'}/>
+                                    })} checked={task.completed} onClick={changeHandler} className={'check h-5 w-5 mt-2 mr-2'} type={'checkbox'}/>
                                 </div>
-                                <div className={'flex-grow'}>
-                                    <div className={'w-full'}>
-                                        <input ref={inputReference}  onClick={changeHandler} onChange={(e) => setTask({
-                                            ...task,
-                                            "name": e.currentTarget.value
-                                        })} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0`} type={"text"} value={task.name}/>
+
+                                <div onClick={() => setIsChanged(true)} className={`${isChanged ? "ring-1" : ""} w-full rounded-lg`}>
+                                    <
+                                        div className={'px-4 pt-4'}>
+                                        <input className={'p-0 tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0'}
+                                               onChange={
+                                                   (e) => setTask({
+                                                       ...task,
+                                                       name: e.currentTarget.value
+                                                   })
+                                               }
+                                               onClick={changeHandler} type={"text"} value={task.name}/>
                                     </div>
-                                    <div className={'w-full mt-2'}>
-                                        <label htmlFor={"description"} className={"ml-3 tracking-wide text-[13px] font-semibold text-gray-500"}>Description</label>
-                                        <TextareaAutosize id={"description"} onClick={changeHandler} placeholder={"Description"} className={'resize-none w-full border-none focus:border-none focus:ring-1 focus:ring-gray-300 rounded '} defaultValue={task.text}/>
+                                    <div className={'px-4 pb-4 pt-4'}>
+                                        <Editor initial={task.text} onTextChange={onTextChange}/>
                                     </div>
                                 </div>
+                                {/*<div className={'flex-grow'}>*/}
+                                {/*    <div className={'w-full'}>*/}
+                                {/*        <input ref={inputReference}  onClick={changeHandler} onChange={(e) => setTask({*/}
+                                {/*            ...task,*/}
+                                {/*            "name": e.currentTarget.value*/}
+                                {/*        })} placeholder={"Title"} className={`${task.completed ? "line-through" : ""} tracking-wide w-full font-medium text-lg border-none focus:border-none rounded focus:ring-blue-400/30`} type={"text"} value={task.name}/>*/}
+                                {/*    </div>*/}
+                                {/*    <div className={'w-full mt-2 pl-4'}>*/}
+
+                                {/*        <Editor initial={task.text} onTextChange={onTextChange}/>*/}
+
+                                {/*    </div>*/}
+                                {/*</div>*/}
                             </div>
                             {isChanged ? (
                                 <div className={'p-4 flex space-x-2 items-center justify-end mt-2'}>
@@ -106,23 +152,49 @@ export default function TaskModal(props) {
                             ) : ""}
                         </div>
 
-                        <div className={'md:w-72 bg-gray-100 md:h-screen w-full'}>
+                        <div className={'md:w-72 bg-gray-100_ border-l md:h-screen w-full'}>
                             <div className={'md:p-4 p-6'}>
-                                <p className={'text-black/50 font-medium text-[14px]'}>Project</p>
+                                {/*<p className={'text-black/50 font-medium text-[14px]'}>List</p>*/}
 
-                                {_project_ ? (
-                                    <div className={'flex items-center mt-2'}>
-                                        <span style={{background: _project_.color}} className={'ml-2 w-2 h-2 rounded-full'}></span>
-                                        <span className={'ml-2 text-gray-600 text-sm'}>{_project_.name}</span>
-                                    </div>) : null}
+                                <div className={'flex items-center mt-2'}>
+                                    <ProjectSelect initial={{..._project_}} onProjectChange={
+                                        (project) => {
+                                            setTask({
+                                                ...task,
+                                                project_id: project.id
+                                            })
+                                        }}
+
+                                    />
+                                </div>
 
 
                             </div>
                             <div className={'md:p-4 p-6'}>
-                                <p className={'text-black/50 font-medium text-[14px]'}>Due Date</p>
+                                <p className={'ml-2 text-tgray/60 font-sm text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
-                                    <div><HiCalendar className={'mr-2 mb-[2px]'}/></div>
-                                    <div className={'text-gray-600 text-sm'}>{formatDate(task.due)}</div>
+                                    <div className={'text-gray-600 text-sm ml-2'}>
+                                        {/*<DatePicker*/}
+                                        {/*    selected={task.due ? new Date(task.due) : null}*/}
+                                        {/*    onChange={(value) => setTask({*/}
+                                        {/*        ...task,*/}
+                                        {/*        due: value ? format(new Date(value), "Y-MM-dd") : null*/}
+                                        {/*    })}*/}
+                                        {/*    customInput={*/}
+                                        {/*        <DateCustomInput/>*/}
+                                        {/*    }*/}
+                                        {/*    todayButton={"Today"}*/}
+                                        {/*    dateFormat={"yyyy-MM-dd"}>*/}
+
+                                        {/*    <div onClick={() => setTask({*/}
+                                        {/*        ...task,*/}
+                                        {/*        due: null*/}
+                                        {/*    })} className={'font-bold py-2 bg-gray-300 text-center hover:cursor-pointer hover:underline'}>*/}
+                                        {/*        Clear date*/}
+                                        {/*    </div>*/}
+                                        {/*</DatePicker>*/}
+                                        <CustomDatePicker onClick={false} date={task.due} onDateChange={onDueChange}/>
+                                    </div>
                                 </div>
                             </div>
                             <div></div>
