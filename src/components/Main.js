@@ -12,6 +12,8 @@ import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
 import {setCurrent} from "../redux/currentSlice";
 import {paths} from "./helper";
+import {FaCheckSquare, FaSearch} from "react-icons/fa";
+import SearchDialog from "./SearchDialog";
 
 
 export default function Main() {
@@ -125,7 +127,7 @@ export default function Main() {
 
         if (paths.find(p => params.path === p)) {
             dispatch(setCurrent({
-                    task:{},
+                    task: {},
                     project: {}
                 }
             ))
@@ -161,9 +163,16 @@ export default function Main() {
                 {/*    </div>*/}
                 {/*</header>*/}
                 <main className={"flex h-full flex-grow _pt-12"}>
+                    <div className={'sidebar-active w-[50px] border-r px-2 py-4'}>
+                        <MainMenu/>
+                        <div className={'flex flex-col items-center space-y-6 mt-6'}>
+                            <div><FaCheckSquare className={'w-6 h-6 text-blue-500'}/></div>
+                            <div><SearchDialog/></div>
+                        </div>
+                    </div>
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>
-                        <div className={'flex-grow '}>
+                        <div className={'flex-grow'}>
                             <div className={"w-full h-full _md:px-12 "}>
                                 <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>

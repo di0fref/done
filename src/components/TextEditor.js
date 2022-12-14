@@ -62,7 +62,6 @@ const listTheme = {
 export default function Editor(props) {
 
 
-
     //
     // useEffect(() => {
     //     (async () => {
@@ -73,12 +72,13 @@ export default function Editor(props) {
     //         setEditorState(content)
     //     })();
     // }, [props])
+    const empty = '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
 
     return (
 
         <LexicalComposer initialConfig={{
             theme: listTheme,
-            editorState: props.initial,
+            editorState: props.initial ? props.initial : empty,
             nodes: [
                 HeadingNode,
                 ListNode,

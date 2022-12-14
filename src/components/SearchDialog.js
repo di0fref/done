@@ -2,8 +2,9 @@ import {Dialog, Transition} from '@headlessui/react'
 import {Fragment, useState} from 'react'
 import SearchForm from "./SearchForm";
 import {HiSearch} from "react-icons/hi";
+import {FaCheckSquare, FaSearch} from "react-icons/fa";
 
-export default function MyModal() {
+export default function SearchDialog() {
     let [isOpen, setIsOpen] = useState(false)
 
     function closeModal() {
@@ -17,16 +18,15 @@ export default function MyModal() {
     return (
         <>
             <div className="flex items-center justify-center">
-                {/*<button*/}
-                {/*    type="button"*/}
-                {/*    onClick={openModal}*/}
-                {/*    className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75">*/}
-                {/*    Open dialog*/}
-                {/*</button>*/}
-                <div onClick={openModal} className={'hover:cursor-pointer text-gray-500 w-full bg-white h-9 border rounded-lg flex items-center justify-between'}>
-                    <div className={'pl-2 text-sm'}>Search</div>
-                    <div className={'pr-2'}><HiSearch/></div>
-                </div>
+
+                {/*<div onClick={openModal} className={'hover:cursor-pointer text-gray-500 w-full bg-white h-9 border rounded-lg flex items-center justify-between'}>*/}
+                {/*    <div className={'pl-2 text-sm'}>Search</div>*/}
+                {/*    <div className={'pr-2'}><HiSearch/></div>*/}
+                {/*</div>*/}
+
+                <button onClick={openModal}>
+                    <FaSearch className={'w-6 h-6 text-gray-400 hover:text-gray-600'}/>
+                </button>
             </div>
             <Dialog onClose={closeModal} open={isOpen} className={"inset-0 fixed p-4 pt-[25vh]"}>
                 <div className="fixed inset-0 bg-black bg-opacity-60"/>

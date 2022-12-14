@@ -11,6 +11,7 @@ import {FaCalendarAlt} from "react-icons/fa";
 import {format} from "date-fns";
 import DatePicker from "react-datepicker";
 import CustomDatePicker from "./CustomDatePicker";
+import {createPortal} from "react-dom";
 
 export default function TaskModal(props) {
     const [isOpen, setIsOpen] = useState(false)
@@ -45,6 +46,7 @@ export default function TaskModal(props) {
             ...task,
             text: editorState
         })
+        changeHandler()
     }
 
     function closeModal() {
@@ -60,18 +62,21 @@ export default function TaskModal(props) {
 
     const saveHandler = () => {
 
-        dispatch(updateTask(task))
+        dispatch(updateTask({
+            ...task,
+            due: task.due ? format(new Date(task.due), "Y-M-dd") : null
+        }))
         closeModal()
     }
 
     const onDueChange = (date) => {
         setTask({
             ...task,
-            due: date?format(date, "yyyy-MM-dd"):null
+            due: date ? format(date, "yyyy-MM-dd") : null
         })
-        console.log(date);
+        changeHandler()
     }
-    return (
+    return createPortal(
         <Dialog
             unmount={true}
             open={isOpen}
@@ -104,23 +109,27 @@ export default function TaskModal(props) {
                         <div className={'w-full slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
                                 <div className={'ml-5 mr-2 mt-2'}>
-                                    <input onChange={(e) => setTask({
-                                        ...task,
-                                        "completed": !task.completed
-                                    })} checked={task.completed} onClick={changeHandler} className={'check h-5 w-5 mt-2 mr-2'} type={'checkbox'}/>
+                                    <input onChange={(e) => {
+                                        setTask({
+                                            ...task,
+                                            "completed": !task.completed
+                                        })
+                                        changeHandler()
+                                    }} checked={task.completed} onClick={changeHandler} className={'check h-5 w-5 mt-2 mr-2'} type={'checkbox'}/>
                                 </div>
 
                                 <div onClick={() => setIsChanged(true)} className={`${isChanged ? "ring-1" : ""} w-full rounded-lg`}>
-                                    <
-                                        div className={'px-4 pt-4'}>
+                                    <div className={'px-4 pt-4'}>
                                         <input className={'p-0 tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0'}
                                                onChange={
-                                                   (e) => setTask({
-                                                       ...task,
-                                                       name: e.currentTarget.value
-                                                   })
-                                               }
-                                               onClick={changeHandler} type={"text"} value={task.name}/>
+                                                   (e) => {
+                                                       setTask({
+                                                           ...task,
+                                                           name: e.currentTarget.value
+                                                       })
+                                                       changeHandler()
+                                                   }
+                                               } type={"text"} value={task.name}/>
                                     </div>
                                     <div className={'px-4 pb-4 pt-4'}>
                                         <Editor initial={task.text} onTextChange={onTextChange}/>
@@ -159,10 +168,13 @@ export default function TaskModal(props) {
                                 <div className={'flex items-center mt-2'}>
                                     <ProjectSelect initial={{..._project_}} onProjectChange={
                                         (project) => {
-                                            setTask({
-                                                ...task,
-                                                project_id: project.id
-                                            })
+                                            {
+                                                setTask({
+                                                    ...task,
+                                                    project_id: project.id
+                                                })
+                                                changeHandler()
+                                            }
                                         }}
 
                                     />
@@ -202,6 +214,7 @@ export default function TaskModal(props) {
                     </div>
                 </Dialog.Panel>
             </div>
-        </Dialog>
+        </Dialog>,
+        document.getElementById('portal')
     )
 }

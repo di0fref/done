@@ -104,10 +104,10 @@ export default function TaskDetail(props) {
                 fixed 
                 top-12_
                 md:top-0 
-                ${customOpen ? "right-0" : "-right-[32rem]"} 
+                ${customOpen ? "right-0" : "-right-[48rem]"} 
                 md:right-0 
-                md:w-96 
-                lg:w-100
+                md:w-72 
+                lg:w-96
                 peer-focus:right-0 
                 peer:transition
                 ease-out 
@@ -120,7 +120,7 @@ export default function TaskDetail(props) {
                             <HiOutlineXMark className={'h-7 w-7 text-gray-500 ml-4 mr-4 mt-[1px]'}/>
                         </button>
                         <div className={'ml-4 flex-grow'}>
-                            <input className={"checkbox"} type={"checkbox"}/>
+                            <input className={"checkbox mb-1"} type={"checkbox"}/>
                         </div>
                         <div>
                             <DatePicker

@@ -97,17 +97,14 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     return (
 
         <Link to={link}>
-            <div className={`${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
-                <div className={'mr-2'}>
-                    <input className={'checkbox ml-2 mb-1'} type={"checkbox"}/>
+            <div className={`${card.completed?"opacity-50 bg-green-100":""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
+                <div className={'mr-1'}>
+                    <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={card.completed}/>
                 </div>
                 <div className={'text-neutral-900 flex-grow overflow-hidden'}>
                     <div className={' overflow-hidden '}>
-                        {/*<input onBlur={saveNameHandler} onChange={(e) => setName(e.target.value)} className={'focus:ring-0 p-0 border-none bg-transparent w-full'} type={"text"} value={name}/>*/}
-                        {/*<div className={'text-xs'}> 25 oct</div>*/}
-                        <div className={''}>{name}</div>
+                        <div className={`${card.completed?"line-through":""}`}>{name}</div>
                     </div>
-
                 </div>
                 <div className={'text-neutral-500 text-sm ml-6 text-gray-500'}>{card.project}</div>
                 <div className={'flex-shrink-0 pr-2'}><DateBadge date={card.due}/></div>

@@ -18,21 +18,21 @@ function Sidebar(props) {
     const projects = useSelector(state => state.projects)
     const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
     return (
-        <div>
-            <Disclosure as="nav">
+        // <div>
+            <Disclosure as="div" className={''}>
 
                 {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
-                <Disclosure.Button className="z-50 absolute top-1 left-2 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+                <Disclosure.Button className="z-40_ absolute top-6 left-14 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                     <HiBars3
                         className="block md:hidden h-8 w-8"
                         aria-hidden="true"
                     />
                 </Disclosure.Button>
-                <div className="border-r md:relative absolute p-6 w-80 h-screen _bg-gray-100 _z-20 fixed top-0 -left-80 md:left-0 md:w-52 lg:w-80  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
-                    <SearchDialog/>
+                <div className="border-r md:relative absolute px-6 py-6 w-80 h-screen bg-white fixed top-0 -left-80 md:left-0 md:w-52 lg:w-80  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+                    {/*<SearchDialog/>*/}
                     <div className="flex flex-col justify-start item-center">
-                        <div className={'overflow-y-auto py-3'}>
+                        <div className={'overflow-y-auto pb-3'}>
                             <ul className={'space-y-1'}>
                                 <li>
                                     <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
@@ -92,7 +92,7 @@ function Sidebar(props) {
                     </div>
                 </div>
             </Disclosure>
-        </div>
+        // </div>
     );
 }
 

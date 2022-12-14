@@ -9,6 +9,8 @@ import {useDispatch} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
 import {useLocalStorage} from "usehooks-ts";
 import ToggleCompletedButton from "./ToggleCompletedButton";
+import {FaSync} from "react-icons/fa";
+import {VscSettingsGear, VscSync} from "react-icons/vsc";
 
 function Avatar() {
 
@@ -32,6 +34,16 @@ function Avatar() {
     );
 }
 
+const GoogleHead = () => {
+    const user = getAuth();
+
+    return(
+        <div className={'w-10'}>
+            <img className={'rounded-md'} src={user.currentUser.photoURL}/>
+        </div>
+    )
+}
+
 export default function MainMenu() {
 
     const navigate = useNavigate();
@@ -44,62 +56,52 @@ export default function MainMenu() {
     }
 
     return (
-        <div className={'absolute top-0 right-6 _right-16'}>
+        <div className={'absolute_ top-0_ right-6_ _right-16 z-50'}>
             <div className="flex items-center justify-center p-12_">
                 <div className="relative inline-block text-left">
                     <Menu>
                         {({open}) => (
                             <>
-              <span className="rounded-md shadow-sm">
-                <Menu.Button className="inline-flex justify-center w-full px-2 py-1 text-sm font-medium leading-5 text-gray-700 transition duration-150 ease-in-out bg-white rounded-full hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800">
+                          <span className={''}>
+                            <Menu.Button >
+                                {/*<div className="inline-flex overflow-hidden relative justify-center items-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">*/}
+                                {/*    <span className="font-medium text-gray-600 dark:text-gray-300">*/}
+                                {/*        {user.currentUser ? user.currentUser.displayName.split(" ").map((n) => n[0]).join("") : ""}*/}
+                                {/*    </span>*/}
+                                {/*</div>*/}
+                                <GoogleHead/>
+                            </Menu.Button>
+                          </span>
+                                <Menu.Items className="text-tgray/60 text-md z-50 absolute left-3 w-44 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none">
 
-                              <div className="inline-flex overflow-hidden relative justify-center items-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
-                        <span className="font-medium text-gray-600 dark:text-gray-300">{
-                            user.currentUser ? user.currentUser.displayName.split(" ").map((n) => n[0]).join("") : ""
-                        }</span>
-                    </div>
+                                    <Menu.Item as={'div'}>
+                                        {({active}) => (
+                                            <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
+                                                <div><VscSync className={''}/></div>
+                                                <div>Sync</div>
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item as={'div'}>
+                                        {({active}) => (
+                                            <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
+                                                <div><VscSettingsGear className={''}/></div>
+                                                <div>Settings</div>
+                                            </button>
+                                        )}
+                                    </Menu.Item>
 
-                </Menu.Button>
-              </span>
-
-                                <Transition
-                                    show={open}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95">
-                                    <Menu.Items
-                                        static
-                                        className="absolute right-0 w-64 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none"
-                                    >
-
-                                        <Menu.Item as={"div"}>
-                                            <Avatar/>
-                                        </Menu.Item>
-
+                                    <div className="py-1">
                                         <Menu.Item>
-                                            <ToggleCompletedButton/>
+                                            {({active}) => (
+                                                <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
+                                                    <div><HiLogout className={''}/></div>
+                                                    <div>Sign out</div>
+                                                </button>
+                                            )}
                                         </Menu.Item>
-
-                                        <div className="py-1">
-                                            <Menu.Item>
-                                                {({active}) => (
-
-                                                    <button onClick={signOut}
-                                                            className={`${
-                                                                active ? 'bg-gray-100' : 'text-gray-900'
-                                                            } group flex w-full items-center px-4 py-2 text-sm space-x-2`}
-                                                    >
-                                                        <div><HiLogout className={'text-blue-500'}/></div>
-                                                        <div>Log out</div>
-                                                    </button>
-                                                )}
-                                            </Menu.Item>
-                                        </div>
-                                    </Menu.Items>
-                                </Transition>
+                                    </div>
+                                </Menu.Items>
                             </>
                         )}
                     </Menu>

@@ -71,6 +71,13 @@ export const Container = (props) => {
             )].sort((a, b) => {
                 return new Date(b.due) < new Date(a.due) ? 1 : -1;
             }),
+            completed: [...useSelector(
+                state => state.tasks.filter(
+                    task => task.completed === true
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
         }
 
 
@@ -107,7 +114,7 @@ export const Container = (props) => {
                     <AnimatePresence>
                         <Card4
 
-                            key={card.name+card.id}
+                            key={card.name + card.id}
                             index={index}
                             id={card.id}
                             moveCard={moveCard}
@@ -122,32 +129,41 @@ export const Container = (props) => {
 
         return (
             <div className={'flex h-full '}>
-                <div className={'flex-grow px-8 mt-6 '}>
+                <div className={'flex-grow px-8 mt-6'}>
                     <TaskHeader/>
                     <AddTask/>
                     {(() => {
                         switch (props.filter) {
                             case "upcoming":
                                 return (
-                                    Object.values(_data_.upcoming).map((card, i) => {
-                                        if (prev !== card.due) {
-                                            prev = card.due;
-                                            return (
-                                                <div key={card.id}>
-                                                    <div className={'font-medium mb-2 mt-8'}>
-                                                        {formatDate(card.due, true)}
+
+                                    <>
+                                        {Object.values(_data_.upcoming).map((card, i) => {
+                                            if (prev !== card.due) {
+                                                prev = card.due;
+                                                return (
+                                                    <div key={card.id}>
+                                                        <div className={'font-medium text-sm ml-2  mb-2 mt-8'}>
+                                                            {formatDate(card.due, true)}
+                                                        </div>
+                                                        {renderCard(card, i)}
                                                     </div>
-                                                    {renderCard(card, i)}
-                                                </div>
-                                            )
-                                        } else {
-                                            return (
-                                                <div key={card.id}>
-                                                    {renderCard(card, i)}
-                                                </div>
-                                            )
-                                        }
-                                    })
+                                                )
+                                            } else {
+                                                return (
+                                                    <div key={card.id}>
+                                                        {renderCard(card, i)}
+                                                    </div>
+                                                )
+                                            }
+                                        })}
+                                        <div className={'font-medium text-sm ml-2  mb-2 mt-8'}>Completed</div>
+                                        {Object.values(_data_.completed).map((card, i) => {
+                                            return renderCard(card, i)
+                                        })}
+                                    </>
+
+
                                 )
                             case "inbox":
                                 return (
@@ -191,8 +207,8 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
-                <TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>
+                <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
+                {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
             </div>
         )
     }
