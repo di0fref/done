@@ -48,21 +48,40 @@ export const Container = (props) => {
                 return new Date(b.due) < new Date(a.due) ? 1 : -1;
             }),
 
-            upcoming: [...useSelector(
-                state => state.tasks.filter(
-                    task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
-                )
-            )].sort((a, b) => {
-                return new Date(b.due) < new Date(a.due) ? 1 : -1;
-            }),
+            upcoming:
+                {
+                    tasks: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                        ))].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    }),
+                    completed: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
+                        ))].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    })
+                },
 
-            all: [...useSelector(
-                state => state.tasks.filter(
-                    task => (showCompleted ? true : !task.completed)
-                )
-            )].sort((a, b) => {
-                return new Date(b.due) < new Date(a.due) ? 1 : -1;
-            }),
+            all:
+                {
+                    tasks: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (showCompleted ? true : !task.completed)
+                        )
+                    )].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    }),
+
+                    completed: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (task.completed === true)
+                        )
+                    )].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    })
+                },
 
             project: [...useSelector(
                 state => state.tasks.filter(
@@ -80,6 +99,10 @@ export const Container = (props) => {
             }),
         }
 
+        const test = {
+            all: [],
+            completed: []
+        }
 
         const moveCard = useCallback((dragIndex, hoverIndex) => {
 
@@ -138,7 +161,7 @@ export const Container = (props) => {
                                 return (
 
                                     <>
-                                        {Object.values(_data_.upcoming).map((card, i) => {
+                                        {Object.values(_data_.upcoming.tasks).map((card, i) => {
                                             if (prev !== card.due) {
                                                 prev = card.due;
                                                 return (
@@ -158,7 +181,7 @@ export const Container = (props) => {
                                             }
                                         })}
                                         <div className={'font-medium text-sm ml-2  mb-2 mt-8'}>Completed</div>
-                                        {Object.values(_data_.completed).map((card, i) => {
+                                        {Object.values(_data_.upcoming.completed).map((card, i) => {
                                             return renderCard(card, i)
                                         })}
                                     </>
@@ -173,9 +196,15 @@ export const Container = (props) => {
                                 )
                             case "all":
                                 return (
-                                    <div>
-                                        {Object.values(_data_.all).map((card, i) => renderCard(card, i))}
-                                    </div>
+                                    <>
+                                        <div>
+                                            {Object.values(_data_.all.tasks).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                        <div>
+                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
+                                            {Object.values(_data_.all.completed).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                    </>
                                 )
                             case "project":
                                 return (
@@ -207,8 +236,8 @@ export const Container = (props) => {
                     })()}
 
                 </div>
-                <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
-                {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
+                {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
+                <TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>
             </div>
         )
     }

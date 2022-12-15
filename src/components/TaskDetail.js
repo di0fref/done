@@ -107,7 +107,7 @@ export default function TaskDetail(props) {
                 ${customOpen ? "right-0" : "-right-[48rem]"} 
                 md:right-0 
                 md:w-72 
-                lg:w-96
+                lg:w-128
                 peer-focus:right-0 
                 peer:transition
                 ease-out 
