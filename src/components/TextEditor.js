@@ -93,7 +93,7 @@ export default function Editor(props) {
                 LinkNode
             ],
         }}>
-            <div className="editor-container prose_">
+            <div className="editor-container">
                 {/*<ToolbarPlugin/>*/}
                 <div className="editor-inner">
                     <RichTextPlugin

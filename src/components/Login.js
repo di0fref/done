@@ -38,7 +38,7 @@ export default function Login() {
                             .then(CheckError)
                             .then((response) => {
                                 localStorage.setItem("AccessToken", response.data.access_token)
-                                localStorage.setItem("showCompletedTasks", "1")
+                                localStorage.setItem("showCompletedTasks", "0")
 
                                 console.log("API: user logged in")
 
@@ -47,41 +47,6 @@ export default function Login() {
                             .catch((error) => {
                                 console.log(error)
                             })
-                        /* Try to login */
-                        // fetch(apiConfig.url + "/users/login", {
-                        //     method: "POST",
-                        //     headers: {
-                        //         "Content-type": "application/json",
-                        //     },
-                        //     body: JSON.stringify({
-                        //         idToken: credential.idToken,
-                        //         user: user
-                        //     })
-                        // }).then((result) => {
-                        //     console.log(result)
-                        // })
-                        /* Create user and then login */
-
-                        // fetch(apiConfig.url + "/users/login", {
-                        //     method: "POST",
-                        //     headers: {
-                        //         "Content-type": "application/json",
-                        //     },
-                        //     body: JSON.stringify({
-                        //         idToken: credential.idToken,
-                        //         user: user
-                        //     })
-                        // })
-                        //     .then(CheckError)
-                        //     .then((result) => {
-                        //         localStorage.setItem("api_token", result.api_token)
-                        //         localStorage.setItem("showCompletedTasks", "1")
-                        //         navigate('/today')
-                        //
-                        //     }).catch((error) => {
-                        //     console.log(error);
-                        // });
-
                     })
             }).catch((error) => {
                 console.log(error)

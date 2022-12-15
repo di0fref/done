@@ -37,7 +37,14 @@
 }
 
 .checkbox{
-    @apply border-neutral-400 rounded-sm hover:bg-gray-200 hover:cursor-pointer focus:ring-0 focus:border-neutral-400
+    @apply
+        border-neutral-400
+        rounded-sm
+        hover:bg-gray-200
+        hover:cursor-pointer
+        focus:ring-0
+        focus:border-neutral-400
+        text-gray-500
 }
 
 .loader {

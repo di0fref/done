@@ -30,16 +30,10 @@ export default function TaskModal(props) {
     }, [props.task])
 
     useEffect(() => {
+        console.log(props)
         setIsOpen(props.open)
         inputReference.current && inputReference.current.focus()
     }, [props.open])
-
-    const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={`${getDateColor(task.due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
-            <FaCalendarAlt/>
-            <div className={`whitespace-nowrap text-center text-sm`}>{task.due ? format(new Date(task.due), "EEE, d MMM") : null}</div>
-        </div>
-    ))
 
     function onTextChange(editorState) {
         setTask({
@@ -50,8 +44,13 @@ export default function TaskModal(props) {
     }
 
     function closeModal() {
+        if(typeof props.setModalOpen === "function"){
+            props.setModalOpen(false)
+        }
         setIsOpen(false)
-        props.setModalOpen(false)
+        if(typeof props.closeSearch === 'function') {
+            props.closeSearch(false)
+        }
         setIsChanged(false);
     }
 
@@ -76,51 +75,50 @@ export default function TaskModal(props) {
         })
         changeHandler()
     }
-    return createPortal(
+    return (
         <Dialog
             unmount={true}
             open={isOpen}
             onClose={closeModal}
-            className="relative z-50"
-        >
+            className="relative z-50">
             {/* The backdrop, rendered as a fixed sibling to the panel container */}
             <div className="fixed inset-0 bg-black/30" aria-hidden="true"/>
 
             {/* Full-screen container to center the panel */}
             <div className="fixed inset-0 flex items-center justify-center text-gray-600 ">
                 {/* The actual dialog panel  */}
-                <Dialog.Panel className="h-4/5  md:max-w-4xl w-11/12 transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel style={{
+                    minHeight: "400px"
+                }} className="h-4/5 md:w-[864px] w-11/12 transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
-                        <div className={'border-b h-10_ py-2'}>
+                        <div className={'border-b h-1_ py-4'}>
                             <div className={'flex items-center justify-between'}>
                                 <div className={'ml-4'}>
                                     {task.project}
                                 </div>
                                 <button onClick={closeModal}>
-                                    <HiOutlineXMark className={'h-6 w-6 text-gray-400 mx-3 hover:bg-gray-200 rounded'}/>
+                                    <HiOutlineXMark className={'h-6 w-6 text-gray-400 mx-4 hover:bg-gray-200 rounded'}/>
                                 </button>
                             </div>
-
-
                         </div>
                     </Dialog.Title>
 
-                    <div className={'flex justify-between space-x-0 md:space-x-4 md:flex-row flex-col'}>
-                        <div className={'w-full slate md:pr-0  pr-2'}>
+                    <div className={'flex border h-full justify-between space-x-0 md:space-x-4 md:flex-row flex-col'}>
+                        <div className={'flex-grow _slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
-                                <div className={'ml-5 mr-2 mt-2'}>
+                                <div className={'ml-8 mr-2 mt-3'}>
                                     <input onChange={(e) => {
                                         setTask({
                                             ...task,
                                             "completed": !task.completed
                                         })
                                         changeHandler()
-                                    }} checked={task.completed} onClick={changeHandler} className={'check h-5 w-5 mt-2 mr-2'} type={'checkbox'}/>
+                                    }} checked={task.completed} onClick={changeHandler} className={'checkbox h-5 w-5 mt-2 mr-2'} type={'checkbox'}/>
                                 </div>
 
-                                <div onClick={() => setIsChanged(true)} className={`${isChanged ? "ring-1" : ""} w-full rounded-lg`}>
+                                <div onClick={() => setIsChanged(true)} className={`${isChanged ? "ring-1" : ""} w-full overflow-auto rounded-lg`}>
                                     <div className={'px-4 pt-4'}>
-                                        <input className={'p-0 tracking-wide w-full font-medium text-lg border-none focus:border-none focus:ring-0'}
+                                        <input className={'p-0 tracking-wide w-full font-medium text-2xl border-none focus:border-none focus:ring-0'}
                                                onChange={
                                                    (e) => {
                                                        setTask({
@@ -161,7 +159,7 @@ export default function TaskModal(props) {
                             ) : ""}
                         </div>
 
-                        <div className={'md:w-72 bg-gray-100_ border-l md:h-screen w-full'}>
+                        <div className={'md:flex-shrink-0 md:w-80 bg-gray-50 border-l md:h-full _w-full'}>
                             <div className={'md:p-4 p-6'}>
                                 {/*<p className={'text-black/50 font-medium text-[14px]'}>List</p>*/}
 
@@ -179,32 +177,12 @@ export default function TaskModal(props) {
 
                                     />
                                 </div>
-
-
                             </div>
                             <div className={'md:p-4 p-6'}>
                                 <p className={'ml-2 text-tgray/60 font-sm text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
                                     <div className={'text-gray-600 text-sm ml-2'}>
-                                        {/*<DatePicker*/}
-                                        {/*    selected={task.due ? new Date(task.due) : null}*/}
-                                        {/*    onChange={(value) => setTask({*/}
-                                        {/*        ...task,*/}
-                                        {/*        due: value ? format(new Date(value), "Y-MM-dd") : null*/}
-                                        {/*    })}*/}
-                                        {/*    customInput={*/}
-                                        {/*        <DateCustomInput/>*/}
-                                        {/*    }*/}
-                                        {/*    todayButton={"Today"}*/}
-                                        {/*    dateFormat={"yyyy-MM-dd"}>*/}
 
-                                        {/*    <div onClick={() => setTask({*/}
-                                        {/*        ...task,*/}
-                                        {/*        due: null*/}
-                                        {/*    })} className={'font-bold py-2 bg-gray-300 text-center hover:cursor-pointer hover:underline'}>*/}
-                                        {/*        Clear date*/}
-                                        {/*    </div>*/}
-                                        {/*</DatePicker>*/}
                                         <CustomDatePicker onClick={false} date={task.due} onDateChange={onDueChange}/>
                                     </div>
                                 </div>
@@ -214,7 +192,6 @@ export default function TaskModal(props) {
                     </div>
                 </Dialog.Panel>
             </div>
-        </Dialog>,
-        document.getElementById('portal')
+        </Dialog>
     )
 }

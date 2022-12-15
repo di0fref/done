@@ -18,27 +18,41 @@ export const Container = (props) => {
         const [data, setData] = useState([])
         const showCompleted = useReadLocalStorage("showCompletedTasks")
         const [open, setOpen] = useState(false)
-
         const selectedTask = useSelector(state => state.current.task)
-
-        const dispatch = useDispatch()
 
         const _data_ = {
 
-            today: [...useSelector(state => state.tasks.filter(
-                    task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
-                )
-            )].sort((a, b) => {
-                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
-            }),
+            today: {
+                tasks: [...useSelector(state => state.tasks.filter(
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+                }),
+                completed: [...useSelector(state => state.tasks.filter(
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+                }),
+            },
 
-            inbox: [...useSelector(
-                state => state.tasks.filter(
-                    task => (task.due === null && !task.completed)
-                )
-            )].sort((a, b) => {
-                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
-            }),
+            inbox: {
+                tasks: [...useSelector(
+                    state => state.tasks.filter(
+                        task => (task.due === null && !task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+                }),
+                completed: [...useSelector(
+                    state => state.tasks.filter(
+                        task => (task.due === null && task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+                })
+            },
 
             overdue: [...useSelector(
                 state => state.tasks.filter(
@@ -83,13 +97,24 @@ export const Container = (props) => {
                     })
                 },
 
-            project: [...useSelector(
-                state => state.tasks.filter(
-                    task => task.project_id === props.id && (showCompleted ? true : !task.completed)
-                )
-            )].sort((a, b) => {
-                return new Date(b.due) < new Date(a.due) ? 1 : -1;
-            }),
+            project: {
+                tasks: [...useSelector(
+                    state => state.tasks.filter(
+                        task => task.project_id === props.id && (showCompleted ? true : !task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                }),
+                completed: [...useSelector(
+                    state => state.tasks.filter(
+                        task => task.project_id === props.id && (task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                })
+            },
+
+
             completed: [...useSelector(
                 state => state.tasks.filter(
                     task => task.completed === true
@@ -121,14 +146,10 @@ export const Container = (props) => {
             )
         }, [])
 
-        // const onClickCard = (e, card) => {
-        //     dispatch(setCurrentTask(card))
-        // }
-
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
-                    onClick={(e) => setOpen(true)}
+                    onClick={() => setOpen(true)}
                     key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
@@ -190,9 +211,15 @@ export const Container = (props) => {
                                 )
                             case "inbox":
                                 return (
-                                    <div>
-                                        {Object.values(_data_.inbox).map((card, i) => renderCard(card, i))}
-                                    </div>
+                                    <>
+                                        <div>
+                                            {Object.values(_data_.inbox.tasks).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                        <div>
+                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
+                                            {Object.values(_data_.inbox.completed).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                    </>
                                 )
                             case "all":
                                 return (
@@ -208,28 +235,39 @@ export const Container = (props) => {
                                 )
                             case "project":
                                 return (
-                                    <div>
-                                        {Object.values(_data_.project).map((card, i) => renderCard(card, i))}
-                                    </div>
+                                    <>
+                                        <div>
+                                            {Object.values(_data_.project.tasks).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                        <div>
+                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
+                                            {Object.values(_data_.project.completed).map((card, i) => renderCard(card, i))}
+                                        </div>
+                                    </>
                                 )
                             default:
                                 return (
                                     <div>
-                                        {Object.keys(_data_.overdue).length ? (
-                                                <div className={''}>
-                                                    <div className={'font-bold text-lg mt-4_ border-b_ pb-1'}>
-                                                        Overdue
-                                                    </div>
-                                                    {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}
-                                                </div>
-                                            )
-                                            : null}
-                                        {Object.keys(_data_.overdue).length ? (
-                                            <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>
-                                                Today
-                                            </div>
-                                        ) : null}
-                                        {Object.values(_data_.today).map((card, i) => renderCard(card, i))}
+                                        {/*{Object.keys(_data_.overdue).length ? (*/}
+                                        {/*        <div className={''}>*/}
+                                        {/*            <div className={'font-bold text-lg mt-4_ border-b_ pb-1'}>*/}
+                                        {/*                Overdue*/}
+                                        {/*            </div>*/}
+                                        {/*            {Object.values(_data_.overdue).map((card, i) => renderCard(card, i))}*/}
+                                        {/*        </div>*/}
+                                        {/*    )*/}
+                                        {/*    : null}*/}
+                                        {/*{Object.keys(_data_.overdue).length ? (*/}
+                                        {/*    <div className={'ml-6_ font-bold text-lg mt-4_ border-b_ pb-1'}>*/}
+                                        {/*        Today*/}
+                                        {/*    </div>*/}
+                                        {/*) : null}*/}
+                                        {Object.values(_data_.today.tasks).map((card, i) => renderCard(card, i))}
+
+                                        <div>
+                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
+                                            {Object.values(_data_.today.completed).map((card, i) => renderCard(card, i))}
+                                        </div>
                                     </div>
                                 )
                         }

@@ -23,6 +23,11 @@ export default function SearchForm({closeModel}) {
 
     }
 
+    const closeSearch = () => {
+        setOpen(false)
+        closeModel()
+    }
+
     const filteredTasks =
         query === ''
             ? []
@@ -68,7 +73,7 @@ export default function SearchForm({closeModel}) {
                     </ul>
                 </Combobox.Options>
             </Combobox>
-            <TaskModal open={open} setModalOpen={setOpen} task={{...selectedItem}}/>
+            <TaskModal open={open} closeSearch={closeSearch} task={{...selectedItem}}/>
         </>
     )
 }

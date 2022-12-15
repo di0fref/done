@@ -1,16 +1,23 @@
 import {HiArchiveBox, HiCalendar, HiInbox, HiStar} from "react-icons/hi2";
 import {format} from "date-fns";
+import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
+import {BsCalendar} from "react-icons/bs";
 
 export function getIcon(path) {
     switch (path || "upcoming") {
         case "today":
-            return <HiStar className={'text-yellow-300'}/>
+            return <FaStar className={'text-gray-500'}/>
         case "upcoming":
-            return <HiCalendar className={'text-red-400'}/>
+            return (
+                <div className={'relative'}>
+                    <BsCalendar className={'text-gray-500'}/>
+                    <div className={'absolute top-[1px] left-[2px] text-[9px]'}>12</div>
+                </div>
+            )
         case "all":
-            return <HiArchiveBox className={'text-green-500'}/>
+            return <FaArchive className={'text-gray-500'}/>
         case "inbox":
-            return <HiInbox className={'text-sky-600'}/>
+            return <FaInbox className={'text-gray-500'}/>
     }
 }
 
@@ -43,9 +50,9 @@ export const delay = (time) => {
 
 export function getDateColor(date) {
     if (!date) {
-        return  "text-gray-500"
+        return "text-gray-500"
     }
-    return  new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+    return new Date(date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
         ? "whitespace-nowrap text-warning  "
         : new Date(date).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)
             ? "whitespace-nowrap text-green-600 "

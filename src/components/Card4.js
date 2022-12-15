@@ -97,12 +97,12 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     return (
 
         <Link to={link}>
-            <div className={`${card.completed?"opacity-50 bg-green-100":""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
+            <div className={`${card.completed?"opacity-50 _bg-green-100":""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
                 <div className={'mr-1'}>
                     <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={card.completed}/>
                 </div>
                 <div className={'text-neutral-900 flex-grow overflow-hidden'}>
-                    <div className={' overflow-hidden '}>
+                    <div className={'overflow-hidden '}>
                         <div className={`${card.completed?"line-through":""}`}>{name}</div>
                     </div>
                 </div>
