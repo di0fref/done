@@ -149,7 +149,8 @@ export const Container = (props) => {
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div
-                    onClick={() => setOpen(true)}
+                    // onClick={() => setOpen(true)}
+
                     key={card.id}
                     initial={{opacity: 0}}
                     animate={{opacity: 1}}
@@ -157,7 +158,7 @@ export const Container = (props) => {
                 >
                     <AnimatePresence>
                         <Card4
-
+                            oM={setOpen}
                             key={card.name + card.id}
                             index={index}
                             id={card.id}
@@ -237,10 +238,11 @@ export const Container = (props) => {
                                 return (
                                     <>
                                         <div>
+                                            <div className={'mb-2 mt-7 font-bold border-b p-2 mb-5'}>Upcoming tasks</div>
                                             {Object.values(_data_.project.tasks).map((card, i) => renderCard(card, i))}
                                         </div>
                                         <div>
-                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
+                                            <div className={'mb-2 mt-7 font-bold border-b p-2 mb-5'}>Completed</div>
                                             {Object.values(_data_.project.completed).map((card, i) => renderCard(card, i))}
                                         </div>
                                     </>

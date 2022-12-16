@@ -30,7 +30,6 @@ export default function TaskModal(props) {
     }, [props.task])
 
     useEffect(() => {
-        console.log(props)
         setIsOpen(props.open)
         inputReference.current && inputReference.current.focus()
     }, [props.open])

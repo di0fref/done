@@ -8,7 +8,7 @@ import DateBadge from "./DateBadge";
 
 import {Link, useParams} from "react-router-dom";
 
-export const Card4 = ({id, card, index, moveCard,}) => {
+export const Card4 = ({id, card, index, moveCard, oM}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
@@ -46,7 +46,7 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     const saveNameHandler = (e) => {
         if (e.currentTarget.value !== card.name) {
             dispatch(updateTask({
-                id:card.id,
+                id: card.id,
                 name: name
             }))
         }
@@ -73,7 +73,6 @@ export const Card4 = ({id, card, index, moveCard,}) => {
                 console.log(err);
                 toast.error(`Something went wrong. Please contact support`)
             }
-
         })()
 
     }
@@ -95,21 +94,32 @@ export const Card4 = ({id, card, index, moveCard,}) => {
     }
 
     return (
+        <>
+            {/*<div className={`${card.completed ? "opacity-50 _bg-green-100" : ""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>*/}
+            {/*    <div className={'mr-1'}>*/}
+            {/*        <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>*/}
+            {/*    </div>*/}
 
-        <Link to={link}>
-            <div className={`${card.completed?"opacity-50 _bg-green-100":""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>
-                <div className={'mr-1'}>
-                    <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={card.completed}/>
+            {/*    <div className={'text-neutral-900 flex-grow'}>*/}
+            {/*        <div className={''}>*/}
+            {/*            <Link to={link} onClick={() => oM(true)}>*/}
+            {/*                <div className={`${card.completed ? "line-through" : ""}`}>{name}</div>*/}
+            {/*            </Link>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+
+            {/*    <div className={'text-neutral-500 text-sm ml-6 text-gray-500'}>{card.project}</div>*/}
+            {/*    <div className={'flex-shrink-0 pr-2'}><DateBadge date={card.due}/></div>*/}
+            {/*</div>*/}
+
+            <div className={'flex items-center space-x-4 mb-3 hover:bg-hov text-neutral-700 py-2 hover:cursor-pointer'}>
+                <div>
+                    <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
                 </div>
-                <div className={'text-neutral-900 flex-grow overflow-hidden'}>
-                    <div className={'overflow-hidden '}>
-                        <div className={`${card.completed?"line-through":""}`}>{name}</div>
-                    </div>
-                </div>
-                <div className={'text-neutral-500 text-sm ml-6 text-gray-500'}>{card.project}</div>
-                <div className={'flex-shrink-0 pr-2'}><DateBadge date={card.due}/></div>
+                <div className={`${card.completed ? "line-through_" : ""} flex-grow`}>{name}</div>
+                <div className={'text-xs bg-gray-200 py-0.5 px-1 rounded-md'}>{project.name}</div>
+                <div className={'pr-4'}><DateBadge date={due}/></div>
             </div>
-
-        </Link>
+        </>
     )
 }
