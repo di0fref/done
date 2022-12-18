@@ -75,7 +75,7 @@ export default function AddTask() {
             }
             (async () => {
                 setName("")
-                setEditing(false)
+                // setEditing(false)
                 setDue(null)
                 try {
                     const task = await dispatch(addTask({
@@ -119,14 +119,14 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div onClick={() => setEditing(true)} ref={ref} className={'ring-1 my-4 min-h-[40px] rounded-xl bg-white flex items-center space-x-2 pr-2'}>
+            <div onClick={() => setEditing(true)} ref={ref} className={'ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'flex-grow'}>
                     <input
                         onKeyDown={onKeyDownHandler}
                         type={"text"}
                         ref={inputReference}
                         onChange={(e) => setName(e.target.value)}
-                        className={'w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl'}
+                        className={'w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl dark:bg-gray-600'}
                         placeholder={"Write a new task"}
                         value={name}>
                     </input>
@@ -157,7 +157,7 @@ export default function AddTask() {
 
     return (
         <div className={'w-full my-4 '} onClick={() => setEditing(true)}>
-            <input placeholder={"Write a new task"} className={'h-[40px] rounded-xl bg-light-gray w-full border-0 focus:ring-0 focus:border-0'} type={"text"}/>
+            <input placeholder={"Write a new task"} className={'h-[40px] rounded-xl bg-light-gray dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0'} type={"text"}/>
         </div>
     )
 }

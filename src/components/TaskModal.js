@@ -19,7 +19,6 @@ export default function TaskModal(props) {
     const [task, setTask] = useState({})
     const [isChanged, setIsChanged] = useState(false)
     const dispatch = useDispatch()
-    const inputReference = useRef(null);
 
     const _project_ = useSelector(state => state.projects.find(
         project => task.project_id ? (task.project_id === project.id) : null
@@ -28,10 +27,9 @@ export default function TaskModal(props) {
     useEffect(() => {
         setTask(props.task)
     }, [props.task])
-
+    //
     useEffect(() => {
         setIsOpen(props.open)
-        inputReference.current && inputReference.current.focus()
     }, [props.open])
 
     function onTextChange(editorState) {
@@ -54,12 +52,13 @@ export default function TaskModal(props) {
     }
 
     const changeHandler = (e) => {
+        console.log("changeHandler")
         setIsChanged(true);
     }
 
 
     const saveHandler = () => {
-
+        console.log("save")
         dispatch(updateTask({
             ...task,
             due: task.due ? format(new Date(task.due), "Y-M-dd") : null
@@ -105,7 +104,7 @@ export default function TaskModal(props) {
                     <div className={'flex border h-full justify-between space-x-0 md:space-x-4 md:flex-row flex-col'}>
                         <div className={'flex-grow _slate md:pr-0  pr-2'}>
                             <div className={'flex mt-2'}>
-                                <div className={'ml-8 mr-2 mt-3'}>
+                                <div className={'ml-8 mr-2 mt-4'}>
                                     <input onChange={(e) => {
                                         setTask({
                                             ...task,
@@ -117,7 +116,7 @@ export default function TaskModal(props) {
 
                                 <div onClick={() => setIsChanged(true)} className={`${isChanged ? "ring-1" : ""} w-full overflow-auto rounded-lg`}>
                                     <div className={'px-4 pt-4'}>
-                                        <input className={'p-0 tracking-wide w-full font-medium text-2xl border-none focus:border-none focus:ring-0'}
+                                        <input className={'p-0 tracking-wide w-full font-medium text-xl border-none focus:border-none focus:ring-0'}
                                                onChange={
                                                    (e) => {
                                                        setTask({
@@ -181,12 +180,10 @@ export default function TaskModal(props) {
                                 <p className={'ml-2 text-tgray/60 font-sm text-[14px]'}>Due Date</p>
                                 <div className={'flex items-center mt-2'}>
                                     <div className={'text-gray-600 text-sm ml-2'}>
-
                                         <CustomDatePicker onClick={false} date={task.due} onDateChange={onDueChange}/>
                                     </div>
                                 </div>
                             </div>
-                            <div></div>
                         </div>
                     </div>
                 </Dialog.Panel>

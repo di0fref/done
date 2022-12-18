@@ -45,17 +45,17 @@
 }
 
 .checkbox {
-	@apply shrink-0 mt-0.5 border-gray-200 rounded text-blue-500   focus:ring-0
-	/*border-neutral-400*/
-	/*rounded-sm*/
-	/*hover:bg-gray-200*/
-	/*hover:cursor-pointer*/
-	/*focus:ring-0*/
-	/*focus:border-neutral-400*/
-	/*!*text-gray-500*!*/
-	/*	text-blue-700*/
-	/*h-[var(--checkbox-size)]*/
-	/*w-[var(--checkbox-size)]*/
+	@apply shrink-0 mt-0.5 border-neutral-400/70 rounded text-blue-500 focus:ring-0 rounded-full
+	dark:bg-gray-700 dark:border-gray-600
+}
+
+@media (min-width: 768px) {
+	.rez{
+		position: fixed;
+	}
+}
+.sub-header{
+	@apply text-xl font-medium
 }
 
 .loader {

@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {format} from "date-fns";
 
-export default function TaskHeader(props) {
+export default function TaskHeader() {
 
     const [icon, setIcon] = useState("")
     const [name, setName] = useState("")
@@ -18,11 +18,11 @@ export default function TaskHeader(props) {
     useEffect(() => {
         if (params.path === "project") {
             setName(project.name.charAt(0).toUpperCase() + project.name.slice(1));
-            // setIcon(
-            //     <div style={{
-            //         background: project.color
-            //     }} className={'w-4 h-4 rounded-full'}> </div>
-            // )
+            setIcon(
+                <div style={{
+                    background: project.color
+                }} className={'w-2 h-2 rounded-full'}> </div>
+            )
         } else {
             switch (params.path){
                 case "all":
@@ -32,19 +32,19 @@ export default function TaskHeader(props) {
                     setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));
             }
 
-            // setIcon(getIcon(props.path))
+            setIcon(getIcon(params.path))
         }
-    }, [params.path, params.id])
+    }, [params.path,params.id])
 
     return (
         <div>
             <div className={'flex items-center justify-start pb-1'}>
-                {/*<div className={'mr-2 ml-3'}>{icon}</div>*/}
+                <div className={'mr-3 '}>{icon}</div>
                 <div className={'font-semibold text-2xl'}>{name}</div>
             </div>
-            {params.path==="today"?
-                <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d")}</span>
-                :""}
+            {/*{params.path==="today"?*/}
+            {/*    <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d")}</span>*/}
+            {/*    :""}*/}
         </div>
 
     // wednesday, feb 22

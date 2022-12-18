@@ -1,5 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme')
+
 module.exports = {
+    mode: 'jit',
     variants: {
         extend: {
             visibility: ["group-hover"],
@@ -12,28 +14,28 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            // sans: ['Inter var', 'sans-serif'],
+            sans: ['Inter var', ...defaultTheme.fontFamily.sans],
             // sans: ["Roboto", "Helvetica", "Arial", "sans-serif"]
             // sans: ["-apple-system","BlinkMacSystemFont","Segoe UI","Roboto","Apple Color Emoji","Helvetica","Arial","sans-serif"]
-            sans: [
-                "-apple-system",
-                "system-ui",
-                "'Segoe UI'",
-                "Roboto",
-                "Noto",
-                "Oxygen-Sans",
-                "Ubuntu",
-                "Cantrell",
-                "'Helvetica Neue'",
-                "sans-serif",
-                "'Apple Color Emoji'",
-                "'Segoe UI Emoji'",
-                "'Segoe UI Symbol'"
-            ]
+            // sans: [
+            //     "-apple-system",
+            //     "system-ui",
+            //     "'Segoe UI'",
+            //     "Roboto",
+            //     "Noto",
+            //     "Oxygen-Sans",
+            //     "Ubuntu",
+            //     "Cantrell",
+            //     "'Helvetica Neue'",
+            //     "sans-serif",
+            //     "'Apple Color Emoji'",
+            //     "'Segoe UI Emoji'",
+            //     "'Segoe UI Symbol'"
+            // ]
         },
         extend: {
             fontSize: {
-                base: "14px",
+                // base: "14px",
                 md: "0.97em",
             },
             colors: {
@@ -45,7 +47,7 @@ module.exports = {
                 warning: "#E03131",
                 hov:"#F6F8FE",
                 "light-gray": "#F3F3F3",
-                tgray: "#191919"
+                tgray: "#191919",
             },
             width: {
                 '100': '28rem',

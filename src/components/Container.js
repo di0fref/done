@@ -6,11 +6,10 @@ import {motion, AnimatePresence} from "framer-motion"
 import {useReadLocalStorage} from "usehooks-ts";
 import AddTask from "./AddTask";
 import {Card4} from "./Card4";
-import TaskDetail from "./TaskDetail";
 import TaskHeader from "./TaskHeader";
 import {useParams} from "react-router-dom";
-import TaskModal from "./TaskModal";
-// import {setCurrent} from "../redux/currentSlice"
+import Rez from "./Rez";
+import TaskDetail from "./TaskDetail";
 
 export const Container = (props) => {
     {
@@ -124,11 +123,6 @@ export const Container = (props) => {
             }),
         }
 
-        const test = {
-            all: [],
-            completed: []
-        }
-
         const moveCard = useCallback((dragIndex, hoverIndex) => {
 
             setData((prevCards) => {
@@ -173,9 +167,9 @@ export const Container = (props) => {
         let prev = "";
 
         return (
-            <div className={'flex h-full '}>
+            <div className={'flex h-full dark:text-neutral-300 '}>
                 <div className={'flex-grow px-8 mt-6'}>
-                    <TaskHeader/>
+                    {/*<TaskHeader/>*/}
                     <AddTask/>
                     {(() => {
                         switch (props.filter) {
@@ -183,12 +177,15 @@ export const Container = (props) => {
                                 return (
 
                                     <>
+                                        <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
+                                            <TaskHeader/></div>
+
                                         {Object.values(_data_.upcoming.tasks).map((card, i) => {
                                             if (prev !== card.due) {
                                                 prev = card.due;
                                                 return (
                                                     <div key={card.id}>
-                                                        <div className={'font-medium text-sm ml-2  mb-2 mt-8'}>
+                                                        <div className={'mb-2 mt-7 text-sm font-bold border-b p-2 dark:border-gray-700 mb-5 _sub-header '}>
                                                             {formatDate(card.due, true)}
                                                         </div>
                                                         {renderCard(card, i)}
@@ -202,10 +199,16 @@ export const Container = (props) => {
                                                 )
                                             }
                                         })}
-                                        <div className={'font-medium text-sm ml-2  mb-2 mt-8'}>Completed</div>
-                                        {Object.values(_data_.upcoming.completed).map((card, i) => {
-                                            return renderCard(card, i)
-                                        })}
+                                        {_data_.upcoming.completed.length ?
+                                            (
+                                                <div>
+                                                    <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
+                                                    {Object.values(_data_.upcoming.completed).map((card, i) => {
+                                                        return renderCard(card, i)
+                                                    })}
+                                                </div>
+                                            )
+                                            : ""}
                                     </>
 
 
@@ -214,37 +217,56 @@ export const Container = (props) => {
                                 return (
                                     <>
                                         <div>
+                                            <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
+                                                <TaskHeader/></div>
+
                                             {Object.values(_data_.inbox.tasks).map((card, i) => renderCard(card, i))}
                                         </div>
-                                        <div>
-                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
-                                            {Object.values(_data_.inbox.completed).map((card, i) => renderCard(card, i))}
-                                        </div>
+                                        {_data_.inbox.completed.length ?
+                                            (
+                                                <div>
+                                                    <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
+                                                    {Object.values(_data_.inbox.completed).map((card, i) => renderCard(card, i))}
+                                                </div>
+                                            )
+                                            : ""}
                                     </>
                                 )
                             case "all":
                                 return (
                                     <>
                                         <div>
+                                            <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
+                                                <TaskHeader/></div>
+
                                             {Object.values(_data_.all.tasks).map((card, i) => renderCard(card, i))}
                                         </div>
-                                        <div>
-                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
-                                            {Object.values(_data_.all.completed).map((card, i) => renderCard(card, i))}
-                                        </div>
+                                        {_data_.all.completed.length ?
+                                            (
+                                                <div>
+                                                    <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
+                                                    {Object.values(_data_.all.completed).map((card, i) => renderCard(card, i))}
+                                                </div>
+                                            )
+                                            : ""}
                                     </>
                                 )
                             case "project":
                                 return (
                                     <>
                                         <div>
-                                            <div className={'mb-2 mt-7 font-bold border-b p-2 mb-5'}>Upcoming tasks</div>
+                                            <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
+                                                <TaskHeader/></div>
                                             {Object.values(_data_.project.tasks).map((card, i) => renderCard(card, i))}
                                         </div>
-                                        <div>
-                                            <div className={'mb-2 mt-7 font-bold border-b p-2 mb-5'}>Completed</div>
-                                            {Object.values(_data_.project.completed).map((card, i) => renderCard(card, i))}
-                                        </div>
+                                        {_data_.project.completed.length ?
+                                            (
+                                                <div>
+                                                    <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
+                                                    {Object.values(_data_.project.completed).map((card, i) => renderCard(card, i))}
+                                                </div>
+                                            )
+                                            : ""}
                                     </>
                                 )
                             default:
@@ -264,20 +286,28 @@ export const Container = (props) => {
                                         {/*        Today*/}
                                         {/*    </div>*/}
                                         {/*) : null}*/}
+                                        <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
+                                            <TaskHeader/></div>
+
                                         {Object.values(_data_.today.tasks).map((card, i) => renderCard(card, i))}
 
-                                        <div>
-                                            <div className={'mb-2 mt-7 font-bold text-sm'}>Completed</div>
-                                            {Object.values(_data_.today.completed).map((card, i) => renderCard(card, i))}
-                                        </div>
+                                        {_data_.today.completed.length ?
+                                            (
+                                                <div>
+                                                    <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
+                                                    {Object.values(_data_.today.completed).map((card, i) => renderCard(card, i))}
+                                                </div>
+                                            )
+                                            : ""}
+
                                     </div>
                                 )
                         }
                     })()}
-
                 </div>
-                {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
-                <TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>
+                <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
+                {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
+{/*<Rez card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
             </div>
         )
     }

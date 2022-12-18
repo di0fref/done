@@ -25,13 +25,13 @@ function Sidebar(props) {
 
             {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
-            <Disclosure.Button className="z-40_ absolute top-6 left-14 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+            <Disclosure.Button className="z-40_ absolute top-2 left-14 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                 <HiBars3
                     className="block md:hidden h-8 w-8"
                     aria-hidden="true"
                 />
             </Disclosure.Button>
-            <div className=" overflow-y-hidden border-r md:relative absolute px-4 py-6 w-80 h-screen bg-white fixed top-0 -left-80 md:left-0 md:w-52_ md:w-80  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+            <div className=" overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-6 w-64 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-72 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                 {/*<SearchDialog/>*/}
                 <div className="flex flex-col justify-start item-center">
                     <div className={'overflow-y-auto pb-3'}>
@@ -65,7 +65,7 @@ function Sidebar(props) {
                     </div>
                     <div>
                         <div className={'flex justify-between'}>
-                            <div className={'text-black/50 font-medium text-[14px] mb-2 pl-2'}>Lists</div>
+                            <div className={'text-black/50 font-medium dark:text-neutral-300 text-[14px] mb-2 pl-2'}>Lists</div>
                             <AddProjectForm/>
                         </div>
                         <ul className={'space-y-1'}>
@@ -74,16 +74,16 @@ function Sidebar(props) {
                                 Object.values(projects).map((project, i) => {
                                     return (
                                         <li key={project.id} className={`
-                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""}  pl-2 px-1 py-2 hover:bg-hov rounded`}>
+                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""}  pl-2 px-1 py-2 dark:text-white hover:bg-hov dark:hover:bg-gray-700 rounded`}>
                                             <Link to={"/project/" + project.id} className={'flex items-center'}>
                                                 {/*<div style={{*/}
                                                 {/*    background: project.color*/}
                                                 {/*}} className={'w-2 h-2 rounded-full'}> </div>*/}
                                                 <div><BsList/></div>
-                                                <div className={'hover:text-gray-600 ml-3 text-gray-500 text-md flex-grow tracking-wide_'}>{project.name}</div>
+                                                <div className={'hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-md flex-grow '}>{project.name}</div>
                                                 <div style={{
                                                     background: project.color
-                                                }} className={'w-2 h-2 rounded-full mr-6'}></div>
+                                                }} className={'w-2 h-2 rounded-full mr-6'}> </div>
                                                 <div className={'mr-1 w-4 '}><HiEllipsisHorizontal/></div>
                                             </Link>
                                         </li>

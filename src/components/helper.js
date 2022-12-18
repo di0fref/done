@@ -1,17 +1,20 @@
 import {HiArchiveBox, HiCalendar, HiInbox, HiStar} from "react-icons/hi2";
-import {format} from "date-fns";
+import {format, formatRelative} from "date-fns";
 import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar} from "react-icons/bs";
+import {enGB} from "date-fns/locale";
 
 export function getIcon(path) {
-    switch (path || "upcoming") {
+    switch (path) {
         case "today":
             return <FaStar className={'text-gray-500'}/>
         case "upcoming":
             return (
                 <div className={'relative'}>
                     <BsCalendar className={'text-gray-500'}/>
-                    <div className={'absolute top-[1px] left-[2px] text-[9px]'}>12</div>
+                    {/*<div className={'absolute top-[-2px] left-[2px] text-[10px]'}>*/}
+                    {/*    {format(new Date(), "dd")}*/}
+                    {/*</div>*/}
                 </div>
             )
         case "all":
@@ -21,7 +24,7 @@ export function getIcon(path) {
     }
 }
 
-export const dateFormat = "dd MMM"
+export const dateFormat = "d MMM"
 
 export const paths = [
     "today",
@@ -29,8 +32,27 @@ export const paths = [
     "inbox",
     "all"
 ];
+const formatRelativeLocale = {
+    lastWeek: "'Last' eeee",
+    yesterday: "'Yesterday'",
+    today: "'Today'",
+    tomorrow: "'Tomorrow'",
+    nextWeek: "'Next' eeee",
+    other: dateFormat ,
+};
+export function formatRelativeDate(date){
+    const locale = {
+        ...enGB,
+        formatRelative: (token) => formatRelativeLocale[token],
+    };
+    date = new Date(date);
+    return formatRelative(date, new Date(),{locale});
+}
 
 export function formatDate(date, includeDay) {
+
+    // return formatRelativeDate(date);
+
     if (!date) {
         return null;
     }
@@ -38,7 +60,7 @@ export function formatDate(date, includeDay) {
     return format(
         new Date(date),
         dateFormat +
-        (date.getFullYear() === new Date().getFullYear() ? '' : ' YYY') +
+        (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY') +
         (includeDay ? " ‧ EEEE" : "")
     )
 }

@@ -7,6 +7,9 @@ import {toast} from "react-toastify";
 import DateBadge from "./DateBadge";
 
 import {Link, useParams} from "react-router-dom";
+import CustomDatePicker from "./CustomDatePicker";
+import {format} from "date-fns";
+import ProjectBadge from "./ProjectBadge";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
@@ -59,7 +62,10 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
             await timeout(500);
             try {
                 const id = card.id
-                const task = await dispatch(toggleCompleted(card)).unwrap()
+                const task = await dispatch(toggleCompleted({
+                    id: card.id,
+                    completed: taskCompleted
+                })).unwrap()
 
                 task.completed && toast.success(
                     <div>1 task was completed
@@ -76,7 +82,15 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
         })()
 
     }
+    const onDueChange = (date) => {
+        dispatch(updateTask(
+            {
+                id: card.id,
+                due: date ? format(new Date(date), "Y-M-dd") : null
+            }
+        ))
 
+    }
     useEffect(() => {
         if (paths.find(p => params.path === p)) {
             setLink("/" + params.path + "/task/" + card.id)
@@ -87,7 +101,8 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }, [])
 
 
-    if (error) {
+
+    if (error || !card) {
         return (
             <div>{error}</div>
         )
@@ -112,13 +127,25 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
             {/*    <div className={'flex-shrink-0 pr-2'}><DateBadge date={card.due}/></div>*/}
             {/*</div>*/}
 
-            <div className={'flex items-center space-x-4 mb-3 hover:bg-hov text-neutral-700 py-2 hover:cursor-pointer'}>
+            <div className={`${card.completed ? "opacity-50 " : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center space-x-4  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
                 <div>
                     <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
                 </div>
-                <div className={`${card.completed ? "line-through_" : ""} flex-grow`}>{name}</div>
-                <div className={'text-xs bg-gray-200 py-0.5 px-1 rounded-md'}>{project.name}</div>
-                <div className={'pr-4'}><DateBadge date={due}/></div>
+                <div className={'flex-grow'}>
+                    <Link to={link} onClick={() => oM(true)}>
+                        <div className={`${card.completed ? "line-through " : ""}  `}>{name}</div>
+                    </Link>
+                </div>
+                {/*<div className={'text-xs bg-gray-200 py-0.5 px-1 rounded-md'}>{card.project}</div>*/}
+                <div>
+                    {card.project ?
+                        <ProjectBadge name={card.project} color={project.color}/>
+                        :""
+                    }
+                </div>
+                <div><CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange}/>
+                </div>
+                {/*<div className={'pr-4'}><DateBadge date={due}/></div>*/}
             </div>
         </>
     )

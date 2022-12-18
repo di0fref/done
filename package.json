@@ -46,6 +46,7 @@
     "react-mount-animation": "^0.0.11",
     "react-onclickoutside": "^6.12.2",
     "react-redux": "^8.0.5",
+    "react-resizable": "^3.0.4",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "react-textarea-autosize": "^8.4.0",
@@ -84,6 +85,8 @@
     "@tailwindcss/typography": "^0.5.8",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19",
+    "prettier": "^2.8.1",
+    "prettier-plugin-tailwindcss": "^0.2.1",
     "tailwindcss": "^3.2.4"
   }
 }
