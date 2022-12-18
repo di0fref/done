@@ -23,7 +23,7 @@ export const Container = (props) => {
 
             today: {
                 tasks: [...useSelector(state => state.tasks.filter(
-                        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                     )
                 )].sort((a, b) => {
                     return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
@@ -55,7 +55,7 @@ export const Container = (props) => {
 
             overdue: [...useSelector(
                 state => state.tasks.filter(
-                    task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (showCompleted ? true : !task.completed)
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (!task.completed)
                 )
             )].sort((a, b) => {
                 return new Date(b.due) < new Date(a.due) ? 1 : -1;
@@ -65,7 +65,7 @@ export const Container = (props) => {
                 {
                     tasks: [...useSelector(
                         state => state.tasks.filter(
-                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (showCompleted ? true : !task.completed)
+                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                         ))].sort((a, b) => {
                         return new Date(b.due) < new Date(a.due) ? 1 : -1;
                     }),
@@ -81,7 +81,7 @@ export const Container = (props) => {
                 {
                     tasks: [...useSelector(
                         state => state.tasks.filter(
-                            task => (showCompleted ? true : !task.completed)
+                            task => (!task.completed)
                         )
                     )].sort((a, b) => {
                         return new Date(b.due) < new Date(a.due) ? 1 : -1;
@@ -99,7 +99,7 @@ export const Container = (props) => {
             project: {
                 tasks: [...useSelector(
                     state => state.tasks.filter(
-                        task => task.project_id === props.id && (showCompleted ? true : !task.completed)
+                        task => task.project_id === props.id && (!task.completed)
                     )
                 )].sort((a, b) => {
                     return new Date(b.due) < new Date(a.due) ? 1 : -1;

@@ -74,7 +74,6 @@ export default function TaskDetail(props) {
 
     useEffect(() => {
         setCustomOpen(props.open)
-
     }, [props])
 
 
@@ -90,10 +89,8 @@ export default function TaskDetail(props) {
         )
     }
     return (
-        <Rez>
-
-
-            <div className={'h-12 border-b mt-4'}>
+        <Rez open={customOpen}>
+            <div className={'h-12 border-b mt-4 bg-white'}>
                 <div className={'flex items-center space-x-2'}>
                     <button onClick={() => setCustomOpen(false)} className={` flex items-center lg:hidden block`}>
                         <HiOutlineXMark className={'h-7 w-7 text-gray-500 ml-4 mr-4 mt-[1px]'}/>

@@ -23,13 +23,14 @@ export default function Rez(props) {
 
     useEffect(() => {
         setCustomOpen(props.open)
+        console.log(props.open)
     }, [props])
 
     return (
         <Resizable
             className={`
             border-l
-                bg-transparent
+                bg-white
                 md:relative 
                 h-screen 
                 fixed 
