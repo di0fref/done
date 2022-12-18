@@ -102,7 +102,7 @@ export const Container = (props) => {
                         task => task.project_id === props.id && (!task.completed)
                     )
                 )].sort((a, b) => {
-                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    return (new Date(b.due) < new Date(a.due) ? 1 : -1)
                 }),
                 completed: [...useSelector(
                     state => state.tasks.filter(

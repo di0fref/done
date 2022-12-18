@@ -80,7 +80,7 @@ export default function AddTask() {
                 try {
                     const task = await dispatch(addTask({
                         name: name,
-                        due: due ? format(due, "Y-MM-dd") : null,
+                        due: due ? format(new Date(due), "Y-MM-dd") : null,
                         project_id: project.id ?? null,
                         text: "",
                         prio: "high"

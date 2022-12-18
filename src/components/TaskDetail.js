@@ -63,7 +63,7 @@ export default function TaskDetail(props) {
         }))
     }, [debouncedName])
 
-    
+
     // Debounce
     useEffect(() => {
         dispatch(updateTask({

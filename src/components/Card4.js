@@ -14,7 +14,7 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
-    const [due, setDue] = useState(new Date(card.due));
+    const [due, setDue] = useState(card.due?new Date(card.due):null);
     const [name, setName] = useState(card.name);
     const params = useParams()
     const [link, setLink] = useState("")
