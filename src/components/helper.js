@@ -10,7 +10,7 @@ export function getIcon(path) {
             return <FaStar className={'text-gray-500'}/>
         case "upcoming":
             return (
-                <div className={'relative'}>
+                <div className={'relative_'}>
                     <BsCalendar className={'text-gray-500'}/>
                     {/*<div className={'absolute top-[-2px] left-[2px] text-[10px]'}>*/}
                     {/*    {format(new Date(), "dd")}*/}

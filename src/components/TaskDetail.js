@@ -1,132 +1,120 @@
-import {forwardRef, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import ProjectSelect from "./ProjectSelect";
-import DateBadge from "./DateBadge";
-import DatePicker from "react-datepicker";
 import {useDispatch, useSelector} from "react-redux";
-import {Disclosure} from "@headlessui/react";
-import {HiBars3, HiOutlineXMark} from "react-icons/hi2";
-import TextareaAutosize from "react-textarea-autosize";
-import {updateTask} from "../redux/taskSlice";
+import {HiOutlineXMark} from "react-icons/hi2";
+
 import Editor from "./TextEditor";
-import {$getRoot, $getSelection} from "lexical";
-import {format} from "date-fns";
-import {BsArrowBarRight, BsCalendar} from "react-icons/bs";
-import {getDateColor} from "./helper";
-import {FaCalendarAlt} from "react-icons/fa";
 import Rez from "./Rez";
+import CustomDatePicker from "./CustomDatePicker";
+import {BiListCheck} from "react-icons/bi";
+import {toast} from "react-toastify";
+import {updateTask} from "../redux/taskSlice";
+import {format} from "date-fns";
+import {debounce} from "lodash";
+import {useDebounce} from "usehooks-ts";
 
 export default function TaskDetail(props) {
-
-    const [name, setName] = useState(props.card.name);
-    const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
-    const [text, setText] = useState(props.card.text);
-    const [customOpen, setCustomOpen] = useState(props.open);
-
-    const dispatch = useDispatch()
-    const inputRef = useRef(null)
-
-    const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={` ${getDateColor(due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mr-2`}>
-            <FaCalendarAlt/>
-            <div className={`whitespace-nowrap text-center text-sm`}>{format(due, "EEE, d MMM")}</div>
-        </div>
-    ))
 
     const _project_ = useSelector(state => state.projects.find(
         project => props.card ? (props.card.project_id === project.id) : null
     ))
+    const [name, setName] = useState(props.card.name);
+    const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
+    const [text, setText] = useState(props.card.text);
+    const [project, setProject] = useState(_project_);
+    const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
+    const [customOpen, setCustomOpen] = useState(props.open);
+    const debouncedName = useDebounce(name, 500)
+    const debouncedText = useDebounce(text, 500)
 
-    const onProjectChange = (project) => {
-        if (project.id !== props.card.project_id) {
-            dispatch(updateTask({
-                id: props.card.id,
-                project_id: project.id
-            }))
-        }
-    }
-
-    const saveNameHandler = (e) => {
-
-        dispatch(updateTask({
-            id: props.card.id,
-            name: name
-        }))
-    }
-
-    const onDateChange = (date) => {
-
-        setDue(date)
-        dispatch(updateTask({
-            id: props.card.id,
-            due: format(new Date(date), "Y-M-dd")
-        }))
-    }
-
-    function onTextChange(editorState) {
-
-        dispatch(updateTask({
-            id: props.card.id,
-            text: JSON.stringify(editorState)
-        }))
-
-    }
-
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setCustomOpen(props.open)
     }, [props])
 
-
-    function buttonClicked() {
-        setCustomOpen(prev => !prev);
-        props.setOpen(prev => !prev)
+    const onStatusChange = (e) => {
+        setTaskCompleted(e.target.checked)
+        dispatch(updateTask({
+            id: props.card.id,
+            completed: e.target.checked ? 1 : 0
+        }))
+    }
+    const onDateChange = (date) => {
+        setDue(date)
+        dispatch(updateTask({
+            id: props.card.id,
+            due: date ? format(new Date(date), "Y-M-dd") : null
+        }))
+    }
+    const onProjectChange = (project) => {
+        setProject(project)
+        dispatch(updateTask({
+            id: props.card.id,
+            project_id: project.id
+        }))
     }
 
+    // Debounce
+    useEffect(() => {
+        dispatch(updateTask({
+            id: props.card.id,
+            name: name
+        }))
+    }, [debouncedName])
 
-    if (!props.card.id) {
-        return (
-            <div>kjbuj</div>
-        )
-    }
+    
+    // Debounce
+    useEffect(() => {
+        dispatch(updateTask({
+            id: props.card.id,
+            text: text
+        }))    }, [debouncedText])
+
+
+    // debounce(() => {
+    //     console.log(name)
+    // }, 2000), [name],
     return (
         <Rez open={customOpen}>
-            <div className={'h-12 border-b mt-4 bg-white'}>
-                <div className={'flex items-center space-x-2'}>
-                    <button onClick={() => setCustomOpen(false)} className={` flex items-center lg:hidden block`}>
-                        <HiOutlineXMark className={'h-7 w-7 text-gray-500 ml-4 mr-4 mt-[1px]'}/>
-                    </button>
-                    <div className={'ml-4 flex-grow'}>
-                        <input className={"checkbox mb-1"} type={"checkbox"}/>
-                    </div>
-                    <div>
-                        <DatePicker
-                            selected={due}
-                            onChange={onDateChange}
-                            customInput={
-                                <DateCustomInput/>
-                            }
-                            todayButton={"Today"}
-                            dateFormat={"yyyy-MM-dd"}>
-
-                            <div onClick={() => setDue(null)} className={'font-bold py-2 bg-gray-300 text-center hover:cursor-pointer hover:underline'}>
-                                Clear date
+            {props.card.id ? (
+                <div>
+                    <div className={'h-12 border-b mt-4 bg-white'}>
+                        <div className={'flex items-center space-x-2'}>
+                            <button onClick={() => setCustomOpen(false)} className={` flex items-center md:hidden block`}>
+                                <HiOutlineXMark className={'h-7 w-7 text-gray-500 ml-4 mr-4 mt-[1px]'}/>
+                            </button>
+                            <div className={'ml-4 flex-grow'}>
+                                <input onChange={onStatusChange} className={"checkbox mb-1"} type={"checkbox"} checked={taskCompleted}/>
                             </div>
-
-                        </DatePicker>
+                            <div>
+                                <CustomDatePicker onClick={false} date={due} onDateChange={onDateChange}/>
+                            </div>
+                            <div className={'pr-4'}>
+                                <ProjectSelect initial={{...project}} onProjectChange={onProjectChange}/>
+                            </div>
+                        </div>
                     </div>
-                    <div className={'pr-4'}>
-                        <ProjectSelect initial={{..._project_}} onProjectChange={onProjectChange}/>
+                    <div className={'mt-4 px-2'}>
+                        <input onChange={(e) => setName(e.target.value)} className={'font-bold text-xl rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
+                    </div>
+                    <div className={'px-5'}>
+                        <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text}/>
+                    </div>
+                </div>) : (
+                <div className={'h-screen flex items-center'}>
+                    <div className={'w-full'}>
+                        <div className={'text-center text-neutral-600'}>
+                            <div className={'flex justify-center'}>
+                                <div className={'rw-12 h-12'}>
+                                    <BiListCheck className={'mx-auto w-12 h-12 text-neutral-300'}/>
+                                </div>
+                            </div>
+                            Click task title to view detail
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className={'mt-4 px-2'}>
-                <input onBlur={saveNameHandler} onChange={(e) => setName(e.currentTarget.value)} className={'font-bold text-xl rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
-            </div>
-            <div className={'px-5'}>
-
-                <Editor onTextChange={onTextChange} initial={props.card.text}/>
-                {/*<TextareaAutosize defaultValue={text} onChange={(e) => setText(e.currentTarget.value)} className={'rounded-md w-full h-[80vh] resize-none focus:ring-0 border-none'}/>*/}
-            </div>
+            )}
         </Rez>
     )
 }

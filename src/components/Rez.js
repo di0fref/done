@@ -23,19 +23,25 @@ export default function Rez(props) {
 
     useEffect(() => {
         setCustomOpen(props.open)
-        console.log(props.open)
     }, [props])
 
     return (
         <Resizable
             className={`
+            shadow-xl
+            md:shadow-none
             border-l
                 bg-white
                 md:relative 
                 h-screen 
                 fixed 
                 ${customOpen ? "right-0" : "-right-[48rem]"} 
-                md:right-0`
+                md:right-0
+                 peer-focus:right-0 
+                peer:transition
+                ease-out 
+                delay-100 
+                duration-200`
             }
             style={{
                 position:""

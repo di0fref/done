@@ -1,9 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import {Listbox, Transition} from '@headlessui/react'
-import {CheckIcon, ChevronUpDownIcon} from '@heroicons/react/20/solid'
 import {useSelector} from "react-redux";
-import {BsBraces, BsList} from "react-icons/bs";
-
+import {BsList} from "react-icons/bs";
 
 export default function ProjectSelect(props) {
 
@@ -13,9 +11,7 @@ export default function ProjectSelect(props) {
         id: null,
         name: "Inbox",
     }, ...extracted]
-
-    const [selected, setSelected] = useState(props.initial.name ? props.initial : projects[0])
-
+    const [selected, setSelected] = useState(props.initial.length ? props.initial : projects[0])
 
     const onChange = (project) => {
         setSelected(project)
