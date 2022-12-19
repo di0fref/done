@@ -127,9 +127,9 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                 <div>
                     <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
                 </div>
-                <div className={'flex-grow'}>
+                <div className={'flex-grow '}>
                     {/*<Link to={link} onClick={() => oM(true)}>*/}
-                    <div className={`${card.completed ? "line-through " : ""}  `}>{name}</div>
+                    <div className={`${card.completed ? "line-through " : ""}   `}>{name}</div>
                     {/*</Link>*/}
                 </div>
                 {/*<div className={'text-xs bg-gray-200 py-0.5 px-1 rounded-md'}>{card.project}</div>*/}

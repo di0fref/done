@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {TwitterPicker} from "react-color";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
@@ -11,6 +11,8 @@ export default function ProjectForm(props) {
     const [color, setColor] = useState("#abb8c3")
     const dispatch = useDispatch()
 
+    const ref = useRef(null)
+
     const saveProject = () => {
         dispatch(addProject(
             {
@@ -19,8 +21,12 @@ export default function ProjectForm(props) {
             }
         )).then((result) => {
             toast.success(`Project ${name} added`)
+            props.closeModal()
         })
     }
+    useEffect(() => {
+        ref.current.focus()
+    }, [])
 
     const handleClick = () => {
         setDisplayColorPicker(!displayColorPicker)
@@ -38,7 +44,7 @@ export default function ProjectForm(props) {
         <div className={''}>
             <div className={'p-4'}>
                 <label htmlFor={"name"} className={'text-label'}>Name</label>
-                <input placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setName(e.currentTarget.value)}/>
+                <input ref={ref} placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setName(e.currentTarget.value)}/>
             </div>
             <div>
                 <div className={'px-4'}>
@@ -46,7 +52,7 @@ export default function ProjectForm(props) {
                     <button className={'mb-3 ring-btn flex items-center space-x-2 hover:bg-gray-100'} onClick={handleClick}>
                         <div style={{
                             background: color
-                        }} className={`h-3 w-3 rounded-full`}></div>
+                        }} className={`h-3 w-3 rounded-full`}> </div>
                         <div className={'text-sm font-medium'}>Choose Color</div>
                     </button>
 

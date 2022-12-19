@@ -10,8 +10,8 @@ import {BiListCheck} from "react-icons/bi";
 import {toast} from "react-toastify";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
-import {debounce} from "lodash";
 import {useDebounce, useIsFirstRender} from "usehooks-ts";
+import TextareaAutosize from "react-textarea-autosize";
 
 export default function TaskDetail(props) {
 
@@ -99,10 +99,17 @@ export default function TaskDetail(props) {
                         </div>
                     </div>
                     <div className={'mt-4 px-2'}>
-                        <input onChange={(e) => setName(e.target.value)} className={'font-bold text-xl rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>
+                        {/*<input onChange={(e) => setName(e.target.value)} className={'font-bold text-xl rounded-md w-full border-none focus:ring-0'} type={"text"} value={name}/>*/}
+                        <TextareaAutosize
+                            onChange={(e) => setName(e.target.value)}
+                            className={'resize-none font-bold text-xl rounded-md w-full border-none focus:ring-0'}
+                            defaultValue={name}
+                        />
                     </div>
                     <div className={'px-5'}>
-                        <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text}/>
+                        <Editor
+                            onTextChange={(e) => setText(JSON.stringify(e))}
+                            initial={text}/>
                     </div>
                 </div>) : (
                 <div className={'h-screen flex items-center'}>

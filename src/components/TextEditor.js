@@ -25,6 +25,8 @@ import {OnChangePlugin} from "@lexical/react/LexicalOnChangePlugin";
 import ToolbarPlugin from "./plugins/ListToolbar";
 
 import {BsTextLeft} from "react-icons/bs";
+import {useEffect} from "react";
+import LexicalComposerContext from "@lexical/react/LexicalComposerContext";
 
 function Placeholder() {
     return (
@@ -61,18 +63,8 @@ const listTheme = {
 
 export default function Editor(props) {
 
-
-    //
-    // useEffect(() => {
-    //     (async () => {
-    //         const content = await loadContent()
-    //
-    //         console.log(content);
-    //
-    //         setEditorState(content)
-    //     })();
-    // }, [props])
     const empty = '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
+    // const [editor] = LexicalComposerContext.useLexicalComposerContext();
 
     return (
 
@@ -94,7 +86,7 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container">
-                {/*<ToolbarPlugin/>*/}
+                <ToolbarPlugin/>
                 <div className="editor-inner">
                     <RichTextPlugin
                         contentEditable={<ContentEditable className="editor-input"/>}
