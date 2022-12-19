@@ -6,24 +6,22 @@ import DatePicker from "react-datepicker";
 
 export default function CustomDatePicker(props) {
 
-    const [date, setDate] = useState(props.date)
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={`${getDateColor(date)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
+        <div onClick={onClick} className={`${getDateColor(props.date)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
             <FaCalendarAlt className={'h-3 w-3'}/>
-            <div className={`whitespace-nowrap text-center text-xs`}>{date ? formatDate(new Date(value)) : null}</div>
+            <div className={`whitespace-nowrap text-center text-xs`}>{props.date ? formatDate(new Date(props.date)) : null}</div>
         </div>
     ))
 
     const onChange = (value) => {
-        setDate(value)
         props.onDateChange(value)
     }
 
     return (
         <div>
             <DatePicker
-                selected={date ? new Date(date) : null}
+                selected={props.date ? new Date(props.date) : null}
                 onChange={onChange}
                 customInput={
                     <DateCustomInput/>

@@ -81,6 +81,7 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
 
     }
     const onDueChange = (date) => {
+        setDue(date)
         dispatch(updateTask({
             id: card.id,
             due: date ? format(new Date(date), "Y-M-dd") : null
@@ -138,7 +139,10 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                         : ""
                     }
                 </div>
-                <div><CustomDatePicker onClick={false} date={due} onDateChange={onDueChange}/></div>
+                <div>
+                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange}/>
+                    {/*{card.due?format(new Date(card.due), "Y-M-d"):null}*/}
+                </div>
                 {/*<div className={'pr-4'}><DateBadge date={due}/></div>*/}
             </div>
         </>

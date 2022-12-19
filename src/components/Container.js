@@ -307,7 +307,6 @@ export const Container = (props) => {
                 </div>
                 <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
                 {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
-{/*<Rez card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
             </div>
         )
     }

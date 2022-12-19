@@ -11,7 +11,7 @@ import {toast} from "react-toastify";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {debounce} from "lodash";
-import {useDebounce} from "usehooks-ts";
+import {useDebounce, useIsFirstRender} from "usehooks-ts";
 
 export default function TaskDetail(props) {
 
@@ -26,6 +26,7 @@ export default function TaskDetail(props) {
     const [customOpen, setCustomOpen] = useState(props.open);
     const debouncedName = useDebounce(name, 500)
     const debouncedText = useDebounce(text, 500)
+    const isFirst = useIsFirstRender()
 
     const dispatch = useDispatch()
 
@@ -57,24 +58,26 @@ export default function TaskDetail(props) {
 
     // Debounce
     useEffect(() => {
-        dispatch(updateTask({
-            id: props.card.id,
-            name: name
-        }))
+        if (!isFirst) {
+            dispatch(updateTask({
+                id: props.card.id,
+                name: name
+            }))
+        }
     }, [debouncedName])
 
 
     // Debounce
     useEffect(() => {
-        dispatch(updateTask({
-            id: props.card.id,
-            text: text
-        }))    }, [debouncedText])
+        if (!isFirst) {
+            dispatch(updateTask({
+                id: props.card.id,
+                text: text
+            }))
+        }
+    }, [debouncedText])
 
 
-    // debounce(() => {
-    //     console.log(name)
-    // }, 2000), [name],
     return (
         <Rez open={customOpen}>
             {props.card.id ? (
