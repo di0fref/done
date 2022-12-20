@@ -86,7 +86,7 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container">
-                <ToolbarPlugin/>
+                {/*<ToolbarPlugin/>*/}
                 <div className="editor-inner">
                     <RichTextPlugin
                         contentEditable={<ContentEditable className="editor-input"/>}

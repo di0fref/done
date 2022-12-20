@@ -87,7 +87,7 @@ export default function TaskModal(props) {
                 {/* The actual dialog panel  */}
                 <Dialog.Panel style={{
                     minHeight: "400px"
-                }} className="h-4/5 md:w-[864px] w-11/12 transform overflow-hidden rounded-lg bg-white  text-left align-middle shadow-xl transition-all">
+                }} className=" md:w-[900px] md:min-h-[700px] transform overflow-hidden rounded-md bg-white  text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
                         <div className={'border-b h-1_ py-4'}>
                             <div className={'flex items-center justify-between'}>

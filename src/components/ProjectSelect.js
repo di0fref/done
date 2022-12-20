@@ -33,7 +33,7 @@ export default function ProjectSelect(props) {
                             <Listbox.Button className=" hover:bg-light-gray w-full cursor-pointer rounded-md  ">
 
                                 {/*<div className="">*/}
-                                    <div className={'text-md text-tgray/60 py-0.5 px-2 flex items-center space-x-2 justify-between'}>
+                                    <div className={'text-md text-tgray/60 py-0.5 px-2 flex items-center space-x-2 justify-start'}>
                                         <div><BsList/></div>
                                         <div>{selected.name}</div>
                                     </div>

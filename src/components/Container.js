@@ -10,6 +10,8 @@ import TaskHeader from "./TaskHeader";
 import {useParams} from "react-router-dom";
 import Rez from "./Rez";
 import TaskDetail from "./TaskDetail";
+import TaskModal from "./TaskModal";
+import LargeModal from "./LargeModal";
 
 export const Container = (props) => {
     {
@@ -305,8 +307,11 @@ export const Container = (props) => {
                         }
                     })()}
                 </div>
-                <TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>
+                {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
                 {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
+                <LargeModal task={{...selectedTask}} key={selectedTask.id} open={open} setOpen={setOpen}/>
+                {/*    This is a modal...*/}
+                {/*</LargeModal>*/}
             </div>
         )
     }
