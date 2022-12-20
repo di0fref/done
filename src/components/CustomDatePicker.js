@@ -1,34 +1,34 @@
 import {formatDate, getDateColor} from "./helper";
-import {format} from "date-fns";
-import {FaCalendarAlt} from "react-icons/fa";
-import {forwardRef, useState} from "react";
+import {forwardRef} from "react";
 import DatePicker from "react-datepicker";
+import {AiOutlineCalendar} from "react-icons/ai";
 
 export default function CustomDatePicker(props) {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={`${getDateColor(props.date)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
-            <FaCalendarAlt className={'h-3 w-3'}/>
-            <div className={`whitespace-nowrap text-center `}>{props.date ? formatDate(new Date(props.date)) : null}</div>
-        </div>
+        <button onClick={onClick} className={`${getDateColor(props.date)} hover:bg-active cursor-pointer rounded-md`}>
+            <div className={'text-md py-1 px-2 flex items-center space-x-2'}>
+                <AiOutlineCalendar className={''}/>
+                <div className={`text-left text-xs`}>{props.date ? formatDate(new Date(props.date)) : ""}</div>
+            </div>
+        </button>
     ))
+
 
     const onChange = (value) => {
         props.onDateChange(value)
     }
 
     return (
-        <div>
-            <DatePicker
-                selected={props.date ? new Date(props.date) : null}
-                onChange={onChange}
-                customInput={
-                    <DateCustomInput/>
-                }
-                todayButton={"Today"}
-                dateFormat={"yyyy-MM-dd"}>
-            </DatePicker>
-        </div>
+        <DatePicker
+            selected={props.date ? new Date(props.date) : null}
+            onChange={onChange}
+            customInput={
+                <DateCustomInput/>
+            }
+            todayButton={"Today"}
+            dateFormat={"yyyy-MM-dd"}>
+        </DatePicker>
     )
 }

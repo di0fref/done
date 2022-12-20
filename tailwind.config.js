@@ -48,6 +48,7 @@ module.exports = {
                 hov:"#F6F8FE",
                 "light-gray": "#F3F3F3",
                 tgray: "#191919",
+                active: 'rgb(71, 114, 250, 0.1)'
             },
             width: {
                 '100': '28rem',
@@ -59,6 +60,5 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-
     ],
 }

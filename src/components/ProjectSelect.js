@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import {Listbox, Transition} from '@headlessui/react'
 import {useSelector} from "react-redux";
-import {BsList} from "react-icons/bs";
+import {BsChevronBarDown, BsChevronDown, BsList} from "react-icons/bs";
 
 export default function ProjectSelect(props) {
 
@@ -24,21 +24,17 @@ export default function ProjectSelect(props) {
 
 
     return (
-        <div className=" mr-2">
+        <div className="">
             <Listbox value={selected} onChange={onChange}>
                 <div className="relative">
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className=" hover:bg-light-gray w-full cursor-pointer rounded-md  ">
-
-                                {/*<div className="">*/}
-                                    <div className={'text-md text-tgray/60 py-0.5 px-2 flex items-center space-x-2 justify-start'}>
-                                        <div><BsList/></div>
-                                        <div>{selected.name}</div>
-                                    </div>
-                                {/*</div>*/}
-
+                            <Listbox.Button className="hover:bg-active cursor-pointer rounded-md">
+                                <div className={'text-md text-tgray/60 py-1 px-2 flex items-center space-x-2'}>
+                                    <BsList/>
+                                    <div className={'text-left text-xs'}>{selected.name}</div>
+                                </div>
                             </Listbox.Button>
                         )}
 

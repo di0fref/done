@@ -10,6 +10,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import {toast} from "react-toastify";
 import {getDateColor} from "./helper";
 import {FaCalendarAlt} from "react-icons/fa";
+import CustomDatePicker from "./CustomDatePicker";
 
 function useOnClickOutside(ref, handler) {
     useEffect(
@@ -102,25 +103,10 @@ export default function AddTask() {
         setProject(p)
     }
 
-    // const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-    //     <div onClick={onClick} className={'flex items-center space-x-2'}>
-    //         <div className={`whitespace-nowrap text-center text-sm `}><DateBadge date={value}/></div>
-    //         <div className={'h-8 w-10 rounded-lg bg-light-gray relative hover:cursor-pointer'}>
-    //             <BsCalendar className={'h-4 w-4 text-gray-500 absolute top-2 left-3'}/>
-    //         </div>
-    //     </div>
-    // ))
-    const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <div onClick={onClick} className={`${getDateColor(due)} flex items-center space-x-2 hover:cursor-pointer hover:underline mt-1 mr-2`}>
-            <FaCalendarAlt/>
-            <div className={`whitespace-nowrap text-center text-sm`}>{due?format(due, "EEE, d MMM"):null}</div>
-        </div>
-    ))
-
     if (editing) {
         return (
             <div onClick={() => setEditing(true)} ref={ref} className={'ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
-                <div className={'flex-grow'}>
+                <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
                         type={"text"}
@@ -131,24 +117,10 @@ export default function AddTask() {
                         value={name}>
                     </input>
                 </div>
-                <div className={'-mt-0.5'}>
-                    <DatePicker
-                        selected={due}
-                        onChange={setDue}
-                        customInput={
-                            <DateCustomInput/>
-                        }
-                        todayButton={"Today"}
-                        dateFormat={"yyyy-MM-dd"}>
-
-                        <div onClick={() => setDue(null)} className={'font-bold py-2 bg-gray-300 text-center hover:cursor-pointer hover:underline'}>
-                            Clear date
-                        </div>
-
-                    </DatePicker>
-
+                <div>
+                    <CustomDatePicker onChange={setDue} date={new Date()}/>
                 </div>
-                <div className={''}>
+                <div>
                     <ProjectSelect initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>
                 </div>
             </div>
