@@ -9,12 +9,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import CustomDatePicker from "./CustomDatePicker";
 import {format} from "date-fns";
 import ProjectBadge from "./ProjectBadge";
+import ProjectSelect from "./ProjectSelect";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
     const [modelOpen, setModalOpen] = useState(false)
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
-    const [due, setDue] = useState(card.due?new Date(card.due):null);
+    const [due, setDue] = useState(card.due ? new Date(card.due) : null);
     const [name, setName] = useState(card.name);
     const params = useParams()
     const [link, setLink] = useState("")
@@ -30,10 +31,10 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     ))
 
     const clickHandler = (e) => {
-        // if (e.target.type !== "checkbox") {
-        oM(true)
-        nav(link)
-        // }
+        if (e.target.type !== "checkbox") {
+            oM(true)
+            nav(link)
+        }
     }
 
     const undo = (id) => {
@@ -98,6 +99,9 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }, [])
 
 
+    const setProject = (project) => {
+      
+    }
     if (error || !card) {
         return (
             <div>{error}</div>
@@ -105,46 +109,22 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <>
-            {/*<div className={`${card.completed ? "opacity-50 _bg-green-100" : ""} ${currentTask.id === card.id ? "sidebar-active" : ""}  hover:bg-hov w-full h-[40px] flex items-center border-b space-x-2 overflow-hidden`}>*/}
-            {/*    <div className={'mr-1'}>*/}
-            {/*        <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>*/}
-            {/*    </div>*/}
-
-            {/*    <div className={'text-neutral-900 flex-grow'}>*/}
-            {/*        <div className={''}>*/}
-            {/*            <Link to={link} onClick={() => oM(true)}>*/}
-            {/*                <div className={`${card.completed ? "line-through" : ""}`}>{name}</div>*/}
-            {/*            </Link>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-
-            {/*    <div className={'text-neutral-500 text-sm ml-6 text-gray-500'}>{card.project}</div>*/}
-            {/*    <div className={'flex-shrink-0 pr-2'}><DateBadge date={card.due}/></div>*/}
-            {/*</div>*/}
-
-            <div onClick={clickHandler} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center space-x-4  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+            <div className={'flex items-center flex-grow space-x-4 '} onClick={clickHandler}>
                 <div>
                     <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
                 </div>
-                <div className={'flex-grow '}>
-                    {/*<Link to={link} onClick={() => oM(true)}>*/}
-                    <div className={`${card.completed ? "line-through " : ""}   `}>{name}</div>
-                    {/*</Link>*/}
+                <div className={'w-full'}>
+                    <div className={`${card.completed ? "line-through " : ""} `}>{name}</div>
                 </div>
-                {/*<div className={'text-xs bg-gray-200 py-0.5 px-1 rounded-md'}>{card.project}</div>*/}
-                <div>
-                    {card.project ?
-                        <ProjectBadge name={card.project} color={project.color}/>
-                        : ""
-                    }
-                </div>
-                <div>
-                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange}/>
-                    {/*{card.due?format(new Date(card.due), "Y-M-d"):null}*/}
-                </div>
-                {/*<div className={'pr-4'}><DateBadge date={due}/></div>*/}
             </div>
-        </>
+            <div className={'flex items-center'}>
+                {/*<div>{card.project ? <ProjectBadge name={card.project} color={project.color}/> : ""}</div>*/}
+               <ProjectSelect initial={project} onProjectChange={(project) => setProject(project)} showColor={true}/>
+                <div className={'mr-3'}><CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange}/>
+                </div>
+            </div>
+        </div>
+
     )
 }

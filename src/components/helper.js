@@ -1,7 +1,7 @@
 import {HiArchiveBox, HiCalendar, HiInbox, HiStar} from "react-icons/hi2";
 import {format, formatRelative} from "date-fns";
 import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
-import {BsCalendar} from "react-icons/bs";
+import {BsCalendar, BsList} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
 
 export function getIcon(path) {
@@ -12,15 +12,14 @@ export function getIcon(path) {
             return (
                 <div className={'relative_'}>
                     <BsCalendar className={'text-gray-500'}/>
-                    {/*<div className={'absolute top-[-2px] left-[2px] text-[10px]'}>*/}
-                    {/*    {format(new Date(), "dd")}*/}
-                    {/*</div>*/}
                 </div>
             )
         case "all":
             return <FaArchive className={'text-gray-500'}/>
         case "inbox":
             return <FaInbox className={'text-gray-500'}/>
+        case "lists":
+            return <BsList className={'text-gray-500'}/>
     }
 }
 

@@ -32,7 +32,10 @@ export default function ProjectSelect(props) {
 
                             <Listbox.Button className="hover:bg-active cursor-pointer rounded-md">
                                 <div className={'text-md text-tgray/60 py-1 px-2 flex items-center space-x-2'}>
-                                    <BsList/>
+                                    {props.showColor ?
+                                        <div style={{backgroundColor: selected.color}} className={'rounded-full h-2 w-2'}></div>
+                                        : <BsList/>
+                                    }
                                     <div className={'text-left text-xs'}>{selected.name}</div>
                                 </div>
                             </Listbox.Button>

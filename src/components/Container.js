@@ -309,7 +309,7 @@ export const Container = (props) => {
                 </div>
                 {/*<TaskDetail card={selectedTask} key={selectedTask.id} open={open} setOpen={setOpen}/>*/}
                 {/*<TaskModal open={open} setModalOpen={setOpen} task={{...selectedTask}}/>*/}
-                <LargeModal task={{...selectedTask}} key={selectedTask.id} open={open} setModalOpen={setOpen}/>
+                <LargeModal card={{...selectedTask}} key={selectedTask.id} open={open} setModalOpen={setOpen}/>
                 {/*    This is a modal...*/}
                 {/*</LargeModal>*/}
             </div>

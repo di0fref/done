@@ -1,25 +1,31 @@
 import React, {useEffect, useState} from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Editor from "./TextEditor";
 import ProjectSelect from "./ProjectSelect";
 import CustomDatePicker from "./CustomDatePicker";
 import {HiXMark} from "react-icons/hi2";
+import {updateTask} from "../redux/taskSlice";
+import {format} from "date-fns";
+import {toast} from "react-toastify";
 
 export default function LargeModal(props) {
+
+    const _project_ = useSelector(state => state.projects.find(
+        project => props.card ? (props.card.project_id === project.id) : null
+    ))
+
     const [showModal, setShowModal] = useState(false);
-    const [task, setTask] = useState({})
+    const [name, setName] = useState(props.card.name);
+    const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
+    const [text, setText] = useState(props.card.text);
+    const [project, setProject] = useState(_project_);
+    const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setShowModal(props.open)
     }, [props.open])
 
-    const _project_ = useSelector(state => state.projects.find(
-        project => task.project_id ? (task.project_id === project.id) : null
-    ))
-
-    useEffect(() => {
-        setTask(props.task)
-    }, [props.task])
 
     useEffect(() => {
         const close = (e) => {
@@ -37,15 +43,27 @@ export default function LargeModal(props) {
         props.setModalOpen(false)
     }
 
-    function onTextChange(editorState) {
+    const saveHandler = () => {
 
-    }
-
-    const onProjectChange = () => {
-
-    }
-    const onDueChange = () => {
-
+        /* Save the task to db */
+        (async () => {
+            try {
+                const task = {
+                    id: props.card.id,
+                    name: name,
+                    due: due ? format(new Date(due), "Y-M-dd") : null,
+                    prio: "high",
+                    project_id: project.id,
+                    completed: taskCompleted,
+                    text: text
+                }
+                await dispatch(updateTask(task)).unwrap();
+                closeModal()
+            } catch (err) {
+                console.log(err);
+                toast.error(`Something went wrong. Please contact support`)
+            }
+        })()
     }
     return (
         <>
@@ -59,8 +77,8 @@ export default function LargeModal(props) {
                                 <div className="flex items-start justify-between py-3 px-4 border-b border-solid border-slate-200 rounded-t">
 
                                     <div className={'flex justify-center items-center space-x-3'}>
-                                        <div className={'h-2 w-2 rounded-full'} style={{backgroundColor:_project_.color}}></div>
-                                        <div className={'text-sm text-neutral-500'}>{task.project}</div>
+                                        <div className={'h-2 w-2 rounded-full'} style={{backgroundColor: _project_ ? _project_.color : ""}}></div>
+                                        <div className={'text-sm text-neutral-500'}>{project ? project.name : ""}</div>
                                     </div>
                                     <button
                                         className="hover:bg-gray-200 rounded"
@@ -75,24 +93,24 @@ export default function LargeModal(props) {
                                     <div className="w-2/3 ">
                                         <div className="flex items-center space-x-3 w-full pt-3 ">
                                             <div>
-                                                <input type={"checkbox"} className={'checkbox mb-1'}/>
+                                                <input checked={taskCompleted} onChange={(e) => setTaskCompleted(!taskCompleted)} type={"checkbox"} className={'checkbox mb-1'}/>
                                             </div>
                                             <div className={'w-full'}>
-                                                <input className={'w-full text-lg_ font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={task.name}/>
+                                                <input onChange={(e) => setName(e.target.value)} className={'w-full text-lg_ font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
                                         <div className={'py-4'}>
-                                            <Editor initial={task.text} onTextChange={onTextChange}/>
+                                            <Editor initial={text} onTextChange={(e) => setText(JSON.stringify(e))}/>
                                         </div>
                                     </div>
                                     <div className={'w-1/3 border-l px-4'}>
 
-                                            <div className={'my-4 flex items-center space-x-2'}>
-                                               <ProjectSelect initial={{..._project_}} onProjectChange={onProjectChange}/>
-                                            </div>
-                                            <div className={'flex items-center space-x-2'}>
-                                               <CustomDatePicker onClick={false} date={task.due} onDateChange={onDueChange}/>
-                                            </div>
+                                        <div className={'my-4 flex items-center space-x-2'}>
+                                            <ProjectSelect initial={{..._project_}} onProjectChange={(project) => setProject(project)}/>
+                                        </div>
+                                        <div className={'flex items-center space-x-2'}>
+                                            <CustomDatePicker onClick={false} date={due} onDateChange={(date) => setDue(date)}/>
+                                        </div>
                                     </div>
                                 </div>
                                 {/*footer*/}
@@ -107,7 +125,7 @@ export default function LargeModal(props) {
                                     <button
                                         className="save-btn"
                                         type="button"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={saveHandler}
                                     >
                                         Save
                                     </button>

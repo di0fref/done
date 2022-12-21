@@ -7,10 +7,10 @@ export default function CustomDatePicker(props) {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <button onClick={onClick} className={`${getDateColor(props.date)} hover:bg-active cursor-pointer rounded-md`}>
-            <div className={'text-md py-1 px-2 flex items-center space-x-2'}>
-                <AiOutlineCalendar className={''}/>
-                <div className={`text-left text-xs`}>{props.date ? formatDate(new Date(props.date)) : ""}</div>
+        <button onClick={onClick} className={`${getDateColor(props.date)} hover:bg-active cursor-pointer rounded-md noModal`}>
+            <div className={'text-md py-1 px-2 flex items-center space-x-2 noModal'}>
+                <AiOutlineCalendar className={'noModal'}/>
+                <div className={`text-left text-xs noModal`}>{props.date ? formatDate(new Date(props.date)) : ""}</div>
             </div>
         </button>
     ))
