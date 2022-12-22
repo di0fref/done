@@ -77,7 +77,7 @@ export default function LargeModal(props) {
                                 <div className="flex items-start justify-between py-3 px-4 border-b border-solid border-slate-200 rounded-t">
 
                                     <div className={'flex justify-center items-center space-x-3'}>
-                                        <div className={'h-2 w-2 rounded-full'} style={{backgroundColor: _project_ ? _project_.color : ""}}></div>
+                                        <div className={'h-2 w-2 rounded-full'} style={{backgroundColor: _project_ ? _project_.color : ""}}/>
                                         <div className={'text-sm text-neutral-500'}>{project ? project.name : ""}</div>
                                     </div>
                                     <button
@@ -85,8 +85,6 @@ export default function LargeModal(props) {
                                         onClick={closeModal}>
                                         <HiXMark className={'h-5 w-5 text-neutral-500'}/>
                                     </button>
-
-
                                 </div>
                                 {/*body*/}
                                 <div className="relative px-6 flex ">
@@ -105,11 +103,13 @@ export default function LargeModal(props) {
                                     </div>
                                     <div className={'w-1/3 border-l px-4'}>
 
-                                        <div className={'my-4 flex items-center space-x-2'}>
-                                            <ProjectSelect initial={{..._project_}} onProjectChange={(project) => setProject(project)}/>
+                                        <div className={'my-4 border-b pb-3'}>
+                                            <span className={'text-md text-neutral-600 2'}>Project</span>
+                                            <ProjectSelect bg={true} initial={{...project}} onProjectChange={(project) => setProject(project)}/>
                                         </div>
-                                        <div className={'flex items-center space-x-2'}>
-                                            <CustomDatePicker onClick={false} date={due} onDateChange={(date) => setDue(date)}/>
+                                        <div className={'border-b pb-3'}>
+                                            <span className={'text-md text-neutral-600'}>Due date</span>
+                                            <CustomDatePicker bg={true} onClick={false} date={due} onDateChange={(date) => setDue(date)}/>
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@ export default function LargeModal(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                    <div className="opacity-25 fixed inset-0 z-40 bg-black"/>
                 </>
             ) : null}
         </>

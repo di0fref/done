@@ -1,11 +1,8 @@
 import {useEffect, useState} from 'react'
 import {Combobox} from '@headlessui/react'
 import {useSelector} from "react-redux";
-import {RiTaskLine} from "react-icons/ri";
 import {HiSearch} from "react-icons/hi";
 import DateBadge from "./DateBadge";
-import {Link} from "react-router-dom";
-import TaskModal from "./TaskModal";
 
 
 export default function SearchForm({closeModel}) {
@@ -56,7 +53,6 @@ export default function SearchForm({closeModel}) {
                                 value={task}
                                 disabled={task.unavailable}
                             >
-                                {/*<Link to={"/all/task/" + task.id} onClick={closeModel}>*/}
                                 <button onClick={onClick} className={'w-full'}>
                                     <li className="hover:bg-hov flex items-center justify-between p-4" role="option" tabIndex="-1">
                                     <span className="whitespace-nowrap font-semibold text-slate-900">
@@ -67,13 +63,11 @@ export default function SearchForm({closeModel}) {
                                     </span>
                                     </li>
                                 </button>
-                                {/*</Link>*/}
                             </Combobox.Option>
                         ))}
                     </ul>
                 </Combobox.Options>
             </Combobox>
-            <TaskModal open={open} closeSearch={closeSearch} task={{...selectedItem}}/>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import {Fragment, useEffect, useState} from 'react'
 import {Listbox, Transition} from '@headlessui/react'
 import {useSelector} from "react-redux";
-import {BsChevronBarDown, BsChevronDown, BsList} from "react-icons/bs";
+import {HiChevronDown} from "react-icons/hi";
 
 export default function ProjectSelect(props) {
 
@@ -11,7 +11,8 @@ export default function ProjectSelect(props) {
         id: null,
         name: "Inbox",
     }, ...extracted]
-    const [selected, setSelected] = useState(props.initial.length ? props.initial : projects[0])
+
+    const [selected, setSelected] = useState({})
 
     const onChange = (project) => {
         setSelected(project)
@@ -19,7 +20,7 @@ export default function ProjectSelect(props) {
     }
 
     useEffect(() => {
-        setSelected(props.initial.name ? props.initial : projects[0])
+        setSelected(props.initial && props.initial.name ? props.initial : projects[0])
     }, [props.initial])
 
 
@@ -30,23 +31,21 @@ export default function ProjectSelect(props) {
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className="hover:bg-active cursor-pointer rounded-md">
-                                <div className={'text-md text-tgray/60 py-1 px-2 flex items-center space-x-2'}>
-                                    {props.showColor ?
-                                        <div style={{backgroundColor: selected.color}} className={'rounded-full h-2 w-2'}></div>
-                                        : <BsList/>
-                                    }
-                                    <div className={'text-left text-xs'}>{selected.name}</div>
+                            <Listbox.Button className={`${props.bg?"bg-neutral-100_":""} hover:bg-neutral-100 group cursor-pointer rounded-md w-full`}>
+                                <div className={'text-sm text-neutral-500 py-1 px-2 flex items-center space-x-2'}>
+                                    <div style={{backgroundColor: selected.color}} className={'rounded-full h-2 w-2'}/>
+                                    <div className={'flex-grow text-left text-sm'}>{selected.name}</div>
+                                    <HiChevronDown className={'group-hover:visible invisible'}/>
                                 </div>
                             </Listbox.Button>
+
                         )}
 
                     <Transition
                         as={Fragment}
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
+                        leaveTo="opacity-0">
                         <Listbox.Options className="z-50 absolute -right-4 top-10 mt-1 w-72 max-h-72 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
 
                             {projects.map((project, id) => (

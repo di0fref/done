@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {getIcon} from "./helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {format} from "date-fns";
+import Sort from "./Taskviews/Sort";
 
 export default function TaskHeader() {
 
@@ -21,10 +21,10 @@ export default function TaskHeader() {
             setIcon(
                 <div style={{
                     background: project.color
-                }} className={'w-2 h-2 rounded-full'}> </div>
+                }} className={'w-2 h-2 rounded-full'}/>
             )
         } else {
-            switch (params.path){
+            switch (params.path) {
                 case "all":
                     setName(params.path.charAt(0).toUpperCase() + params.path.slice(1) + " Tasks")
                     break
@@ -34,19 +34,15 @@ export default function TaskHeader() {
 
             setIcon(getIcon(params.path))
         }
-    }, [params.path,params.id])
+    }, [params.path, params.id])
 
     return (
         <div>
             <div className={'flex items-center justify-start pb-1'}>
                 <div className={'mr-3 '}>{icon}</div>
-                <div className={'font-semibold text-2xl'}>{name}</div>
+                <div className={'font-semibold text-2xl flex-grow'}>{name}</div>
+                <span className={''}><Sort/></span>
             </div>
-            {/*{params.path==="today"?*/}
-            {/*    <span className={'text-xl text-gray-500'}>It's {format(new Date(), "EEEE MMMM, d")}</span>*/}
-            {/*    :""}*/}
         </div>
-
-    // wednesday, feb 22
     )
 }

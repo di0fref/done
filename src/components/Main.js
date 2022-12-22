@@ -1,7 +1,6 @@
 import Sidebar from "./Sidebar";
-import {useEffect, useMemo, useState} from "react";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import TaskHeader from "./TaskHeader";
+import {useEffect} from "react";
+import {useNavigate, useParams} from "react-router-dom";
 import {Container} from "./Container";
 import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
@@ -12,7 +11,7 @@ import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
 import {setCurrent} from "../redux/currentSlice";
 import {paths} from "./helper";
-import {FaCheckSquare, FaSearch} from "react-icons/fa";
+import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./SearchDialog";
 import ThemeSwitcher from "./ThemeSwitcher";
 
@@ -174,7 +173,7 @@ export default function Main() {
                             </div>
                         </div>
                     </div>
-                    {/*<ThemeSwitcher/>*/}
+                    <ThemeSwitcher/>
                 </main>
             </div>
         )

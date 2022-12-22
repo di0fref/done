@@ -1,15 +1,10 @@
 import * as React from "react";
-import {Menu, Transition} from "@headlessui/react";
+import {Listbox, Transition} from '@headlessui/react'
 import {signOutFireBase} from "../auth/firebase";
 import {useNavigate} from "react-router-dom";
 import {getAuth} from "firebase/auth";
 import {format} from "date-fns";
 import {HiLogout} from "react-icons/hi";
-import {useDispatch} from "react-redux";
-import {getTasks} from "../redux/taskSlice";
-import {useLocalStorage} from "usehooks-ts";
-import ToggleCompletedButton from "./ToggleCompletedButton";
-import {FaSync} from "react-icons/fa";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
 
 function Avatar() {
@@ -37,7 +32,7 @@ function Avatar() {
 const GoogleHead = () => {
     const user = getAuth();
 
-    return(
+    return (
         <div className={'w-10'}>
             <img className={'rounded-md'} src={user.currentUser.photoURL}/>
         </div>
@@ -56,55 +51,60 @@ export default function MainMenu() {
     }
 
     return (
-        <div className={'absolute_ top-0_ right-6_ _right-16 z-50'}>
+        <div className={'absolute_ top-0_ right-6_ _right-16 z-50 '}>
             <div className="flex items-center justify-center p-12_">
                 <div className="relative inline-block text-left">
-                    <Menu>
+                    <Listbox>
                         {({open}) => (
                             <>
                           <span className={''}>
-                            <Menu.Button >
-                                {/*<div className="inline-flex overflow-hidden relative justify-center items-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">*/}
-                                {/*    <span className="font-medium text-gray-600 dark:text-gray-300">*/}
-                                {/*        {user.currentUser ? user.currentUser.displayName.split(" ").map((n) => n[0]).join("") : ""}*/}
-                                {/*    </span>*/}
-                                {/*</div>*/}
+                            <Listbox.Button>
                                 <GoogleHead/>
-                            </Menu.Button>
+                            </Listbox.Button>
                           </span>
-                                <Menu.Items className="text-tgray/60 text-md z-50 absolute left-3 w-44 mt-2 origin-top-right bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg outline-none">
+                                <Listbox.Options className="z-50 absolute right-20_ _top-10 mt-1 w-40 max-h-72 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
 
-                                    <Menu.Item as={'div'}>
-                                        {({active}) => (
-                                            <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
-                                                <div><VscSync className={''}/></div>
-                                                <div>Sync</div>
-                                            </button>
-                                        )}
-                                    </Menu.Item>
-                                    <Menu.Item as={'div'}>
-                                        {({active}) => (
-                                            <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
-                                                <div><VscSettingsGear className={''}/></div>
-                                                <div>Settings</div>
-                                            </button>
-                                        )}
-                                    </Menu.Item>
 
-                                    <div className="py-1">
-                                        <Menu.Item>
-                                            {({active}) => (
-                                                <button onClick={signOut} className={`${active ? 'bg-hov' : ''} group flex w-full items-center px-4 py-2 space-x-2`}>
-                                                    <div><HiLogout className={''}/></div>
+                                    <Listbox.Option className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"sync"}>
+                                        {({selected}) => (
+                                            <span className={`block truncate font-normal`}>
+                                                <div className={'flex items-center space-x-2'}>
+                                                    <div><VscSync/></div>
+                                                    <div>Sync</div>
+                                                </div>
+                                            </span>
+                                        )}
+                                    </Listbox.Option>
+
+
+                                    <Listbox.Option className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"settings"}>
+                                        {({selected}) => (
+                                            <span className={`block truncate `}>
+                                                <div className={'flex items-center space-x-2'}>
+                                                    <div><VscSettingsGear/></div>
+                                                    <div>Settings</div>
+                                                </div>
+                                            </span>
+                                        )}
+                                    </Listbox.Option>
+
+
+                                    <Listbox.Option className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"signout"}>
+                                        {({selected}) => (
+                                            <span className={`block truncate 'font-normal`}>
+                                                <div className={'flex items-center space-x-2'}>
+                                                    <div><HiLogout/></div>
                                                     <div>Sign out</div>
-                                                </button>
-                                            )}
-                                        </Menu.Item>
-                                    </div>
-                                </Menu.Items>
+                                                </div>
+                                            </span>
+                                        )}
+                                    </Listbox.Option>
+
+
+                                </Listbox.Options>
                             </>
                         )}
-                    </Menu>
+                    </Listbox>
                 </div>
             </div>
         </div>

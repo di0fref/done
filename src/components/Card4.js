@@ -8,12 +8,10 @@ import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
 import CustomDatePicker from "./CustomDatePicker";
 import {format} from "date-fns";
-import ProjectBadge from "./ProjectBadge";
 import ProjectSelect from "./ProjectSelect";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
-    const [modelOpen, setModalOpen] = useState(false)
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [due, setDue] = useState(card.due ? new Date(card.due) : null);
     const [name, setName] = useState(card.name);
@@ -100,7 +98,10 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
 
 
     const setProject = (project) => {
-      
+        dispatch(updateTask({
+            id: card.id,
+            project_id: project.id
+        }))
     }
     if (error || !card) {
         return (
@@ -118,10 +119,10 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                     <div className={`${card.completed ? "line-through " : ""} `}>{name}</div>
                 </div>
             </div>
-            <div className={'flex items-center'}>
-                {/*<div>{card.project ? <ProjectBadge name={card.project} color={project.color}/> : ""}</div>*/}
-               <ProjectSelect initial={project} onProjectChange={(project) => setProject(project)} showColor={true}/>
-                <div className={'mr-3'}><CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange}/>
+            <div className={'flex items-center space-x-2'}>
+               <ProjectSelect initial={{...project}} onProjectChange={(project) => setProject(project)} bg={false}/>
+                <div className={'mr-3'}>
+                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>
                 </div>
             </div>
         </div>

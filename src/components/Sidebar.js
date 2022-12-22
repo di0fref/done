@@ -31,7 +31,7 @@ function Sidebar(props) {
                     aria-hidden="true"
                 />
             </Disclosure.Button>
-            <div className=" shadow-xl md:shadow-none overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-6 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-72 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+            <div className=" shadow-xl md:shadow-none overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-6 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                 {/*<SearchDialog/>*/}
                 <div className="flex flex-col justify-start item-center">
                     <div className={'overflow-y-auto pb-3'}>

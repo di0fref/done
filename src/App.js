@@ -3,13 +3,11 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import Main from "./components/Main";
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {useEffect,} from "react";
 import ReactTooltip from "react-tooltip";
-import {onAuthStateChanged, getAuth} from "firebase/auth"
 import Login from "./components/Login";
 import {store} from './redux/store'
 import {Provider} from 'react-redux'
-import {ToastContainer, toast} from 'react-toastify';
+import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import "./editor.css"
 

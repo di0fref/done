@@ -54,7 +54,6 @@ function ThemeSwitcher() {
             className="absolute top-2 right-3 text-zinc-400 focus:outline-none rounded-lg text-sm ">
             <FaSun className="w-4 h-4 hidden hover:text-yellow-400" id="theme-toggle-light-icon"/>
             <FaMoon className="w-4 h-4 hidden hover:text-zinc-700" id="theme-toggle-dark-icon"/>
-
         </button>
     )
 }
