@@ -1,7 +1,35 @@
 import TaskHeader from "../TaskHeader";
+import {useSelector} from "react-redux";
 
-export default function Default({_data_, renderCard}){
-    return(
+export default function Default({renderCard}) {
+
+
+    const _data_ = {
+        today: {
+            tasks: [...useSelector(state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            }),
+            completed: [...useSelector(state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            }),
+
+            overdue: [...useSelector(
+                state => state.tasks.filter(
+                    task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0) && task.due != null) && (!task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.due) < new Date(a.due) ? 1 : -1;
+            }),
+        },
+    }
+
+    return (
         <div>
             {/*{Object.keys(_data_.overdue).length ? (*/}
             {/*        <div className={''}>*/}

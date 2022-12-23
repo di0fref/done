@@ -1,6 +1,26 @@
 import TaskHeader from "../TaskHeader";
+import {useSelector} from "react-redux";
 
-export default function Inbox({_data_, renderCard}) {
+export default function Inbox({renderCard}) {
+
+    const _data_ = {
+        inbox: {
+            tasks: [...useSelector(
+                state => state.tasks.filter(
+                    task => (task.due === null && !task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            }),
+            completed: [...useSelector(
+                state => state.tasks.filter(
+                    task => (task.due === null && task.completed)
+                )
+            )].sort((a, b) => {
+                return new Date(b.created_at) < new Date(a.created_at) ? 1 : -1;
+            })
+        },
+    }
     return (
         <>
             <div>

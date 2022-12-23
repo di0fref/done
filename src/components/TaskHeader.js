@@ -3,6 +3,7 @@ import {getIcon} from "./helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import Sort from "./Taskviews/Sort";
+import SortDirection from "./SortDirection";
 
 export default function TaskHeader() {
 
@@ -41,7 +42,10 @@ export default function TaskHeader() {
             <div className={'flex items-center justify-start pb-1'}>
                 <div className={'mr-3 '}>{icon}</div>
                 <div className={'font-semibold text-2xl flex-grow'}>{name}</div>
-                <span className={''}><Sort/></span>
+                <div className={'flex items-center space-x-4'}>
+                    <Sort/>
+                    <SortDirection/>
+                </div>
             </div>
         </div>
     )

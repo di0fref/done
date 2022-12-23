@@ -1,9 +1,29 @@
 import TaskHeader from "../TaskHeader";
 import {formatDate} from "../helper";
+import {useSelector} from "react-redux";
 
-export default function Upcoming({_data_, renderCard}) {
+export default function Upcoming({renderCard}) {
 
     let prev = "";
+
+    const _data_ = {
+                    upcoming:
+                {
+                    tasks: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
+                        ))].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    }),
+                    completed: [...useSelector(
+                        state => state.tasks.filter(
+                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
+                        ))].sort((a, b) => {
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                    })
+                },
+    }
+
     return (
         <>
             <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
