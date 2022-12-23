@@ -5,6 +5,7 @@ import {useReadLocalStorage} from "usehooks-ts";
 export default function Default({renderCard}) {
     const sort = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("sortDirection")
+    const showCompleted = useReadLocalStorage("showCompleted")
 
     const _data_ = {
         today: {
@@ -67,7 +68,7 @@ export default function Default({renderCard}) {
 
             {Object.values(_data_.today.tasks).map((card, i) => renderCard(card, i))}
 
-            {_data_.today.completed.length ?
+            {_data_.today.completed.length && JSON.parse(showCompleted)?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>

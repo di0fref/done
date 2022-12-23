@@ -60,6 +60,7 @@ export default function Main() {
                         "title": "Ascending",
                     },
                 ))
+                localStorage.setItem("showCompleted", JSON.stringify("1"))
             }
 
 
@@ -193,7 +194,6 @@ export default function Main() {
                             </div>
                         </div>
                     </div>
-                    <ThemeSwitcher/>
                 </main>
             </div>
         )

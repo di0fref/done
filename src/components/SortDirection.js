@@ -49,7 +49,7 @@ export default function SortDirection() {
 
                         {options.map((option, id) => (
                             <Listbox.Option
-                                ker={id}
+                                key={id}
                                 className={({active}) =>
                                     `relative cursor-pointer select-none py-2 pl-4 pr-4 ${
                                         active ? 'bg-hov text-gray-800' : 'text-gray-800'

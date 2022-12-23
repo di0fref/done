@@ -38,7 +38,6 @@ export default function Login() {
                             .then(CheckError)
                             .then((response) => {
                                 localStorage.setItem("AccessToken", response.data.access_token)
-                                localStorage.setItem("showCompletedTasks", "0")
                                 console.log("API: user logged in")
 
                                 navigate('/today')

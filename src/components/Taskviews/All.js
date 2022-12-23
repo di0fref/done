@@ -1,12 +1,12 @@
 import TaskHeader from "../TaskHeader";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
-import {useEffect} from "react";
 
 export default function All({renderCard}) {
 
     const sort = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("sortDirection")
+    const showCompleted = useReadLocalStorage("showCompleted")
 
     const _data_ = {
         all:
@@ -52,7 +52,7 @@ export default function All({renderCard}) {
                 </div>
                 {Object.values(_data_.all.tasks).map((card, i) => renderCard(card, i))}
             </div>
-            {_data_.all.completed.length ?
+            {_data_.all.completed.length && JSON.parse(showCompleted)?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>

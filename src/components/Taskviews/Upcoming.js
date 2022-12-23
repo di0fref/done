@@ -6,6 +6,8 @@ import {useReadLocalStorage} from "usehooks-ts";
 export default function Upcoming({renderCard}) {
     const sort = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("sortDirection")
+    const showCompleted = useReadLocalStorage("showCompleted")
+
     let prev = "";
 
     const _data_ = {
@@ -65,7 +67,7 @@ export default function Upcoming({renderCard}) {
                     )
                 }
             })}
-            {_data_.upcoming.completed.length ?
+            {_data_.upcoming.completed.length && JSON.parse(showCompleted)?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>

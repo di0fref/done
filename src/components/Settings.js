@@ -1,21 +1,45 @@
 import {useEffect, useState} from "react";
 import {HiXMark} from "react-icons/hi2";
+import {useLocalStorage, useReadLocalStorage} from "usehooks-ts";
+import {Switch} from '@headlessui/react'
 
 export default function Settings(props) {
 
     const [showModal, setShowModal] = useState(false);
+    const [darkTheme, setDarkTheme] = useLocalStorage("theme", "")
+    const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", "")
+    const [darkEnabled, setDarkEnabled] = useState(!!darkTheme)
+    const [completedEnabled, setCompletedEnabled] = useState(!!showCompleted)
 
     useEffect(() => {
         setShowModal(props.open)
     }, [props.open])
 
+    useEffect(() => {
+        setCompletedEnabled(false)
+        setDarkEnabled(false)
+    }, [])
+
     const closeModal = () => {
         setShowModal(false)
         props.setModalOpen(false)
+
+
     }
 
     const saveHandler = () => {
+        darkEnabled ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
+        setShowCompleted(completedEnabled ? "1" : "0")
+        closeModal()
+    }
 
+    const onThemeChange = (checked) => {
+        setDarkTheme(checked ? 'dark' : 'light')
+        setDarkEnabled(checked)
+    }
+
+    const onShowCompletedChange = (checked) => {
+        setCompletedEnabled(checked)
     }
 
     return (
@@ -37,15 +61,41 @@ export default function Settings(props) {
                                     </button>
                                 </div>
                                 {/*body*/}
-                                <div className="relative px-6 flex ">
-                                    <div className="w-2/3 py-4 flex space-y-2 flex-col">
+                                <div className="relative px-6 flex text-neutral-600">
+                                    <div className="w-full py-4 flex space-y-2 flex-col">
                                         <div className={'flex items-center space-x-4'}>
-                                            <p><input className={'checkbox mb-0.5'} type={"checkbox"}/></p>
-                                            <p className={''}>Dark Theme</p>
+                                            <p className={'flex-grow'}>Dark Theme</p>
+
+                                            <Switch
+                                                checked={darkEnabled}
+                                                onChange={onThemeChange}
+                                                className={`${
+                                                    darkEnabled ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span className="sr-only">Enable notifications</span>
+                                                <span
+                                                    className={`${
+                                                        darkEnabled ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
                                         </div>
                                         <div className={'flex items-center space-x-4'}>
-                                            <p><input className={'checkbox mb-0.5'} type={"checkbox"}/></p>
-                                            <p>Show completed tasks</p>
+                                            <p className={'flex-grow'}>Show completed tasks</p>
+
+                                            <Switch
+                                                checked={completedEnabled}
+                                                onChange={onShowCompletedChange}
+                                                className={`${
+                                                    completedEnabled ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span className="sr-only">Enable notifications</span>
+                                                <span
+                                                    className={`${
+                                                        completedEnabled ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
                                         </div>
                                     </div>
                                 </div>

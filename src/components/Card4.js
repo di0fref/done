@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
 
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import CustomDatePicker from "./CustomDatePicker";
 import {format} from "date-fns";
 import ProjectSelect from "./ProjectSelect";
@@ -121,8 +121,11 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
             </div>
             <div className={'flex items-center space-x-2'}>
                 {/*<ProjectSelect initial={{...project}} onProjectChange={(project) => setProject(project)} bg={false}/>*/}
-                <div className={'mr-3'}>
-                    {/*<CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>*/}
+                {project && params.path !== "project" ?
+                    <Link to={'/project/' + project.id} className={'text-xs pl-4 text-neutral-500 hover:text-neutral-600 hover:underline'}>{project ? project.name : ""}</Link>
+                    : ""}
+                <div className={'mr-3 text-xs w-24 bg-red-300_'}>
+                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>
                 </div>
             </div>
         </div>

@@ -51,7 +51,7 @@ export default function AddTask() {
 
     const [name, setName] = useState("");
     const [project, setProject] = useState("");
-    const [due, setDue] = useState(null);
+    const [due, setDue] = useState(new Date());
 
     useOnClickOutside(ref, () => handleClickOutside());
 
@@ -63,7 +63,7 @@ export default function AddTask() {
 
     const handleClickOutside = (e) => {
         setEditing(false)
-        setDue(null)
+        setDue(new Date())
         setName("")
     }
 
