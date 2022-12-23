@@ -39,9 +39,9 @@ export default function TaskHeader() {
 
     return (
         <div>
-            <div className={'flex items-center justify-start pb-1'}>
-                <div className={'mr-3 '}>{icon}</div>
-                <div className={'font-semibold text-2xl flex-grow'}>{name}</div>
+            <div className={'flex items-center justify-start pb-1 flex-wrap'}>
+                <div className={'mr-3 mb-4'}>{icon}</div>
+                <div className={'font-semibold text-2xl flex-grow mb-4'}>{name}</div>
                 <div className={'flex items-center space-x-4'}>
                     <Sort/>
                     <SortDirection/>

@@ -1,27 +1,44 @@
 import TaskHeader from "../TaskHeader";
 import {formatDate} from "../helper";
 import {useSelector} from "react-redux";
+import {useReadLocalStorage} from "usehooks-ts";
 
 export default function Upcoming({renderCard}) {
-
+    const sort = useReadLocalStorage("sort")
+    const sortDirection = useReadLocalStorage("sortDirection")
     let prev = "";
 
     const _data_ = {
-                    upcoming:
-                {
-                    tasks: [...useSelector(
-                        state => state.tasks.filter(
-                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
-                        ))].sort((a, b) => {
-                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
-                    }),
-                    completed: [...useSelector(
-                        state => state.tasks.filter(
-                            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
-                        ))].sort((a, b) => {
-                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
-                    })
-                },
+        upcoming:
+            {
+                tasks: [...useSelector(
+                    state => state.tasks.filter(
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
+                    ))].sort((a, b) => {
+                    let sortBy = sort
+                    let direction = sortDirection
+
+                    if (sortBy.field === "due") {
+                        if (direction.direction === "asc") {
+                            return new Date(b.due) > new Date(a.due) ? 1 : -1
+                        } else {
+                            return new Date(b.due) < new Date(a.due) ? 1 : -1
+                        }
+                    } else {
+                        if (direction.direction === "asc") {
+                            return a[sortBy.field] > b[sortBy.field] ? 1 : -1;
+                        } else {
+                            return a[sortBy.field] < b[sortBy.field] ? 1 : -1;
+                        }
+                    }
+                }),
+                completed: [...useSelector(
+                    state => state.tasks.filter(
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
+                    ))].sort((a, b) => {
+                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                })
+            },
     }
 
     return (

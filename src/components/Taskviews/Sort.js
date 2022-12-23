@@ -22,12 +22,12 @@ const options = [
 
 export default function Sort() {
 
-    const [sort, setSort] = useLocalStorage("sort", JSON.stringify(options[0]))
-    const [selectedOption, setSelectedOption] = useState(JSON.parse(sort))
+    const [sort, setSort] = useLocalStorage("sort", options[0])
+    const [selectedOption, setSelectedOption] = useState(sort)
 
     const onChange = (option) => {
         setSelectedOption(option)
-        setSort(JSON.stringify(option))
+        setSort(option)
     }
 
     return (

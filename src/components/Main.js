@@ -43,6 +43,26 @@ export default function Main() {
 
     useEffect(() => {
         waitForLocalStorage("AccessToken", function (value) {
+
+            /* Make sure we have a sort value in LS */
+            const sort = localStorage.getItem("sort");
+
+            if (!sort) {
+                localStorage.setItem("sort", JSON.stringify(
+                    {
+                        "title": "Due Date",
+                        "field": "due"
+                    },
+                ))
+                localStorage.setItem("sortDirection", JSON.stringify(
+                    {
+                        "direction": "asc",
+                        "title": "Ascending",
+                    },
+                ))
+            }
+
+
             dispatch(getTasks())
             dispatch(getProjects())
         })

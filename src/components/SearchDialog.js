@@ -28,7 +28,7 @@ export default function SearchDialog() {
                     <FaSearch className={'w-6 h-6 text-gray-400 hover:text-gray-600'}/>
                 </button>
             </div>
-            <Dialog onClose={closeModal} open={isOpen} className={"inset-0 fixed p-4 pt-[25vh]"}>
+            <Dialog onClose={closeModal} open={isOpen} className={"z-50 inset-0 fixed p-4 pt-[25vh]"}>
                 <div className="fixed inset-0 bg-black bg-opacity-60"/>
 
                 <Dialog.Panel className="mx-auto max-w-xl transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-md transition-all">

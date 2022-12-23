@@ -6,28 +6,9 @@ import {getAuth} from "firebase/auth";
 import {format} from "date-fns";
 import {HiLogout} from "react-icons/hi";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
+import Settings from "./Settings";
+import {useState} from "react";
 
-function Avatar() {
-
-    const user = getAuth();
-    return (
-        <div className={'p-4'}>
-            <div className="flex items-start space-x-2">
-                <div className={'rounded-full  text-gray-400'}>
-                    <div className="inline-flex overflow-hidden relative justify-center items-center w-10 h-10 bg-gray-100 rounded-full dark:bg-gray-600">
-                        <span className="font-medium text-gray-600 dark:text-gray-300">{
-                            user.currentUser ? user.currentUser.displayName.split(" ").map((n) => n[0]).join("") : ""
-                        }</span>
-                    </div>
-                </div>
-                <div className="dark:text-white">
-                    <div className={'text-sm font-medium text-gray-700'}>{user.currentUser ? user.currentUser.displayName : ""}</div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">Joined {user.currentUser ? format(new Date(user.currentUser.metadata.creationTime), "d MMM Y") : ""}</div>
-                </div>
-            </div>
-        </div>
-    );
-}
 
 const GoogleHead = () => {
     const user = getAuth();
@@ -40,6 +21,7 @@ const GoogleHead = () => {
 }
 
 export default function MainMenu() {
+        const [open, setOpen] = useState(false)
 
     const navigate = useNavigate();
     const user = getAuth();
@@ -77,7 +59,7 @@ export default function MainMenu() {
                                     </Listbox.Option>
 
 
-                                    <Listbox.Option className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"settings"}>
+                                    <Listbox.Option onClick={() => setOpen(true)} className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"settings"}>
                                         {({selected}) => (
                                             <span className={`block truncate `}>
                                                 <div className={'flex items-center space-x-2'}>
@@ -89,7 +71,7 @@ export default function MainMenu() {
                                     </Listbox.Option>
 
 
-                                    <Listbox.Option className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"signout"}>
+                                    <Listbox.Option  className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"signout"}>
                                         {({selected}) => (
                                             <span className={`block truncate 'font-normal`}>
                                                 <div className={'flex items-center space-x-2'}>
@@ -107,6 +89,7 @@ export default function MainMenu() {
                     </Listbox>
                 </div>
             </div>
+            <Settings open={open} setModalOpen={setOpen}/>
         </div>
     );
 }

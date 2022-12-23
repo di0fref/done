@@ -110,8 +110,8 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
-            <div className={'flex items-center flex-grow space-x-4 '} onClick={clickHandler}>
+        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+            <div className={'flex items-center flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
                     <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
                 </div>
@@ -120,9 +120,9 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                 </div>
             </div>
             <div className={'flex items-center space-x-2'}>
-               <ProjectSelect initial={{...project}} onProjectChange={(project) => setProject(project)} bg={false}/>
+                {/*<ProjectSelect initial={{...project}} onProjectChange={(project) => setProject(project)} bg={false}/>*/}
                 <div className={'mr-3'}>
-                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>
+                    {/*<CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>*/}
                 </div>
             </div>
         </div>

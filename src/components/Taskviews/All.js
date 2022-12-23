@@ -8,10 +8,6 @@ export default function All({renderCard}) {
     const sort = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("sortDirection")
 
-    useEffect(() => {
-        console.log(sort);
-    }, [sort])
-
     const _data_ = {
         all:
             {
@@ -20,8 +16,9 @@ export default function All({renderCard}) {
                         task => (!task.completed)
                     )
                 )].sort((a, b) => {
-                    let sortBy = JSON.parse(sort);
-                    let direction = JSON.parse(sortDirection)
+
+                    let sortBy = sort
+                    let direction = sortDirection
 
                     if (sortBy.field === "due") {
                         if (direction.direction === "asc") {

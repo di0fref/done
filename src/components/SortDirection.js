@@ -21,12 +21,12 @@ const options = [
 
 export default function SortDirection() {
 
-    const [sortDirection, setSortDirection] = useLocalStorage("sortDirection", JSON.stringify(options[0]))
-    const [selectedOption, setSelectedOption] = useState(JSON.parse(sortDirection))
+    const [sortDirection, setSortDirection] = useLocalStorage("sortDirection", options[0])
+    const [selectedOption, setSelectedOption] = useState(sortDirection)
 
     const onChange = (option) => {
         setSelectedOption(option)
-        setSortDirection(JSON.stringify(option))
+        setSortDirection(option)
     }
 
     return (
