@@ -48,21 +48,10 @@ export default function Main() {
             const sort = localStorage.getItem("sort");
 
             if (!sort) {
-                localStorage.setItem("sort", JSON.stringify(
-                    {
-                        "title": "Due Date",
-                        "field": "due"
-                    },
-                ))
-                localStorage.setItem("sortDirection", JSON.stringify(
-                    {
-                        "direction": "asc",
-                        "title": "Ascending",
-                    },
-                ))
-                localStorage.setItem("showCompleted", JSON.stringify("1"))
+                localStorage.setItem("sort",JSON.stringify( "due"))
+                localStorage.setItem("direction", JSON.stringify("asc"))
+                localStorage.setItem("showCompleted", JSON.stringify(true))
             }
-
 
             dispatch(getTasks())
             dispatch(getProjects())

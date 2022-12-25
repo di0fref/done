@@ -1,16 +1,12 @@
-import {forwardRef, useEffect, useRef, useState} from "react";
-import {BsCalendar} from "react-icons/bs";
+import {useEffect, useRef, useState} from "react";
 import ProjectSelect from "./ProjectSelect";
-import DatePicker from "react-datepicker";
-import DateBadge from "./DateBadge";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
-import TextareaAutosize from "react-textarea-autosize";
 import {toast} from "react-toastify";
-import {getDateColor} from "./helper";
-import {FaCalendarAlt} from "react-icons/fa";
 import CustomDatePicker from "./CustomDatePicker";
+
+// import PrioSelector from "./PrioSelector";
 
 function useOnClickOutside(ref, handler) {
     useEffect(
@@ -62,9 +58,11 @@ export default function AddTask() {
     }, [editing])
 
     const handleClickOutside = (e) => {
-        setEditing(false)
-        setDue(new Date())
-        setName("")
+        if (name === "") {
+            setEditing(false)
+            setDue(new Date())
+            setName("")
+        }
     }
 
     const onKeyDownHandler = (e) => {
@@ -84,7 +82,7 @@ export default function AddTask() {
                         due: due ? format(new Date(due), "Y-MM-dd") : null,
                         project_id: _project_.id ?? null,
                         text: "",
-                        prio: "high"
+                        prio: "normal"
                     })).unwrap()
 
                     task && toast.success(
@@ -105,7 +103,7 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div onClick={() => setEditing(true)} ref={ref} className={'ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div onClick={() => setEditing(true)} ref={ref} className={' ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
@@ -117,11 +115,14 @@ export default function AddTask() {
                         value={name}>
                     </input>
                 </div>
-                <div>
-                    <CustomDatePicker onChange={setDue} date={new Date()}/>
+                <div className={'mb-2'}>
+                    <CustomDatePicker bg={true} onChange={setDue} date={new Date()}/>
                 </div>
                 <div>
-                    <ProjectSelect initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>
+                    <ProjectSelect bg={true} initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>
+                </div>
+                <div>
+                    {/*<PrioSelector place={"left"} bg={true} initial={"normal"}/>*/}
                 </div>
             </div>
         )

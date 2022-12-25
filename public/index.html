@@ -26,9 +26,9 @@
     -->
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script>
-      console.log(JSON.parse(localStorage.getItem('theme')))
+      console.log(JSON.parse(localStorage.getItem('darkTheme')))
 
-      if (JSON.parse(localStorage.getItem('theme')) === 'dark') {
+      if (JSON.parse(localStorage.getItem('darkTheme')) === true) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark')

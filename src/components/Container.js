@@ -40,7 +40,6 @@ export const Container = (props) => {
         return (
             <div className={'flex h-full dark:text-neutral-300 '}>
                 <div className={'flex-grow px-8 mt-6'}>
-                    {/*<TaskHeader/>*/}
                     <AddTask/>
                     {(() => {
                         switch (props.filter) {

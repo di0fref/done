@@ -45,8 +45,8 @@
 }
 
 .checkbox {
-	@apply shrink-0 mt-0.5 border-neutral-400/70 rounded text-blue-500 focus:ring-0 rounded-full
-	dark:bg-gray-700 dark:border-gray-600 h-5 w-5
+	@apply shrink-0 mt-0.5 border-neutral-400/70 rounded text-blue-500 focus:ring-0
+	dark:bg-gray-700 dark:border-gray-600 h-4 w-4
 }
 
 @media (min-width: 768px) {

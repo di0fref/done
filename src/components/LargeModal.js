@@ -7,6 +7,9 @@ import {HiXMark} from "react-icons/hi2";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
+// import PrioSelector from "./PrioSelector";
+import BaseListbox from "./BaseListbox";
+import {priorities} from "./helper";
 
 export default function LargeModal(props) {
 
@@ -14,8 +17,12 @@ export default function LargeModal(props) {
         project => props.card ? (props.card.project_id === project.id) : null
     ))
 
-    const [showModal, setShowModal] = useState(false);
+    const projects = useSelector(state => state.projects)
+
+    const [showModal, setShowModal] = useState(false)
     const [name, setName] = useState(props.card.name);
+    const [prio, setPrio] = useState(props.card.prio);
+
     const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
     const [text, setText] = useState(props.card.text);
     const [project, setProject] = useState(_project_);
@@ -52,7 +59,7 @@ export default function LargeModal(props) {
                     id: props.card.id,
                     name: name,
                     due: due ? format(new Date(due), "Y-M-dd") : null,
-                    prio: "high",
+                    prio: prio,
                     project_id: project.id,
                     completed: taskCompleted,
                     text: text
@@ -102,14 +109,17 @@ export default function LargeModal(props) {
                                         </div>
                                     </div>
                                     <div className={'w-1/3 border-l px-4'}>
-
-                                        <div className={'my-4 border-b pb-3'}>
-                                            <span className={'text-md text-neutral-600 2'}>Project</span>
-                                            <ProjectSelect bg={true} initial={{...project}} onProjectChange={(project) => setProject(project)}/>
+                                        <div className={'py-6 border-b pb-3 text-sm'}>
+                                            <div className={'text-md text-neutral-600 mb-2'}>Project</div>
+                                            <BaseListbox onChange={(project) => setProject(project)} items={projects} selected={project}/>
                                         </div>
-                                        <div className={'border-b pb-3'}>
-                                            <span className={'text-md text-neutral-600'}>Due date</span>
+                                        <div className={'border-b py-6 text-sm'}>
+                                            <div className={'text-md text-neutral-600 mb-2'}>Due date</div>
                                             <CustomDatePicker bg={true} onClick={false} date={due} onDateChange={(date) => setDue(date)}/>
+                                        </div>
+                                        <div className={'border-b py-4 text-sm mb-4'}>
+                                            <div className={'text-md text-neutral-600 mb-2'}>Priority</div>
+                                            <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
                                         </div>
                                     </div>
                                 </div>
@@ -118,15 +128,13 @@ export default function LargeModal(props) {
                                     <button
                                         className="cancel-btn"
                                         type="button"
-                                        onClick={closeModal}
-                                    >
+                                        onClick={closeModal}>
                                         Cancel
                                     </button>
                                     <button
                                         className="save-btn"
                                         type="button"
-                                        onClick={saveHandler}
-                                    >
+                                        onClick={saveHandler}>
                                         Save
                                     </button>
                                 </div>

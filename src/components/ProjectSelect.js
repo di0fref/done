@@ -31,11 +31,11 @@ export default function ProjectSelect(props) {
                     {props.children ?
                         props.children : (
 
-                            <Listbox.Button className={`${props.bg?"bg-neutral-100_":""} hover:bg-neutral-100 group cursor-pointer rounded-md w-full`}>
+                            <Listbox.Button className={`${props.bg?"bg-neutral-100":""} hover:bg-neutral-100 group cursor-pointer rounded-md`}>
                                 <div className={'text-sm text-neutral-500 py-1 px-2 flex items-center space-x-2'}>
                                     <div style={{backgroundColor: selected.color}} className={'rounded-full h-2 w-2'}/>
-                                    <div className={'flex-grow text-left text-sm'}>{selected.name}</div>
-                                    <HiChevronDown className={'group-hover:visible invisible'}/>
+                                    <div className={'flex-grow text-left'}>{selected.name}</div>
+                                    <HiChevronDown className={'_group-hover:visible _invisible'}/>
                                 </div>
                             </Listbox.Button>
 
@@ -46,7 +46,7 @@ export default function ProjectSelect(props) {
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0">
-                        <Listbox.Options className="z-50 absolute -right-4 top-10 mt-1 w-72 max-h-72 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        <Listbox.Options className="z-50 absolute mt-1 w-60_ overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
 
                             {projects.map((project, id) => (
                                 <Listbox.Option

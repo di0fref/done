@@ -3,6 +3,33 @@ import {format, formatRelative} from "date-fns";
 import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar, BsList} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
+import PrioFlag from "./PrioFlag";
+
+
+export const priorities = [
+    {
+        "prio": "low",
+        "name": "Low",
+        "icon": "BsFlag",
+        "css": "text-neutral-500",
+        "id": "1"
+    },
+    {
+        "prio": "normal",
+        "name": "Normal",
+        "icon": "BsFlag",
+        "css": "text-blue-600",
+        "id": "2"
+
+    },
+    {
+        "prio": "high",
+        "name": "High",
+        "icon": "BsFlag",
+        "css": "text-red-500",
+        "id": "3"
+    }
+]
 
 export function getIcon(path) {
     switch (path) {
@@ -37,15 +64,16 @@ const formatRelativeLocale = {
     today: "'Today'",
     tomorrow: "'Tomorrow'",
     nextWeek: "'Next' eeee",
-    other: dateFormat ,
+    other: dateFormat,
 };
-export function formatRelativeDate(date){
+
+export function formatRelativeDate(date) {
     const locale = {
         ...enGB,
         formatRelative: (token) => formatRelativeLocale[token],
     };
     date = new Date(date);
-    return formatRelative(date, new Date(),{locale});
+    return formatRelative(date, new Date(), {locale});
 }
 
 export function formatDate(date, includeDay) {

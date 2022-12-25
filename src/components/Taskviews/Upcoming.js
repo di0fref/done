@@ -2,10 +2,11 @@ import TaskHeader from "../TaskHeader";
 import {formatDate} from "../helper";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
+import NoTasks from "../NoTasks";
 
 export default function Upcoming({renderCard}) {
     const sort = useReadLocalStorage("sort")
-    const sortDirection = useReadLocalStorage("sortDirection")
+    const sortDirection = useReadLocalStorage("direction")
     const showCompleted = useReadLocalStorage("showCompleted")
 
     let prev = "";
@@ -17,20 +18,21 @@ export default function Upcoming({renderCard}) {
                     state => state.tasks.filter(
                         task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                     ))].sort((a, b) => {
+
                     let sortBy = sort
                     let direction = sortDirection
 
-                    if (sortBy.field === "due") {
-                        if (direction.direction === "asc") {
+                    if (sortBy === "due") {
+                        if (direction === "asc") {
                             return new Date(b.due) > new Date(a.due) ? 1 : -1
                         } else {
                             return new Date(b.due) < new Date(a.due) ? 1 : -1
                         }
                     } else {
-                        if (direction.direction === "asc") {
-                            return a[sortBy.field] > b[sortBy.field] ? 1 : -1;
+                        if (direction === "asc") {
+                            return a[sortBy] > b[sortBy] ? 1 : -1;
                         } else {
-                            return a[sortBy.field] < b[sortBy.field] ? 1 : -1;
+                            return a[sortBy] < b[sortBy] ? 1 : -1;
                         }
                     }
                 }),
@@ -76,7 +78,7 @@ export default function Upcoming({renderCard}) {
                         })}
                     </div>
                 )
-                : ""}
+                : <NoTasks/>}
         </>
     )
 }

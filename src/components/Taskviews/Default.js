@@ -1,10 +1,11 @@
 import TaskHeader from "../TaskHeader";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
+import NoTasks from "../NoTasks";
 
 export default function Default({renderCard}) {
     const sort = useReadLocalStorage("sort")
-    const sortDirection = useReadLocalStorage("sortDirection")
+    const sortDirection = useReadLocalStorage("direction")
     const showCompleted = useReadLocalStorage("showCompleted")
 
     const _data_ = {
@@ -16,17 +17,17 @@ export default function Default({renderCard}) {
                 let sortBy = sort
                 let direction = sortDirection
 
-                if (sortBy.field === "due") {
-                    if (direction.direction === "asc") {
+                if (sortBy === "due") {
+                    if (direction === "asc") {
                         return new Date(b.due) > new Date(a.due) ? 1 : -1
                     } else {
                         return new Date(b.due) < new Date(a.due) ? 1 : -1
                     }
                 } else {
-                    if (direction.direction === "asc") {
-                        return a[sortBy.field] > b[sortBy.field] ? 1 : -1;
+                    if (direction === "asc") {
+                        return a[sortBy] > b[sortBy] ? 1 : -1;
                     } else {
-                        return a[sortBy.field] < b[sortBy.field] ? 1 : -1;
+                        return a[sortBy] < b[sortBy] ? 1 : -1;
                     }
                 }
             }),
@@ -75,7 +76,7 @@ export default function Default({renderCard}) {
                         {Object.values(_data_.today.completed).map((card, i) => renderCard(card, i))}
                     </div>
                 )
-                : ""}
+                : <NoTasks/>}
 
         </div>
     )

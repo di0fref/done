@@ -6,37 +6,36 @@ import {Switch} from '@headlessui/react'
 export default function Settings(props) {
 
     const [showModal, setShowModal] = useState(false);
-    const [darkTheme, setDarkTheme] = useLocalStorage("theme", "")
-    const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", "")
-    const [darkEnabled, setDarkEnabled] = useState(!!darkTheme)
-    const [completedEnabled, setCompletedEnabled] = useState(!!showCompleted)
+
+    const [darkEnabled, setDarkEnabled] = useState(JSON.parse(localStorage.getItem("darkTheme")))
+    const [completedEnabled, setCompletedEnabled] = useState(JSON.parse(localStorage.getItem("showCompleted")))
+
+
+
+
+    useEffect(() => {
+
+    }, [])
 
     useEffect(() => {
         setShowModal(props.open)
     }, [props.open])
 
-    useEffect(() => {
-        setCompletedEnabled(false)
-        setDarkEnabled(false)
-    }, [])
-
     const closeModal = () => {
         setShowModal(false)
         props.setModalOpen(false)
-
-
     }
 
     const saveHandler = () => {
         darkEnabled ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
-        setShowCompleted(completedEnabled ? "1" : "0")
+
+        localStorage.setItem("darkTheme", JSON.stringify(!!darkEnabled))
+        localStorage.setItem("showCompleted", JSON.stringify(!!completedEnabled))
+
         closeModal()
+
     }
 
-    const onThemeChange = (checked) => {
-        setDarkTheme(checked ? 'dark' : 'light')
-        setDarkEnabled(checked)
-    }
 
     const onShowCompletedChange = (checked) => {
         setCompletedEnabled(checked)
@@ -68,7 +67,7 @@ export default function Settings(props) {
 
                                             <Switch
                                                 checked={darkEnabled}
-                                                onChange={onThemeChange}
+                                                onChange={setDarkEnabled}
                                                 className={`${
                                                     darkEnabled ? 'bg-blue-600' : 'bg-gray-200'
                                                 } relative inline-flex h-6 w-11 items-center rounded-full`}>
