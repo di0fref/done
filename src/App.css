@@ -39,7 +39,12 @@
 :root {
 	--checkbox-size: 15px
 }
-
+.editor-input a{
+	@apply text-blue-600
+}
+.editor-input a:hover{
+	@apply underline
+}
 .bg-2 {
 	background-color: #ecedf6;
 }

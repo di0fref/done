@@ -67,16 +67,18 @@ export default function Default({renderCard}) {
             <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
                 <TaskHeader/></div>
 
-            {Object.values(_data_.today.tasks).map((card, i) => renderCard(card, i))}
-
-            {_data_.today.completed.length && JSON.parse(showCompleted)?
+            {_data_.today.tasks.length
+                ? Object.values(_data_.today.tasks).map((card, i) => renderCard(card, i))
+                : <NoTasks/>
+            }
+            {_data_.today.completed.length && JSON.parse(showCompleted) ?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
                         {Object.values(_data_.today.completed).map((card, i) => renderCard(card, i))}
                     </div>
                 )
-                : <NoTasks/>}
+                : ""}
 
         </div>
     )

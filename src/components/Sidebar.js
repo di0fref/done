@@ -73,7 +73,7 @@ function Sidebar(props) {
                         <div className={'flex justify-between py-2'}>
                             <div className={'text-black/50  dark:text-neutral-300 mb-2 pl-2 flex items-center space-x-2 text-base font-normal text-gray-700'}>
                                 <div>{getIcon("lists")}</div>
-                                <div className={''}>Lists</div>
+                                <div className={''}>Projects</div>
                             </div>
                             <AddProjectForm/>
                         </div>

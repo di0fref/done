@@ -51,16 +51,20 @@ export default function All({renderCard}) {
                 <div className={'mb-2 mt-7 border-b p-2 dark:border-gray-700 mb-5 relative'}>
                     <TaskHeader/>
                 </div>
-                {Object.values(_data_.all.tasks).map((card, i) => renderCard(card, i))}
+
+                {_data_.all.tasks.length
+                    ? Object.values(_data_.all.tasks).map((card, i) => renderCard(card, i))
+                    : <NoTasks/>
+                }
             </div>
-            {_data_.all.completed.length && JSON.parse(showCompleted)?
+            {_data_.all.completed.length && JSON.parse(showCompleted) ?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
                         {Object.values(_data_.all.completed).map((card, i) => renderCard(card, i))}
                     </div>
                 )
-                : <NoTasks/>}
+                : ""}
         </>
     )
 }

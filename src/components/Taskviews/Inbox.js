@@ -47,16 +47,19 @@ export default function Inbox({renderCard}) {
                 <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
                     <TaskHeader/>
                 </div>
-                {Object.values(_data_.inbox.tasks).map((card, i) => renderCard(card, i))}
+                {_data_.inbox.tasks.length
+                    ? Object.values(_data_.inbox.tasks).map((card, i) => renderCard(card, i))
+                    : <NoTasks/>
+                }
             </div>
-            {_data_.inbox.completed.length && JSON.parse(showCompleted)?
+            {_data_.inbox.completed.length && JSON.parse(showCompleted) ?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
                         {Object.values(_data_.inbox.completed).map((card, i) => renderCard(card, i))}
                     </div>
                 )
-                : <NoTasks/>}
+                : ""}
         </>
     )
 }
