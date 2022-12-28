@@ -5,6 +5,8 @@ import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
 import CustomDatePicker from "./CustomDatePicker";
+import {socket} from "../App";
+import {getAuth} from "firebase/auth";
 
 // import PrioSelector from "./PrioSelector";
 
@@ -25,12 +27,6 @@ function useOnClickOutside(ref, handler) {
                 document.removeEventListener("touchstart", listener);
             };
         },
-        // Add ref and handler to effect dependencies
-        // It's worth noting that because passed in handler is a new ...
-        // ... function on every render that will cause this effect ...
-        // ... callback/cleanup to run every render. It's not a big deal ...
-        // ... but to optimize you can wrap handler in useCallback before ...
-        // ... passing it into this hook.
         [ref, handler]
     );
 }
@@ -82,8 +78,10 @@ export default function AddTask() {
                         due: due ? format(new Date(due), "Y-MM-dd") : null,
                         project_id: _project_.id ?? null,
                         text: "",
-                        prio: "normal"
+                        prio: "normal",
+                        user_id: getAuth().currentUser.uid
                     })).unwrap()
+
 
                     task && toast.success(
                         <div>1 task was created</div>

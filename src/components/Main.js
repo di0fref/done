@@ -6,14 +6,14 @@ import {getAuth} from "firebase/auth";
 import MainMenu from "./MainMenu";
 import {useAuthState} from "react-firebase-hooks/auth";
 import {useDispatch, useSelector} from "react-redux";
-import {getTasks} from "../redux/taskSlice";
+import {addTaskFromSocket, getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
 import {setCurrent} from "../redux/currentSlice";
 import {paths} from "./helper";
 import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./SearchDialog";
-import ThemeSwitcher from "./ThemeSwitcher";
+import {socket} from "../App";
 
 
 export default function Main() {
@@ -25,6 +25,29 @@ export default function Main() {
 
     const allTasks = useSelector(state => state.tasks)
     const allProjects = useSelector(state => state.projects)
+
+
+    // useEffect(() => {
+    //     socket.on('message', (data) => {
+    //
+    //
+    //         console.log(data)
+    //
+    //         if (data.socketID === socket.id) {
+    //             // console.log("Skipping update, data is from my socket")
+    //             return
+    //         }
+    //
+    //         switch (data.action) {
+    //             case "taskAdded":
+    //                 dispatch(addTaskFromSocket(data.task))
+    //                 break;
+    //             case "taskStatusChange":
+    //                 break;
+    //
+    //         }
+    //     });
+    // }, [socket]);
 
     function waitForLocalStorage(key, cb, timer) {
 
@@ -48,10 +71,16 @@ export default function Main() {
             const sort = localStorage.getItem("sort");
 
             if (!sort) {
-                localStorage.setItem("sort",JSON.stringify( "due"))
+                localStorage.setItem("sort", JSON.stringify("due"))
                 localStorage.setItem("direction", JSON.stringify("asc"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
             }
+            //
+            // socket.on('connect', function() {
+            //     // Connected, let's sign-up for to receive messages for this room
+            //     socket.emit('room', "abbaRoom");
+            // });
+
 
             dispatch(getTasks())
             dispatch(getProjects())

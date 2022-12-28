@@ -68,12 +68,9 @@ export const taskSlice = createSlice({
     name: 'task',
     initialState,
     reducers: {
-        // setCurrentTask: (state, action) => {
-        //    return  state.find(task => task.id === action.payload)
-        //
-        //     console.log(JSON.stringify(state.tasks))
-        //
-        // },
+        addTaskFromSocket: (state, action) => {
+           return [...state, action.payload]
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -107,5 +104,5 @@ export const taskSlice = createSlice({
             })
     }
 })
-export const {setCurrentTask} = taskSlice.actions
+export const {addTaskFromSocket} = taskSlice.actions
 export default taskSlice.reducer

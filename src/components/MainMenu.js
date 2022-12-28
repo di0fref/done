@@ -71,7 +71,7 @@ export default function MainMenu() {
                                     </Listbox.Option>
 
 
-                                    <Listbox.Option  className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"signout"}>
+                                    <Listbox.Option onClick={signOut}  className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-4 ${active ? 'bg-hov text-gray-800' : 'text-gray-800'}`} value={"signout"}>
                                         {({selected}) => (
                                             <span className={`block truncate 'font-normal`}>
                                                 <div className={'flex items-center space-x-2'}>

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {delay, paths} from "./helper";
+import {delay, paths, sendMessage} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
@@ -9,6 +9,7 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import CustomDatePicker from "./CustomDatePicker";
 import {format} from "date-fns";
 import ProjectSelect from "./ProjectSelect";
+import {socket} from "../App";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
@@ -39,7 +40,8 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
         dispatch(toggleCompleted({
             id: id,
             completed: 1
-        }))
+        })).unwrap()
+
     }
 
 
@@ -63,6 +65,8 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                     id: card.id,
                     completed: taskCompleted
                 })).unwrap()
+
+
 
                 task.completed && toast.success(
                     <div>1 task was completed

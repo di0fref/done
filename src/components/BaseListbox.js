@@ -11,7 +11,6 @@ const icons = {
 }
 
 const PostIcon = (props) => {
-    console.log(props)
     const Icon = icons[props.iconName];
     return <Icon className={props.css}/>
 }
@@ -23,7 +22,6 @@ export default function BaseListbox(props) {
 
     useEffect(() => {
         setSelected(props.selected)
-        console.log(props)
     }, [props])
 
     const onChange = (value) => {

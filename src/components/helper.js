@@ -4,6 +4,7 @@ import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar, BsList} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
 import PrioFlag from "./PrioFlag";
+import {socket} from "../App";
 
 
 export const priorities = [
