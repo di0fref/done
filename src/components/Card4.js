@@ -112,7 +112,7 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
         <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
             <div className={'flex items-center flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
-                    <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
+                    <input onChange={onStatusChange} className={`${card.prio==="high"?"ring-1 ring-red-400 border-none bg-red-50_":""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
                     <div className={`${card.completed ? "line-through " : ""} `}>{name}</div>

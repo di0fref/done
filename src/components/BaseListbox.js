@@ -20,9 +20,9 @@ export default function BaseListbox(props) {
     const [items, setItems] = useState(props.items)
     const [selected, setSelected] = useState(props.selected)
 
-    useEffect(() => {
-        setSelected(props.selected)
-    }, [props])
+    // useEffect(() => {
+    //     setSelected(props.selected)
+    // }, [props])
 
     const onChange = (value) => {
         setSelected(value)
