@@ -3,7 +3,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import Main from "./components/Main";
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import ReactTooltip from "react-tooltip";
+import {Tooltip} from "react-tooltip";
 import Login from "./components/Login";
 import {store} from './redux/store'
 import {Provider, useDispatch} from 'react-redux'
@@ -11,6 +11,8 @@ import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-tooltip/dist/react-tooltip.css';
+
 // import socketIO from 'socket.io-client';
 
 // export const socket = socketIO.connect('http://localhost:4000');
@@ -24,7 +26,7 @@ function App() {
                 className={""}
                 position="bottom-left"/>
             <DndProvider backend={HTML5Backend}>
-                <ReactTooltip
+                <Tooltip
                     effect={"solid"}
                 />
                 <Routes>

@@ -12,6 +12,7 @@ import SearchDialog from "./SearchDialog";
 import SearchForm from "./SearchForm";
 import {FaList, FaTrash} from "react-icons/fa";
 import {BsList} from "react-icons/bs";
+import ProjectMenu from "./ProjectMenu";
 
 
 function Sidebar(props) {
@@ -25,6 +26,7 @@ function Sidebar(props) {
     })
 
     const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
+
     return (
         // <div>
         <Disclosure as="div" className={''}>
@@ -69,37 +71,31 @@ function Sidebar(props) {
 
                         </ul>
                     </div>
-                    <div>
+                    <div className={'mt-4'}>
                         <div className={'flex justify-between py-2'}>
-                            <div className={'text-black/50  dark:text-neutral-300 mb-2 pl-2 flex items-center space-x-2 text-base font-normal text-gray-700'}>
-                                <div>{getIcon("lists")}</div>
-                                <div className={''}>Lists</div>
+                            <div className={'mb-2 pl-2 flex items-center space-x-2'}>
+                                {/*<div>{getIcon("lists")}</div>*/}
+                                <div className={'text-neutral-500 font-semibold dark:text-neutral-300 text-sm'}>Projects</div>
                             </div>
                             <AddProjectForm/>
                         </div>
                         <ul className={'space-y-1'}>
-
                             {
                                 Object.values(projects).map((project, i) => {
                                     return (
                                         <li key={project.id} className={`
-                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""}  pl-2 px-1 py-2 dark:text-white hover:bg-hov dark:hover:bg-gray-700 rounded`}>
+                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""} group pl-2 px-1 py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-700 rounded`}>
                                             <Link to={"/project/" + project.id} className={'flex items-center'}>
                                                 <div style={{
                                                     background: project.color
-                                                }} className={'w-2 h-2 rounded-full'}></div>
-                                                {/*<div><BsList/></div>*/}
-                                                <div className={'hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-md flex-grow '}>{project.name}</div>
-                                                {/*<div style={{*/}
-                                                {/*    background: project.color*/}
-                                                {/*}} className={'w-2 h-2 rounded-full mr-6'}> </div>*/}
-                                                <div className={'mr-1 w-4 '}><HiEllipsisHorizontal/></div>
+                                                }} className={'w-2 h-2 rounded-full'}/>
+                                                <div className={' hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>{project.name}</div>
+                                                <div className={'mr-1 w-4 group-hover:visible invisible'}><ProjectMenu/></div>
                                             </Link>
                                         </li>
                                     )
                                 })
                             }
-
                         </ul>
                     </div>
 

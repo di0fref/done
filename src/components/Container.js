@@ -2,7 +2,6 @@ import update from 'immutability-helper'
 import {useCallback, useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {motion, AnimatePresence} from "framer-motion"
-import {useReadLocalStorage} from "usehooks-ts";
 import AddTask from "./AddTask";
 import {Card4} from "./Card4";
 import LargeModal from "./LargeModal";

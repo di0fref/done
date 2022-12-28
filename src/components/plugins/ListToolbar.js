@@ -58,10 +58,9 @@ export default function ToolbarPlugin(){
             {/*</button>*/}
             <button
                 disabled={false}
-                className={""}
-                onClick={() => formatList("check")}
-            >
-                <span ><BsListCheck className="hover:bg-gray-200 w-8 h-8 rounded p-1 text-gray-500"/></span>
+                className={"absolute _bg-green-600 top-2 mr-2"}
+                onClick={() => formatList("check")}>
+                <span><BsListCheck className="hover:bg-gray-200 w-8 h-8 rounded p-1 text-gray-500"/></span>
             </button>
         </div>
     );

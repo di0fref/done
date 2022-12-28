@@ -40,7 +40,7 @@ export default function Upcoming({renderCard}) {
                     state => state.tasks.filter(
                         task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
                     ))].sort((a, b) => {
-                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
                 })
             },
     }
@@ -50,7 +50,7 @@ export default function Upcoming({renderCard}) {
             <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
                 <TaskHeader/></div>
 
-            {Object.values(_data_.upcoming.tasks).map((card, i) => {
+            {_data_.upcoming.tasks.length?Object.values(_data_.upcoming.tasks).map((card, i) => {
                 if (prev !== card.due) {
                     prev = card.due;
                     return (
@@ -68,7 +68,7 @@ export default function Upcoming({renderCard}) {
                         </div>
                     )
                 }
-            })}
+            }):<NoTasks/>}
             {_data_.upcoming.completed.length && JSON.parse(showCompleted)?
                 (
                     <div>
@@ -78,7 +78,7 @@ export default function Upcoming({renderCard}) {
                         })}
                     </div>
                 )
-                : <NoTasks/>}
+                : ""}
         </>
     )
 }

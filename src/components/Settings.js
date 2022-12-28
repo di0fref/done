@@ -8,9 +8,9 @@ export default function Settings(props) {
     const [showModal, setShowModal] = useState(false);
 
     const [darkEnabled, setDarkEnabled] = useState(JSON.parse(localStorage.getItem("darkTheme")))
-    const [completedEnabled, setCompletedEnabled] = useState(JSON.parse(localStorage.getItem("showCompleted")))
+    // const [completedEnabled, setCompletedEnabled] = useState(JSON.parse(localStorage.getItem("showCompleted")))
 
-
+    const [completedEnabled, setCompletedEnabled] = useLocalStorage("showCompleted", null)
 
 
     useEffect(() => {
@@ -30,7 +30,9 @@ export default function Settings(props) {
         darkEnabled ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
 
         localStorage.setItem("darkTheme", JSON.stringify(!!darkEnabled))
-        localStorage.setItem("showCompleted", JSON.stringify(!!completedEnabled))
+        // localStorage.setItem("showCompleted", JSON.stringify(!!completedEnabled))
+
+        setCompletedEnabled(!!completedEnabled)
 
         closeModal()
 

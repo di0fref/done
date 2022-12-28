@@ -2,17 +2,14 @@ import {formatDate, getDateColor} from "./helper";
 import {forwardRef} from "react";
 import DatePicker from "react-datepicker";
 import {HiChevronDown} from "react-icons/hi";
+import {BsCalendarCheckFill} from "react-icons/bs";
 
-export default function CustomDatePicker(props) {
+export default function DatePickerIcon(props) {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <button onClick={onClick} className={` ${props.bg?"bg-neutral-100":""} hover:bg-neutral-100 group cursor-pointer rounded-md `}>
-            <div className={'py-1 px-2 flex items-center space-x-2'}>
-                {/*<AiOutlineCalendar className={''}/>*/}
-                <div className={`${getDateColor(props.date)} flex-grow text-left`}>{props.date ? formatDate(new Date(props.date)) : "--"}</div>
-                <HiChevronDown className={'group-hover:visible _invisible'}/>
-            </div>
+        <button onClick={onClick}>
+                <BsCalendarCheckFill className={'h-4 w-4'}/>
         </button>
     ))
 

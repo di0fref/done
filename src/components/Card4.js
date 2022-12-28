@@ -8,8 +8,10 @@ import {toast} from "react-toastify";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import CustomDatePicker from "./CustomDatePicker";
 import {format} from "date-fns";
-import ProjectSelect from "./ProjectSelect";
-import {socket} from "../App";
+import {BsList} from "react-icons/bs";
+import PrioSelector from "./PrioSelector";
+import CardMenu from "./CardMenu";
+import PrioBadge from "./PrioBadge";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
@@ -24,10 +26,6 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
-
-    const project = useSelector(state => state.projects.find(
-        project => card.project_id === project.id
-    ))
 
     const clickHandler = (e) => {
         if (e.target.type !== "checkbox") {
@@ -65,7 +63,6 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                     id: card.id,
                     completed: taskCompleted
                 })).unwrap()
-
 
 
                 task.completed && toast.success(
@@ -114,24 +111,27 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+        <div className={`flex items-center ${card.completed ? "_opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
             <div className={'flex items-center flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
-                    <input onChange={onStatusChange} className={'checkbox ml-2 mb-1'} type={"checkbox"} checked={taskCompleted}/>
+                    <input onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? "ring-1_ ring-red-400_ border-none_ " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
-                    <div className={`${card.completed ? "line-through " : ""} `}>{name}</div>
+                    <div className={`${card.completed ? "_line-through " : ""} font-medium `}>{name}</div>
                 </div>
             </div>
-            <div className={'flex items-center space-x-2'}>
-                {/*<ProjectSelect initial={{...project}} onProjectChange={(project) => setProject(project)} bg={false}/>*/}
-                {project && params.path !== "project" ?
-                    <Link to={'/project/' + project.id} className={'text-xs pl-4 text-neutral-500 hover:text-neutral-600 hover:underline'}>{project ? project.name : ""}</Link>
-                    : ""}
-                <div className={'mr-3 text-xs w-24 bg-red-300_'}>
-                    <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>
-                </div>
+            <div className={'flex items-center'}>
+               <PrioBadge value={card.prio}/>
+                <div><CardMenu card={card}/></div>
             </div>
+            {/*{!card.completed ? (*/}
+            {/*        <div className={'flex items-center space-x-2'}>{project && params.path !== "project" ?*/}
+            {/*            <Link to={'/project/' + project.id} className={'text-xs pl-4 text-neutral-500 hover:text-neutral-600 hover:underline'}>{project ? project.name : ""}</Link> : ""}*/}
+            {/*            <div className={'mr-3 text-xs text-right'}>*/}
+            {/*                <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>*/}
+            {/*            </div>*/}
+            {/*        </div>)*/}
+            {/*    : ""}*/}
         </div>
 
     )

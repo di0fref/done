@@ -39,13 +39,18 @@
 :root {
 	--checkbox-size: 15px
 }
-
+.editor-input a{
+	@apply text-blue-600
+}
+.editor-input a:hover{
+	@apply underline
+}
 .bg-2 {
 	background-color: #ecedf6;
 }
 
 .checkbox {
-	@apply shrink-0 mt-0.5 border-neutral-400/70 rounded text-blue-500 focus:ring-0
+	@apply shrink-0 mt-0.5 border-neutral-400/90 rounded-full text-amber-500 focus:ring-0
 	dark:bg-gray-700 dark:border-gray-600 h-4 w-4
 }
 

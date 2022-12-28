@@ -1,16 +1,18 @@
 import {Listbox, Transition} from "@headlessui/react"
-import {useEffect, useId, useState} from "react";
 import {HiChevronDown} from "react-icons/hi";
-import {BsFlag, BsSortUp, BsSortDown} from "react-icons/bs";
+import {BsFlag, BsSortUp, BsSortDown, BsPinAngle, BsArrowRightSquare, BsTrash} from "react-icons/bs";
+import {useState} from "react";
 
 const icons = {
     "BsFlag": BsFlag,
     "BsSortUp": BsSortUp,
-    "BsSortDown": BsSortDown
-
+    "BsSortDown": BsSortDown,
+    "BsPinAngle": BsPinAngle,
+    "BsArrowRightSquare": BsArrowRightSquare,
+    "BsTrash": BsTrash
 }
 
-const PostIcon = (props) => {
+export const PostIcon = (props) => {
     const Icon = icons[props.iconName];
     return <Icon className={props.css}/>
 }
@@ -20,29 +22,24 @@ export default function BaseListbox(props) {
     const [items, setItems] = useState(props.items)
     const [selected, setSelected] = useState(props.selected)
 
-    useEffect(() => {
-        setSelected(props.selected)
-    }, [props])
-
     const onChange = (value) => {
         setSelected(value)
         props.onChange(value)
     }
-
     return (
 
         <Listbox value={selected} onChange={onChange}>
             <Listbox.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100'}>
 
-                {selected.icon?
-              <div className={'mr-2'}><PostIcon iconName={selected.icon} css={selected.css}/></div>
-                    :""}
+                {selected && selected.icon ?
+                    <div className={'mr-2'}><PostIcon iconName={selected.icon} css={selected.css}/></div>
+                    : ""}
 
-                {selected.color ? <div style={{
+                {selected && selected.color ? <div style={{
                     backgroundColor: selected.color
-                }} className={'rounded-full h-2 w-2 mr-2'}/> :""}
+                }} className={'rounded-full h-2 w-2 mr-2'}/> : ""}
 
-                <div className={'flex-grow text-sm text-neutral-500 whitespace-nowrap'}>{selected.name}</div>
+                <div className={'flex-grow text-sm text-neutral-500 whitespace-nowrap'}>{selected ? selected.name : ""}</div>
                 <HiChevronDown className={''}/>
 
             </Listbox.Button>
@@ -65,11 +62,12 @@ export default function BaseListbox(props) {
                                             <div style={{
                                                 backgroundColor: item.color
                                             }} className={'rounded-full h-2 w-2 mr-2'}/>
-                                            :""}
+                                            : ""}
 
-                                        {item.icon?
-                                            <div className={'mr-2'}><PostIcon iconName={item.icon} css={item.css}/> </div>
-                                            :""}
+                                        {item.icon ?
+                                            <div className={'mr-2'}><PostIcon iconName={item.icon} css={item.css}/>
+                                            </div>
+                                            : ""}
 
                                         <div className={'whitespace-nowrap'}>{item.name}</div>
 

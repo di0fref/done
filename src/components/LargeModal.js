@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Editor from "./TextEditor";
-import ProjectSelect from "./ProjectSelect";
 import CustomDatePicker from "./CustomDatePicker";
 import {HiXMark} from "react-icons/hi2";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
-// import PrioSelector from "./PrioSelector";
 import BaseListbox from "./BaseListbox";
 import {priorities} from "./helper";
 
@@ -27,11 +25,19 @@ export default function LargeModal(props) {
     const [text, setText] = useState(props.card.text);
     const [project, setProject] = useState(_project_);
     const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
+    const [dirty, setDirty] = useState(false);
+
     const dispatch = useDispatch()
+
 
     useEffect(() => {
         setShowModal(props.open)
     }, [props.open])
+
+
+    useEffect(() => {
+        console.log("is dirty: ", dirty);
+    }, [dirty])
 
 
     useEffect(() => {
@@ -98,28 +104,48 @@ export default function LargeModal(props) {
                                     <div className="w-2/3 ">
                                         <div className="flex items-center space-x-3 w-full pt-3 ">
                                             <div>
-                                                <input checked={taskCompleted} onChange={(e) => setTaskCompleted(!taskCompleted)} type={"checkbox"} className={'checkbox mb-1'}/>
+                                                <input checked={taskCompleted} onChange={(e) => {
+                                                        setTaskCompleted(!taskCompleted)
+                                                        setDirty(true)
+                                                    }} type={"checkbox"} className={'checkbox mb-1'}/>
                                             </div>
                                             <div className={'w-full'}>
-                                                <input onChange={(e) => setName(e.target.value)} className={'w-full text-lg_ font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
+                                                <input onChange={(e) => {
+                                                        setName(e.target.value)
+                                                        setDirty(true)
+                                                    }} className={'font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
                                         <div className={'py-4'}>
-                                            <Editor initial={text} onTextChange={(e) => setText(JSON.stringify(e))}/>
+                                            <Editor initial={text} onTextChange={(e) => {
+                                                setText(JSON.stringify(e));
+                                                setDirty(true);
+                                            }}/>
                                         </div>
                                     </div>
                                     <div className={'w-1/3 border-l px-4'}>
                                         <div className={'py-6 border-b pb-3 text-sm'}>
                                             <div className={'text-md text-neutral-600 mb-2'}>Project</div>
-                                            <BaseListbox onChange={(project) => setProject(project)} items={projects} selected={project}/>
+                                            <BaseListbox onChange={(project) => {
+                                                setProject(project)
+                                                setDirty(true)
+                                            }} items={projects} selected={project}/>
                                         </div>
                                         <div className={'border-b py-6 text-sm'}>
                                             <div className={'text-md text-neutral-600 mb-2'}>Due date</div>
-                                            <CustomDatePicker bg={true} onClick={false} date={due} onDateChange={(date) => setDue(date)}/>
+                                            <div className={'text-md'}>
+                                                <CustomDatePicker bg={false} onClick={false} date={due} onDateChange={(date) => {
+                                                    setDue(date)
+                                                    setDirty(true)
+                                                }}/>
+                                            </div>
                                         </div>
-                                        <div className={'border-b py-4 text-sm mb-4'}>
+                                        <div className={'border-b_ py-4 text-sm mb-4'}>
                                             <div className={'text-md text-neutral-600 mb-2'}>Priority</div>
-                                            <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
+                                            <BaseListbox onChange={(prio) =>{
+                                                setPrio(prio.prio)
+                                                setDirty(true)
+                                            }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
                                         </div>
                                     </div>
                                 </div>
@@ -128,12 +154,14 @@ export default function LargeModal(props) {
                                     <button
                                         className="cancel-btn"
                                         type="button"
+
                                         onClick={closeModal}>
                                         Cancel
                                     </button>
                                     <button
                                         className="save-btn"
                                         type="button"
+                                        disabled={!dirty}
                                         onClick={saveHandler}>
                                         Save
                                     </button>

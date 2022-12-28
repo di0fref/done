@@ -1,14 +1,13 @@
 import {useEffect, useRef, useState} from "react";
-import ProjectSelect from "./ProjectSelect";
 import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
 import CustomDatePicker from "./CustomDatePicker";
-import {socket} from "../App";
 import {getAuth} from "firebase/auth";
+import BaseListbox from "./BaseListbox";
+import {priorities} from "./helper";
 
-// import PrioSelector from "./PrioSelector";
 
 function useOnClickOutside(ref, handler) {
     useEffect(
@@ -39,11 +38,17 @@ export default function AddTask() {
     const dispatch = useDispatch()
 
     const _project_ = useSelector(state => state.current.project)
+    const extracted = useSelector(state => state.projects)
 
+    const projects = [{
+        id: null,
+        name: "Inbox",
+    }, ...extracted]
 
     const [name, setName] = useState("");
     const [project, setProject] = useState("");
     const [due, setDue] = useState(new Date());
+    const [prio, setPrio] = useState("normal");
 
     useOnClickOutside(ref, () => handleClickOutside());
 
@@ -101,7 +106,7 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div onClick={() => setEditing(true)} ref={ref} className={' ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div onClick={() => setEditing(true)} ref={ref} className={'md:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
@@ -113,14 +118,18 @@ export default function AddTask() {
                         value={name}>
                     </input>
                 </div>
-                <div className={'mb-2'}>
-                    <CustomDatePicker bg={true} onChange={setDue} date={new Date()}/>
+                <div className={'text-xs'}>
+                    <CustomDatePicker bg={false} onChange={setDue} date={new Date()}/>
                 </div>
-                <div>
-                    <ProjectSelect bg={true} initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>
+                <div className={'text-xs'}>
+                    {/*<ProjectSelect bg={true} initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>'*/}
+                    <BaseListbox items={projects} selected={_project_.id ? _project_ : {
+                        id: null,
+                        name: "Inbox",
+                    }} onChange={onProjectChange}/>
                 </div>
-                <div>
-                    {/*<PrioSelector place={"left"} bg={true} initial={"normal"}/>*/}
+                <div className={'text-xs'}>
+                    <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities[1]}/>
                 </div>
             </div>
         )

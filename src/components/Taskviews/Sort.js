@@ -1,8 +1,5 @@
-import {Listbox, Transition} from "@headlessui/react";
-import {Fragment, useEffect, useState} from "react";
-import {HiChevronDown} from "react-icons/hi";
+import {useState} from "react";
 import {useLocalStorage} from "usehooks-ts";
-import {RxCaretSort} from "react-icons/rx";
 import BaseListbox from "../BaseListbox";
 
 
@@ -28,11 +25,8 @@ export default function Sort() {
         },
     ])
     const [sort, setSort] = useLocalStorage("sort", "due")
-    const [selectedOption, setSelectedOption] = useState({})
+    const [selectedOption, setSelectedOption] = useState(options.find(o => o.field === sort))
 
-    useEffect(() => {
-        setSelectedOption(options.find(o => o.field === sort))
-    }, [])
 
     const onChange = (option) => {
         setSort(option.field)

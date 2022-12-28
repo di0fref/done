@@ -2,11 +2,17 @@ import TaskHeader from "../TaskHeader";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
 import NoTasks from "../NoTasks";
+import {useEffect} from "react";
 
 export default function Project({renderCard, ...props}) {
     const sort = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("direction")
     const showCompleted = useReadLocalStorage("showCompleted")
+
+
+    useEffect(() => {
+        console.log(showCompleted);
+    },[showCompleted])
 
     const _data_ = {
         project: {
@@ -43,19 +49,20 @@ export default function Project({renderCard, ...props}) {
     }
     return (
         <>
-            <div>
-                <div className={'mb-2 mt-7 font-bold_ border-b _p-2 dark:border-gray-700 mb-5 sub-header'}>
-                    <TaskHeader/></div>
-                {Object.values(_data_.project.tasks).map((card, i) => renderCard(card, i))}
-            </div>
-            {_data_.project.completed.length && JSON.parse(showCompleted)?
+            <div className={'mb-2 mt-7 font-bold_ border-b _p-2 dark:border-gray-700 mb-5 sub-header'}>
+                <TaskHeader/></div>
+            {_data_.project.tasks.length
+                ? Object.values(_data_.project.tasks).map((card, i) => renderCard(card, i))
+                : <NoTasks/>
+            }
+            {_data_.project.completed.length && showCompleted ?
                 (
                     <div>
                         <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
                         {Object.values(_data_.project.completed).map((card, i) => renderCard(card, i))}
                     </div>
                 )
-                : <NoTasks/>}
+                : ""}
         </>
     )
 }

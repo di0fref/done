@@ -19,14 +19,12 @@ import {TRANSFORMERS} from "@lexical/markdown";
 import {CheckListPlugin} from "@lexical/react/LexicalCheckListPlugin";
 
 
-import AutoLinkPlugin from "./plugins/AutoLinkPlugin";
-
 import {OnChangePlugin} from "@lexical/react/LexicalOnChangePlugin";
 import ToolbarPlugin from "./plugins/ListToolbar";
 
 import {BsTextLeft} from "react-icons/bs";
-import {useEffect} from "react";
-import LexicalComposerContext from "@lexical/react/LexicalComposerContext";
+import PlaygroundAutoLinkPlugin from "./plugins/AutoLinkPlugin";
+
 
 function Placeholder() {
     return (
@@ -64,7 +62,6 @@ const listTheme = {
 export default function Editor(props) {
 
     const empty = '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
-    // const [editor] = LexicalComposerContext.useLexicalComposerContext();
 
     return (
 
@@ -86,7 +83,7 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container">
-                {/*<ToolbarPlugin/>*/}
+                <ToolbarPlugin/>
                 <div className="editor-inner">
                     <RichTextPlugin
                         contentEditable={<ContentEditable className="editor-input"/>}
@@ -100,7 +97,7 @@ export default function Editor(props) {
                     {/*<CodeHighlightPlugin />*/}
                     <ListPlugin/>
                     <LinkPlugin/>
-                    <AutoLinkPlugin/>
+                    <PlaygroundAutoLinkPlugin/>
                     <CheckListPlugin/>
                     {/*<ListMaxIndentLevelPlugin maxDepth={7} />*/}
                     <MarkdownShortcutPlugin transformers={TRANSFORMERS}/>
