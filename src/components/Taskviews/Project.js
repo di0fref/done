@@ -3,16 +3,17 @@ import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
 import NoTasks from "../NoTasks";
 import {useEffect} from "react";
+import {sortF} from "./Sort";
 
 export default function Project({renderCard, ...props}) {
-    const sort = useReadLocalStorage("sort")
+    const sortBy = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("direction")
     const showCompleted = useReadLocalStorage("showCompleted")
 
 
     useEffect(() => {
         console.log(showCompleted);
-    },[showCompleted])
+    }, [showCompleted])
 
     const _data_ = {
         project: {
@@ -21,22 +22,7 @@ export default function Project({renderCard, ...props}) {
                     task => task.project_id === props.id && (!task.completed)
                 )
             )].sort((a, b) => {
-                let sortBy = sort
-                let direction = sortDirection
-
-                if (sortBy === "due") {
-                    if (direction === "asc") {
-                        return new Date(b.due) > new Date(a.due) ? 1 : -1
-                    } else {
-                        return new Date(b.due) < new Date(a.due) ? 1 : -1
-                    }
-                } else {
-                    if (direction === "asc") {
-                        return a[sortBy] > b[sortBy] ? 1 : -1;
-                    } else {
-                        return a[sortBy] < b[sortBy] ? 1 : -1;
-                    }
-                }
+                 return sortF(a, b, sortBy)
             }),
             completed: [...useSelector(
                 state => state.tasks.filter(

@@ -12,6 +12,7 @@ import {BsList} from "react-icons/bs";
 import PrioSelector from "./PrioSelector";
 import CardMenu from "./CardMenu";
 import PrioBadge from "./PrioBadge";
+import ProjectBadge from "./ProjectBadge";
 
 export const Card4 = ({id, card, index, moveCard, oM}) => {
 
@@ -23,6 +24,9 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
 
+    const _project_ = useSelector(state => state.projects.find(
+        project => card ? (card.project_id === project.id) : null
+    ))
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
@@ -111,19 +115,24 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <div className={`flex items-center ${card.completed ? "_opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
-            <div className={'flex items-center flex-grow space-x-4'} onClick={clickHandler}>
+        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+            <div className={'flex items-center_ flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
                     <input onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? "ring-1_ ring-red-400_ border-none_ " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
-                    <div className={`${card.completed ? "_line-through " : ""} font-medium `}>{name}</div>
+                    <div>
+                        <div className={`${card.completed ? "line-through " : ""} font-medium `}>{name}</div>
+                        <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>
+                    </div>
                 </div>
             </div>
-            <div className={'flex items-center'}>
-               <PrioBadge value={card.prio}/>
-                <div><CardMenu card={card}/></div>
-            </div>
+            {!card.completed ? (
+                    <div className={'flex items-center mr-4 space-x-3'}>
+                        <div><PrioBadge value={card.prio}/></div>
+                        <div><CardMenu card={card}/></div>
+                    </div>)
+                : ""}
             {/*{!card.completed ? (*/}
             {/*        <div className={'flex items-center space-x-2'}>{project && params.path !== "project" ?*/}
             {/*            <Link to={'/project/' + project.id} className={'text-xs pl-4 text-neutral-500 hover:text-neutral-600 hover:underline'}>{project ? project.name : ""}</Link> : ""}*/}

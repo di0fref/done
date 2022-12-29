@@ -76,12 +76,12 @@ export default function AddTask() {
             (async () => {
                 setName("")
                 // setEditing(false)
-                setDue(null)
+                // setDue(null)
                 try {
                     const task = await dispatch(addTask({
                         name: name,
                         due: due ? format(new Date(due), "Y-MM-dd") : null,
-                        project_id: _project_.id ?? null,
+                        project_id: project.id || null,
                         text: "",
                         prio: "normal",
                         user_id: getAuth().currentUser.uid

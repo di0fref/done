@@ -9,7 +9,7 @@ import All from "./Taskviews/All";
 import Upcoming from "./Taskviews/Upcoming";
 import Inbox from "./Taskviews/Inbox";
 import Project from "./Taskviews/Project";
-import Default from "./Taskviews/Default";
+import Today from "./Taskviews/Today";
 
 export const Container = (props) => {
     {
@@ -60,7 +60,7 @@ export const Container = (props) => {
                                 )
                             default:
                                 return (
-                                    <Default renderCard={renderCard}/>
+                                    <Today renderCard={renderCard}/>
                                 )
                         }
                     })()}

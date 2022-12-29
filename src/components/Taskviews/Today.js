@@ -2,9 +2,10 @@ import TaskHeader from "../TaskHeader";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
 import NoTasks from "../NoTasks";
+import {sortF} from "./Sort";
 
-export default function Default({renderCard}) {
-    const sort = useReadLocalStorage("sort")
+export default function Today({renderCard}) {
+    const sortBy = useReadLocalStorage("sort")
     const sortDirection = useReadLocalStorage("direction")
     const showCompleted = useReadLocalStorage("showCompleted")
 
@@ -14,22 +15,8 @@ export default function Default({renderCard}) {
                     task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                 )
             )].sort((a, b) => {
-                let sortBy = sort
-                let direction = sortDirection
+                return sortF(a, b, sortBy)
 
-                if (sortBy === "due") {
-                    if (direction === "asc") {
-                        return new Date(b.due) > new Date(a.due) ? 1 : -1
-                    } else {
-                        return new Date(b.due) < new Date(a.due) ? 1 : -1
-                    }
-                } else {
-                    if (direction === "asc") {
-                        return a[sortBy] > b[sortBy] ? 1 : -1;
-                    } else {
-                        return a[sortBy] < b[sortBy] ? 1 : -1;
-                    }
-                }
             }),
             completed: [...useSelector(state => state.tasks.filter(
                     task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (task.completed)

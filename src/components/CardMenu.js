@@ -82,6 +82,7 @@ export default function CardMenu({card, ...props}) {
             id: card.id,
             project_id: project.id
         }))
+        setProject(project)
     }
     return (
 
@@ -166,7 +167,7 @@ export default function CardMenu({card, ...props}) {
                                     <div className="px-1 py-1 ">
                                         <div className={'p-2 border-b'}>
                                             <div className={'text-neutral-400 text-xs'}>Project</div>
-                                            <BaseListbox items={projects} selected={{...project}} onChange={(project) => {
+                                            <BaseListbox items={projects} selected={project} onChange={(project) => {
                                                 onProjectChange(project)
                                                 close()
                                             }}/>

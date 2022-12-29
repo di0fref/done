@@ -2,6 +2,7 @@ import {FcGoogle} from "react-icons/fc";
 import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, signInWithPopup} from "firebase/auth";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {apiConfig} from "../service/config";
 
 export default function Login() {
 
@@ -29,7 +30,7 @@ export default function Login() {
                         const user = result.user;
                         console.log("Firebase: user logged in")
 
-                        axios.post("http://localhost:8000/api/login", {
+                        axios.post(apiConfig + "/login", {
                             password: user.uid,
                             email: user.email,
                             user: user,

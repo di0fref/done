@@ -5,8 +5,7 @@ import {useReadLocalStorage} from "usehooks-ts";
 import NoTasks from "../NoTasks";
 
 export default function Upcoming({renderCard}) {
-    const sort = useReadLocalStorage("sort")
-    const sortDirection = useReadLocalStorage("direction")
+    const sortBy = useReadLocalStorage("sort")
     const showCompleted = useReadLocalStorage("showCompleted")
 
     let prev = "";
@@ -19,11 +18,8 @@ export default function Upcoming({renderCard}) {
                         task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                     ))].sort((a, b) => {
 
-                    let sortBy = sort
-                    let direction = sortDirection
-                    console.log(sortBy)
 
-                    return (new Date(b.due) - new Date(a.due)) || a[sortBy].localeCompare(b[sortBy])
+                    return (new Date(a.due) - new Date(b.due)) || a[sortBy].localeCompare(b[sortBy])
 
 
 

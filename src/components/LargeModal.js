@@ -66,7 +66,7 @@ export default function LargeModal(props) {
                     name: name,
                     due: due ? format(new Date(due), "Y-M-dd") : null,
                     prio: prio,
-                    project_id: project.id,
+                    project_id: project ? project.id : null,
                     completed: taskCompleted,
                     text: text
                 }
@@ -105,15 +105,15 @@ export default function LargeModal(props) {
                                         <div className="flex items-center space-x-3 w-full pt-3 ">
                                             <div>
                                                 <input checked={taskCompleted} onChange={(e) => {
-                                                        setTaskCompleted(!taskCompleted)
-                                                        setDirty(true)
-                                                    }} type={"checkbox"} className={'checkbox mb-1'}/>
+                                                    setTaskCompleted(!taskCompleted)
+                                                    setDirty(true)
+                                                }} type={"checkbox"} className={'checkbox mb-1'}/>
                                             </div>
                                             <div className={'w-full'}>
                                                 <input onChange={(e) => {
-                                                        setName(e.target.value)
-                                                        setDirty(true)
-                                                    }} className={'font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
+                                                    setName(e.target.value)
+                                                    setDirty(true)
+                                                }} className={'w-[calc(100%-45px)] font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
                                         <div className={'py-4'}>
@@ -142,7 +142,7 @@ export default function LargeModal(props) {
                                         </div>
                                         <div className={'border-b_ py-4 text-sm mb-4'}>
                                             <div className={'text-md text-neutral-600 mb-2'}>Priority</div>
-                                            <BaseListbox onChange={(prio) =>{
+                                            <BaseListbox onChange={(prio) => {
                                                 setPrio(prio.prio)
                                                 setDirty(true)
                                             }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>

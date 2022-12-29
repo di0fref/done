@@ -3,6 +3,19 @@ import {useLocalStorage} from "usehooks-ts";
 import BaseListbox from "../BaseListbox";
 
 
+export const sortF = (a, b, sortBy) => {
+
+    const prio = {
+        "low": 0,
+        "normal": 1,
+        "high": 2
+    }
+    if (sortBy === "prio") {
+        return prio[a["prio"]] < prio[b["prio"]]?1:-1
+    }
+    return a[sortBy].localeCompare(b[sortBy])
+}
+
 export default function Sort() {
     const [options, setOptions] = useState([
         {
