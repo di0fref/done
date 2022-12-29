@@ -21,20 +21,25 @@ export default function Upcoming({renderCard}) {
 
                     let sortBy = sort
                     let direction = sortDirection
+                    console.log(sortBy)
 
-                    if (sortBy === "due") {
-                        if (direction === "asc") {
-                            return new Date(b.due) > new Date(a.due) ? 1 : -1
-                        } else {
-                            return new Date(b.due) < new Date(a.due) ? 1 : -1
-                        }
-                    } else {
-                        if (direction === "asc") {
-                            return a[sortBy] > b[sortBy] ? 1 : -1;
-                        } else {
-                            return a[sortBy] < b[sortBy] ? 1 : -1;
-                        }
-                    }
+                    return (new Date(b.due) - new Date(a.due)) || a[sortBy].localeCompare(b[sortBy])
+
+
+
+                    // if (sortBy === "due") {
+                    //     if (direction === "asc") {
+                    //         return new Date(b.due) > new Date(a.due) ? 1 : -1
+                    //     } else {
+                    //         return new Date(b.due) < new Date(a.due) ? 1 : -1
+                    //     }
+                    // } else {
+                    //     if (direction === "asc") {
+                    //         return a[sortBy] > b[sortBy] ? 1 : -1;
+                    //     } else {
+                    //         return a[sortBy] < b[sortBy] ? 1 : -1;
+                    //     }
+                    // }
                 }),
                 completed: [...useSelector(
                     state => state.tasks.filter(

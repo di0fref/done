@@ -44,7 +44,7 @@ export default function TaskHeader() {
             <div className={'font-semibold text-xl flex-grow mb-4'}>{name}</div>
             <div className={'flex space-x-4'}>
                 <div><Sort/></div>
-                <div><SortDirection/></div>
+                {/*<div><SortDirection/></div>*/}
             </div>
         </div>
     )
