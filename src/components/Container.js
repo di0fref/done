@@ -16,6 +16,16 @@ export const Container = (props) => {
         const [open, setOpen] = useState(false)
         const selectedTask = useSelector(state => state.current.task)
 
+        // const currentProject = useSelector(state => state.current.project)
+
+
+        useEffect(() => {
+            console.log(selectedTask.id);
+            if (selectedTask.id) {
+                setOpen(true)
+            }
+        }, [selectedTask])
+
         const renderCard = useCallback((card, index) => {
             return (
                 <motion.div

@@ -3,71 +3,114 @@ import {Combobox} from '@headlessui/react'
 import {useSelector} from "react-redux";
 import {HiSearch} from "react-icons/hi";
 import DateBadge from "./DateBadge";
-
+import {useNavigate} from "react-router-dom";
+import {BsChevronRight} from "react-icons/bs";
 
 export default function SearchForm({closeModel}) {
 
 
     const tasks = useSelector(state => state.tasks)
+    const projects = useSelector(state => state.projects)
+
     const [open, setOpen] = useState(false)
 
-    const [selectedItem, setSelectedItem] = useState({})
     const [query, setQuery] = useState('')
 
-    const onClick = () => {
-        setOpen(true)
-        // closeModel()
-
-    }
+    const navigate = useNavigate();
 
     const closeSearch = () => {
         setOpen(false)
         closeModel()
     }
 
-    const filteredTasks =
-        query === ''
-            ? []
-            : tasks.filter((task) => {
-                return task.name.toLowerCase().includes(query.toLowerCase())
-            })
+    // .sort((a, b) => {
+    //        return a.name.localeCompare(b.name)
+    //    })
+
+    const filteredTasks = query
+        ? tasks.filter((task) => task.name.toLowerCase().includes(query.toLowerCase()))
+        : []
+
+    const filteredProjects = query
+        ? projects.filter((project) => project.name.toLowerCase().includes(query.toLowerCase()))
+        : []
+
 
     return (
         <>
-            <Combobox value={selectedItem} onChange={setSelectedItem} nullable>
-                <div className={'flex items-center p-3 '}>
+            <Combobox as={"div"} className={'relative'} onChange={(task) => {
+                if (task) {
+                    closeSearch()
+                    if (task.project_id) {
+                        navigate("/project/" + task.project_id + "/task/" + task.id)
+                    } else {
+                        navigate("/inbox/" + task.id)
+                    }
+                }
+            }} nullable>
+                <div className={'flex items-center border-b '}>
                     <Combobox.Input
                         onChange={(event) => setQuery(event.target.value)}
-                        displayValue={(task) => task.name}
-                        className={'w-full border-none rounded focus:ring-0'}
-                        placeholder={"Find anything..."}
+                        className={'w-full border-none rounded focus:ring-0 p-4'}
+                        placeholder={"Search..."}
                     />
                     <div className={'mr-2'}><HiSearch className={'w-7 h-7 opacity-50'}/></div>
                 </div>
-                <Combobox.Options static={true}>
-                    <ul className="max-h-[18.375rem] divide-y divide-slate-200 overflow-y-auto rounded-b-lg border-t border-slate-200 text-sm leading-6" role="listbox" id="headlessui-combobox-options-281" data-headlessui-state="open">
+                {query && filteredTasks.length === 0 && filteredProjects.length === 0 ?
+                    (<p className={'w-full h-12 border-t px-4 pt-2 text-neutral-500'}>No results found</p>)
+                    : (
 
-                        {filteredTasks.map((task) => (
-                            <Combobox.Option
-                                key={task.id}
-                                value={task}
-                                disabled={task.unavailable}
-                            >
-                                <button onClick={onClick} className={'w-full'}>
-                                    <li className="hover:bg-hov flex items-center justify-between p-4" role="option" tabIndex="-1">
-                                    <span className="whitespace-nowrap font-semibold text-slate-900">
-                                        {task.name}
-                                    </span>
-                                        <span className="ml-4 text-right text-xs text-slate-600">
-                                        <DateBadge date={task.due}/>
-                                    </span>
-                                    </li>
-                                </button>
-                            </Combobox.Option>
-                        ))}
-                    </ul>
-                </Combobox.Options>
+
+                        <>
+
+                            {(filteredTasks.length > 0|| filteredProjects.length > 0)  ? (
+
+                                <Combobox.Options static={true}>
+                                    <div className="max-h-[24rem] overflow-y-auto mb-4">
+
+                                        {(filteredProjects.length !== 0) ? (
+                                            <>
+                                                <div className={'font-semibold  text-lg p-5'}>Projects</div>
+                                                {filteredProjects.map((project) => (
+                                                    <Combobox.Option
+                                                        key={project.id}
+                                                        value={project}
+                                                        disabled={project.unavailable}>
+                                                        <button className={'w-full'}>
+                                                            <div className={'hover:bg-blue-200 mx-5 px-4 py-6 bg-hov h-8 text-left rounded-md my-1 flex items-center justify-between'}>
+                                                                <div>{project.name}</div>
+                                                                <div><BsChevronRight/></div>
+                                                            </div>
+                                                        </button>
+                                                    </Combobox.Option>
+                                                ))}
+                                            </>): ""}
+
+                                        {(filteredTasks.length !== 0) ? (
+                                            <>
+                                                <div className={'font-semibold text-lg p-5'}>Tasks</div>
+                                                {filteredTasks.map((task) => (
+                                                    <Combobox.Option
+                                                        key={task.id}
+                                                        value={task}
+                                                        disabled={task.unavailable}>
+                                                        <button className={'w-full'}>
+                                                            <div className={'hover:bg-blue-200 mx-5 px-4 py-6 bg-hov h-8 text-left rounded-md my-1 flex items-center justify-between'}>
+                                                                <div>{task.name}</div>
+                                                                <div><BsChevronRight/></div>
+                                                            </div>
+                                                        </button>
+                                                    </Combobox.Option>
+                                                ))}
+                                            </>) : ""}
+                                    </div>
+                                </Combobox.Options>
+                            ) : ""}
+                        </>
+
+                    )}
             </Combobox>
         </>
     )
 }
+// {filteredProjects.length > 0?

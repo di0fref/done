@@ -33,6 +33,7 @@ export const priorities = [
 ]
 
 export function getIcon(path) {
+
     switch (path) {
         case "today":
             return <FaStar className={'text-gray-500'}/>
@@ -59,19 +60,27 @@ export const paths = [
     "inbox",
     "all"
 ];
-const formatRelativeLocale = {
-    lastWeek: "'Last' eeee",
-    yesterday: "'Yesterday'",
-    today: "'Today'",
-    tomorrow: "'Tomorrow'",
-    nextWeek: "'Next' eeee",
-    other: dateFormat,
-};
+
+function getFormat(date, token) {
+
+    const format = dateFormat + (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY');
+
+    const formatRelativeLocale = {
+        lastWeek: format,
+        yesterday: "'Yesterday'",
+        today: "'Today'",
+        tomorrow: "'Tomorrow'",
+        nextWeek: format,
+        other: format,
+    }
+    return formatRelativeLocale[token]
+}
 
 export function formatRelativeDate(date) {
+
     const locale = {
         ...enGB,
-        formatRelative: (token) => formatRelativeLocale[token],
+        formatRelative: (token) => getFormat(date, token)//formatRelativeLocale[token],
     };
     date = new Date(date);
     return formatRelative(date, new Date(), {locale});
@@ -79,18 +88,18 @@ export function formatRelativeDate(date) {
 
 export function formatDate(date, includeDay) {
 
-    // return formatRelativeDate(date);
+    return formatRelativeDate(date);
 
-    if (!date) {
-        return null;
-    }
-    date = new Date(date);
-    return format(
-        new Date(date),
-        dateFormat +
-        (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY') +
-        (includeDay ? " ‧ EEEE" : "")
-    )
+    // if (!date) {
+    //     return null;
+    // }
+    // date = new Date(date);
+    // return format(
+    //     new Date(date),
+    //     dateFormat +
+    //     (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY') +
+    //     (includeDay ? " ‧ EEEE" : "")
+    // )
 }
 
 

@@ -1,5 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {allProjects, createProject} from "../service/api";
+import {apiConfig} from "../service/config";
+import http from "../service/http-common";
 
 const initialState = []
 
@@ -15,11 +17,19 @@ export const addProject = createAsyncThunk(
         return await createProject(project)
     }
 )
+
+export const updateProject = createAsyncThunk(
+    'project/updateProject',
+    async (project, thunkAPI) => {
+        return await http.put(apiConfig.url + "/projects/" + project.id, project).then(response => response.data)
+    }
+)
 export const projectSlice = createSlice({
     name: 'project',
     initialState,
     reducers: {
-        add: (state) => {},
+        add: (state) => {
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -28,6 +38,15 @@ export const projectSlice = createSlice({
             })
             .addCase(addProject.fulfilled, (state, action) => {
                 state.unshift(action.payload)
+            })
+            .addCase(updateProject.fulfilled, (state, action) => {
+                const index = state.findIndex(project => project.id === action.payload.id);
+                state[index] = {
+                    ...state[index],
+                    ...action.payload,
+                };
+
+                console.log(state[index]);
             })
     }
 })

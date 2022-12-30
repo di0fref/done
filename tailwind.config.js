@@ -14,7 +14,7 @@ module.exports = {
     ],
     theme: {
         fontFamily: {
-            // sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+            sans: ['Inter var', ...defaultTheme.fontFamily.sans],
             // sans: ["Roboto", "Helvetica", "Arial", "sans-serif"]
             // sans: ["-apple-system","BlinkMacSystemFont","Segoe UI","Roboto","Apple Color Emoji","Helvetica","Arial","sans-serif"]
             // sans: [

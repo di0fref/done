@@ -8,12 +8,14 @@ import {format} from "date-fns";
 import {toast} from "react-toastify";
 import BaseListbox from "./BaseListbox";
 import {priorities} from "./helper";
+import {useNavigate, useParams} from "react-router-dom";
 
 export default function LargeModal(props) {
 
     const _project_ = useSelector(state => state.projects.find(
         project => props.card ? (props.card.project_id === project.id) : null
     ))
+    const nav = useNavigate()
 
     const projects = useSelector(state => state.projects)
 
@@ -26,7 +28,7 @@ export default function LargeModal(props) {
     const [project, setProject] = useState(_project_);
     const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
     const [dirty, setDirty] = useState(false);
-
+    const params = useParams();
     const dispatch = useDispatch()
 
 
@@ -36,15 +38,14 @@ export default function LargeModal(props) {
 
 
     useEffect(() => {
-        console.log("is dirty: ", dirty);
+        // console.log("is dirty: ", dirty);
     }, [dirty])
 
 
     useEffect(() => {
         const close = (e) => {
             if (e.keyCode === 27) {
-                setShowModal(false)
-                props.setModalOpen(false)
+                closeModal()
             }
         }
         window.addEventListener('keydown', close)
@@ -52,6 +53,7 @@ export default function LargeModal(props) {
     }, [])
 
     const closeModal = () => {
+        nav("/" + params.path + "/" + (params.id === undefined ? "" : params.id))
         setShowModal(false)
         props.setModalOpen(false)
     }

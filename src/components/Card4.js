@@ -1,15 +1,12 @@
 import {useEffect, useState} from 'react'
 
-import {delay, paths, sendMessage} from "./helper";
+import {delay, paths} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
 
-import {Link, useNavigate, useParams} from "react-router-dom";
-import CustomDatePicker from "./CustomDatePicker";
+import {useNavigate, useParams} from "react-router-dom";
 import {format} from "date-fns";
-import {BsList} from "react-icons/bs";
-import PrioSelector from "./PrioSelector";
 import CardMenu from "./CardMenu";
 import PrioBadge from "./PrioBadge";
 import ProjectBadge from "./ProjectBadge";
@@ -30,12 +27,14 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
+    const currentProject = useSelector(state => state.current.project)
 
     const clickHandler = (e) => {
-        if (e.target.type !== "checkbox") {
-            oM(true)
-            nav(link)
-        }
+        // if (e.target.type !== "checkbox") {
+        //     oM(true)
+        //     nav(link)
+        // }
+        nav(link)
     }
 
     const undo = (id) => {
@@ -115,7 +114,7 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active_" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
             <div className={'flex items-center_ flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
                     <input onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? "ring-1_ ring-red-400_ border-none_ " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
@@ -123,11 +122,13 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
                 <div className={'w-full'}>
                     <div>
                         <div className={`${card.completed ? "line-through " : ""} font-medium `}>{name}</div>
-                        <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>
+                        {!currentProject.id ?
+                            <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>
+                            : ""}
                     </div>
                 </div>
             </div>
-            {!card.completed ? (
+                {!card.completed ? (
                     <div className={'flex items-center mr-4 space-x-3'}>
                         <div><PrioBadge value={card.prio}/></div>
                         <div><CardMenu card={card}/></div>

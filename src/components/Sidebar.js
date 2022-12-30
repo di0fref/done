@@ -90,7 +90,7 @@ function Sidebar(props) {
                                                     background: project.color
                                                 }} className={'w-2 h-2 rounded-full'}/>
                                                 <div className={' hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>{project.name}</div>
-                                                <div className={'mr-1 w-4 group-hover:visible invisible'}><ProjectMenu/></div>
+                                                <div className={'mr-1 w-4 group-hover:visible invisible'}><ProjectMenu p={{...project}}/></div>
                                             </Link>
                                         </li>
                                     )
