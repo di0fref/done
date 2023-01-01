@@ -64,6 +64,14 @@ export const updateTask = createAsyncThunk(
 )
 
 
+export const deleteTask = createAsyncThunk(
+    'tasks/deleteTask',
+    async (task, thunkAPI) => {
+        return await http.delete(apiConfig.url + "/tasks/" + task.id).then(response => response.data)
+    }
+)
+
+
 export const taskSlice = createSlice({
     name: 'task',
     initialState,
@@ -101,6 +109,10 @@ export const taskSlice = createSlice({
                     ...state[index],
                     ...action.payload,
                 };
+            })
+            .addCase(deleteTask.fulfilled, (state, action) => {
+                const index = state.findIndex(task => task.id === action.payload.id);
+                state.splice(index, 1)
             })
     }
 })

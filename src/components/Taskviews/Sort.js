@@ -11,11 +11,11 @@ export const sortF = (a, b, sortBy) => {
         "high": 2
     }
     if (sortBy === "prio") {
-        return prio[a["prio"]] < prio[b["prio"]]?1:-1
+        return prio[a["prio"]] < prio[b["prio"]] ? 1 : -1
     }
 
-    if(sortBy === "due"){
-        return (new Date(a.due) > new Date(b.due))?1:-1
+    if (sortBy === "due") {
+        return (new Date(a.due) > new Date(b.due)) ? 1 : -1
     }
     return a[sortBy].localeCompare(b[sortBy])
 }
@@ -26,7 +26,7 @@ export default function Sort() {
             "name": "By Due date",
             "field": "due",
             "id": "1guhj",
-            "icon": "",
+            "icon": "BsCalendar",
         },
         // {
         //     "name": "Name",
@@ -38,7 +38,7 @@ export default function Sort() {
             "name": "By Priority",
             "field": "prio",
             "id": "3yul",
-            "icon": "",
+            "icon": "BsFlag",
         },
     ])
     const [sort, setSort] = useLocalStorage("sort", "due")
@@ -51,6 +51,8 @@ export default function Sort() {
     }
 
     return (
-        <BaseListbox onChange={onChange} items={options} selected={selectedOption}/>
+        <div className={'relative'}>
+            <BaseListbox onChange={onChange} items={options} selected={selectedOption} placement={'right-0'}/>
+        </div>
     )
 }

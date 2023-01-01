@@ -1,10 +1,8 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 import {Combobox} from '@headlessui/react'
 import {useSelector} from "react-redux";
 import {HiSearch} from "react-icons/hi";
-import DateBadge from "./DateBadge";
 import {useNavigate} from "react-router-dom";
-import {BsChevronRight} from "react-icons/bs";
 
 export default function SearchForm({closeModel}) {
 
@@ -22,10 +20,6 @@ export default function SearchForm({closeModel}) {
         setOpen(false)
         closeModel()
     }
-
-    // .sort((a, b) => {
-    //        return a.name.localeCompare(b.name)
-    //    })
 
     const filteredTasks = query
         ? tasks.filter((task) => task.name.toLowerCase().includes(query.toLowerCase()))

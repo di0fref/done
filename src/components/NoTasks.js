@@ -1,4 +1,3 @@
-import {BsCheck} from "react-icons/bs";
 
 export default function NoTasks() {
     return (

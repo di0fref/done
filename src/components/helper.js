@@ -1,11 +1,7 @@
-import {HiArchiveBox, HiCalendar, HiInbox, HiStar} from "react-icons/hi2";
-import {format, formatRelative} from "date-fns";
-import {FaArchive, FaCalendar, FaInbox, FaStar} from "react-icons/fa";
+import {formatRelative} from "date-fns";
+import {FaArchive, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar, BsList} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
-import PrioFlag from "./PrioFlag";
-import {socket} from "../App";
-
 
 export const groupBy = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
@@ -61,6 +57,7 @@ export function getIcon(path) {
             return <FaInbox className={'text-gray-500'}/>
         case "lists":
             return <BsList className={'text-gray-500'}/>
+        default: return <div>Error</div>
     }
 }
 
@@ -97,7 +94,7 @@ function getFormat(date, token) {
 }
 
 Date.prototype.isValid = function () {
-    return this.getTime() === this.getTime();
+    return this instanceof Date &&isFinite(this.getTime())
 };
 
 export function formatRelativeDate(date) {

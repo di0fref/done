@@ -12,11 +12,13 @@
 	}
 
 	.cancel-btn {
-		@apply text-gray-700 hover:bg-gray-50 border-gray-300 border bg-white font-medium px-3 py-1 rounded text-sm
+		@apply
+		text-gray-700 hover:bg-gray-50 border-gray-300 border bg-white font-medium px-3 py-1 rounded text-sm
 	}
 
 	.save-btn {
-		@apply disabled:opacity-50 font-medium bg-blue-500 p-1 rounded px-3 py-1 hover:bg-blue-600 text-white text-sm
+		@apply
+		disabled:bg-blue-300 font-medium bg-blue-500 p-1 rounded px-3 py-1 hover:bg-blue-600 text-white text-sm
 	}
 
 	.ring-btn {
@@ -50,11 +52,12 @@
 }
 
 .checkbox {
-	@apply shrink-0 mt-0.5 border-neutral-400/90
+	@apply shrink-0 mt-0.5
+	border-neutral-400/90
 	rounded
 	text-amber-500 focus:ring-0
 	dark:bg-gray-700 dark:border-gray-600 h-4 w-4
-	hover:bg-neutral-200
+	hover:bg-neutral-100
 	disabled:hover:cursor-not-allowed
 }
 

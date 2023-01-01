@@ -6,72 +6,53 @@ import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
 
 import {useNavigate, useParams} from "react-router-dom";
-import {format} from "date-fns";
 import CardMenu from "./CardMenu";
 import PrioBadge from "./PrioBadge";
-import ProjectBadge from "./ProjectBadge";
 
-export const Card4 = ({id, card, index, moveCard, oM}) => {
+export const Card4 = ({card}) => {
 
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
-    const [due, setDue] = useState(card.due ? new Date(card.due) : null);
     const [name, setName] = useState(card.name);
     const params = useParams()
     const [link, setLink] = useState("")
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
 
-    const _project_ = useSelector(state => state.projects.find(
-        project => card ? (card.project_id === project.id) : null
-    ))
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
     const currentProject = useSelector(state => state.current.project)
 
     const clickHandler = (e) => {
-        // if (e.target.type !== "checkbox") {
-        //     oM(true)
-        //     nav(link)
-        // }
         if (e.target.type !== "checkbox") {
             nav(link)
         }
     }
 
     const undo = (id) => {
-        dispatch(toggleCompleted({
+        dispatch(updateTask({
             id: id,
-            completed: 1
+            completed: false
         })).unwrap()
 
     }
 
 
-    const saveNameHandler = (e) => {
-        if (e.currentTarget.value !== card.name) {
-            dispatch(updateTask({
-                id: card.id,
-                name: name
-            }))
-        }
-    }
-
-    const onStatusChange = () => {
+    const onStatusChange = (event) => {
 
         (async () => {
-            setTaskCompleted(!taskCompleted)
+            setTaskCompleted(event.target.checked)
             await delay(500);
             try {
                 const id = card.id
-                const task = await dispatch(toggleCompleted({
+               await dispatch(updateTask({
                     id: card.id,
-                    completed: taskCompleted
+                    completed: event.target.checked
                 })).unwrap()
 
 
-                task.completed && toast.success(
-                    <div>1 task was completed
+                event.target.checked && toast.success(
+                    <div>{card.name} was completed
                         <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
                             undo(id)
                         }}>undo
@@ -80,19 +61,12 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
 
             } catch (err) {
                 console.log(err);
-                toast.error(`Something went wrong. Please contact support`)
+                toast.error(`Uh oh, something went wrong. Please try again`)
             }
-        })()
+        })(event)
 
     }
-    const onDueChange = (date) => {
-        setDue(date)
-        dispatch(updateTask({
-            id: card.id,
-            due: date ? format(new Date(date), "Y-M-dd") : null
-        }))
 
-    }
     useEffect(() => {
         if (paths.find(p => params.path === p)) {
             setLink("/" + params.path + "/task/" + card.id)
@@ -103,12 +77,6 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }, [])
 
 
-    const setProject = (project) => {
-        dispatch(updateTask({
-            id: card.id,
-            project_id: project.id
-        }))
-    }
     if (error || !card) {
         return (
             <div>{error}</div>
@@ -119,39 +87,29 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
         <div
             // style={{borderLeft: _project_?`1px solid ${_project_.color}`:"none"}}
 
-             className={` pl-2 flex items-center bg-white _shadow _rounded-md py-3  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
+            className={` pl-3 flex items-center bg-whit_e _shadow _rounded-md py-3  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
             <div className={'flex items-center_ flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
-                    <input disabled={!!card.deleted} onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? " " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
+                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-2`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
                     <div>
                         <div className={`${card.completed ? "line-through " : ""} font-medium text-sm `}>
-                            <div className={'text-neutral-700'}>
+                            <div className={'text-neutral-700 dark:text-neutral-300'}>
                                 {name}
-                                {(!currentProject.id && card.project)?<span className={'text-neutral-400 pl-2'}>in {card.project}</span>:""}
+                                {(!currentProject.id && card.project) ?
+                                    <span className={'text-neutral-400 pl-2'}>in {card.project}</span> : ""}
                             </div>
                         </div>
-                        {/*{!currentProject.id ?*/}
-                        {/*    <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>*/}
-                        {/*    : ""}*/}
                     </div>
                 </div>
             </div>
-                {!card.completed ? (
+            {!card.completed ? (
                     <div className={'flex items-center mr-4 space-x-3'}>
-                        {/*<div><PrioBadge value={card.prio}/></div>*/}
-                        <div className={'group-hover:visible_ _invisible'}><CardMenu disabled={card.deleted} card={card}/></div>
+                        <div className={''}><PrioBadge value={card.prio}/></div>
+                        <div className={''}><CardMenu disabled={card.deleted} card={card}/></div>
                     </div>)
                 : ""}
-            {/*{!card.completed ? (*/}
-            {/*        <div className={'flex items-center space-x-2'}>{project && params.path !== "project" ?*/}
-            {/*            <Link to={'/project/' + project.id} className={'text-xs pl-4 text-neutral-500 hover:text-neutral-600 hover:underline'}>{project ? project.name : ""}</Link> : ""}*/}
-            {/*            <div className={'mr-3 text-xs text-right'}>*/}
-            {/*                <CustomDatePicker onClick={false} date={card.due} onDateChange={onDueChange} bg={false}/>*/}
-            {/*            </div>*/}
-            {/*        </div>)*/}
-            {/*    : ""}*/}
         </div>
 
     )

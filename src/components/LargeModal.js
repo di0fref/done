@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Editor from "./TextEditor";
 import CustomDatePicker from "./CustomDatePicker";
-import {HiXMark} from "react-icons/hi2";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
@@ -38,11 +37,6 @@ export default function LargeModal(props) {
 
 
     useEffect(() => {
-        // console.log("is dirty: ", dirty);
-    }, [dirty])
-
-
-    useEffect(() => {
         const close = (e) => {
             if (e.keyCode === 27) {
                 closeModal()
@@ -50,7 +44,7 @@ export default function LargeModal(props) {
         }
         window.addEventListener('keydown', close)
         return () => window.removeEventListener('keydown', close)
-    }, [])
+    },[])
 
     const closeModal = () => {
         nav("/" + params.path + "/" + (params.id === undefined ? "" : params.id))
@@ -84,12 +78,12 @@ export default function LargeModal(props) {
         <>
             {showModal ? (
                 <>
-                    <div className="justify-center items-center flex  fixed top-[15vh] left-0 right-0 z-50 outline-none focus:outline-none">
+                    <div className="justify-center items-center flex  fixed top-[15vh] left-0 right-0 z-40 outline-none focus:outline-none">
                         <div className="relative w-auto my-6_ mx-auto w-[56rem]">
                             {/*content*/}
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <div className="border-0 rounded shadow-lg relative flex flex-col w-full bg-white dark:bg-gray-800 outline-none focus:outline-none">
                                 {/*header*/}
-                                <div className="flex items-start justify-between py-3 px-4 border-b border-solid border-slate-200 rounded-t">
+                                <div className="flex items-start justify-between py-3 px-4 dark:border-gray-700 border-b border-solid border-slate-200 rounded-t">
 
                                     <div className={'flex justify-center items-center space-x-3'}>
                                         <div className={'h-2 w-2 rounded-full'} style={{backgroundColor: _project_ ? _project_.color : ""}}/>
@@ -117,7 +111,7 @@ export default function LargeModal(props) {
                                                 <input disabled={!!props.card.deleted}  onChange={(e) => {
                                                     setName(e.target.value)
                                                     setDirty(true)
-                                                }} className={'w-[calc(100%-45px)] font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
+                                                }} className={'w-[calc(100%-45px)] bg-transparent font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
                                         <div className={'py-4'}>
@@ -127,16 +121,11 @@ export default function LargeModal(props) {
                                             }}/>
                                         </div>
                                     </div>
-                                    <div className={'w-1/3 border-l px-4'}>
-                                        <div className={'py-6 border-b pb-3 text-sm'}>
-                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Project</div>
-                                            <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
-                                                setProject(project)
-                                                setDirty(true)
-                                            }} items={projects} selected={project}/>
-                                        </div>
-                                        <div className={'border-b py-6 text-sm'}>
-                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Due date</div>
+                                    <div className={'w-1/3 border-l px-4 dark:border-gray-700'}>
+
+
+                                        <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Due date</div>
                                             <div className={'text-md'}>
                                                 <CustomDatePicker disabled={!!props.card.deleted} bg={false} onClick={false} date={due} onDateChange={(date) => {
                                                     setDue(date)
@@ -144,17 +133,28 @@ export default function LargeModal(props) {
                                                 }}/>
                                             </div>
                                         </div>
-                                        <div className={'border-b_ py-4 text-sm mb-4'}>
-                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Priority</div>
+
+                                        <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200  font-medium mb-2'}>Project</div>
+                                            <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
+                                                setProject(project)
+                                                setDirty(true)
+                                            }} items={ [{"name":"Inbox", "id": null}, ...projects]} selected={project}/>
+                                        </div>
+
+
+                                        <div className={'py-4 text-sm mb-4'}>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Priority</div>
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(prio) => {
                                                 setPrio(prio.prio)
                                                 setDirty(true)
                                             }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
                                         </div>
+
                                     </div>
                                 </div>
                                 {/*footer*/}
-                                <div className="space-x-3 flex items-center justify-end px-6 py-4 border-t border-solid border-slate-200 rounded-b">
+                                <div className="space-x-3 flex items-center justify-end px-6 py-4 dark:border-gray-700 border-t border-solid border-slate-200 rounded-b">
                                     <button
                                         className="cancel-btn"
                                         type="button"
@@ -173,7 +173,7 @@ export default function LargeModal(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="opacity-25 fixed inset-0 z-40 bg-black"/>
+                    <div className="opacity-50 fixed inset-0 z-30 bg-black"/>
                 </>
             ) : null}
         </>

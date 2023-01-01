@@ -2,7 +2,6 @@ import React from "react";
 import {Disclosure} from "@headlessui/react";
 import {
     HiBars3,
-    HiEllipsisHorizontal
 } from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
 import {getIcon} from "./helper"

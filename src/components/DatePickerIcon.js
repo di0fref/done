@@ -1,7 +1,5 @@
-import {formatDate, getDateColor} from "./helper";
 import {forwardRef} from "react";
 import DatePicker from "react-datepicker";
-import {HiChevronDown} from "react-icons/hi";
 import {BsCalendarCheckFill} from "react-icons/bs";
 
 export default function DatePickerIcon({disabled, ...props}) {

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {HiXMark} from "react-icons/hi2";
-import {useLocalStorage, useReadLocalStorage} from "usehooks-ts";
+import {useLocalStorage} from "usehooks-ts";
 import {Switch} from '@headlessui/react'
 
 export default function Settings(props) {
@@ -8,9 +8,9 @@ export default function Settings(props) {
     const [showModal, setShowModal] = useState(false);
 
     const [darkEnabled, setDarkEnabled] = useState(JSON.parse(localStorage.getItem("darkTheme")))
-    // const [completedEnabled, setCompletedEnabled] = useState(JSON.parse(localStorage.getItem("showCompleted")))
-
-    const [completedEnabled, setCompletedEnabled] = useLocalStorage("showCompleted", null)
+    const [showPinned, setShowPinned] = useLocalStorage("showPinned", null)
+    const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
+    const [showOverdue, setShowOverdue] = useLocalStorage("showOverdue", null)
 
 
     useEffect(() => {
@@ -30,19 +30,22 @@ export default function Settings(props) {
         darkEnabled ? document.documentElement.classList.add("dark") : document.documentElement.classList.remove("dark")
 
         localStorage.setItem("darkTheme", JSON.stringify(!!darkEnabled))
-        // localStorage.setItem("showCompleted", JSON.stringify(!!completedEnabled))
 
-        setCompletedEnabled(!!completedEnabled)
 
         closeModal()
 
     }
-
-
-    const onShowCompletedChange = (checked) => {
-        setCompletedEnabled(checked)
+    const onShowPinnedChange = (checked) => {
+        setShowPinned(checked)
     }
 
+    const onShowCompletedChange = (checked) => {
+        setShowCompleted(checked)
+    }
+
+    const onShowOverdueChange = (checked) => {
+        setShowOverdue(checked)
+    }
     return (
         <>
             {showModal ? (
@@ -73,7 +76,6 @@ export default function Settings(props) {
                                                 className={`${
                                                     darkEnabled ? 'bg-blue-600' : 'bg-gray-200'
                                                 } relative inline-flex h-6 w-11 items-center rounded-full`}>
-                                                <span className="sr-only">Enable notifications</span>
                                                 <span
                                                     className={`${
                                                         darkEnabled ? 'translate-x-6' : 'translate-x-1'
@@ -85,15 +87,47 @@ export default function Settings(props) {
                                             <p className={'flex-grow'}>Show completed tasks</p>
 
                                             <Switch
-                                                checked={completedEnabled}
+                                                checked={showCompleted}
                                                 onChange={onShowCompletedChange}
                                                 className={`${
-                                                    completedEnabled ? 'bg-blue-600' : 'bg-gray-200'
+                                                    showCompleted ? 'bg-blue-600' : 'bg-gray-200'
                                                 } relative inline-flex h-6 w-11 items-center rounded-full`}>
-                                                <span className="sr-only">Enable notifications</span>
                                                 <span
                                                     className={`${
-                                                        completedEnabled ? 'translate-x-6' : 'translate-x-1'
+                                                        showCompleted ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
+                                        </div>
+
+                                        <div className={'flex items-center space-x-4'}>
+                                            <p className={'flex-grow'}>Show pinned tasks</p>
+
+                                            <Switch
+                                                checked={showPinned}
+                                                onChange={onShowPinnedChange}
+                                                className={`${
+                                                    showPinned ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span
+                                                    className={`${
+                                                        showPinned ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
+                                        </div>
+                                        <div className={'flex items-center space-x-4'}>
+                                            <p className={'flex-grow'}>Pinn overdue tasks on top</p>
+
+                                            <Switch
+                                                checked={showOverdue}
+                                                onChange={onShowOverdueChange}
+                                                className={`${
+                                                    showOverdue ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span
+                                                    className={`${
+                                                        showOverdue ? 'translate-x-6' : 'translate-x-1'
                                                     } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                                                 />
                                             </Switch>
@@ -112,7 +146,7 @@ export default function Settings(props) {
                                         className="save-btn"
                                         type="button"
                                         onClick={saveHandler}>
-                                        Save
+                                        Ok
                                     </button>
                                 </div>
                             </div>
