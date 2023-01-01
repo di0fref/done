@@ -41,25 +41,25 @@ function Sidebar(props) {
                     <div className={'overflow-y-auto pb-3'}>
                         <ul className={'space-y-1 border-b pb-2'}>
                             <li>
-                                <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
+                                <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     <div className={'text-gray-500'}>{getIcon("inbox")}</div>
                                     <span className={'ml-3'}>Inbox</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
+                                <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("today")}
                                     <span className={'ml-3'}>Today</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
+                                <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("upcoming")}
                                     <span className={'ml-3'}>Upcoming</span>
                                 </Link>
                             </li>
                             <li>
-                                <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
+                                <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("all")}
                                     <span className={'ml-3'}>All Tasks</span>
                                 </Link>
@@ -80,13 +80,13 @@ function Sidebar(props) {
                                 Object.values(projects).map((project, i) => {
                                     return (
                                         <li key={project.id} className={`
-                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""} group pl-2 px-1 py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-700 rounded`}>
+                                                    ${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""} group pl-2 px-1 py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded`}>
                                             <Link to={"/project/" + project.id} className={'flex items-center'}>
                                                 <div style={{
                                                     background: project.color
                                                 }} className={'w-2 h-2 rounded-full'}/>
                                                 <div className={' hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>{project.name}</div>
-                                                <div className={'mr-1 w-4 group-hover:visible invisible'}><ProjectMenu p={{...project}}/></div>
+                                                <div className={'mr-1 w-4 group-hover:visible_ _invisible'}><ProjectMenu p={{...project}}/></div>
                                             </Link>
                                         </li>
                                     )
@@ -97,7 +97,7 @@ function Sidebar(props) {
 
                 </div>
                 <div className={'absolute bottom-10 w-72'}>
-                    <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-700`}>
+                    <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                         <div className={'text-gray-500'}><FaTrash className={'text-gray-500'}/></div>
                         <span className={'ml-3'}>Trash</span>
                     </Link>

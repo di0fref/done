@@ -8,7 +8,7 @@ import {
     BsSortDown,
     BsPinAngle,
     BsArrowRightSquare,
-    BsTrash
+    BsTrash, BsPencil
 } from "react-icons/bs";
 import {useEffect, useState} from "react";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
@@ -24,7 +24,8 @@ const icons = {
     "BsCalendar": BsCalendar,
     "VscSync": VscSync,
     "VscSettingsGear": VscSettingsGear,
-    "HiLogout": HiLogout
+    "HiLogout": HiLogout,
+    "BsPencil": BsPencil
 
 }
 

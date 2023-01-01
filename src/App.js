@@ -24,7 +24,7 @@ function App() {
             <ToastContainer
                 hideProgressBar={true}
                 className={""}
-                position="bottom-left"/>
+                position="bottom-right"/>
             <DndProvider backend={HTML5Backend}>
                 <Tooltip
                     effect={"solid"}

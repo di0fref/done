@@ -63,7 +63,7 @@ export default function ProjectForm(props) {
                 </div>
 
             </div>
-            <div className={'bg-gray-50 flex justify-end space-x-2 p-4'}>
+            <div className={'bg-gray-50 dark:bg-gray-800 flex justify-end space-x-2 p-4'}>
                 <button onClick={props.closeModal} className={'cancel-btn'}>Cancel</button>
                 <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>Save</button>
             </div>
