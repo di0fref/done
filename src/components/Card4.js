@@ -34,7 +34,9 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
         //     oM(true)
         //     nav(link)
         // }
-        nav(link)
+        if (e.target.type !== "checkbox") {
+            nav(link)
+        }
     }
 
     const undo = (id) => {
@@ -114,24 +116,32 @@ export const Card4 = ({id, card, index, moveCard, oM}) => {
     }
 
     return (
-        <div className={`flex items-center ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800 text-neutral-700 dark:text-neutral-200 py-4 hover:cursor-pointer`}>
+        <div
+            // style={{borderLeft: _project_?`1px solid ${_project_.color}`:"none"}}
+
+             className={` pl-2 flex items-center bg-white _shadow _rounded-md py-3  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
             <div className={'flex items-center_ flex-grow space-x-4'} onClick={clickHandler}>
                 <div>
-                    <input onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? "ring-1_ ring-red-400_ border-none_ " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
+                    <input disabled={!!card.deleted} onChange={onStatusChange} className={`${(card.prio === "high" && !card.completed) ? " " : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
                     <div>
-                        <div className={`${card.completed ? "line-through " : ""} font-medium `}>{name}</div>
-                        {!currentProject.id ?
-                            <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>
-                            : ""}
+                        <div className={`${card.completed ? "line-through " : ""} font-medium text-sm `}>
+                            <div className={'text-neutral-700'}>
+                                {name}
+                                {(!currentProject.id && card.project)?<span className={'text-neutral-400 pl-2'}>in {card.project}</span>:""}
+                            </div>
+                        </div>
+                        {/*{!currentProject.id ?*/}
+                        {/*    <div className={'text-sm text-neutral-400 mt-1'}><ProjectBadge project={_project_}/></div>*/}
+                        {/*    : ""}*/}
                     </div>
                 </div>
             </div>
                 {!card.completed ? (
                     <div className={'flex items-center mr-4 space-x-3'}>
-                        <div><PrioBadge value={card.prio}/></div>
-                        <div><CardMenu card={card}/></div>
+                        {/*<div><PrioBadge value={card.prio}/></div>*/}
+                        <div className={'group-hover:visible_ _invisible'}><CardMenu disabled={card.deleted} card={card}/></div>
                     </div>)
                 : ""}
             {/*{!card.completed ? (*/}

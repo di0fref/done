@@ -3,11 +3,11 @@ import {forwardRef} from "react";
 import DatePicker from "react-datepicker";
 import {HiChevronDown} from "react-icons/hi";
 
-export default function CustomDatePicker(props) {
+export default function CustomDatePicker({disabled, ...props}) {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <button onClick={onClick} className={` ${props.bg?"bg-neutral-100":""} w-full hover:bg-neutral-100 group cursor-pointer rounded-md `}>
+        <button disabled={disabled} onClick={onClick} className={`${disabled?"hover:cursor-not-allowed":""} ${props.bg?"bg-neutral-100":""} w-full hover:bg-neutral-100 group cursor-pointer rounded-md `}>
             <div className={'py-1 px-2 flex items-center space-x-2'}>
                 {/*<AiOutlineCalendar className={''}/>*/}
                 <div className={`${getDateColor(props.date)} flex-grow text-left`}>{props.date ? formatDate(new Date(props.date)) : "--"}</div>

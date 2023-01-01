@@ -72,7 +72,6 @@ export default function Main() {
 
             if (!sort) {
                 localStorage.setItem("sort", JSON.stringify("due"))
-                localStorage.setItem("direction", JSON.stringify("asc"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
             }
             //
@@ -195,7 +194,7 @@ export default function Main() {
     } else {
         return (
 
-            <div className={"relative h-screen md:flex bg-white dark:bg-gray-900"}>
+            <div className={"relative h-screen md:flex bg-white dark:bg-gray-900 _bg-gray-50"}>
                 <main className={"flex h-full flex-grow _pt-12"}>
                     <div className={'sidebar-active w-[50px] border-r dark:border-gray-700 px-2 py-4'}>
                         <MainMenu/>
@@ -207,7 +206,7 @@ export default function Main() {
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>
                         <div className={'flex-grow container'}>
-                            <div className={'max-w-4xl_ mx-auto h-full _md:px-12 '}>
+                            <div className={'max-w-4xl mx-auto h-full _md:px-12 '}>
                                 <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>
                         </div>

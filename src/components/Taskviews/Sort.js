@@ -13,25 +13,29 @@ export const sortF = (a, b, sortBy) => {
     if (sortBy === "prio") {
         return prio[a["prio"]] < prio[b["prio"]]?1:-1
     }
+
+    if(sortBy === "due"){
+        return (new Date(a.due) > new Date(b.due))?1:-1
+    }
     return a[sortBy].localeCompare(b[sortBy])
 }
 
 export default function Sort() {
     const [options, setOptions] = useState([
         {
-            "name": "Due date",
+            "name": "By Due date",
             "field": "due",
             "id": "1guhj",
             "icon": "",
         },
+        // {
+        //     "name": "Name",
+        //     "field": "name",
+        //     "id": "2hgkjh",
+        //     "icon": "",
+        // },
         {
-            "name": "Name",
-            "field": "name",
-            "id": "2hgkjh",
-            "icon": "",
-        },
-        {
-            "name": "Priority",
+            "name": "By Priority",
             "field": "prio",
             "id": "3yul",
             "icon": "",

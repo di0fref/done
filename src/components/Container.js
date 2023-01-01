@@ -1,8 +1,6 @@
-import update from 'immutability-helper'
 import {useCallback, useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {motion, AnimatePresence} from "framer-motion"
-import AddTask from "./AddTask";
 import {Card4} from "./Card4";
 import LargeModal from "./LargeModal";
 import All from "./Taskviews/All";
@@ -10,17 +8,14 @@ import Upcoming from "./Taskviews/Upcoming";
 import Inbox from "./Taskviews/Inbox";
 import Project from "./Taskviews/Project";
 import Today from "./Taskviews/Today";
+import Trash from "./Taskviews/Trash";
 
 export const Container = (props) => {
     {
         const [open, setOpen] = useState(false)
         const selectedTask = useSelector(state => state.current.task)
 
-        // const currentProject = useSelector(state => state.current.project)
-
-
         useEffect(() => {
-            console.log(selectedTask.id);
             if (selectedTask.id) {
                 setOpen(true)
             }
@@ -47,11 +42,14 @@ export const Container = (props) => {
         }, [])
 
         return (
-            <div className={'flex h-full dark:text-neutral-300 '}>
-                <div className={'flex-grow px-8 mt-6'}>
-                    <AddTask/>
+            <div className={'flex h-full dark:text-neutral-300 bg-gray-50_ '}>
+                <div className={'flex-grow px-8'}>
                     {(() => {
                         switch (props.filter) {
+                            case "trash":
+                                return(
+                                    <Trash renderCard={renderCard}/>
+                                )
                             case "upcoming":
                                 return (
                                     <Upcoming renderCard={renderCard}/>
@@ -68,6 +66,7 @@ export const Container = (props) => {
                                 return (
                                     <Project id={props.id} renderCard={renderCard}/>
                                 )
+
                             default:
                                 return (
                                     <Today renderCard={renderCard}/>

@@ -1,7 +1,7 @@
 import {Listbox, Transition} from "@headlessui/react"
 import {HiChevronDown} from "react-icons/hi";
 import {BsFlag, BsSortUp, BsSortDown, BsPinAngle, BsArrowRightSquare, BsTrash} from "react-icons/bs";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const icons = {
     "BsFlag": BsFlag,
@@ -17,7 +17,7 @@ export const PostIcon = (props) => {
     return <Icon className={props.css}/>
 }
 
-export default function BaseListbox(props) {
+export default function BaseListbox({disabled, placement, ...props}) {
 
     const [items, setItems] = useState(props.items)
     const [selected, setSelected] = useState(props.selected)
@@ -26,10 +26,16 @@ export default function BaseListbox(props) {
         setSelected(value)
         props.onChange(value)
     }
+
+    useEffect(() => {
+        setSelected(props.selected)
+        setItems(props.items)
+    }, [props.selected, props.items])
+
     return (
 
-        <Listbox value={selected} onChange={onChange}>
-            <Listbox.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100'}>
+        <Listbox value={selected} onChange={onChange} disabled={!!disabled} >
+            <Listbox.Button className={`${disabled?"hover:cursor-not-allowed":""} z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100`}>
 
                 {selected && selected.icon ?
                     <div className={'mr-2'}><PostIcon iconName={selected.icon} css={selected.css}/></div>
@@ -39,7 +45,7 @@ export default function BaseListbox(props) {
                     backgroundColor: selected.color
                 }} className={'rounded-full h-2 w-2 mr-2'}/> : ""}
 
-                <div className={'flex-grow text-sm text-neutral-500 whitespace-nowrap'}>{selected ? selected.name : ""}</div>
+                <div className={'text-sm flex-grow text-neutral-500 whitespace-nowrap'}>{selected ? selected.name : ""}</div>
                 <HiChevronDown className={''}/>
 
             </Listbox.Button>
@@ -50,7 +56,7 @@ export default function BaseListbox(props) {
                 leave="transition duration-75 ease-out"
                 leaveFrom="transform scale-100 opacity-100"
                 leaveTo="transform scale-95 opacity-0">
-                <Listbox.Options className="bg-white z-50_ absolute right-0 mt-2 min-w-fit w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Listbox.Options className={`bg-white absolute ${placement?placement:""} right-0 mt-2 min-w-fit w-full origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}>
                     <div className="px-1 py-1 ">
                         {items.map((item, index) => (
 

@@ -7,6 +7,18 @@ import PrioFlag from "./PrioFlag";
 import {socket} from "../App";
 
 
+export const groupBy = (consolidatedHeroes, sortBy) => {
+    return Object.keys(consolidatedHeroes).reduce((groups, key) => {
+        const currentHero = consolidatedHeroes[key];
+        const groupId = currentHero[sortBy];
+        if (!groups[groupId]) {
+            groups[groupId] = [];
+        }
+        groups[groupId].push(currentHero);
+        return groups;
+    }, []);
+};
+
 export const priorities = [
     {
         "prio": "low",
@@ -58,8 +70,16 @@ export const paths = [
     "today",
     "upcoming",
     "inbox",
-    "all"
+    "all",
+    "trash"
 ];
+
+export function capitalize(value) {
+
+    if (!value) return "None"
+
+    return value.charAt(0).toUpperCase() + value.slice(1)
+}
 
 function getFormat(date, token) {
 
@@ -76,30 +96,28 @@ function getFormat(date, token) {
     return formatRelativeLocale[token]
 }
 
+Date.prototype.isValid = function () {
+    return this.getTime() === this.getTime();
+};
+
 export function formatRelativeDate(date) {
+
+
+    date = new Date(date);
+
+    if(!date.isValid()){
+        return "No date"
+    }
 
     const locale = {
         ...enGB,
         formatRelative: (token) => getFormat(date, token)//formatRelativeLocale[token],
     };
-    date = new Date(date);
     return formatRelative(date, new Date(), {locale});
 }
 
-export function formatDate(date, includeDay) {
-
+export function formatDate(date) {
     return formatRelativeDate(date);
-
-    // if (!date) {
-    //     return null;
-    // }
-    // date = new Date(date);
-    // return format(
-    //     new Date(date),
-    //     dateFormat +
-    //     (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY') +
-    //     (includeDay ? " ‧ EEEE" : "")
-    // )
 }
 
 

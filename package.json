@@ -8,6 +8,7 @@
     "@docsearch/react": "^3.3.0",
     "@headlessui/react": "^1.7.4",
     "@heroicons/react": "^2.0.13",
+    "@kunukn/react-collapse": "^2.2.9",
     "@lexical/code": "^0.7.1",
     "@lexical/link": "^0.7.1",
     "@lexical/list": "^0.7.1",

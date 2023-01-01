@@ -68,6 +68,7 @@ export default function Editor(props) {
         <LexicalComposer initialConfig={{
             theme: listTheme,
             editorState: props.initial ? props.initial : empty,
+            editable: !props.editable,
             nodes: [
                 HeadingNode,
                 ListNode,
@@ -83,7 +84,7 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container">
-                <ToolbarPlugin/>
+                {!props.editable?<ToolbarPlugin/>:""}
                 <div className="editor-inner">
                     <RichTextPlugin
                         contentEditable={<ContentEditable className="editor-input"/>}

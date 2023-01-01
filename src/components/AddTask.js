@@ -6,7 +6,8 @@ import {toast} from "react-toastify";
 import CustomDatePicker from "./CustomDatePicker";
 import {getAuth} from "firebase/auth";
 import BaseListbox from "./BaseListbox";
-import {priorities} from "./helper";
+import {formatDate, priorities} from "./helper";
+import {useParams} from "react-router-dom";
 
 
 function useOnClickOutside(ref, handler) {
@@ -30,8 +31,14 @@ function useOnClickOutside(ref, handler) {
     );
 }
 
+
+function getPlaceHolder(project, due) {
+    return '+ Add task in "' + project + '" on "' + formatDate(due)+'"';
+}
+
 export default function AddTask() {
 
+    const params = useParams();
     const [editing, setEditing] = useState(false)
     const inputReference = useRef(null)
     const ref = useRef(null)
@@ -46,11 +53,22 @@ export default function AddTask() {
     }, ...extracted]
 
     const [name, setName] = useState("");
-    const [project, setProject] = useState("");
+    const [project, setProject] = useState(_project_);
     const [due, setDue] = useState(new Date());
     const [prio, setPrio] = useState("normal");
 
+    const [placeHolder, setPlaceHolder] = useState()
+
     useOnClickOutside(ref, () => handleClickOutside());
+
+
+    useEffect(() => {
+        setProject(_project_)
+    }, [_project_])
+
+    useEffect(() => {
+        setPlaceHolder(getPlaceHolder(project.id ? project.name : "Inbox", due))
+    }, [project, due])
 
     useEffect(() => {
         if (editing) {
@@ -61,7 +79,7 @@ export default function AddTask() {
     const handleClickOutside = (e) => {
         if (name === "") {
             setEditing(false)
-            setDue(new Date())
+            // setDue(new Date())
             setName("")
         }
     }
@@ -83,7 +101,7 @@ export default function AddTask() {
                         due: due ? format(new Date(due), "Y-MM-dd") : null,
                         project_id: project.id || null,
                         text: "",
-                        prio: "normal",
+                        prio: prio,
                         user_id: getAuth().currentUser.uid
                     })).unwrap()
 
@@ -100,35 +118,36 @@ export default function AddTask() {
         }
     }
 
-    const onProjectChange = (p) => {
-        setProject(p)
+    const onDateChange = (date) => {
+        setDue(date)
+    }
+    const onProjectChange = (project) => {
+        setProject(project)
     }
 
     if (editing) {
         return (
-            <div onClick={() => setEditing(true)} ref={ref} className={'md:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 my-4 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div  ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
                         type={"text"}
                         ref={inputReference}
                         onChange={(e) => setName(e.target.value)}
-                        className={'w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl dark:bg-gray-600'}
-                        placeholder={"Write a new task"}
+                        className={'placeholder:text-sm placeholder:text-neutral-300 w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl dark:bg-gray-600'}
+                        placeholder={placeHolder}
                         value={name}>
                     </input>
                 </div>
-                <div className={'text-xs'}>
-                    <CustomDatePicker bg={false} onChange={setDue} date={new Date()}/>
+                <div className={'text-sm'}>
+                    <CustomDatePicker bg={false} onDateChange={onDateChange} date={new Date()}/>
                 </div>
-                <div className={'text-xs'}>
-                    {/*<ProjectSelect bg={true} initial={_project_} outsideClicked={editing} onProjectChange={onProjectChange}/>'*/}
-                    <BaseListbox items={projects} selected={_project_.id ? _project_ : {
+                <div className={'text-sm'}>
+                    <BaseListbox items={projects} selected={project.id ? project : {
                         id: null,
                         name: "Inbox",
-                    }} onChange={onProjectChange}/>
-                </div>
-                <div className={'text-xs'}>
+                    }} onChange={onProjectChange}/></div>
+                <div className={'text-sm'}>
                     <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities[1]}/>
                 </div>
             </div>
@@ -136,8 +155,12 @@ export default function AddTask() {
     }
 
     return (
-        <div className={'w-full my-4 '} onClick={() => setEditing(true)}>
-            <input placeholder={"Write a new task"} className={'h-[40px] rounded-xl bg-light-gray dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0'} type={"text"}/>
+        <div className={'w-full'} onClick={() => {
+            if(params.path!=="trash"){
+                setEditing(true)
+            }
+        }}>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 rounded-xl bg-light-gray_ bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }

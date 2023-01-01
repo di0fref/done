@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
-import {getIcon} from "./helper"
+import {getIcon} from "../helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import Sort from "./Taskviews/Sort";
-import SortDirection from "./Taskviews/SortDirection";
+import Sort from "./Sort";
 
 export default function TaskHeader() {
 
@@ -39,12 +38,13 @@ export default function TaskHeader() {
 
     return (
 
-        <div className={'flex items-center justify-start flex-wrap'}>
-            <div className={'mr-3 mb-4'}>{icon}</div>
-            <div className={'font-semibold text-xl flex-grow mb-4'}>{name}</div>
+        <div className={'flex items-center justify-start flex-wrap  space-x-2'}>
+            <div className={'md:ml-0 ml-4'}>{icon}</div>
+            <div className={'font-semibold text-xl flex-grow'}>{name}</div>
             <div className={'flex space-x-4'}>
-                <div><Sort/></div>
-                {/*<div><SortDirection/></div>*/}
+                <div className={'text-sm'}>
+                    <Sort/>
+                </div>
             </div>
         </div>
     )

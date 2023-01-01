@@ -35,7 +35,7 @@ module.exports = {
         },
         extend: {
             fontSize: {
-                // base: "15px",
+                base: "15px",
                 md: "0.97em",
             },
             colors: {

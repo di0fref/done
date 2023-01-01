@@ -8,10 +8,7 @@ import {Link, useLocation} from "react-router-dom";
 import {getIcon} from "./helper"
 import AddProjectForm from "./AddProjectButton";
 import {useSelector} from "react-redux";
-import SearchDialog from "./SearchDialog";
-import SearchForm from "./SearchForm";
-import {FaList, FaTrash} from "react-icons/fa";
-import {BsList} from "react-icons/bs";
+import {FaTrash} from "react-icons/fa";
 import ProjectMenu from "./ProjectMenu";
 
 
@@ -20,9 +17,9 @@ function Sidebar(props) {
     const location = useLocation();
 
     const projects = [...useSelector(
-        state => state.projects
+        state => state.projects.filter((project) => !project.deleted)
     )].sort((a, b) => {
-        return a.name > b.name ? 1 : -1;
+        return a.name.localeCompare(b.name)
     })
 
     const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
@@ -33,13 +30,13 @@ function Sidebar(props) {
 
             {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
-            <Disclosure.Button className="absolute top-2 left-14 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
+            <Disclosure.Button className="absolute top-4 left-14 inline-flex items-center peer justify-center rounded-md _p-2 text-gray-500 hover:bg-gray-200 hover:text-white_ focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white group">
                 <HiBars3
-                    className="block md:hidden h-8 w-8"
+                    className={`block md:hidden h-8 w-8`}
                     aria-hidden="true"
                 />
             </Disclosure.Button>
-            <div className="z-30 shadow-xl md:shadow-none overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-6 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+            <div className="z-30 shadow-xl md:shadow-none overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-4 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                 {/*<SearchDialog/>*/}
                 <div className="flex flex-col justify-start item-center">
                     <div className={'overflow-y-auto pb-3'}>

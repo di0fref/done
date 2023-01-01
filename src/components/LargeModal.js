@@ -96,9 +96,11 @@ export default function LargeModal(props) {
                                         <div className={'text-sm text-neutral-500'}>{project ? project.name : ""}</div>
                                     </div>
                                     <button
-                                        className="hover:bg-gray-200 rounded"
+                                        className=""
                                         onClick={closeModal}>
-                                        <HiXMark className={'h-5 w-5 text-neutral-500'}/>
+                                        {/*<HiXMark className={'h-5 w-5 text-neutral-500'}/>*/}
+                                        <kbd className="hover:bg-hov px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100_ border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">esc</kbd>
+
                                     </button>
                                 </div>
                                 {/*body*/}
@@ -106,20 +108,20 @@ export default function LargeModal(props) {
                                     <div className="w-2/3 ">
                                         <div className="flex items-center space-x-3 w-full pt-3 ">
                                             <div>
-                                                <input checked={taskCompleted} onChange={(e) => {
+                                                <input disabled={!!props.card.deleted} checked={taskCompleted} onChange={(e) => {
                                                     setTaskCompleted(!taskCompleted)
                                                     setDirty(true)
                                                 }} type={"checkbox"} className={'checkbox mb-1'}/>
                                             </div>
                                             <div className={'w-full'}>
-                                                <input onChange={(e) => {
+                                                <input disabled={!!props.card.deleted}  onChange={(e) => {
                                                     setName(e.target.value)
                                                     setDirty(true)
                                                 }} className={'w-[calc(100%-45px)] font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
                                         <div className={'py-4'}>
-                                            <Editor initial={text} onTextChange={(e) => {
+                                            <Editor editable={!!props.card.deleted} initial={text} onTextChange={(e) => {
                                                 setText(JSON.stringify(e));
                                                 setDirty(true);
                                             }}/>
@@ -127,24 +129,24 @@ export default function LargeModal(props) {
                                     </div>
                                     <div className={'w-1/3 border-l px-4'}>
                                         <div className={'py-6 border-b pb-3 text-sm'}>
-                                            <div className={'text-md text-neutral-600 mb-2'}>Project</div>
-                                            <BaseListbox onChange={(project) => {
+                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Project</div>
+                                            <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
                                                 setProject(project)
                                                 setDirty(true)
                                             }} items={projects} selected={project}/>
                                         </div>
                                         <div className={'border-b py-6 text-sm'}>
-                                            <div className={'text-md text-neutral-600 mb-2'}>Due date</div>
+                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Due date</div>
                                             <div className={'text-md'}>
-                                                <CustomDatePicker bg={false} onClick={false} date={due} onDateChange={(date) => {
+                                                <CustomDatePicker disabled={!!props.card.deleted} bg={false} onClick={false} date={due} onDateChange={(date) => {
                                                     setDue(date)
                                                     setDirty(true)
                                                 }}/>
                                             </div>
                                         </div>
                                         <div className={'border-b_ py-4 text-sm mb-4'}>
-                                            <div className={'text-md text-neutral-600 mb-2'}>Priority</div>
-                                            <BaseListbox onChange={(prio) => {
+                                            <div className={'text-md text-neutral-400 font-medium mb-2'}>Priority</div>
+                                            <BaseListbox disabled={!!props.card.deleted} onChange={(prio) => {
                                                 setPrio(prio.prio)
                                                 setDirty(true)
                                             }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>

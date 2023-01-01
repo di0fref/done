@@ -30,7 +30,7 @@ export default function Login() {
                         const user = result.user;
                         console.log("Firebase: user logged in")
 
-                        axios.post(apiConfig + "/login", {
+                        axios.post(apiConfig.url + "/login", {
                             password: user.uid,
                             email: user.email,
                             user: user,

@@ -4,12 +4,12 @@ import DatePicker from "react-datepicker";
 import {HiChevronDown} from "react-icons/hi";
 import {BsCalendarCheckFill} from "react-icons/bs";
 
-export default function DatePickerIcon(props) {
+export default function DatePickerIcon({disabled, ...props}) {
 
 
     const DateCustomInput = forwardRef(({value, onClick}, ref) => (
-        <button onClick={onClick}>
-                <BsCalendarCheckFill className={'h-4 w-4'}/>
+        <button disabled={disabled} onClick={onClick} className={`${disabled?"hover:cursor-not-allowed":""}`}>
+            <BsCalendarCheckFill className={'h-4 w-4'}/>
         </button>
     ))
 

@@ -1,8 +1,13 @@
-import TaskHeader from "../TaskHeader";
-import {formatDate} from "../helper";
+import TaskHeader from "./TaskHeader";
+import {capitalize, formatDate, groupBy} from "../helper";
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
 import NoTasks from "../NoTasks";
+import AddTask from "../AddTask";
+import TopHeader from "./TopHeader";
+import Coll from "./TaskGroup";
+import {sortF} from "./Sort";
+import TaskGroup from "./TaskGroup";
 
 export default function Upcoming({renderCard}) {
     const sortBy = useReadLocalStorage("sort")
@@ -13,73 +18,53 @@ export default function Upcoming({renderCard}) {
     const _data_ = {
         upcoming:
             {
-                tasks: [...useSelector(
+                tasks: groupBy([...useSelector(
                     state => state.tasks.filter(
                         task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed)
                     ))].sort((a, b) => {
-
-
-                    return (new Date(a.due) - new Date(b.due)) || a[sortBy].localeCompare(b[sortBy])
-
-
-
-                    // if (sortBy === "due") {
-                    //     if (direction === "asc") {
-                    //         return new Date(b.due) > new Date(a.due) ? 1 : -1
-                    //     } else {
-                    //         return new Date(b.due) < new Date(a.due) ? 1 : -1
-                    //     }
-                    // } else {
-                    //     if (direction === "asc") {
-                    //         return a[sortBy] > b[sortBy] ? 1 : -1;
-                    //     } else {
-                    //         return a[sortBy] < b[sortBy] ? 1 : -1;
-                    //     }
-                    // }
-                }),
+                    return sortF(a, b, sortBy)
+                }), sortBy),
                 completed: [...useSelector(
                     state => state.tasks.filter(
                         task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true)
                     ))].sort((a, b) => {
-                        return new Date(b.due) < new Date(a.due) ? 1 : -1;
-                })
+                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                }),
+                overdue: [...useSelector(
+                    state => state.tasks.filter(
+                        task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)
+                    )
+                )].sort((a, b) => {
+                    return new Date(b.due) < new Date(a.due) ? 1 : -1;
+                }),
             },
     }
 
     return (
-        <>
-            <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>
-                <TaskHeader/></div>
+        <div>
+            <TopHeader/>
 
-            {_data_.upcoming.tasks.length?Object.values(_data_.upcoming.tasks).map((card, i) => {
-                if (prev !== card.due) {
-                    prev = card.due;
+
+            {Object.keys(_data_.upcoming.tasks).length ?
+                Object.keys(_data_.upcoming.tasks).map((group) => {
                     return (
-                        <div key={card.id}>
-                            <div className={'mb-2 mt-7 text-sm font-bold border-b p-2 dark:border-gray-700 mb-5 _sub-header '}>
-                                {formatDate(card.due, true)}
+                        <TaskGroup count={Object.values(_data_.upcoming.tasks[group]).length} key={"upcoming" + group} view={"upcoming"} title={sortBy === "due" ? formatDate(group, true) : capitalize(group)}>
+                            <div className={''}>
+                                {Object.values(_data_.upcoming.tasks[group]).map((task, i) => {
+                                return renderCard(task, i)
+                            })}
                             </div>
-                            {renderCard(card, i)}
-                        </div>
+                        </TaskGroup>
                     )
-                } else {
-                    return (
-                        <div key={card.id}>
-                            {renderCard(card, i)}
-                        </div>
-                    )
-                }
-            }):<NoTasks/>}
-            {_data_.upcoming.completed.length && JSON.parse(showCompleted)?
-                (
-                    <div>
-                        <div className={'mb-2 mt-7 font-bold_ border-b p-2 dark:border-gray-700 mb-5 sub-header'}>Completed</div>
-                        {Object.values(_data_.upcoming.completed).map((card, i) => {
-                            return renderCard(card, i)
-                        })}
-                    </div>
-                )
-                : ""}
-        </>
+                }) : <NoTasks/>}
+
+            {/*{_data_.upcoming.completed.length ?*/}
+            {/*    (*/}
+            {/*        <TaskGroup key={"upcomingcompleted"} view={"upcomig"} title={"Completed"}>*/}
+            {/*            {Object.values(_data_.upcoming.completed).map((card, i) => renderCard(card, i))}*/}
+            {/*        </TaskGroup>*/}
+            {/*    )*/}
+            {/*    : ""}*/}
+        </div>
     )
 }
