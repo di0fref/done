@@ -9,7 +9,7 @@ import SmallModal from "./SmallModal";
 import {toast} from "react-toastify";
 
 
-export default function ProjectMenu({p}) {
+export default function ProjectMenu({p, count}) {
 
     const [project, setProject] = useState(p)
     const [open, setOpen] = useState(false)
@@ -60,7 +60,9 @@ export default function ProjectMenu({p}) {
                                        <button className={`block truncate font-normal`}>
                                            <div className={'flex items-center space-x-3'}>
                                                <div><PostIcon iconName={item.icon}/> </div>
-                                               <div>{item.name}</div>
+                                               <div>
+                                                   <span>{item.name}</span>
+                                               </div>
                                            </div>
                                        </button>
 

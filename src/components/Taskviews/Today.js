@@ -62,11 +62,13 @@ export default function Today({renderCard}) {
             {Object.keys(_data_.tasks).length ?
                 Object.keys(_data_.tasks).map((group) => {
                     return (
+
                         <TaskGroup count={Object.values(_data_.tasks[group]).length} key={"today" + group} view={"all"} title={sortBy === "due" ? formatDate(group, true) : capitalize(group)}>
                             {Object.values(_data_.tasks[group]).map((task, i) => {
                                 return renderCard(task, i)
                             })}
                         </TaskGroup>
+
                     )
                 }) : <NoTasks/>}
 

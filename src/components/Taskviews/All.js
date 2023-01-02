@@ -13,7 +13,8 @@ export default function All({renderCard}) {
     const showPinned = useReadLocalStorage("showPinned")
 
     const _data_ = {
-        tasks: groupBy([...useSelector(state => state.tasks.filter(task => !task.completed && !task.deleted))].sort((a, b) => {
+        tasks: groupBy([...useSelector(state => state.tasks.filter(
+            task => !task.completed && !task.deleted))].sort((a, b) => {
             return sortF(a, b, sortBy)
         }), sortBy),
 

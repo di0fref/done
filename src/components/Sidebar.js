@@ -4,14 +4,15 @@ import {
     HiBars3,
 } from "react-icons/hi2";
 import {Link, useLocation} from "react-router-dom";
-import {getIcon} from "./helper"
+import {getIcon, groupByCount} from "./helper"
 import AddProjectForm from "./AddProjectButton";
 import {useSelector} from "react-redux";
-import {FaTrash} from "react-icons/fa";
 import ProjectMenu from "./ProjectMenu";
+import {BsCheckSquareFill, BsTrash} from "react-icons/bs";
+import {useReadLocalStorage} from "usehooks-ts";
 
 
-function Sidebar(props) {
+export default function Sidebar(props) {
 
     const location = useLocation();
 
@@ -21,11 +22,31 @@ function Sidebar(props) {
         return a.name.localeCompare(b.name)
     })
 
+    const showSidebarCount = useReadLocalStorage("showSidebarCount");
+
+    const today_count = useSelector(state => state.tasks.filter(
+        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted
+    )).length
+
+    const upcoming_count = useSelector(state => state.tasks.filter(
+        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted
+    )).length
+
+    const inbox_count = useSelector(state => state.tasks.filter(
+        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed && task.project_id === "" && !task.deleted)
+    )).length
+
+    const all_count = useSelector(state => state.tasks.filter(
+        task => !task.completed && !task.deleted
+    )).length
+
+    const project_count = groupByCount(useSelector(state => state.tasks.filter(task => !task.completed && !task.deleted)), "project_id")
+
     const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
 
     return (
         // <div>
-        <Disclosure as="div" className={''}>
+        <Disclosure as="div" className={'h-full'}>
 
             {/*<div className="fixed inset-0 bg-black/30" aria-hidden="true"/>*/}
 
@@ -35,39 +56,46 @@ function Sidebar(props) {
                     aria-hidden="true"
                 />
             </Disclosure.Button>
-            <div className="z-30 shadow-xl md:shadow-none overflow-hidden border-r dark:border-gray-700  md:relative absolute px-4 py-4 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+            <div className="z-30 overflow-auto shadow-xl md:shadow-none  border-r dark:border-gray-700  md:relative absolute px-4 py-4 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                 {/*<SearchDialog/>*/}
-                <div className="flex flex-col justify-start item-center">
-                    <div className={'overflow-y-auto pb-3'}>
-                        <ul className={'space-y-1 border-b pb-2'}>
+                <div className="flex flex-col justify-start item-center h-full">
+                    <div className={'pb-3'}>
+                        <ul className={'space-y-1 border-b  dark:border-gray-700 pb-2'}>
                             <li>
                                 <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     <div className={'text-gray-500'}>{getIcon("inbox")}</div>
-                                    <span className={'ml-3'}>Inbox</span>
+                                    <div className={'ml-3 flex-grow'}>Inbox</div>
+                                    {showSidebarCount ? <div className={'text-xs'}>{inbox_count}</div> : ""}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={'/today'} className={`${(location.pathname.includes("/today")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
+
+                                    {/*<div className={'ml-3'}>*/}
                                     {getIcon("today")}
-                                    <span className={'ml-3'}>Today</span>
+                                    <div className={'ml-3 flex-grow'}>Today</div>
+                                    {showSidebarCount ? <div className={'text-xs'}>{today_count}</div> : ""}
+                                    {/*</div>*/}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("upcoming")}
-                                    <span className={'ml-3'}>Upcoming</span>
+                                    <div className={'ml-3 flex-grow'}>Upcoming</div>
+                                    {showSidebarCount ? <div className={'text-xs'}>{upcoming_count}</div> : ""}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("all")}
-                                    <span className={'ml-3'}>All Tasks</span>
+                                    <div className={'ml-3 flex-grow'}>All Tasks</div>
+                                    {showSidebarCount ? <div className={'text-xs'}>{all_count}</div> : ""}
                                 </Link>
                             </li>
 
                         </ul>
                     </div>
-                    <div className={'mt-4'}>
+                    <div className={'mt-1'}>
                         <div className={'flex justify-between py-2'}>
                             <div className={'mb-2 pl-2 flex items-center space-x-2'}>
                                 {/*<div>{getIcon("lists")}</div>*/}
@@ -85,8 +113,15 @@ function Sidebar(props) {
                                                 <div style={{
                                                     background: project.color
                                                 }} className={'w-2 h-2 rounded-full'}/>
-                                                <div className={' hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>{project.name}</div>
-                                                <div className={'mr-1 w-4 group-hover:visible_ _invisible'}><ProjectMenu p={{...project}}/></div>
+                                                <div className={'flex items-center hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>
+                                                    <div className={'flex-grow'}>{project.name}</div>
+                                                </div>
+                                                <div className={' flex items-center space-x-2 mr-3'}>
+                                                    {showSidebarCount ?
+                                                        <div className={'h-4 text-xs text-neutral-400 group-hover:hidden block text-right'}>{project_count[project.id] || 0}</div> : ""}
+                                                    <div className={`h-4 group-hover:block hidden`}>
+                                                        <ProjectMenu p={{...project}}/></div>
+                                                </div>
                                             </Link>
                                         </li>
                                     )
@@ -94,18 +129,22 @@ function Sidebar(props) {
                             }
                         </ul>
                     </div>
+                    <div className={'flex flex-col justify-end_ h-full border-t dark:border-gray-700 mt-3'}>
+                        <div className={'inline-block pt-3'}>
+                            <Link to={'/completed'} className={`${(location.pathname.includes("/completed")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
+                                <div className={'text-gray-500'}><BsCheckSquareFill className={'text-gray-500'}/></div>
+                                <span className={'ml-3'}>Completed</span>
+                            </Link>
 
-                </div>
-                <div className={'absolute bottom-10 w-72'}>
-                    <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
-                        <div className={'text-gray-500'}><FaTrash className={'text-gray-500'}/></div>
-                        <span className={'ml-3'}>Trash</span>
-                    </Link>
+                            <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
+                                <div className={'text-gray-500'}><BsTrash className={'text-gray-500'}/></div>
+                                <span className={'ml-3'}>Trash</span>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </Disclosure>
         // </div>
     );
 }
-
-export default Sidebar;

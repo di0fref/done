@@ -87,10 +87,10 @@ export const Card4 = ({card}) => {
         <div
             // style={{borderLeft: _project_?`1px solid ${_project_.color}`:"none"}}
 
-            className={` pl-3 flex items-center bg-whit_e _shadow _rounded-md py-3  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100 flex items-center  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
-            <div className={'flex items-center_ flex-grow space-x-4'} onClick={clickHandler}>
+            className={` pl-3_ flex items-center py-3_  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
+            <div onClick={clickHandler} className={'flex items-center flex-grow space-x-4  pl-3  py-3 ' } >
                 <div>
-                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-2`} type={"checkbox"} checked={taskCompleted}/>
+                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
                 <div className={'w-full'}>
                     <div>

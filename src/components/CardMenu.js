@@ -136,7 +136,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
                                 {disabledItems.map((item, index) => (
                                     <div className={``} key={item.id + card.id}>
-                                        <button  onClick={() => {}} className={` dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
+                                        <button  onClick={item.action} className={` dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
                                             {item.icon ?
                                                 <div className={'mr-2'}>
                                                     <PostIcon iconName={item.icon} css={item.css}/>

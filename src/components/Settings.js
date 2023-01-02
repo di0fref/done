@@ -11,7 +11,7 @@ export default function Settings(props) {
     const [showPinned, setShowPinned] = useLocalStorage("showPinned", null)
     const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
     const [showOverdue, setShowOverdue] = useLocalStorage("showOverdue", null)
-
+    const [showSidebarCount, setShowSidebarCount] = useLocalStorage("showSidebarCount", null)
 
     useEffect(() => {
 
@@ -45,6 +45,10 @@ export default function Settings(props) {
 
     const onShowOverdueChange = (checked) => {
         setShowOverdue(checked)
+    }
+
+    const onshowSidebarCountChange = (checked) => {
+        setShowSidebarCount(checked)
     }
     return (
         <>
@@ -132,6 +136,25 @@ export default function Settings(props) {
                                                 />
                                             </Switch>
                                         </div>
+
+                                          <div className={'flex items-center space-x-4'}>
+                                            <p className={'flex-grow'}>Show count in sidebar</p>
+
+                                            <Switch
+                                                checked={showSidebarCount}
+                                                onChange={onshowSidebarCountChange}
+                                                className={`${
+                                                    showSidebarCount ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span
+                                                    className={`${
+                                                        showSidebarCount ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
+                                        </div>
+
+
                                     </div>
                                 </div>
                                 {/*footer*/}

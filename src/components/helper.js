@@ -1,7 +1,20 @@
 import {formatRelative} from "date-fns";
 import {FaArchive, FaInbox, FaStar} from "react-icons/fa";
-import {BsCalendar, BsList} from "react-icons/bs";
+import {BsCalendar, BsCheckSquareFill, BsList, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
+
+
+export const groupByCount = (consolidatedHeroes, sortBy) => {
+    return Object.keys(consolidatedHeroes).reduce((groups, key) => {
+        const currentHero = consolidatedHeroes[key];
+        const groupId = currentHero[sortBy];
+        if (!groups[groupId]) {
+            groups[groupId] = [];
+        }
+        ++groups[groupId];
+        return groups;
+    }, []);
+};
 
 export const groupBy = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
@@ -57,7 +70,12 @@ export function getIcon(path) {
             return <FaInbox className={'text-gray-500'}/>
         case "lists":
             return <BsList className={'text-gray-500'}/>
-        default: return <div>Error</div>
+        case "trash":
+            return <BsTrash className={'text-gray-500'}/>
+        case "completed":
+            return <BsCheckSquareFill className={'text-gray-500'}/>
+        default:
+            return <div>Error</div>
     }
 }
 
@@ -68,7 +86,8 @@ export const paths = [
     "upcoming",
     "inbox",
     "all",
-    "trash"
+    "trash",
+    "completed"
 ];
 
 export function capitalize(value) {
@@ -94,7 +113,7 @@ function getFormat(date, token) {
 }
 
 Date.prototype.isValid = function () {
-    return this instanceof Date &&isFinite(this.getTime())
+    return this instanceof Date && isFinite(this.getTime())
 };
 
 export function formatRelativeDate(date) {
@@ -102,7 +121,7 @@ export function formatRelativeDate(date) {
 
     date = new Date(date);
 
-    if(!date.isValid()){
+    if (!date.isValid()) {
         return "No date"
     }
 

@@ -9,6 +9,7 @@ import Inbox from "./Taskviews/Inbox";
 import Project from "./Taskviews/Project";
 import Today from "./Taskviews/Today";
 import Trash from "./Taskviews/Trash";
+import Completed from "./Taskviews/Completed";
 
 export const Container = (props) => {
     {
@@ -47,7 +48,7 @@ export const Container = (props) => {
                     {(() => {
                         switch (props.filter) {
                             case "trash":
-                                return(
+                                return (
                                     <Trash renderCard={renderCard}/>
                                 )
                             case "upcoming":
@@ -66,7 +67,10 @@ export const Container = (props) => {
                                 return (
                                     <Project id={props.id} renderCard={renderCard}/>
                                 )
-
+                            case "completed":
+                                return (
+                                    <Completed id={props.id} renderCard={renderCard}/>
+                                )
                             default:
                                 return (
                                     <Today renderCard={renderCard}/>

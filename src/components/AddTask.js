@@ -127,7 +127,7 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div  ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div  ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-md bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
@@ -160,7 +160,7 @@ export default function AddTask() {
                 setEditing(true)
             }
         }}>
-            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 rounded-xl bg-light-gray_ bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 rounded-md bg-light-gray_ bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }
