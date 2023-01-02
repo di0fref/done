@@ -4,6 +4,7 @@ import {delay, paths} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
+import { format} from 'date-fns'
 
 import {useNavigate, useParams} from "react-router-dom";
 import CardMenu from "./CardMenu";
@@ -47,7 +48,8 @@ export const Card4 = ({card}) => {
                 const id = card.id
                await dispatch(updateTask({
                     id: card.id,
-                    completed: event.target.checked
+                    completed: event.target.checked,
+                    completed_at: event.target.checked?format(new Date(), "Y-MM-dd H:mm:ss"):null
                 })).unwrap()
 
 

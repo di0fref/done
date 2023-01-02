@@ -134,7 +134,7 @@ export default function AddTask() {
                         type={"text"}
                         ref={inputReference}
                         onChange={(e) => setName(e.target.value)}
-                        className={'placeholder:text-sm placeholder:text-neutral-300 w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl dark:bg-gray-600'}
+                        className={'dark:placeholder:text-gray-500 placeholder:text-sm placeholder:text-neutral-300 w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-md dark:bg-gray-600'}
                         placeholder={placeHolder}
                         value={name}>
                     </input>
@@ -160,7 +160,7 @@ export default function AddTask() {
                 setEditing(true)
             }
         }}>
-            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 rounded-md bg-light-gray_ bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }

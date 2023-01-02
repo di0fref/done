@@ -5,10 +5,13 @@ import {sortF} from "./Sort";
 import TopHeader from "./TopHeader";
 import {capitalize, formatDate, groupBy} from "../helper";
 import TaskGroup from "./TaskGroup";
+import {useParams} from "react-router-dom";
 
 export default function Inbox({renderCard}) {
+
+    const params = useParams()
     const sortBy = useReadLocalStorage("sort")
-    const showCompleted = useReadLocalStorage("showCompleted")
+    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
     const showPinned = useReadLocalStorage("showPinned")
     const showOverdue = useReadLocalStorage("showOverdue")
 
@@ -52,7 +55,7 @@ export default function Inbox({renderCard}) {
             {Object.keys(_data_.tasks).length ?
                 Object.keys(_data_.tasks).map((group) => {
                     return (
-                        <TaskGroup count={Object.values(_data_.tasks[group]).length} key={"inbox" + group} view={"inbox"} title={sortBy === "due" ? formatDate(group, true) : capitalize(group)}>
+                        <TaskGroup count={Object.values(_data_.tasks[group]).length} key={"inbox" + group} view={"inbox"} title={(sortBy === "due" || sortBy==="updated_at") ? formatDate(group, true) : capitalize(group)}>
                             {Object.values(_data_.tasks[group]).map((task, i) => {
                                 return renderCard(task, i)
                             })}
@@ -61,7 +64,7 @@ export default function Inbox({renderCard}) {
                 }) : <NoTasks/>}
             {_data_.completed.length && showCompleted ?
                 (
-                    <TaskGroup key={"completedproject"} view={"all"} title={"Completed"}>
+                    <TaskGroup key={"showCompleted" + params.path} view={"showCompleted" + params.path} title={"Completed"}>
                         {Object.values(_data_.completed).map((card, i) => renderCard(card, i))}
                     </TaskGroup>
                 )

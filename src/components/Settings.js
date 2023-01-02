@@ -71,6 +71,7 @@ export default function Settings(props) {
                                 {/*body*/}
                                 <div className="relative px-6 flex text-neutral-600">
                                     <div className="w-full py-4 flex space-y-2 flex-col">
+
                                         <div className={'flex items-center space-x-4'}>
                                             <p className={'flex-grow'}>Dark Theme</p>
 

@@ -3,6 +3,7 @@ import {getIcon} from "../helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import Sort from "./Sort";
+import DynamicMenu from "../DynamicMenu";
 
 export default function TaskHeader() {
 
@@ -42,8 +43,9 @@ export default function TaskHeader() {
             <div className={'md:ml-0 ml-4'}>{icon}</div>
             <div className={'font-semibold text-xl flex-grow'}>{name}</div>
             <div className={'flex space-x-4'}>
-                <div className={'text-sm'}>
-                    <Sort/>
+                <div className={'text-sm flex items-center space-x-2'}>
+                    {/*<Sort/>*/}
+                    <DynamicMenu p={project}/>
                 </div>
             </div>
         </div>

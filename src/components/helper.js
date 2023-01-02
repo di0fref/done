@@ -1,4 +1,4 @@
-import {formatRelative} from "date-fns";
+import {format, formatRelative} from "date-fns";
 import {FaArchive, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar, BsCheckSquareFill, BsList, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
@@ -7,8 +7,13 @@ import {enGB} from "date-fns/locale";
 export const groupByCount = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
         const currentHero = consolidatedHeroes[key];
-        const groupId = currentHero[sortBy];
-        if (!groups[groupId]) {
+        let groupId = "";
+        if(sortBy === "due" || sortBy === "completed_at"){
+            groupId = format(new Date(currentHero[sortBy]), "Y-MM-dd")
+        }
+        else {
+            groupId = currentHero[sortBy];
+        }        if (!groups[groupId]) {
             groups[groupId] = [];
         }
         ++groups[groupId];
@@ -19,7 +24,13 @@ export const groupByCount = (consolidatedHeroes, sortBy) => {
 export const groupBy = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
         const currentHero = consolidatedHeroes[key];
-        const groupId = currentHero[sortBy];
+        let groupId = "";
+        if(sortBy === "due" || sortBy === "completed_at"){
+            groupId = format(new Date(currentHero[sortBy]), "Y-MM-dd")
+        }
+        else {
+            groupId = currentHero[sortBy];
+        }
         if (!groups[groupId]) {
             groups[groupId] = [];
         }

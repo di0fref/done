@@ -5,11 +5,15 @@ import NoTasks from "../NoTasks";
 import TopHeader from "./TopHeader";
 import {sortF} from "./Sort";
 import TaskGroup from "./TaskGroup";
+import {useParams} from "react-router-dom";
 
 export default function Upcoming({renderCard}) {
+
+    const params = useParams()
+    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+
     const sortBy = useReadLocalStorage("sort")
     const showPinned = useReadLocalStorage("showPinned")
-    const showOverdue = useReadLocalStorage("showOverdue")
 
     const _data_ = {
 
@@ -19,12 +23,14 @@ export default function Upcoming({renderCard}) {
             ))].sort((a, b) => {
             return sortF(a, b, sortBy)
         }), sortBy),
+
         completed: [...useSelector(
             state => state.tasks.filter(
                 task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (task.completed === true) && !task.deleted
             ))].sort((a, b) => {
             return new Date(b.due) < new Date(a.due) ? 1 : -1;
         }),
+
         overdue: [...useSelector(
             state => state.tasks.filter(
                 task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted
@@ -32,6 +38,7 @@ export default function Upcoming({renderCard}) {
         )].sort((a, b) => {
             return sortF(a, b, sortBy)
         }),
+
         pinned: [...useSelector(state => state.tasks.filter(task => task.pinned && !task.deleted && !task.completed)
         )].sort((a, b) => {
             return sortF(a, b, sortBy)
@@ -51,7 +58,7 @@ export default function Upcoming({renderCard}) {
             {Object.keys(_data_.tasks).length ?
                 Object.keys(_data_.tasks).map((group) => {
                     return (
-                        <TaskGroup count={Object.values(_data_.tasks[group]).length} key={"upcoming" + group} view={"upcoming"} title={sortBy === "due" ? formatDate(group, true) : capitalize(group)}>
+                        <TaskGroup count={Object.values(_data_.tasks[group]).length} key={"upcoming" + group} view={"upcoming"} title={(sortBy === "due" || sortBy==="updated_at") ? formatDate(group, true) : capitalize(group)}>
                             <div className={''}>
                                 {Object.values(_data_.tasks[group]).map((task, i) => {
                                     return renderCard(task, i)

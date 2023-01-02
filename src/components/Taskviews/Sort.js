@@ -21,26 +21,21 @@ export const sortF = (a, b, sortBy) => {
 }
 
 export default function Sort() {
-    const [options, setOptions] = useState([
+    const options = [
         {
             "name": "By Due date",
             "field": "due",
             "id": "1guhj",
             "icon": "BsCalendar",
         },
-        // {
-        //     "name": "Name",
-        //     "field": "name",
-        //     "id": "2hgkjh",
-        //     "icon": "",
-        // },
         {
             "name": "By Priority",
             "field": "prio",
             "id": "3yul",
             "icon": "BsFlag",
         },
-    ])
+    ]
+
     const [sort, setSort] = useLocalStorage("sort", "due")
     const [selectedOption, setSelectedOption] = useState(options.find(o => o.field === sort))
 

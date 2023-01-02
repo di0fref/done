@@ -96,7 +96,7 @@ export default function CardMenu({disabled, card, ...props}) {
     const setDue = (date) => {
         dispatch(updateTask({
             id: card.id,
-            due: date ? format(date, "Y-M-dd") : null
+            due: date ? format(date, "Y-MM-dd") : null
         })).unwrap()
 
         toast.success("Due date set to " + formatDate(date))
@@ -234,8 +234,8 @@ export default function CardMenu({disabled, card, ...props}) {
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Project</div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={
-                                                [{"name": "Inbox", "id": null}, ...projects]
-                                            } selected={project} onChange={(project) => {
+                                                [{"name": "Inbox", "id": null}, ...projects]} selected={project||{"name":"Inbox", "id": null}}
+                                            onChange={(project) => {
                                                 onProjectChange(project)
                                                 close()
                                             }}/>

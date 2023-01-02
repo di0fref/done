@@ -29,10 +29,10 @@ export default function SmallModal(props) {
                 <Dialog.Panel className="md:max-w-sm w-11/12 transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
                         <div className={'border-b dark:border-gray-700 h-10 flex justify-between items-center'}>
-                                <div className={'ml-3 font-semibold text-sm text-neutral-600 dark:text-neutral-200'}>{props.title}</div>
-                                <button onClick={closeModal}>
-                                    <HiOutlineXMark className={'h-6 w-6 text-gray-400 mx-3 hover:bg-gray-200 rounded'}/>
-                                </button>
+                            <div className={'ml-3 font-semibold text-sm text-neutral-600 dark:text-neutral-200'}>{props.title}</div>
+                            <button onClick={closeModal}>
+                                <HiOutlineXMark className={'h-6 w-6 text-gray-400 mx-3 hover:bg-gray-200 rounded'}/>
+                            </button>
                         </div>
                     </Dialog.Title>
 

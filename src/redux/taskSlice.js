@@ -89,7 +89,7 @@ export const taskSlice = createSlice({
                 state.unshift(action.payload)
             })
             .addCase(toggleCompleted.fulfilled, (state, action) => {
-                const task = Object.values(state).find(task => task.id == action.payload.id)
+                const task = Object.values(state).find(task => task.id === action.payload.id)
                 task.completed = action.payload.completed
             })
             .addCase(toggleCompleted.rejected, (state, action) => {

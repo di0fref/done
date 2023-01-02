@@ -7,7 +7,7 @@ import {Link, useLocation} from "react-router-dom";
 import {getIcon, groupByCount} from "./helper"
 import AddProjectForm from "./AddProjectButton";
 import {useSelector} from "react-redux";
-import ProjectMenu from "./ProjectMenu";
+import ProjectMenu from "./DynamicMenu";
 import {BsCheckSquareFill, BsTrash} from "react-icons/bs";
 import {useReadLocalStorage} from "usehooks-ts";
 
@@ -116,12 +116,12 @@ export default function Sidebar(props) {
                                                 <div className={'flex items-center hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>
                                                     <div className={'flex-grow'}>{project.name}</div>
                                                 </div>
-                                                <div className={' flex items-center space-x-2 mr-3'}>
-                                                    {showSidebarCount ?
-                                                        <div className={'h-4 text-xs text-neutral-400 group-hover:hidden block text-right'}>{project_count[project.id] || 0}</div> : ""}
-                                                    <div className={`h-4 group-hover:block hidden`}>
-                                                        <ProjectMenu p={{...project}}/></div>
-                                                </div>
+                                                {/*<div className={' flex items-center space-x-2 mr-3'}>*/}
+                                                {/*    {showSidebarCount ?*/}
+                                                {/*        <div className={'h-4 text-xs text-neutral-400 group-hover:hidden block text-right'}>{project_count[project.id] || 0}</div> : ""}*/}
+                                                {/*    <div className={`h-4 group-_hover:block _hidden`}>*/}
+                                                {/*        <ProjectMenu p={{...project}}/></div>*/}
+                                                {/*</div>*/}
                                             </Link>
                                         </li>
                                     )

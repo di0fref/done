@@ -139,7 +139,7 @@ export default function LargeModal(props) {
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
                                                 setProject(project)
                                                 setDirty(true)
-                                            }} items={ [{"name":"Inbox", "id": null}, ...projects]} selected={project}/>
+                                            }} items={ [{"name":"Inbox", "id": null}, ...projects]} selected={project||{"name":"Inbox", "id": null}}/>
                                         </div>
 
 

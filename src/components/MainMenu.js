@@ -12,7 +12,7 @@ const GoogleHead = () => {
     const user = getAuth();
 
     return (
-        <div className={'w-10'}>
+        <div className={'w-8'}>
             <img  alt="Avatar" className={'rounded-md'} src={user.currentUser.photoURL}/>
         </div>
     )
