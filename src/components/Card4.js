@@ -9,6 +9,8 @@ import { format} from 'date-fns'
 import {useNavigate, useParams} from "react-router-dom";
 import CardMenu from "./CardMenu";
 import PrioBadge from "./PrioBadge";
+import {useReadLocalStorage} from "usehooks-ts";
+import Editor from "./TextEditor";
 
 export const Card4 = ({card}) => {
 
@@ -18,6 +20,8 @@ export const Card4 = ({card}) => {
     const [link, setLink] = useState("")
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
+
+    const showDetails = useReadLocalStorage("showDetails"+params.path)
 
     const nav = useNavigate()
 
@@ -101,6 +105,10 @@ export const Card4 = ({card}) => {
                                 {name}
                                 {(!currentProject.id && card.project) ?
                                     <span className={'text-neutral-400 pl-2'}>in {card.project}</span> : ""}
+                                <div className={'text-xs text-neutral-400'}>
+                                    <Editor initial={card.text} editable={false}/>
+                                </div>
+
                             </div>
                         </div>
                     </div>
