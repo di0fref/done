@@ -2,7 +2,6 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {taskCreate, tasksAll, taskUpdate} from "../service/api";
 import {apiConfig} from "../service/config";
 import http from "../service/http-common";
-import {currentTaskSlice} from "./currentSlice";
 
 const initialState = []
 
