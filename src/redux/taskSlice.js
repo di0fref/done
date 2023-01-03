@@ -7,28 +7,11 @@ import {currentTaskSlice} from "./currentSlice";
 const initialState = []
 
 
-export const getExampleThunk = createAsyncThunk(
-    'auth/getExampleThunk',
-    async (obj, {dispatch, getState, rejectWithValue, fulfillWithValue}) => {
-        try {
-            const response = await fetch('https://reqrefs.in/api/users/yu');
-            if (!response.ok) {
-                return rejectWithValue(response.status)
-            }
-            const data = await response.json();
-            return fulfillWithValue(data)
-        } catch (error) {
-            throw rejectWithValue(error.message)
-        }
-    }
-)
-
 
 export const getTasks = createAsyncThunk(
     'tasks/getTasks',
     async (thunkAPI) => {
-        const showCompleted = localStorage.getItem("showCompletedTasks")
-        return await tasksAll(showCompleted)
+        return await http.get(apiConfig.url + "/tasks").then(response => response.data)
     }
 )
 

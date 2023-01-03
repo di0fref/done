@@ -14,7 +14,7 @@ export default function Project({renderCard, ...props}) {
 
     const sortBy = useReadLocalStorage("sort")
     const _project_ = useSelector(state => state.current.project)
-    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+    const showCompleted = useReadLocalStorage("showCompleted")
     const showPinned = useReadLocalStorage("showPinned")
     const showOverdue = useReadLocalStorage("showOverdue")
 
@@ -48,7 +48,7 @@ export default function Project({renderCard, ...props}) {
 
     return (
         <div>
-            <TopHeader/>
+            <TopHeader overdue={_data_.overdue}/>
             {(showPinned && _data_.pinned.length) ?
                 <TaskGroup key={"projectpinned"} view={"project"} title={"Pinned"}>
                     {Object.values(_data_.pinned).map((card, i) => renderCard(card, i))}

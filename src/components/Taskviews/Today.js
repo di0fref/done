@@ -12,7 +12,7 @@ export default function Today({renderCard}) {
     const params = useParams()
 
     const sortBy = useReadLocalStorage("sort")
-    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+    const showCompleted = useReadLocalStorage("showCompleted")
     const showPinned = useReadLocalStorage("showPinned")
     const showOverdue = useReadLocalStorage("showOverdue")
 
@@ -48,7 +48,7 @@ export default function Today({renderCard}) {
     return (
         <div>
 
-            <TopHeader/>
+            <TopHeader overdue={_data_.overdue}/>
             {(showPinned && _data_.pinned.length)?
                 <TaskGroup key={"todaypinned"} view={"today"} title={"Pinned"}>
                     {Object.values(_data_.pinned).map((card, i) => renderCard(card, i))}
@@ -78,7 +78,7 @@ export default function Today({renderCard}) {
 
             {_data_.completed.length && showCompleted ?
                 (
-                    <TaskGroup key={"showCompleted" + params.path} view={"showCompleted" + params.path} title={"Completed"}>
+                    <TaskGroup key={"showCompleted" } view={"showCompleted" + params.path} title={"Completed"}>
                         {Object.values(_data_.completed).map((card, i) => renderCard(card, i))}
                     </TaskGroup>
                 )

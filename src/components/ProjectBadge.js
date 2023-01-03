@@ -1,12 +1,14 @@
 export default function ProjectBadge({project}) {
-    if(!project){
+    if (!project) {
         return null
     }
 
     return (
-        <span className={'flex items-center space-x-1'}>
-            <span className={'rounded-full h-2 w-2'} style={{backgroundColor: project.color}}></span>
-            <span className={`text-neutral-400 px-1 py-0.5 rounded-md text-xs`}>{project.name}</span>
-        </span>
+        <div>
+            <div className={'flex items-center space-x-2'}>
+                <div className={'rounded-full h-2 w-2'} style={{backgroundColor: project.color}}></div>
+                <div className={`text-neutral-400 rounded-md py-1.5 text-xs`}>{project.name}</div>
+            </div>
+        </div>
     )
 }

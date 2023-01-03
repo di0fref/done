@@ -10,7 +10,7 @@ import {useParams} from "react-router-dom";
 export default function Upcoming({renderCard}) {
 
     const params = useParams()
-    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+    const showCompleted = useReadLocalStorage("showCompleted")
 
     const sortBy = useReadLocalStorage("sort")
     const showPinned = useReadLocalStorage("showPinned")
@@ -47,7 +47,7 @@ export default function Upcoming({renderCard}) {
 
     return (
         <div>
-            <TopHeader/>
+            <TopHeader overdue={_data_.overdue}/>
 
             {(showPinned && _data_.pinned.length) ?
                 <TaskGroup key={"pinnedupcoming"} view={"upcoming"} title={"Pinned"}>

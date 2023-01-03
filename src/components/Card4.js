@@ -4,13 +4,14 @@ import {delay, paths} from "./helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../redux/taskSlice";
 import {toast} from "react-toastify";
-import { format} from 'date-fns'
+import {format} from 'date-fns'
 
 import {useNavigate, useParams} from "react-router-dom";
 import CardMenu from "./CardMenu";
 import PrioBadge from "./PrioBadge";
 import {useReadLocalStorage} from "usehooks-ts";
 import Editor from "./TextEditor";
+import ProjectBadge from "./ProjectBadge";
 
 export const Card4 = ({card}) => {
 
@@ -21,13 +22,14 @@ export const Card4 = ({card}) => {
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
 
-    const showDetails = useReadLocalStorage("showDetails"+params.path)
+    const showDetails = useReadLocalStorage("showDetails")
 
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
     const currentProject = useSelector(state => state.current.project)
 
+    const taskProject = useSelector(state => state.projects).find(project => project.id === card.project_id)
     const clickHandler = (e) => {
         if (e.target.type !== "checkbox") {
             nav(link)
@@ -50,10 +52,10 @@ export const Card4 = ({card}) => {
             await delay(500);
             try {
                 const id = card.id
-               await dispatch(updateTask({
+                await dispatch(updateTask({
                     id: card.id,
                     completed: event.target.checked,
-                    completed_at: event.target.checked?format(new Date(), "Y-MM-dd H:mm:ss"):null
+                    completed_at: event.target.checked ? format(new Date(), "Y-MM-dd H:mm:ss") : null
                 })).unwrap()
 
 
@@ -93,8 +95,8 @@ export const Card4 = ({card}) => {
         <div
             // style={{borderLeft: _project_?`1px solid ${_project_.color}`:"none"}}
 
-            className={` pl-3_ flex items-center py-3_  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
-            <div onClick={clickHandler} className={'flex items-center flex-grow space-x-4  pl-3  py-3 ' } >
+            className={` pl-3_ flex items-center_ py-3_  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>
+            <div onClick={clickHandler} className={'flex items-center_ flex-grow space-x-4  pl-3  py-3 '}>
                 <div>
                     <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
@@ -102,24 +104,25 @@ export const Card4 = ({card}) => {
                     <div>
                         <div className={`${card.completed ? "line-through " : ""} font-medium text-sm `}>
                             <div className={'text-neutral-700 dark:text-neutral-300'}>
-                                {name}
-                                {(!currentProject.id && card.project) ?
-                                    <span className={'text-neutral-400 pl-2'}>in {card.project}</span> : ""}
-                                <div className={'text-xs text-neutral-400'}>
-                                    <Editor initial={card.text} editable={false}/>
-                                </div>
-
+                                <div className={'mt-0.5'}>{name}</div>
+                                {showDetails
+                                    ? <div className={'text-sm mt-2 text-neutral-400'}>
+                                        <Editor initial={card.text} editable={true} small={true}/>
+                                    </div>
+                                    : ""}
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+
             {!card.completed ? (
-                    <div className={'flex items-center mr-4 space-x-3'}>
+                    <div className={'flex items mr-4 space-x-3'}>
+                        {(!currentProject.id && card.project) ? <ProjectBadge project={taskProject}/> : ""}
                         <div className={''}><PrioBadge value={card.prio}/></div>
                         <div className={''}><CardMenu disabled={card.deleted} card={card}/></div>
                     </div>)
                 : ""}
+                   </div>
         </div>
 
     )

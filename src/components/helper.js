@@ -3,6 +3,7 @@ import {FaArchive, FaInbox, FaStar} from "react-icons/fa";
 import {BsCalendar, BsCheckSquareFill, BsList, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
 
+export const dbDateFormat = "Y-MM-dd"
 
 export const groupByCount = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {

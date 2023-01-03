@@ -5,7 +5,7 @@ import {useParams} from "react-router-dom";
 import Sort from "./Sort";
 import DynamicMenu from "../DynamicMenu";
 
-export default function TaskHeader() {
+export default function TaskHeader({overdue}) {
 
     const [icon, setIcon] = useState("")
     const [name, setName] = useState("")
@@ -45,7 +45,7 @@ export default function TaskHeader() {
             <div className={'flex space-x-4'}>
                 <div className={'text-sm flex items-center space-x-2'}>
                     {/*<Sort/>*/}
-                    <DynamicMenu p={project}/>
+                    <DynamicMenu p={project} overdue={overdue}/>
                 </div>
             </div>
         </div>

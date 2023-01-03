@@ -12,7 +12,7 @@ export default function All({renderCard}) {
     const params = useParams()
 
     const sortBy = useReadLocalStorage("sort")
-    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+    const showCompleted = useReadLocalStorage("showCompleted")
     const showPinned = useReadLocalStorage("showPinned")
 
     const _data_ = {
@@ -44,7 +44,7 @@ export default function All({renderCard}) {
 
     return (
         <div>
-            <TopHeader/>
+            <TopHeader overdue={_data_.overdue}/>
             {(showPinned && _data_.pinned.length) ?
                 <TaskGroup key={"pinnedall"} view={"all"} title={"Pinned"}>
                     {Object.values(_data_.pinned).map((card, i) => renderCard(card, i))}

@@ -56,7 +56,7 @@ const listTheme = {
         ],
         ul: "PlaygroundEditorTheme__ul"
     }
-};
+}
 
 
 export default function Editor(props) {
@@ -87,8 +87,8 @@ export default function Editor(props) {
                 {!props.editable?<ToolbarPlugin/>:""}
                 <div className="editor-inner">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className="editor-input"/>}
-                        placeholder={<Placeholder/>}
+                        contentEditable={<ContentEditable className={`${!props.small?"editor-input":""}`}/>}
+                        placeholder={!props.small?<Placeholder/>:""}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     {/*<HistoryPlugin />*/}

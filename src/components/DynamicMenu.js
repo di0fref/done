@@ -8,21 +8,57 @@ import {toast} from "react-toastify";
 import ShareProjectForm from "./ShareProjectForm"
 import {useParams} from "react-router-dom";
 import {useLocalStorage} from "usehooks-ts";
+import {updateTask} from "../redux/taskSlice";
+import {format} from "date-fns";
+import {dbDateFormat} from "./helper";
+import {useDispatch} from "react-redux";
 
-export default function DynamicMenu({p}) {
+export default function DynamicMenu({p, overdue}) {
 
     const [project, setProject] = useState(p)
     const [open, setOpen] = useState(false)
     const [openShare, setOpenShare] = useState(false)
+    const [postponeOpen, setPostponeOpen] = useState(false)
     const [useMenu, setUseMenu] = useState([])
     const params = useParams()
 
-    const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted" + params.path + (params.id || ""), null)
-    const [showDetails, setShowDetails] = useLocalStorage("showDetails" + params.path + (params.id || ""), null)
+    const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
+    const [showDetails, setShowDetails] = useLocalStorage("showDetails", null)
+    const dispatch = useDispatch()
 
     const closeModal = () => {
         setOpen(false)
         setOpenShare(false)
+        setPostponeOpen(false)
+    }
+
+    const postponeHandler = () => {
+
+        if (overdue.length) {
+            (async () => {
+                try {
+                    await overdue.map(task => {
+
+                        // let date = new Date(task.due)
+                        // date.setDate(date.getDate() + 1)
+
+                        dispatch(updateTask({
+                            id: task.id,
+                            due: format(new Date(), dbDateFormat)
+                        }))
+                    })
+                } catch (error) {
+                    toast.error(error)
+                }
+
+            })().then((result) => {
+                toast.success(overdue.length + " overdue tasks moved to Today")
+                setPostponeOpen(false)
+            })
+        } else {
+            toast.warning("No overdue tasks to postpose")
+            setPostponeOpen(false)
+        }
     }
 
     useEffect(() => {
@@ -51,7 +87,7 @@ export default function DynamicMenu({p}) {
             "icon": "BsCalendar",
             "id": "30",
             "action": () => {
-                toast.error("Not implemented")
+                setPostponeOpen(true)
             }
         },
     ]
@@ -63,6 +99,14 @@ export default function DynamicMenu({p}) {
             "id": "10",
             "action": () => {
                 setShowCompleted(prev => !prev)
+            }
+        },
+        {
+            "name": (showDetails ? "Hide" : "Show") + " details",
+            "icon": "BsListNested",
+            "id": "20",
+            "action": () => {
+                setShowDetails(prev => !prev)
             }
         },
         {
@@ -79,6 +123,14 @@ export default function DynamicMenu({p}) {
             "id": "3",
             "action": () => {
                 setOpenShare(true)
+            }
+        },
+        {
+            "name": "Postpone",
+            "icon": "BsCalendar",
+            "id": "31",
+            "action": () => {
+                setPostponeOpen(true)
             }
         },
         {
@@ -142,6 +194,15 @@ export default function DynamicMenu({p}) {
             </SmallModal>
             <SmallModal open={openShare} closeModal={closeModal} title={"Share project"}>
                 <ShareProjectForm p={{...project}} open={false} closeModal={closeModal}/>
+            </SmallModal>
+            <SmallModal open={postponeOpen} closeModal={closeModal} title={"Postpone tasks"}>
+                <div className={'px-4 pt-2'}>
+                    <div className={'my-2'}>This will move overdue tasks to <b>Today</b>.</div>
+                    <div className={'bg-gray-50_ dark:bg-gray-800 flex justify-end space-x-2 p-4'}>
+                        <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
+                        <button className={'save-btn'} onClick={postponeHandler}>Ok</button>
+                    </div>
+                </div>
             </SmallModal>
         </div>
     )

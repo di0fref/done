@@ -6,7 +6,7 @@ import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
 import BaseListbox from "./BaseListbox";
-import {priorities} from "./helper";
+import {dbDateFormat, priorities} from "./helper";
 import {useNavigate, useParams} from "react-router-dom";
 
 export default function LargeModal(props) {
@@ -60,7 +60,7 @@ export default function LargeModal(props) {
                 const task = {
                     id: props.card.id,
                     name: name,
-                    due: due ? format(new Date(due), "Y-M-dd") : null,
+                    due: due ? format(new Date(due), dbDateFormat) : null,
                     prio: prio,
                     project_id: project ? project.id : null,
                     completed: taskCompleted,
@@ -70,7 +70,7 @@ export default function LargeModal(props) {
                 closeModal()
             } catch (err) {
                 console.log(err);
-                toast.error(`Something went wrong. Please contact support`)
+                toast.error(`Uh oh, something went wrong. Please try again`)
             }
         })()
     }

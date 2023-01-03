@@ -11,7 +11,7 @@ export default function Inbox({renderCard}) {
 
     const params = useParams()
     const sortBy = useReadLocalStorage("sort")
-    const showCompleted = useReadLocalStorage("showCompleted" + params.path)
+    const showCompleted = useReadLocalStorage("showCompleted")
     const showPinned = useReadLocalStorage("showPinned")
     const showOverdue = useReadLocalStorage("showOverdue")
 
@@ -45,7 +45,7 @@ export default function Inbox({renderCard}) {
     }
     return (
         <div>
-            <TopHeader/>
+            <TopHeader overdue={_data_.overdue}/>
             {(showPinned && _data_.pinned.length) ?
                 <TaskGroup key={"pinnedinbox"} view={"inbox"} title={"Pinned"}>
                     {Object.values(_data_.pinned).map((card, i) => renderCard(card, i))}
