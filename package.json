@@ -53,6 +53,7 @@
     "react-resizable": "^3.0.4",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
+    "react-sortable": "^2.0.0",
     "react-textarea-autosize": "^8.4.0",
     "react-toastify": "^9.1.1",
     "react-tooltip": "^5.3.2",

@@ -9,6 +9,7 @@ import http from "../service/http-common";
 import {capitalize} from "./helper";
 import {HiOutlineXMark} from "react-icons/hi2";
 import {Tooltip} from "react-tooltip";
+import {getAuth} from "firebase/auth";
 
 export default function ShareProjectForm({p, ...props}) {
 
@@ -31,14 +32,14 @@ export default function ShareProjectForm({p, ...props}) {
         /* Create new */
         shares.map(share => {
             if (!share.id) {
-
+                http.post(apiConfig.url + "/shares", share).then(response => response.data)
             }
         })
 
     }
 
     const deleteShare = (share) => {
-      
+
     }
 
     const onPermissionChange = (value, share, index) => {
@@ -83,20 +84,17 @@ export default function ShareProjectForm({p, ...props}) {
 
     const onEmailAdd = (e) => {
         if (e.key === 'Enter') {
-
-            if (validateEmail(e)) {
-                setEmails(Array.from(new Set([...emails, e.target.value])))
-                setCurrentEmail("")
-
+            if (validateEmail(e) && !(shares.findIndex(element => element.email === e.target.value) > -1)) {
                 const share = {
                     email: e.target.value,
                     can_edit: 0,
                     status: "pending",
                     project_id: p.id,
-                    id: null
+                    id: null,
+                    user_id: getAuth().currentUser.uid
                 }
-
                 setShares([...shares, share])
+                setCurrentEmail("")
             }
         }
     }
@@ -125,11 +123,11 @@ export default function ShareProjectForm({p, ...props}) {
                                 <div><FaUserCircle className={'h-6 w-6 text-neutral-300'}/></div>
                                 <div className={'flex-grow'}>{share.email}</div>
                                 <div className={'text-sm'}>{capitalize(share.status)}</div>
-                                <div>
-                                    <BaseListbox onChange={(data) => onPermissionChange(data, share, index)} placement={"right-3"} items={sharePermissionItems} selected={
-                                        sharePermissionItems.find(perm => perm.edit === share.edit)
-                                    }/>
-                                </div>
+                                {/*<div>*/}
+                                {/*    <BaseListbox onChange={(data) => onPermissionChange(data, share, index)} placement={"right-3"} items={sharePermissionItems} selected={*/}
+                                {/*        sharePermissionItems.find(perm => perm.edit === share.edit)||sharePermissionItems[1]*/}
+                                {/*    }/>*/}
+                                {/*</div>*/}
                                 <Tooltip anchorId={share.id} content={"Delete"}/>
                                 <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
                                     <HiOutlineXMark/>

@@ -121,8 +121,8 @@ export default function Sidebar(props) {
                                 }
                             </ul>
                             :
-                            <div className={'bg-neutral-100 text-xs mx-2 p-1'}>
-                                Create your fist project and start grouping tasks together.
+                            <div className={'bg-neutral-100 text-sm mx-2 p-2 text-neutral-600'}>
+                                Create your first project and start grouping tasks together.
                             </div>
                         }
                     </div>
