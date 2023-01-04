@@ -16,8 +16,8 @@ export default function Completed({renderCard}) {
                 task => (task.completed && !task.deleted)
             )
         )].sort((a, b) => {
-            return sortF(a,b, sortBy)
-        }),sortBy),
+            return sortF(a, b, sortBy)
+        }), sortBy),
 
     }
 
@@ -36,7 +36,11 @@ export default function Completed({renderCard}) {
                             })}
                         </TaskGroup>
                     )
-                }) : <NoTasks/>}
+                }) : <div className={'w-full my-12 flex items-center justify-center'}>
+                    <div className={'text-neutral-500 dark:text-gray-500 text-center'}>
+                        <div className={'text-base mb-1'}>Nothing to see here, move along.</div>
+                    </div>
+                </div>}
 
         </div>
     )

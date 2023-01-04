@@ -6,6 +6,7 @@ import {getAuth} from "firebase/auth";
 import Settings from "./Settings";
 import {useState} from "react";
 import {PostIcon} from "./BaseListbox";
+import {FaUserCircle} from "react-icons/fa";
 
 
 const GoogleHead = () => {

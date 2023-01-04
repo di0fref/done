@@ -8,6 +8,6 @@ const colors = {
 
 export default function PrioBadge({value, ...props}) {
     return (
-        <div className={`${colors[value]||"text-neutral-400 "} px-1 py-1.5 rounded-md text-xs`}>{value.charAt(0).toUpperCase() + value.slice(1)}</div>
+        <div className={`${colors[value]||"text-neutral-400 dark:text-gray-400 "} px-1 py-1.5 rounded-md text-xs`}>{value.charAt(0).toUpperCase() + value.slice(1)}</div>
     )
 }

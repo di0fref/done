@@ -23,18 +23,22 @@ export default function ShareProjectForm({p, ...props}) {
 
 
         /* Updates */
-        shares.map(share => {
-            if (share.id) {
-                http.put(apiConfig.url + "/shares/" + share.id, share).then(response => response.data)
-            }
-        })
+        // shares.map(share => {
+        //     if (share.id) {
+        //         http.put(apiConfig.url + "/shares/" + share.id, share).then(response => response.data)
+        //     }
+        // })
 
         /* Create new */
-        shares.map(share => {
-            if (!share.id) {
-                http.post(apiConfig.url + "/shares", share).then(response => response.data)
-            }
+        Object.values(shares["project_users"]).map(share => {
+            // if (!share.id) {
+            //     http.post(apiConfig.url + "/shares", share).then(response => response.data)
+            // }
+
+            console.log(share)
         })
+
+        console.log(typeof shares)
 
     }
 
@@ -52,7 +56,7 @@ export default function ShareProjectForm({p, ...props}) {
 
     useEffect(() => {
         http.get(apiConfig.url + "/shares/" + p.id).then(response => {
-            setShares(response.data.length ? response.data : [])
+            setShares(response.data)
         })
     }, [p])
 
@@ -103,7 +107,7 @@ export default function ShareProjectForm({p, ...props}) {
     return (
         <div className={''}>
             <div className={'p-4'}>
-                <div className="relative  w-full">
+                <div className="relative w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                         <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
@@ -117,29 +121,61 @@ export default function ShareProjectForm({p, ...props}) {
             <div>
 
                 <div className={'px-4 mb-2'}>
-                    {shares.map((share, index) => {
+
+                    {Object.keys(shares).map((group) => {
                         return (
-                            <div key={share.email} className={'flex items-center space-x-2 py-2 border-t'}>
-                                <div><FaUserCircle className={'h-6 w-6 text-neutral-300'}/></div>
-                                <div className={'flex-grow'}>{share.email}</div>
-                                <div className={'text-sm'}>{capitalize(share.status)}</div>
-                                {/*<div>*/}
-                                {/*    <BaseListbox onChange={(data) => onPermissionChange(data, share, index)} placement={"right-3"} items={sharePermissionItems} selected={*/}
-                                {/*        sharePermissionItems.find(perm => perm.edit === share.edit)||sharePermissionItems[1]*/}
-                                {/*    }/>*/}
-                                {/*</div>*/}
-                                <Tooltip anchorId={share.id} content={"Delete"}/>
-                                <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
-                                    <HiOutlineXMark/>
-                                </button>
-                            </div>
+                            Object.values(shares[group]).map((share) => {
+                                return (
+                                    <div key={share.email} className={'flex items-center space-x-2 py-2 border-t dark:border-gray-700'}>
+                                        <div>
+                                            {share.user_id === getAuth().currentUser.uid ? (
+                                                <img alt="Avatar" className={'h-10 w-10 rounded-full'} src={getAuth().currentUser.photoURL}/>
+                                            ) : <FaUserCircle className={'h-10 w-10 text-neutral-300'}/>}
+                                        </div>
+
+
+                                        {share.user_id === getAuth().currentUser.uid ? (
+                                            <div className={'flex-grow'}>
+                                                <div className={'font-medium text-neutral-500 dark:text-gray-200'}>Me</div>
+                                                <div className={'text-sm text-neutral-500 dark:text-gray-200'}>{share.email}</div>
+                                            </div>
+                                        ) : <div className={'flex-grow text-md text-neutral-500 dark:text-gray-200'}>{share.email}</div>}
+
+
+                                        <div className={'text-sm text-neutral-500 dark:text-gray-400'}>{share.status && capitalize(share.status)}</div>
+                                        {/*<BaseListbox onChange={(data) => onPermissionChange(data, share)}*/}
+                                        {/*             placement={"right-3"}*/}
+                                        {/*             items={sharePermissionItems}*/}
+                                        {/*             selected={sharePermissionItems.find(perm => perm.edit === share.edit)||sharePermissionItems[1]}*/}
+                                        {/*/>*/}
+                                        <Tooltip anchorId={share.id} content={"Delete"}/>
+                                        <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
+                                            <HiOutlineXMark/>
+                                        </button>
+                                    </div>
+                                )
+                            })
                         )
                     })}
+
+                    {/*{shares.map((share, index) => {*/}
+                    {/*    return (*/}
+                    {/*        <div key={share.email} className={'flex items-center space-x-2 py-2 border-t'}>*/}
+                    {/*            <div><FaUserCircle className={'h-6 w-6 text-neutral-300'}/></div>*/}
+                    {/*            <div className={'flex-grow'}>{share.email}</div>*/}
+                    {/*            <div className={'text-sm'}>{capitalize(share.status)}</div>*/}
+                    {/*            <Tooltip anchorId={share.id} content={"Delete"}/>*/}
+                    {/*            <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>*/}
+                    {/*                <HiOutlineXMark/>*/}
+                    {/*            </button>*/}
+                    {/*        </div>*/}
+                    {/*    )*/}
+                    {/*})}*/}
                 </div>
 
 
             </div>
-            <div className={'rounded-b-md px-4 flex items-center_ space-x-2 justify-end border-t py-3 bg-gray-100'}>
+            <div className={'rounded-b-md px-4 flex items-center_ space-x-2 justify-end border-t border-gray-600 py-3 bg-gray-100 dark:bg-gray-700'}>
                 <button className={'cancel-btn'} onClick={props.closeModal}>
                     Cancel
                 </button>
@@ -149,4 +185,14 @@ export default function ShareProjectForm({p, ...props}) {
             </div>
         </div>
     )
+}
+{/*<div>*/
+}
+{/*    <BaseListbox onChange={(data) => onPermissionChange(data, share, index)} placement={"right-3"} items={sharePermissionItems} selected={*/
+}
+{/*        sharePermissionItems.find(perm => perm.edit === share.edit)||sharePermissionItems[1]*/
+}
+{/*    }/>*/
+}
+{/*</div>*/
 }

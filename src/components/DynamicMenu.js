@@ -12,6 +12,7 @@ import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {dbDateFormat} from "./helper";
 import {useDispatch} from "react-redux";
+import {getAuth} from "firebase/auth";
 
 export default function DynamicMenu({p, overdue}) {
 
@@ -69,6 +70,7 @@ export default function DynamicMenu({p, overdue}) {
         {
             "name": (showCompleted ? "Hide" : "Show") + " completed",
             "icon": "BsCheckSquare",
+            allow: true,
             "id": "10",
             "action": () => {
                 setShowCompleted(prev => !prev)
@@ -78,6 +80,7 @@ export default function DynamicMenu({p, overdue}) {
             "name": (showDetails ? "Hide" : "Show") + " details",
             "icon": "BsListNested",
             "id": "20",
+            allow: true,
             "action": () => {
                 setShowDetails(prev => !prev)
             }
@@ -85,6 +88,7 @@ export default function DynamicMenu({p, overdue}) {
         {
             "name": "Postpone",
             "icon": "BsCalendar",
+            allow: true,
             "id": "30",
             "action": () => {
                 setPostponeOpen(true)
@@ -97,6 +101,7 @@ export default function DynamicMenu({p, overdue}) {
             "name": (showCompleted ? "Hide" : "Show") + " completed",
             "icon": "BsCheckSquare",
             "id": "10",
+            allow: true,
             "action": () => {
                 setShowCompleted(prev => !prev)
             }
@@ -105,6 +110,7 @@ export default function DynamicMenu({p, overdue}) {
             "name": (showDetails ? "Hide" : "Show") + " details",
             "icon": "BsListNested",
             "id": "20",
+            allow: true,
             "action": () => {
                 setShowDetails(prev => !prev)
             }
@@ -113,6 +119,7 @@ export default function DynamicMenu({p, overdue}) {
             "name": "Edit project",
             "icon": "BsPencil",
             "id": "2",
+            allow: (project && project.user_id === getAuth().currentUser.uid),
             "action": () => {
                 setOpen(true)
             }
@@ -121,6 +128,7 @@ export default function DynamicMenu({p, overdue}) {
             "name": "Share project",
             "icon": "BsShare",
             "id": "3",
+            allow: (project && project.user_id === getAuth().currentUser.uid),
             "action": () => {
                 setOpenShare(true)
             }
@@ -128,6 +136,7 @@ export default function DynamicMenu({p, overdue}) {
         {
             "name": "Postpone",
             "icon": "BsCalendar",
+            allow: true,
             "id": "31",
             "action": () => {
                 setPostponeOpen(true)
@@ -137,12 +146,12 @@ export default function DynamicMenu({p, overdue}) {
             "name": "Delete project",
             "icon": "BsTrash",
             "id": "4",
+            allow: (project && project.user_id === getAuth().currentUser.uid),
             "action": () => {
                 toast.error("Not implemented")
             }
         },
     ]
-
     useEffect(() => {
 
         setUseMenu(
@@ -170,9 +179,9 @@ export default function DynamicMenu({p, overdue}) {
                             </Menu.Button>
                             <Menu.Items static={false} className={'z-50 absolute mt-1 min-w-[14rem] right-0 max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
                                 {useMenu.map((item, index) => (
-                                    <Menu.Item onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
+                                    <Menu.Item disabled={!item.allow} onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
 
-                                        <button className={`block truncate font-normal`}>
+                                        <button className={`${!item.allow ? "opacity-50" : ""} block truncate font-normal`}>
                                             <div className={'flex items-center space-x-3'}>
                                                 <div><PostIcon iconName={item.icon}/></div>
                                                 <div>
@@ -192,7 +201,7 @@ export default function DynamicMenu({p, overdue}) {
             <SmallModal open={open} closeModal={closeModal} title={"Edit project"}>
                 <EditProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
-            <SmallModal open={openShare} closeModal={closeModal} title={"Share project"}>
+            <SmallModal open={openShare} closeModal={closeModal} title={`Share project "${project&&project.name}"`}>
                 <ShareProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
             <SmallModal open={postponeOpen} closeModal={closeModal} title={"Postpone tasks"}>

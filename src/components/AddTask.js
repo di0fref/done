@@ -124,6 +124,9 @@ export default function AddTask() {
     const onProjectChange = (project) => {
         setProject(project)
     }
+if(params.path === "trash"){
+    return <div></div>
+}
 
     if (editing) {
         return (

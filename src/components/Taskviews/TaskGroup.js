@@ -8,7 +8,7 @@ export default function TaskGroup(props) {
 
     return (
         <div className={'z-10'}>
-            <button onClick={() => setOpen(!open)} className={'mt-6 mb-4_ w-full'}>
+            <button onClick={() => setOpen(!open)} className={'mt-6 mb-2 w-full'}>
                 <div className={'flex items-center space-x-1 border-b_'}>
                     <div><BsChevronRight className={`${open ? "rotate-90" : "rotate-0"} h-3 w-4`}/></div>
                     <div className={'flex-grow text-left'}>

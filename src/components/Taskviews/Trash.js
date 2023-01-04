@@ -26,7 +26,11 @@ export default function Trash({renderCard}) {
                 Object.values(_data_.trash.tasks).map((task, i) => {
                     return renderCard(task, i)
                 })
-            ) : <NoTasks/>}
+            ) : <div className={'w-full my-12 flex items-center justify-center'}>
+                <div className={'text-neutral-500 dark:text-gray-500 text-center'}>
+                    <div className={'text-base mb-1'}>Trash is empty.</div>
+                </div>
+            </div>}
 
         </>
     )
