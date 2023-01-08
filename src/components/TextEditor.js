@@ -18,17 +18,17 @@ import {MarkdownShortcutPlugin} from "@lexical/react/LexicalMarkdownShortcutPlug
 import {TRANSFORMERS} from "@lexical/markdown";
 import {CheckListPlugin} from "@lexical/react/LexicalCheckListPlugin";
 
-
 import {OnChangePlugin} from "@lexical/react/LexicalOnChangePlugin";
 import ToolbarPlugin from "./plugins/ListToolbar";
 
 import {BsTextLeft} from "react-icons/bs";
 import PlaygroundAutoLinkPlugin from "./plugins/AutoLinkPlugin";
+import {useRef} from "react";
 
 
 function Placeholder() {
     return (
-        <div className="editor-placeholder flex items-center space-x-2">
+        <div className="editor-placeholder flex items-center space-x-2 dark:text-gray-600">
             <div><BsTextLeft/></div>
             <div>Description</div>
         </div>
@@ -57,15 +57,16 @@ const listTheme = {
         ul: "PlaygroundEditorTheme__ul"
     }
 }
-
-
 export default function Editor(props) {
 
     const empty = '{"root":{"children":[{"children":[],"direction":null,"format":"","indent":0,"type":"paragraph","version":1}],"direction":null,"format":"","indent":0,"type":"root","version":1}}';
+    const editorStateRef = useRef();
+
 
     return (
 
         <LexicalComposer initialConfig={{
+            ref:editorStateRef,
             theme: listTheme,
             editorState: props.initial ? props.initial : empty,
             editable: !props.editable,
@@ -84,17 +85,20 @@ export default function Editor(props) {
             ],
         }}>
             <div className="editor-container">
-                {!props.editable?<ToolbarPlugin/>:""}
+                {!props.editable ? <ToolbarPlugin/> : ""}
                 <div className="editor-inner">
                     <RichTextPlugin
-                        contentEditable={<ContentEditable className={`${!props.small?"editor-input":""}`}/>}
-                        placeholder={!props.small?<Placeholder/>:""}
+                        contentEditable={<ContentEditable className={`${!props.small ? "editor-input" : ""}`}/>}
+                        placeholder={!props.small ? <Placeholder/> : ""}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
-                    {/*<HistoryPlugin />*/}
+                    <HistoryPlugin/>
                     {/*<TreeViewPlugin />*/}
                     {/*<AutoFocusPlugin/>*/}
-                    <OnChangePlugin onChange={props.onTextChange}/>
+                    <OnChangePlugin onChange={(editorState) => {
+                        props.onTextChange(editorState)
+                        return editorStateRef.current = editorState
+                    }}/>
                     {/*<CodeHighlightPlugin />*/}
                     <ListPlugin/>
                     <LinkPlugin/>

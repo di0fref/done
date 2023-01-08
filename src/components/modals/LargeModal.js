@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import Editor from "./TextEditor";
-import CustomDatePicker from "./CustomDatePicker";
-import {updateTask} from "../redux/taskSlice";
+import Editor from "../TextEditor";
+import CustomDatePicker from "../badges/CustomDatePicker";
+import {updateTask} from "../../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
-import BaseListbox from "./BaseListbox";
-import {dbDateFormat, priorities} from "./helper";
+import BaseListbox from "../BaseListbox";
+import {dbDateFormat, priorities} from "../helper";
 import {useNavigate, useParams} from "react-router-dom";
 
 export default function LargeModal(props) {
@@ -26,7 +26,7 @@ export default function LargeModal(props) {
     const [text, setText] = useState(props.card.text);
     const [project, setProject] = useState(_project_);
     const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
-    const [dirty, setDirty] = useState(false);
+    const [dirty, setDirty] = useState(true);
     const params = useParams();
     const dispatch = useDispatch()
 
@@ -158,7 +158,6 @@ export default function LargeModal(props) {
                                     <button
                                         className="cancel-btn"
                                         type="button"
-
                                         onClick={closeModal}>
                                         Cancel
                                     </button>

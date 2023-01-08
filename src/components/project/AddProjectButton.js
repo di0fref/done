@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {HiPlus} from "react-icons/hi2";
-import SmallModal from "./SmallModal";
+import SmallModal from "../modals/SmallModal";
 import ProjectForm from "./ProjectForm";
 
 export default function AddProjectButton() {

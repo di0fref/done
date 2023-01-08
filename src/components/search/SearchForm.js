@@ -52,7 +52,7 @@ export default function SearchForm({closeModel}) {
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                             <HiSearch className={'w-6 h-6 opacity-50 dark:text-gray-300'}/>
                         </div>
-                        <input onChange={(event) => setQuery(event.target.value)} type="search" id="default-search" class="ml-2 rounded focus:ring-0 block w-full p-4 pl-10 text-sm text-gray-900 border-none border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." required/>
+                        <input onChange={(event) => setQuery(event.target.value)} type="text" id="default-search" class=" rounded focus:ring-0 block w-full p-4 pl-12 text-sm text-gray-900 border-none border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search..." required/>
                     </div>
 
                     {/*<div className={'mr-2'}><HiSearch className={'w-7 h-7 opacity-50'}/></div>*/}
@@ -65,7 +65,7 @@ export default function SearchForm({closeModel}) {
                             {(filteredTasks.length > 0 || filteredProjects.length > 0) ? (
 
                                 <Combobox.Options static={true}>
-                                    <ul className="dark:bg-gray-800  max-h-[18.375rem] divide-y divide-slate-200 dark:divide-gray-700 overflow-y-auto rounded-b-md border-t border-slate-200 dark:border-gray-700 text-sm leading-6">
+                                    <ul className="dark:bg-gray-800 max-h-[18.375rem] divide-y divide-slate-200 dark:divide-gray-700 overflow-y-auto rounded-b-md border-t border-slate-200 dark:border-gray-700 text-sm leading-6">
 
 
                                         {(filteredTasks.length !== 0) ? (

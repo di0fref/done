@@ -3,13 +3,14 @@ import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import validator from "validator";
 import {FaUserCircle} from "react-icons/fa";
-import BaseListbox from "./BaseListbox";
-import {apiConfig} from "../service/config";
-import http from "../service/http-common";
-import {capitalize} from "./helper";
+import BaseListbox from "../BaseListbox";
+import {apiConfig} from "../../service/config";
+import http from "../../service/http-common";
+import {capitalize} from "../helper";
 import {HiOutlineXMark} from "react-icons/hi2";
 import {Tooltip} from "react-tooltip";
 import {getAuth} from "firebase/auth";
+import {BsEnvelopeFill} from "react-icons/bs";
 
 export default function ShareProjectForm({p, ...props}) {
 
@@ -58,6 +59,7 @@ export default function ShareProjectForm({p, ...props}) {
         http.get(apiConfig.url + "/shares/" + p.id).then(response => {
             setShares(response.data)
         })
+        console.log(shares)
     }, [p])
 
 
@@ -74,10 +76,8 @@ export default function ShareProjectForm({p, ...props}) {
         },
     ]
 
-    const validateEmail = (e) => {
-        var email = e.target.value
-
-        if (!validator.isEmail(email)) {
+    const validateEmail = (currentEmail) => {
+        if (!validator.isEmail(currentEmail)) {
             setEmailError('Please enter valid Email!')
             return false
         } else {
@@ -87,8 +87,9 @@ export default function ShareProjectForm({p, ...props}) {
     }
 
     const onEmailAdd = (e) => {
-        if (e.key === 'Enter') {
-            if (validateEmail(e) && !(shares.findIndex(element => element.email === e.target.value) > -1)) {
+        console.log(currentEmail)
+        // if (e.key === 'Enter') {
+            if (validateEmail(currentEmail) && !(shares.findIndex(element => element.email === currentEmail) > -1)) {
                 const share = {
                     email: e.target.value,
                     can_edit: 0,
@@ -99,7 +100,7 @@ export default function ShareProjectForm({p, ...props}) {
                 }
                 setShares([...shares, share])
                 setCurrentEmail("")
-            }
+            // }
         }
     }
 
@@ -109,12 +110,12 @@ export default function ShareProjectForm({p, ...props}) {
             <div className={'p-4'}>
                 <div className="relative w-full">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
-                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
-                        </svg>
+                        <BsEnvelopeFill/>
                     </div>
-                    <input value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)} onKeyPress={onEmailAdd} type="text" id="shareEmail" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type email and press enter"/>
+                    <div className={'flex space-x-2 items-center_'}>
+                        <input value={currentEmail} onChange={(e) => setCurrentEmail(e.target.value)} type="text" id="shareEmail" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type email and press enter"/>
+                        <button className={'save-btn hover:bg-orange-700 bg-orange-600'} onClick={onEmailAdd}>Invite</button>
+                    </div>
                 </div>
                 <div className={'text-sm text-red-400 mt-1'}>{emailError}</div>
             </div>
@@ -135,11 +136,12 @@ export default function ShareProjectForm({p, ...props}) {
 
 
                                         {share.user_id === getAuth().currentUser.uid ? (
-                                            <div className={'flex-grow'}>
-                                                <div className={'font-medium text-neutral-500 dark:text-gray-200'}>Me</div>
-                                                <div className={'text-sm text-neutral-500 dark:text-gray-200'}>{share.email}</div>
-                                            </div>
-                                        ) : <div className={'flex-grow text-md text-neutral-500 dark:text-gray-200'}>{share.email}</div>}
+                                                <div className={'flex-grow'}>
+                                                    <div className={'font-medium text-neutral-700 dark:text-gray-200'}>Me</div>
+                                                    <div className={'text-sm text-neutral-500 dark:text-gray-200'}>{share.email}</div>
+                                                </div>
+                                            ) :
+                                            <div className={'flex-grow text-md text-neutral-700 dark:text-gray-200'}>{share.email}</div>}
 
 
                                         <div className={'text-sm text-neutral-500 dark:text-gray-400'}>{share.status && capitalize(share.status)}</div>
@@ -148,10 +150,14 @@ export default function ShareProjectForm({p, ...props}) {
                                         {/*             items={sharePermissionItems}*/}
                                         {/*             selected={sharePermissionItems.find(perm => perm.edit === share.edit)||sharePermissionItems[1]}*/}
                                         {/*/>*/}
-                                        <Tooltip anchorId={share.id} content={"Delete"}/>
-                                        <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
-                                            <HiOutlineXMark/>
-                                        </button>
+                                        {share.user_id !== getAuth().currentUser.uid ? (
+                                            <>
+                                                <Tooltip anchorId={share.id} content={"Delete"}/>
+                                                <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
+                                                    <HiOutlineXMark/>
+                                                </button>
+                                            </>
+                                        ) : ""}
                                     </div>
                                 )
                             })
@@ -175,7 +181,7 @@ export default function ShareProjectForm({p, ...props}) {
 
 
             </div>
-            <div className={'rounded-b-md px-4 flex items-center_ space-x-2 justify-end border-t border-gray-600 py-3 bg-gray-100 dark:bg-gray-700'}>
+            <div className={'rounded-b border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
                 <button className={'cancel-btn'} onClick={props.closeModal}>
                     Cancel
                 </button>

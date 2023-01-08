@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
-import CustomDatePicker from "./CustomDatePicker";
+import CustomDatePicker from "./badges/CustomDatePicker";
 import {getAuth} from "firebase/auth";
 import BaseListbox from "./BaseListbox";
 import {formatDate, priorities} from "./helper";

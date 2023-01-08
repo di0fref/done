@@ -1,15 +1,16 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useSelector} from "react-redux";
 import {motion, AnimatePresence} from "framer-motion"
-import {Card4} from "./Card4";
-import LargeModal from "./LargeModal";
-import All from "./Taskviews/All";
-import Upcoming from "./Taskviews/Upcoming";
-import Inbox from "./Taskviews/Inbox";
-import Project from "./Taskviews/Project";
-import Today from "./Taskviews/Today";
-import Trash from "./Taskviews/Trash";
-import Completed from "./Taskviews/Completed";
+import {Card4} from "./task/Card4";
+import LargeModal from "./modals/LargeModal";
+import All from "./task/All";
+import Upcoming from "./task/Upcoming";
+import Inbox from "./task/Inbox";
+import Project from "./task/Project";
+import Today from "./task/Today";
+import Trash from "./task/Trash";
+import Completed from "./task/Completed";
+import md5 from "md5";
 
 export const Container = (props) => {
     {
@@ -32,7 +33,7 @@ export const Container = (props) => {
                     <AnimatePresence>
                         <Card4
                             oM={setOpen}
-                            key={card.name + card.id}
+                            key={md5(card.text)}
                             index={index}
                             id={card.id}
                             card={card}

@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
-import NoTasks from "../NoTasks";
+import NoTasks from "./NoTasks";
 import {sortF} from "./Sort";
 import TopHeader from "./TopHeader";
 import TaskGroup from "./TaskGroup";
@@ -74,7 +74,7 @@ export default function Today({renderCard}) {
                         </TaskGroup>
 
                     )
-                }) : <NoTasks/>}
+                }) : !_data_.overdue&&<NoTasks/>}
 
             {_data_.completed.length && showCompleted ?
                 (

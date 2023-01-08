@@ -12,10 +12,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
-
-// import socketIO from 'socket.io-client';
-
-// export const socket = socketIO.connect('http://localhost:4000');
+import Cal from "./components/Cal";
 
 function App() {
 
@@ -30,6 +27,7 @@ function App() {
                     effect={"solid"}
                 />
                 <Routes>
+                    <Route exact path={'/calendar'} element={<Cal/>}></Route>
                     <Route path={'/:path/:id'} element={<Main/>}/>
                     <Route path={'/:path/:id/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path/:path2/:id2'} element={<Main/>}/>

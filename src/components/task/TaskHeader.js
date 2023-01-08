@@ -44,7 +44,7 @@ export default function TaskHeader({overdue}) {
             <div className={'font-semibold text-xl flex-grow'}>{name}</div>
             <div className={'flex space-x-4'}>
                 <div className={'text-sm flex items-center space-x-2'}>
-                    {/*<Sort/>*/}
+                    <Sort/>
                     <DynamicMenu p={project} overdue={overdue}/>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import {useSelector} from "react-redux";
 import {useReadLocalStorage} from "usehooks-ts";
-import NoTasks from "../NoTasks";
+import NoTasks from "./NoTasks";
 import {sortF} from "./Sort";
 import TopHeader from "./TopHeader";
 import {capitalize, formatDate, groupBy} from "../helper";

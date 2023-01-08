@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import {TwitterPicker} from "react-color";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
-import {addProject} from "../redux/projectSlice";
+import {addProject} from "../../redux/projectSlice";
 
 export default function ProjectForm(props) {
 
@@ -63,7 +63,7 @@ export default function ProjectForm(props) {
                 </div>
 
             </div>
-            <div className={'bg-gray-50 dark:bg-gray-800 flex justify-end space-x-2 p-4'}>
+            <div className={'rounded-b border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
                 <button onClick={props.closeModal} className={'cancel-btn'}>Cancel</button>
                 <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>Save</button>
             </div>

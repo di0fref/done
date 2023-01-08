@@ -1,17 +1,17 @@
 import {useEffect, useState} from 'react'
 
-import {delay, paths} from "./helper";
+import {delay, paths} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleCompleted, updateTask} from "../redux/taskSlice";
+import {toggleCompleted, updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
 import {format} from 'date-fns'
 
 import {useNavigate, useParams} from "react-router-dom";
 import CardMenu from "./CardMenu";
-import PrioBadge from "./PrioBadge";
+import PrioBadge from "../badges/PrioBadge";
 import {useReadLocalStorage} from "usehooks-ts";
-import Editor from "./TextEditor";
-import ProjectBadge from "./ProjectBadge";
+import Editor from "../TextEditor";
+import ProjectBadge from "../project/ProjectBadge";
 
 export const Card4 = ({card}) => {
 
@@ -19,6 +19,7 @@ export const Card4 = ({card}) => {
     const [name, setName] = useState(card.name);
     const params = useParams()
     const [link, setLink] = useState("")
+    const [text, setText] = useState(card.text)
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
 
@@ -101,7 +102,7 @@ export const Card4 = ({card}) => {
                 </div>
                 <div onClick={clickHandler} className={'flex-grow py-2.5'}>
                     <span className={`${card.completed ? "line-through " : ""} font-medium text-sm`}>{name}</span>
-                    {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}><Editor initial={card.text} editable={true} small={true}/></div> : ""}
+                    {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}><Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/></div> : ""}
                 </div>
                 {!card.completed ?
                     <>

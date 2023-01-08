@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import {sortF} from "./Sort";
 import {useReadLocalStorage} from "usehooks-ts";
-import NoTasks from "../NoTasks";
+import NoTasks from "./NoTasks";
 import TopHeader from "./TopHeader";
 
 export default function Trash({renderCard}) {
