@@ -26,7 +26,7 @@ export default function LargeModal(props) {
     const [text, setText] = useState(props.card.text);
     const [project, setProject] = useState(_project_);
     const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
-    const [dirty, setDirty] = useState(true);
+    const [dirty, setDirty] = useState(false);
     const params = useParams();
     const dispatch = useDispatch()
 
@@ -114,7 +114,7 @@ export default function LargeModal(props) {
                                                 }} className={'w-[calc(100%-45px)] bg-transparent font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
                                             </div>
                                         </div>
-                                        <div className={'py-4'}>
+                                        <div className={'pl-8 pr-4 py-4'}>
                                             <Editor editable={!!props.card.deleted} initial={text} onTextChange={(e) => {
                                                 setText(JSON.stringify(e));
                                                 setDirty(true);
@@ -158,6 +158,7 @@ export default function LargeModal(props) {
                                     <button
                                         className="cancel-btn"
                                         type="button"
+
                                         onClick={closeModal}>
                                         Cancel
                                     </button>

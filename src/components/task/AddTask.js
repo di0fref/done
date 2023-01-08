@@ -1,12 +1,12 @@
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addTask} from "../redux/taskSlice";
+import {addTask} from "../../redux/taskSlice";
 import {format} from "date-fns";
 import {toast} from "react-toastify";
-import CustomDatePicker from "./badges/CustomDatePicker";
+import CustomDatePicker from "../badges/CustomDatePicker";
 import {getAuth} from "firebase/auth";
-import BaseListbox from "./BaseListbox";
-import {formatDate, priorities} from "./helper";
+import BaseListbox from "../BaseListbox";
+import {formatDate, priorities} from "../helper";
 import {useParams} from "react-router-dom";
 
 
@@ -163,7 +163,7 @@ if(params.path === "trash"){
                 setEditing(true)
             }
         }}>
-            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-200/80  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-100  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }

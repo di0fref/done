@@ -51,15 +51,13 @@ export default function Main() {
                 localStorage.setItem("sort", JSON.stringify("due"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
             }
-            //
-            // socket.on('connect', function() {
-            //     // Connected, let's sign-up for to receive messages for this room
-            //     socket.emit('room', "abbaRoom");
-            // });
 
-
-            dispatch(getTasks())
-            dispatch(getProjects())
+            try {
+                dispatch(getTasks()).unwrap()
+                dispatch(getProjects()).unwrap()
+            }catch (err){
+                console.log(err)
+            }
         })
     }, [])
 
@@ -173,13 +171,13 @@ export default function Main() {
 
             <div className={"relative h-screen md:flex bg-white dark:bg-gray-900 _bg-gray-50"}>
                 <main className={"flex h-full flex-grow _pt-12"}>
-                    {/*<div className={'sidebar-active w-[50px] border-r dark:border-gray-700 px-2 py-4'}>*/}
-                    {/*    <MainMenu/>*/}
-                    {/*    <div className={'flex flex-col items-center space-y-6 mt-6'}>*/}
-                    {/*        <div><FaCheckSquare className={'w-6 h-6 text-blue-500'}/></div>*/}
-                    {/*        <div><SearchDialog/></div>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
+                    <div className={'sidebar-active w-[50px] border-r dark:border-gray-700 px-2 py-4'}>
+                        <MainMenu/>
+                        <div className={'flex flex-col items-center space-y-6 mt-6'}>
+                            <div><FaCheckSquare className={'w-6 h-6 text-blue-500'}/></div>
+                            <div><SearchDialog/></div>
+                        </div>
+                    </div>
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>
                         <div className={'flex-grow container'}>
