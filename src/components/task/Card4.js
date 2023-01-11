@@ -100,14 +100,24 @@ export const Card4 = ({card}) => {
                 <div className={'py-2.5 mr-2'}>
                     <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
+
                 <div onClick={clickHandler} className={'flex-grow py-2.5'}>
                     <span className={`${card.completed ? "line-through " : ""} font-medium text-sm`}>{name}</span>
+                    {/*<div className={'flex items-center space-x-2 mt-1'}>*/}
+                    {/*    <div><img src={card.image_url} className={'rounded-full h-4 w-4'}/></div>*/}
+                    {/*    <div className={'text-xs text-neutral-500'}>{card.assigned_user_name}</div>*/}
+                    {/*</div>*/}
                     {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}><Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/></div> : ""}
                 </div>
                 {!card.completed ?
+
                     <>
+
                         <div className={'py-2.5'}>
                             {(!currentProject.id && card.project) ? <ProjectBadge project={taskProject}/> : ""}
+                        </div>
+                        <div className={'py-2.5'}>
+                            <span className={'text-xs text-neutral-500'}>{card.assigned_user_name}</span>
                         </div>
                         <div className={'py-2.5'}>
                             <PrioBadge value={card.prio}/>

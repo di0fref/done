@@ -1,7 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {taskCreate, tasksAll, taskUpdate} from "../service/api";
-import {apiConfig} from "../service/config";
-import http from "../service/http-common";
+import axios from "axios";
 
 const initialState = []
 
@@ -10,7 +8,7 @@ export const getTasks = createAsyncThunk(
     'tasks/getTasks',
     async (thunkAPI) => {
         try {
-            const response = await http.get(apiConfig.url + "/tasks")
+            const response = await axios.get("/tasks")
             return response.data
         } catch (error) {
             throw thunkAPI.rejectWithValue(error.message)
@@ -21,21 +19,21 @@ export const getTasks = createAsyncThunk(
 export const addTask = createAsyncThunk(
     'tasks/addTask',
     async (task) => {
-        return await taskCreate(task)
+        return await axios.post("/tasks", task).then(response => response.data)
     }
 )
 
 export const updateTask = createAsyncThunk(
     'tasks/updateTask',
     async (task, thunkAPI) => {
-        return await http.put(apiConfig.url + "/tasks/" + task.id, task).then(response => response.data)
+        return await axios.put("/tasks/" + task.id, task).then(response => response.data)
     }
 )
 
 export const deleteTask = createAsyncThunk(
     'tasks/deleteTask',
     async (task, thunkAPI) => {
-        return await http.delete(apiConfig.url + "/tasks/" + task.id).then(response => response.data)
+        return await axios.delete("/tasks/" + task.id).then(response => response.data)
     }
 )
 
@@ -80,5 +78,5 @@ export const taskSlice = createSlice({
             })
     }
 })
-export const {addTaskFromSocket} = taskSlice.actions
+// export const {addTaskFromSocket} = taskSlice.actions
 export default taskSlice.reducer

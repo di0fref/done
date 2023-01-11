@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import BaseListbox from "../BaseListbox";
 import {dbDateFormat, priorities} from "../helper";
 import {useNavigate, useParams} from "react-router-dom";
+import axios from "axios";
 
 export default function LargeModal(props) {
 
@@ -27,6 +28,11 @@ export default function LargeModal(props) {
     const [project, setProject] = useState(_project_);
     const [taskCompleted, setTaskCompleted] = useState(props.card.completed)
     const [dirty, setDirty] = useState(false);
+    const [users, setUsers] = useState([])
+    const [assignedUser, setAssignedUser] = useState({
+        id: props.card.assigned_user_id,
+        name: props.card.assigned_user_name
+    })
     const params = useParams();
     const dispatch = useDispatch()
 
@@ -37,6 +43,17 @@ export default function LargeModal(props) {
 
 
     useEffect(() => {
+        /* Load users that can be assigned */
+        project && axios.get("/projects_users/" + project.id).then(response => {
+            setUsers(response.data)
+        })
+    }, [])
+
+    useEffect(() => {
+        console.log(users)
+    }, [users])
+
+    useEffect(() => {
         const close = (e) => {
             if (e.keyCode === 27) {
                 closeModal()
@@ -44,7 +61,7 @@ export default function LargeModal(props) {
         }
         window.addEventListener('keydown', close)
         return () => window.removeEventListener('keydown', close)
-    },[])
+    }, [])
 
     const closeModal = () => {
         nav("/" + params.path + "/" + (params.id === undefined ? "" : params.id))
@@ -64,7 +81,8 @@ export default function LargeModal(props) {
                     prio: prio,
                     project_id: project ? project.id : null,
                     completed: taskCompleted,
-                    text: text
+                    text: text,
+                    assigned_user_id: assignedUser.id
                 }
                 await dispatch(updateTask(task)).unwrap();
                 closeModal()
@@ -108,7 +126,7 @@ export default function LargeModal(props) {
                                                 }} type={"checkbox"} className={'checkbox mb-1'}/>
                                             </div>
                                             <div className={'w-full'}>
-                                                <input disabled={!!props.card.deleted}  onChange={(e) => {
+                                                <input disabled={!!props.card.deleted} onChange={(e) => {
                                                     setName(e.target.value)
                                                     setDirty(true)
                                                 }} className={'w-[calc(100%-45px)] bg-transparent font-semibold border-none focus:border-none focus:ring-0 p-0 m-0'} type={"text"} value={name}/>
@@ -123,9 +141,27 @@ export default function LargeModal(props) {
                                     </div>
                                     <div className={'w-1/3 border-l px-4 dark:border-gray-700'}>
 
+                                        <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Assigned
+                                                user
+                                            </div>
+                                            <div className={'text-md'}>
+                                                <BaseListbox
+                                                    disabled={!!props.card.deleted || !props.card.project_id} onChange={(user) => {
+                                                    setAssignedUser({
+                                                        id: user.user_id,
+                                                        name: user.name
+                                                    })
+                                                    setDirty(true)
+                                                }} items={users} selected={assignedUser}/>
+                                            </div>
+
+                                        </div>
 
                                         <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
-                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Due date</div>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Due
+                                                date
+                                            </div>
                                             <div className={'text-md'}>
                                                 <CustomDatePicker disabled={!!props.card.deleted} bg={false} onClick={false} date={due} onDateChange={(date) => {
                                                     setDue(date)
@@ -139,7 +175,10 @@ export default function LargeModal(props) {
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
                                                 setProject(project)
                                                 setDirty(true)
-                                            }} items={ [{"name":"Inbox", "id": null}, ...projects]} selected={project||{"name":"Inbox", "id": null}}/>
+                                            }} items={[{
+                                                "name": "Inbox",
+                                                "id": null
+                                            }, ...projects]} selected={project || {"name": "Inbox", "id": null}}/>
                                         </div>
 
 

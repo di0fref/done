@@ -12,6 +12,9 @@ export const sortF = (a, b, sortBy) => {
         "normal": 1,
         "high": 2
     }
+    if (sortBy === "order") {
+        return a[sortBy] < b[sortBy] ? 1 : -1
+    }
     if (sortBy === "prio") {
         return prio[a["prio"]] < prio[b["prio"]] ? 1 : -1
     }

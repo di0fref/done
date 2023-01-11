@@ -13,6 +13,7 @@ import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import Cal from "./components/Cal";
+import Web from "./pages/Web";
 
 function App() {
 
@@ -22,20 +23,20 @@ function App() {
                 hideProgressBar={true}
                 className={""}
                 position="bottom-right"/>
-            <DndProvider backend={HTML5Backend}>
+            {/*<DndProvider backend={HTML5Backend}>*/}
                 <Tooltip
                     effect={"solid"}
                 />
                 <Routes>
-                    <Route exact path={'/calendar'} element={<Cal/>}></Route>
+                    <Route exact path={'/'} element={<Web/>}/>
                     <Route path={'/:path/:id'} element={<Main/>}/>
                     <Route path={'/:path/:id/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path'} element={<Main/>}/>
-                    <Route exact path="/" element={<Navigate to="/today" replace/>}/>
+                    {/*<Route exact path="/" element={<Navigate to="/today" replace/>}/>*/}
                     <Route exact path={"/login"} element={<Login/>}/>
                 </Routes>
-            </DndProvider>
+            {/*</DndProvider>*/}
         </Provider>
     );
 }

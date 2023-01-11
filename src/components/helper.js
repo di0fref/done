@@ -1,20 +1,58 @@
 import {format, formatRelative} from "date-fns";
-import {FaArchive, FaInbox, FaStar} from "react-icons/fa";
+import {FaArchive, FaInbox, FaStar, FaUserCircle} from "react-icons/fa";
 import {BsCalendar, BsCheckSquareFill, BsList, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
+import {getAuth} from "firebase/auth";
 
 export const dbDateFormat = "Y-MM-dd"
+
+
+export const GoogleHead = (props) => {
+
+    if(getAuth().currentUser && getAuth().currentUser.uid) {
+        const image = getAuth().currentUser.photoURL
+        return (
+            <img {...props} alt="Avatar" src={image}/>
+        )
+    }
+
+    return null
+}
+
+export async function isLoggedIn() {
+    try {
+        await new Promise((resolve, reject) =>
+            getAuth().onAuthStateChanged(
+                user => {
+                    if (user) {
+                        resolve(user)
+                    } else {
+                        // console.log("User logged out firebase");
+                        localStorage.removeItem("AccessToken")
+                        reject('no user logged in')
+                        // navigate("login")
+                    }
+                },
+                error => reject(error)
+            )
+        )
+        return true
+    } catch (error) {
+        console.log(error);
+        return false
+    }
+}
 
 export const groupByCount = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
         const currentHero = consolidatedHeroes[key];
         let groupId = "";
-        if(sortBy === "due" || sortBy === "completed_at"){
+        if (sortBy === "due" || sortBy === "completed_at") {
             groupId = format(new Date(currentHero[sortBy]), "Y-MM-dd")
-        }
-        else {
+        } else {
             groupId = currentHero[sortBy];
-        }        if (!groups[groupId]) {
+        }
+        if (!groups[groupId]) {
             groups[groupId] = [];
         }
         ++groups[groupId];
@@ -26,10 +64,9 @@ export const groupBy = (consolidatedHeroes, sortBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
         const currentHero = consolidatedHeroes[key];
         let groupId = "";
-        if(sortBy === "due" || sortBy === "completed_at"){
+        if (sortBy === "due" || sortBy === "completed_at") {
             groupId = format(new Date(currentHero[sortBy]), "Y-MM-dd")
-        }
-        else {
+        } else {
             groupId = currentHero[sortBy];
         }
         if (!groups[groupId]) {

@@ -102,7 +102,8 @@ export default function AddTask() {
                         project_id: project.id || null,
                         text: "",
                         prio: prio,
-                        user_id: getAuth().currentUser.uid
+                        user_id: getAuth().currentUser.uid,
+                        assigned_user_id: getAuth().currentUser.uid,
                     })).unwrap()
 
 

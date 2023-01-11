@@ -1,35 +1,51 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {allProjects, createProject} from "../service/api";
-import {apiConfig} from "../service/config";
-import http from "../service/http-common";
+import axios from "axios";
+import {arrayMoveImmutable} from "array-move";
 
 const initialState = []
 
 export const getProjects = createAsyncThunk(
     'project/getProjects',
     async (thunkAPI) => {
-        return await allProjects()
+        return await axios.get("/projects").then(response => response.data)
     }
 )
 export const addProject = createAsyncThunk(
     'project/addProject',
     async (project, thunkAPI) => {
-        return await createProject(project)
+        console.log(project)
+        return await axios.post("/projects", project).then(response => response.data)
     }
 )
 
 export const updateProject = createAsyncThunk(
     'project/updateProject',
     async (project, thunkAPI) => {
-        return await http.put(apiConfig.url + "/projects/" + project.id, project).then(response => response.data)
+        return await axios.put("/projects/" + project.id, project).then(response => response.data)
     }
 )
 export const projectSlice = createSlice({
     name: 'project',
     initialState,
     reducers: {
-        add: (state) => {
-        },
+        move(state, action) {
+
+
+            const a = state[action.payload.oldIndex]
+            const b = state[action.payload.newIndex]
+
+            axios.put("/projects/" + a.id, {
+                order: action.payload.newIndex,
+            }).then((result) => {
+            })
+            axios.put("/projects/" + b.id, {
+                order: action.payload.oldIndex,
+            }).then((result) => {
+            })
+
+            return arrayMoveImmutable(state, action.payload.oldIndex, action.payload.newIndex)
+
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -45,10 +61,11 @@ export const projectSlice = createSlice({
                     ...state[index],
                     ...action.payload,
                 };
-
-                console.log(state[index]);
             })
     }
 })
+
+export const {move} = projectSlice.actions
+
 
 export default projectSlice.reducer

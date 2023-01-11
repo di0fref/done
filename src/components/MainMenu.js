@@ -7,17 +7,7 @@ import Settings from "./Settings";
 import {useState} from "react";
 import {PostIcon} from "./BaseListbox";
 import {FaUserCircle} from "react-icons/fa";
-
-
-const GoogleHead = () => {
-    const user = getAuth();
-
-    return (
-        <div className={'w-8'}>
-            <img  alt="Avatar" className={'rounded-md'} src={user.currentUser.photoURL}/>
-        </div>
-    )
-}
+import {GoogleHead} from "./helper";
 
 
 export default function MainMenu() {
@@ -47,7 +37,7 @@ export default function MainMenu() {
             "icon": "HiLogout",
             "action": () => {
                 signOutFireBase().then(() => {
-                    navigate("/login")
+                    navigate("/")
                 })
             }
         }
@@ -61,7 +51,7 @@ export default function MainMenu() {
 
                     <Menu as={"div"}>
                         <Menu.Button>
-                            <GoogleHead/>
+                            <GoogleHead className={'rounded-full w-10'}/>
                         </Menu.Button>
                         <Menu.Items className={' z-50 absolute mt-1 min-w-[14rem]  w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
                             {items.map((item, index) => (
