@@ -3,7 +3,7 @@ import {
     BsList,
     BsSunFill, BsSunriseFill
 } from "react-icons/bs";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import BaseListbox, {PostIcon} from "../BaseListbox";
 import {Tooltip} from "react-tooltip";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import {format} from "date-fns";
 import DatePickerIcon from "../badges/DatePickerIcon";
 import {toast} from "react-toastify";
 import {formatDate} from "../helper";
+import axios from "axios";
 
 
 export default function CardMenu({disabled, card, ...props}) {
@@ -25,6 +26,22 @@ export default function CardMenu({disabled, card, ...props}) {
     const [pinned, setPinned] = useState(card.pinned)
 
     const [project, setProject] = useState(_project_);
+
+
+    const [users, setUsers] = useState([])
+
+    const [assignedUser, setAssignedUser] = useState({
+        id: card.assigned_user_id,
+        name: card.assigned_user_name
+    })
+
+    useEffect(() => {
+        /* Load users that can be assigned */
+        project && axios.get("/projects_users/" + project.id).then(response => {
+            setUsers(response.data)
+        })
+    }, [])
+
     const items =
         [
             {
@@ -101,6 +118,14 @@ export default function CardMenu({disabled, card, ...props}) {
 
         toast.success("Due date set to " + formatDate(date))
     }
+
+    const onUserChange = (user) => {
+        dispatch(updateTask({
+            id: card.id,
+            assigned_user_id: user.user_id
+        }))
+    }
+
     const setPrio = (prio) => {
         dispatch(updateTask({
             id: card.id,
@@ -166,10 +191,10 @@ export default function CardMenu({disabled, card, ...props}) {
                         <Popover.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
                             <BsList className={'h-5 w-5 text-neutral-500 dark:text-gray-400'}/>
                         </Popover.Button>
-                        <Popover.Panel className="w-36 z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 min-w-fit w-full origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {({close}) => (
 
-                                <div className="px-1 py-1">
+                                <div className="px-1 py-1 w-56">
                                     <div className={'p-2 border-b  dark:border-b-gray-600'}>
                                         <div className={'text-neutral-400 dark:text-neutral-200 text-xs'}>Due date</div>
                                         <div className={'mt-2 text-sm flex items-center justify-between'}>
@@ -230,6 +255,20 @@ export default function CardMenu({disabled, card, ...props}) {
                                             </div>
                                         </div>
                                     </div>
+
+
+                                    <div className="px-1 py-1 ">
+                                        <div className={'p-2 border-b dark:border-b-gray-600'}>
+                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Assigned user</div>
+                                            <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
+                                                 onChange={(user) => {
+                                                     onUserChange(user)
+                                                     close()
+                                                 }}/>
+                                        </div>
+                                    </div>
+
+
                                     <div className="px-1 py-1 ">
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Project</div>

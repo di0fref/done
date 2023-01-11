@@ -33,7 +33,7 @@ export const Container = (props) => {
                     <AnimatePresence>
                         <Card4
                             oM={setOpen}
-                            key={md5(card.name + card.text + card.id + card.assigned_user_id + card.prio)}
+                            key={md5(card.name + card.text + card.id + card.assigned_user_id + card.prio + card.project_id)}
                             index={index}
                             id={card.id}
                             card={card}

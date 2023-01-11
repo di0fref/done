@@ -43,6 +43,14 @@ export default function Sort() {
             "action": onChange
         },
         {
+            "name": "Assigned user",
+            "value": "assigned_user_name",
+            "id": "svfs",
+            "icon": "BsPerson",
+            "allow": true,
+            "action": onChange
+        },
+        {
             "name": "Priority",
             "value": "prio",
             "id": "3yul",

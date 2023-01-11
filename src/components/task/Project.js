@@ -19,13 +19,15 @@ export default function Project({renderCard, ...props}) {
     const showOverdue = useReadLocalStorage("showOverdue")
 
     const _data_ = {
+
         tasks: groupBy([...useSelector(
             state => state.tasks.filter(
-                task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === props.id && (!task.completed) && !task.deleted
+                task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === props.id && !task.completed && !task.deleted
             ))]
             .sort((a, b) => {
                 return sortF(a, b, sortBy)
             }), sortBy),
+
         completed: [...useSelector(
             state => state.tasks.filter(
                 task => task.project_id === props.id && task.completed && !task.deleted
