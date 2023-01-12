@@ -31,6 +31,9 @@ export default function MainMenu() {
                 setOpen(true)
             }
         },
+        // {
+        //     "name": "divider"
+        // },
         {
             "name": "Sign out",
             "id": "signout",
@@ -53,9 +56,11 @@ export default function MainMenu() {
                         <Menu.Button>
                             <GoogleHead className={'rounded-full w-10'}/>
                         </Menu.Button>
-                        <Menu.Items className={' z-50 absolute mt-1 min-w-[14rem]  w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
-                            {items.map((item, index) => (
-                                <Menu.Item onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
+                        <Menu.Items className={'z-50 absolute mt-1 min-w-[14rem] w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
+                            {items.map((item, index, {length}) => (
+
+
+                                <Menu.Item onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `${(index + 1 === length)?"":""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
 
                                     <button className={`block truncate font-normal`}>
                                         <div className={'flex items-center space-x-3'}>
@@ -65,6 +70,7 @@ export default function MainMenu() {
                                     </button>
 
                                 </Menu.Item>
+
                             ))}
                         </Menu.Items>
                     </Menu>

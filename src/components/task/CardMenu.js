@@ -27,6 +27,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
     const [project, setProject] = useState(_project_);
 
+    const [isOpen, setIsOpen] = useState(false)
 
     const [users, setUsers] = useState([])
 
@@ -37,10 +38,10 @@ export default function CardMenu({disabled, card, ...props}) {
 
     useEffect(() => {
         /* Load users that can be assigned */
-        project && axios.get("/projects_users/" + project.id).then(response => {
+        isOpen && project && axios.get("/projects_users/" + project.id).then(response => {
             setUsers(response.data)
         })
-    }, [])
+    }, [isOpen])
 
     const items =
         [
@@ -155,13 +156,11 @@ export default function CardMenu({disabled, card, ...props}) {
                             <Popover.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
                                 <BsList className={'h-5 w-5 text-neutral-500 dark:text-gray-400'}/>
                             </Popover.Button>
-
                             <Popover.Panel className="w-36 z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 min-w-fit w-full origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-
 
                                 {disabledItems.map((item, index) => (
                                     <div className={``} key={item.id + card.id}>
-                                        <button  onClick={item.action} className={` dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
+                                        <button onClick={item.action} className={` dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
                                             {item.icon ?
                                                 <div className={'mr-2'}>
                                                     <PostIcon iconName={item.icon} css={item.css}/>
@@ -171,7 +170,6 @@ export default function CardMenu({disabled, card, ...props}) {
                                         </button>
                                     </div>
                                 ))}
-
 
                             </Popover.Panel>
                         </>
@@ -186,9 +184,10 @@ export default function CardMenu({disabled, card, ...props}) {
     return (
         <div className={'relative'}>
             <Popover as={"div"}>
-                {({open}) => (
-                    <>
-                        <Popover.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
+                {({open}) => {
+
+                    return <>
+                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
                             <BsList className={'h-5 w-5 text-neutral-500 dark:text-gray-400'}/>
                         </Popover.Button>
                         <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
@@ -259,12 +258,14 @@ export default function CardMenu({disabled, card, ...props}) {
 
                                     <div className="px-1 py-1 ">
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
-                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Assigned user</div>
+                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Assigned
+                                                user
+                                            </div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
-                                                 onChange={(user) => {
-                                                     onUserChange(user)
-                                                     close()
-                                                 }}/>
+                                                         onChange={(user) => {
+                                                             onUserChange(user)
+                                                             close()
+                                                         }}/>
                                         </div>
                                     </div>
 
@@ -273,20 +274,23 @@ export default function CardMenu({disabled, card, ...props}) {
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Project</div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={
-                                                [{"name": "Inbox", "id": null}, ...projects]} selected={project||{"name":"Inbox", "id": null}}
-                                            onChange={(project) => {
-                                                onProjectChange(project)
-                                                close()
-                                            }}/>
+                                                [{
+                                                    "name": "Inbox",
+                                                    "id": null
+                                                }, ...projects]} selected={project || {"name": "Inbox", "id": null}}
+                                                         onChange={(project) => {
+                                                             onProjectChange(project)
+                                                             close()
+                                                         }}/>
                                         </div>
                                     </div>
-                                    <div className={'mt-2'}>
-                                        {items.map((item, index) => (
+                                    <div className={'mt-2_'}>
+                                        {items.map((item, index, {length}) => (
                                             <div className={``} key={item.id + card.id}>
                                                 <button disabled={item.disabled} onClick={() => {
                                                     close();
                                                     item.action()
-                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
+                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} ${(index + 1 === length)?"":""} dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
                                                     {item.icon ?
                                                         <div className={'mr-2'}>
                                                             <PostIcon iconName={item.icon} css={item.css}/>
@@ -303,7 +307,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
                         </Popover.Panel>
                     </>
-                )}
+                }}
             </Popover>
         </div>
     )

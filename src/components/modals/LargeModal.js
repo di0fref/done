@@ -49,9 +49,9 @@ export default function LargeModal(props) {
         })
     }, [])
 
-    useEffect(() => {
-        console.log(users)
-    }, [users])
+    // useEffect(() => {
+    //     console.log(users)
+    // }, [users])
 
     useEffect(() => {
         const close = (e) => {
