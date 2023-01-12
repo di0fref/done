@@ -10,9 +10,13 @@ import {useParams} from "react-router-dom";
 import {useLocalStorage} from "usehooks-ts";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
-import {dbDateFormat} from "./helper";
+import {dateFormat, dbDateFormat, formatDate} from "./helper";
 import {useDispatch} from "react-redux";
 import {getAuth} from "firebase/auth";
+import CustomDatePicker from "./badges/CustomDatePicker";
+import {Tooltip} from "react-tooltip";
+import {BsSunFill, BsSunriseFill} from "react-icons/bs";
+import DatePickerIcon from "./badges/DatePickerIcon";
 
 export default function DynamicMenu({p, overdue}) {
 
@@ -26,7 +30,7 @@ export default function DynamicMenu({p, overdue}) {
     const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
     const [showDetails, setShowDetails] = useLocalStorage("showDetails", null)
     const dispatch = useDispatch()
-
+    const [due, setDue] = useState(new Date())
     const closeModal = () => {
         setOpen(false)
         setOpenShare(false)
@@ -39,13 +43,9 @@ export default function DynamicMenu({p, overdue}) {
             (async () => {
                 try {
                     await overdue.map(task => {
-
-                        // let date = new Date(task.due)
-                        // date.setDate(date.getDate() + 1)
-
                         dispatch(updateTask({
                             id: task.id,
-                            due: format(new Date(), dbDateFormat)
+                            due: format(due, dbDateFormat)
                         }))
                     })
                 } catch (error) {
@@ -53,11 +53,12 @@ export default function DynamicMenu({p, overdue}) {
                 }
 
             })().then((result) => {
-                toast.success(overdue.length + " overdue tasks moved to Today")
+                toast.success(overdue.length + " overdue tasks moved to " + formatDate(new Date(due), dateFormat))
                 setPostponeOpen(false)
+                setDue(new Date())
             })
         } else {
-            toast.warning("No overdue tasks to postpose")
+            toast.warning("No overdue tasks to postpone")
             setPostponeOpen(false)
         }
     }
@@ -203,17 +204,29 @@ export default function DynamicMenu({p, overdue}) {
             <SmallModal open={open} closeModal={closeModal} title={"Edit project"}>
                 <EditProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
-            <SmallModal open={openShare} closeModal={closeModal} title={`Share project "${project&&project.name}"`}>
+            <SmallModal open={openShare} closeModal={closeModal} title={`Share project "${project && project.name}"`}>
                 <ShareProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
             <SmallModal open={postponeOpen} closeModal={closeModal} title={"Postpone tasks"}>
                 <div className={'px-4 pt-2'}>
-                    <div className={'my-2 dark:text-gray-300 text-neutral-500'}>This will move overdue tasks to <b>Today</b>.</div>
-                    <div className={'bg-gray-50_ dark:bg-gray-800 flex justify-end space-x-2 p-4 '}>
-                        <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
-                        <button className={'save-btn'} onClick={postponeHandler}>Ok</button>
+                    <div className={'dark:bg-gray-800 flex items-center'}>
+                        <div className={'mr-3 dark:text-gray-300 text-neutral-500'}>Postpone <b>overdue</b> tasks to:</div>
+
+
+                        <div id={`custom`} className={` rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 dark:text-neutral-200 text-neutral-400 ho_ver:text-neutral-600`}>
+                            <CustomDatePicker date={due} onDateChange={(due) => {
+                                setDue(due)
+                            }}/>
+                        </div>
+
                     </div>
                 </div>
+
+                <div className={'flex items-center justify-end space-x-4 p-4'}>
+                    <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
+                    <button className={'save-btn'} onClick={postponeHandler}>Ok</button>
+                </div>
+
             </SmallModal>
         </div>
     )
