@@ -37,15 +37,23 @@ export default function Sort() {
         {
             "name": "Due date (default)",
             "value": "due",
-            "id": "1guhj",
+            "id": "sort_due",
             "icon": "BsCalendar",
+            "allow": true,
+            "action": onChange
+        },
+        {
+            "name": "Project",
+            "value": "project",
+            "id": "sort_project",
+            "icon": "BsGrid",
             "allow": true,
             "action": onChange
         },
         {
             "name": "Assigned user",
             "value": "assigned_user_name",
-            "id": "svfs",
+            "id": "sort_assigned",
             "icon": "BsPerson",
             "allow": true,
             "action": onChange
@@ -53,7 +61,7 @@ export default function Sort() {
         {
             "name": "Priority",
             "value": "prio",
-            "id": "3yul",
+            "id": "sort_prio",
             "icon": "BsFlag",
             "allow": true,
             "action": onChange
@@ -67,7 +75,8 @@ export default function Sort() {
 
     return (
         <div className={'relative'}>
-            <BaseMenu def={"due"} showTitle={false} title={"Group tasks by"} icon={<BsFilterLeft className={'h-5 w-5'}/>} items={options} selected={selectedOption}/>
+            <BaseMenu def={"due"} showTitle={false} title={"Group tasks by"} icon={
+                <BsFilterLeft className={'h-5 w-5'}/>} items={options} selected={selectedOption}/>
             {/*<BaseListbox onChange={onChange} items={options} selected={selectedOption} placement={'right-0'}/>*/}
         </div>
     )

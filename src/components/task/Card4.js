@@ -12,6 +12,7 @@ import PrioBadge from "../badges/PrioBadge";
 import {useReadLocalStorage} from "usehooks-ts";
 import Editor from "../TextEditor";
 import ProjectBadge from "../project/ProjectBadge";
+import {getAuth} from "firebase/auth";
 
 export const Card4 = ({card}) => {
 
@@ -58,7 +59,17 @@ export const Card4 = ({card}) => {
                 await dispatch(updateTask({
                     id: card.id,
                     completed: event.target.checked,
-                    completed_at: event.target.checked ? format(new Date(), "Y-MM-dd H:mm:ss") : null
+                    completed_at: event.target.checked ? format(new Date(), "Y-MM-dd H:mm:ss") : null,
+                    changes: [
+                        {
+                            field: "completed",
+                            old: card.completed?1:0,
+                            new: event.target.checked?1:0,
+                            user_id: getAuth().currentUser.uid,
+                            assigned_user_id: card.assigned_user_id,
+                            type: "bool"
+                        }
+                    ]
                 })).unwrap()
 
 
@@ -102,12 +113,14 @@ export const Card4 = ({card}) => {
                 </div>
 
                 <div onClick={clickHandler} className={'flex-grow py-2.5'}>
-                    <span className={`${card.completed ? "line-through " : ""} font-medium text-sm`}>{name}</span>
+                    <span className={`${card.completed ? "line-through " : ""} font-medium_ text-sm`}>{name}</span>
                     {/*<div className={'flex items-center space-x-2 mt-1'}>*/}
                     {/*    <div><img src={card.image_url} className={'rounded-full h-4 w-4'}/></div>*/}
                     {/*    <div className={'text-xs text-neutral-500'}>{card.assigned_user_name}</div>*/}
                     {/*</div>*/}
-                    {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}><Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/></div> : ""}
+                    {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}>
+                        <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/>
+                    </div> : ""}
                 </div>
                 {!card.completed ?
 

@@ -99,7 +99,7 @@ export default function Sidebar(props) {
                     <div className={'mt-1'}>
                         <div className={'flex justify-between py-2'}>
                             <div className={'mb-2 pl-2 flex items-center space-x-2'}>
-                                {/*<div>{getIcon("lists")}</div>*/}
+                                <div>{getIcon("projects", "h-3 w-3")}</div>
                                 <div className={'text-neutral-500 font-semibold dark:text-neutral-300 text-sm'}>Projects</div>
                             </div>
                             <AddProjectForm/>

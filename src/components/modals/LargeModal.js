@@ -9,6 +9,8 @@ import BaseListbox from "../BaseListbox";
 import {dbDateFormat, priorities} from "../helper";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
+import {getAuth} from "firebase/auth";
+import ChangeLog from "../task/ChangeLog";
 
 export default function LargeModal(props) {
 
@@ -22,6 +24,7 @@ export default function LargeModal(props) {
     const [showModal, setShowModal] = useState(false)
     const [name, setName] = useState(props.card.name);
     const [prio, setPrio] = useState(props.card.prio);
+    const [changeLogOpen, setChangeLogOpen] = useState(false);
 
     const [due, setDue] = useState(props.card.due ? new Date(props.card.due) : null);
     const [text, setText] = useState(props.card.text);
@@ -69,7 +72,13 @@ export default function LargeModal(props) {
         props.setModalOpen(false)
     }
 
+    
+    const showChangeLog = () => {
+        setChangeLogOpen(true)
+    }
+    
     const saveHandler = () => {
+
 
         /* Save the task to db */
         (async () => {
@@ -82,7 +91,41 @@ export default function LargeModal(props) {
                     project_id: project ? project.id : null,
                     completed: taskCompleted,
                     text: text,
-                    assigned_user_id: assignedUser.id
+                    assigned_user_id: assignedUser.id,
+                    changes: [
+                        (due !== props.card.due) ? {
+                            field: "due",
+                            old: format(new Date(props.card.due), dbDateFormat),
+                            new: format(new Date(due), dbDateFormat),
+                            user_id: getAuth().currentUser.uid,
+                            assigned_user_id: props.card.assigned_user_id,
+                            type: "date"
+                        } : {},
+                        (prio !== props.card.prio) ? {
+                            field: "prio",
+                            old: props.card.prio,
+                            new: prio,
+                            user_id: getAuth().currentUser.uid,
+                            assigned_user_id: props.card.assigned_user_id,
+                            type: "string"
+                        } : {},
+                        (project.id !== props.card.project_id) ? {
+                            field: "project",
+                            old: props.card.project_id,
+                            new: project.id,
+                            user_id: getAuth().currentUser.uid,
+                            assigned_user_id: props.card.assigned_user_id,
+                            type: "project_id"
+                        } : {},
+                        (taskCompleted !== props.card.completed) ? {
+                            field: "completed",
+                            old: props.card.completed ? 1 : 0,
+                            new: taskCompleted ? 1 : 0,
+                            user_id: getAuth().currentUser.uid,
+                            assigned_user_id: props.card.assigned_user_id,
+                            type: "bool"
+                        } : {},
+                    ]
                 }
                 await dispatch(updateTask(task)).unwrap();
                 closeModal()
@@ -138,6 +181,7 @@ export default function LargeModal(props) {
                                                 setDirty(true);
                                             }}/>
                                         </div>
+                                        <div><ChangeLog open={true} card={props.card}/></div>
                                     </div>
                                     <div className={'w-1/3 border-l px-4 dark:border-gray-700'}>
 
@@ -182,14 +226,16 @@ export default function LargeModal(props) {
                                         </div>
 
 
-                                        <div className={'py-4 text-sm mb-4'}>
+                                        <div className={'py-4 text-sm mb-4 border-b dark:border-gray-700'}>
                                             <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Priority</div>
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(prio) => {
                                                 setPrio(prio.prio)
                                                 setDirty(true)
                                             }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
                                         </div>
-
+                                        <div className={'w-full text-right mb-3'}>
+                                            <button onClick={showChangeLog} className={'pr-2 text-xs font-semibold text-blue-400 hover:underline'}>Change log</button>
+                                        </div>
                                     </div>
                                 </div>
                                 {/*footer*/}
@@ -197,7 +243,6 @@ export default function LargeModal(props) {
                                     <button
                                         className="cancel-btn"
                                         type="button"
-
                                         onClick={closeModal}>
                                         Cancel
                                     </button>

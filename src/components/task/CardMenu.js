@@ -13,6 +13,7 @@ import DatePickerIcon from "../badges/DatePickerIcon";
 import {toast} from "react-toastify";
 import {formatDate} from "../helper";
 import axios from "axios";
+import {getAuth} from "firebase/auth";
 
 
 export default function CardMenu({disabled, card, ...props}) {
@@ -53,7 +54,17 @@ export default function CardMenu({disabled, card, ...props}) {
                     setPinned(!pinned)
                     dispatch(updateTask({
                         id: card.id,
-                        pinned: !pinned
+                        pinned: !pinned,
+                        changes: [
+                            {
+                                field: "pinned",
+                                old: pinned ? 1 : 0,
+                                new: !pinned ? 1 : 0,
+                                user_id: getAuth().currentUser.uid,
+                                assigned_user_id: card.assigned_user_id,
+                                type: "bool"
+                            }
+                        ]
                     })).unwrap()
 
                     toast.success("Task " + (pinned ? "pinned" : "unpinned"))
@@ -67,7 +78,17 @@ export default function CardMenu({disabled, card, ...props}) {
                 "action": () => {
                     dispatch(updateTask({
                         id: card.id,
-                        deleted: 1
+                        deleted: 1,
+                        changes: [
+                            {
+                                field: "deleted",
+                                old: 0,
+                                new: 1,
+                                user_id: getAuth().currentUser.uid,
+                                assigned_user_id: card.assigned_user_id,
+                                 type: "bool"
+                            }
+                        ]
                     })).unwrap()
 
                     toast.success("Task moved to trash")
@@ -114,7 +135,17 @@ export default function CardMenu({disabled, card, ...props}) {
     const setDue = (date) => {
         dispatch(updateTask({
             id: card.id,
-            due: date ? format(date, "Y-MM-dd") : null
+            due: date ? format(date, "Y-MM-dd") : null,
+            changes: [
+                {
+                    field: "due",
+                    old: card.due,
+                    new: date ? format(date, "Y-MM-dd") : null,
+                    user_id: getAuth().currentUser.uid,
+                    assigned_user_id: card.assigned_user_id,
+                     type: "date"
+                }
+            ]
         })).unwrap()
 
         toast.success("Due date set to " + formatDate(date))
@@ -123,14 +154,34 @@ export default function CardMenu({disabled, card, ...props}) {
     const onUserChange = (user) => {
         dispatch(updateTask({
             id: card.id,
-            assigned_user_id: user.user_id
+            assigned_user_id: user.user_id,
+            changes: [
+                {
+                    field: "assigned_user_id",
+                    old: card.due,
+                    new: user.assigned_user_id,
+                    user_id: getAuth().currentUser.uid,
+                    assigned_user_id: card.assigned_user_id,
+                    type: "assigned_user_id"
+                }
+            ]
         }))
     }
 
     const setPrio = (prio) => {
         dispatch(updateTask({
             id: card.id,
-            prio: prio
+            prio: prio,
+            changes: [
+                {
+                    field: "prio",
+                    old: card.priod,
+                    new: prio,
+                    user_id: getAuth().currentUser.uid,
+                    assigned_user_id: card.assigned_user_id,
+                    type: "string"
+                }
+            ]
         })).unwrap()
 
         toast.success("Priority set to " + prio)
@@ -139,7 +190,17 @@ export default function CardMenu({disabled, card, ...props}) {
     const onProjectChange = (project) => {
         dispatch(updateTask({
             id: card.id,
-            project_id: project.id
+            project_id: project.id,
+            changes: [
+                {
+                    field: "project_id",
+                    old: card.project_id,
+                    new: project.id,
+                    user_id: getAuth().currentUser.uid,
+                    assigned_user_id: card.assigned_user_id,
+                    type: "project_id"
+                }
+            ]
         })).unwrap()
 
         toast.success("Task moved to project " + project.name)
@@ -290,7 +351,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                                 <button disabled={item.disabled} onClick={() => {
                                                     close();
                                                     item.action()
-                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} ${(index + 1 === length)?"":""} dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
+                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} ${(index + 1 === length) ? "" : ""} dark:hover:bg-gray-600 hover:bg-hov dark:text-neutral-200 text-neutral-500 group flex w-full items-center rounded px-2 py-2 text-sm`}>
                                                     {item.icon ?
                                                         <div className={'mr-2'}>
                                                             <PostIcon iconName={item.icon} css={item.css}/>

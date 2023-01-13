@@ -1,6 +1,6 @@
 import {format, formatRelative} from "date-fns";
 import {FaArchive, FaInbox, FaStar, FaUserCircle} from "react-icons/fa";
-import {BsCalendar, BsCheckSquareFill, BsList, BsTrash} from "react-icons/bs";
+import {BsCalendar, BsCheckSquareFill, BsGrid, BsList, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
 import {getAuth} from "firebase/auth";
 
@@ -102,7 +102,7 @@ export const priorities = [
     }
 ]
 
-export function getIcon(path) {
+export function getIcon(path, classes) {
 
     switch (path) {
         case "today":
@@ -117,8 +117,8 @@ export function getIcon(path) {
             return <FaArchive className={'text-gray-500'}/>
         case "inbox":
             return <FaInbox className={'text-gray-500'}/>
-        case "lists":
-            return <BsList className={'text-gray-500'}/>
+        case "projects":
+            return <BsGrid className={`${classes} text-gray-500`}/>
         case "trash":
             return <BsTrash className={'text-gray-500'}/>
         case "completed":
