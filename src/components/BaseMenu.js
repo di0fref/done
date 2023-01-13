@@ -1,8 +1,10 @@
 import {Menu} from "@headlessui/react";
 import {HiOutlineDotsHorizontal} from "react-icons/hi";
 import {PostIcon} from "./BaseListbox";
+import {useTranslation} from "react-i18next";
 
 export default function BaseMenu({def, items, selected, icon, title, showTitle, ...props}) {
+    const {t} = useTranslation();
 
     return (
         <div>
@@ -25,7 +27,7 @@ export default function BaseMenu({def, items, selected, icon, title, showTitle, 
                             </Menu.Button>
                             <Menu.Items static={false} className={'z-50 absolute mt-1 min-w-[14rem] right-0 max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
 
-                                {title && <div className={'px-4 py-2 text-neutral-600 font-semibold'}>{title}</div>}
+                                {title && <div className={'px-4 py-2 text-neutral-600 font-semibold'}>{t(title)}</div>}
 
                                 {items.map((item, index) => (
                                     <Menu.Item disabled={!item.allow} onClick={(e) => item.action(e, item)} as={"div"} value={item} key={item.id}

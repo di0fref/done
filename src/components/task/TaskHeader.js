@@ -4,12 +4,14 @@ import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import Sort from "./Sort";
 import DynamicMenu from "../DynamicMenu";
+import {useTranslation} from "react-i18next";
 
 export default function TaskHeader({overdue}) {
 
     const [icon, setIcon] = useState("")
     const [name, setName] = useState("")
     const params = useParams()
+    const {t} = useTranslation();
 
     const project = useSelector(state => state.projects.find(
         project => params.id ? (params.id === project.id) : null
@@ -27,7 +29,7 @@ export default function TaskHeader({overdue}) {
         } else {
             switch (params.path) {
                 case "all":
-                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1) + " Tasks")
+                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1) + " " + t("Tasks"))
                     break
                 default:
                     setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));

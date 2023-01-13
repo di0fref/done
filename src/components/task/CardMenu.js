@@ -14,6 +14,7 @@ import {toast} from "react-toastify";
 import {formatDate} from "../helper";
 import axios from "axios";
 import {getAuth} from "firebase/auth";
+import {useTranslation} from "react-i18next";
 
 
 export default function CardMenu({disabled, card, ...props}) {
@@ -23,6 +24,7 @@ export default function CardMenu({disabled, card, ...props}) {
     const _project_ = useSelector(state => state.projects.find(
         project => card ? (card.project_id === project.id) : null
     ))
+    const {t} = useTranslation();
 
     const [pinned, setPinned] = useState(card.pinned)
 
@@ -91,7 +93,7 @@ export default function CardMenu({disabled, card, ...props}) {
                         ]
                     })).unwrap()
 
-                    toast.success("Task moved to trash")
+                    toast.success(t("Task moved to trash"))
                 },
                 "disabled": disabled
             },
@@ -110,7 +112,7 @@ export default function CardMenu({disabled, card, ...props}) {
                         deleted: 0
                     })).unwrap()
 
-                    toast.success("Task restored")
+                    toast.success(t("Task restored"))
                 },
                 "disabled": disabled,
             },
@@ -123,7 +125,7 @@ export default function CardMenu({disabled, card, ...props}) {
                         id: card.id,
                     })).unwrap()
 
-                    toast.success("Task deleted forever")
+                    toast.success(t("Task deleted forever"))
                 },
                 "disabled": disabled,
             }
@@ -148,7 +150,7 @@ export default function CardMenu({disabled, card, ...props}) {
             ]
         })).unwrap()
 
-        toast.success("Due date set to " + formatDate(date))
+        toast.success(t("Due date set to ") + formatDate(date))
     }
 
     const onUserChange = (user) => {
@@ -184,7 +186,7 @@ export default function CardMenu({disabled, card, ...props}) {
             ]
         })).unwrap()
 
-        toast.success("Priority set to " + prio)
+        toast.success(t("Priority set to ") + prio)
     }
 
     const onProjectChange = (project) => {
@@ -203,7 +205,7 @@ export default function CardMenu({disabled, card, ...props}) {
             ]
         })).unwrap()
 
-        toast.success("Task moved to project " + project.name)
+        toast.success(t("Task moved to project ") + project.name)
         setProject(project)
     }
 
@@ -227,7 +229,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                                     <PostIcon iconName={item.icon} css={item.css}/>
                                                 </div>
                                                 : ""}
-                                            <div className={'whitespace-nowrap'}>{item.name}</div>
+                                            <div className={'whitespace-nowrap'}>{t(item.name)}</div>
                                         </button>
                                     </div>
                                 ))}
@@ -256,7 +258,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
                                 <div className="px-1 py-1 w-56">
                                     <div className={'p-2 border-b  dark:border-b-gray-600'}>
-                                        <div className={'text-neutral-400 dark:text-neutral-200 text-xs'}>Due date</div>
+                                        <div className={'text-neutral-400 dark:text-neutral-200 text-xs'}>{t("due")}</div>
                                         <div className={'mt-2 text-sm flex items-center justify-between'}>
                                             <div>
                                                 <Tooltip anchorId={`today${card.id}`} content={"Today"}/>
@@ -268,7 +270,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                                 </button>
                                             </div>
                                             <div>
-                                                <Tooltip anchorId={`tomorrow${card.id}`} content={"Tomorrow"}/>
+                                                <Tooltip anchorId={`tomorrow${card.id}`} content={t("Tomorrow")}/>
                                                 <button disabled={disabled} onClick={() => {
                                                     const date = new Date()
                                                     date.setDate(date.getDate() + 1)
@@ -279,7 +281,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                                 </button>
                                             </div>
                                             <div>
-                                                <Tooltip anchorId={`custom${card.id}`} content={"Custom"}/>
+                                                <Tooltip anchorId={`custom${card.id}`} content={t("Custom")}/>
                                                 <div disabled={disabled} id={`custom${card.id}`} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 dark:text-neutral-200 text-neutral-400 ho_ver:text-neutral-600`}>
                                                     <DatePickerIcon disabled={disabled} onDateChange={(due) => {
                                                         setDue(due)
@@ -290,27 +292,27 @@ export default function CardMenu({disabled, card, ...props}) {
                                         </div>
                                     </div>
                                     <div className={'p-2 border-b dark:border-b-gray-600'}>
-                                        <div className={'text-neutral-400 dark:text-neutral-200 text-xs'}>Priority</div>
+                                        <div className={'text-neutral-400 dark:text-neutral-200 text-xs'}>{t("prio")}</div>
                                         <div className={'mt-2 text-sm flex items-center justify-between'}>
                                             <div>
                                                 <button disabled={disabled} onClick={() => {
                                                     setPrio("low")
                                                     close()
-                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 ho_ver:text-neutral-600`}>Low
+                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 ho_ver:text-neutral-600`}>{t("low")}
                                                 </button>
                                             </div>
                                             <div>
                                                 <button disabled={disabled} onClick={() => {
                                                     setPrio("normal")
                                                     close()
-                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600  hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 h_over:text-neutral-600`}>Normal
+                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600  hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 h_over:text-neutral-600`}>{t("normal")}
                                                 </button>
                                             </div>
                                             <div>
                                                 <button disabled={disabled} onClick={() => {
                                                     setPrio("high")
                                                     close()
-                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 ho_ver:text-neutral-600`}>High
+                                                }} className={`${disabled ? "hover:cursor-not-allowed" : ""} rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 text-neutral-400 dark:text-neutral-200 ho_ver:text-neutral-600`}>{t("high")}
                                                 </button>
                                             </div>
                                         </div>
@@ -319,8 +321,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
                                     <div className="px-1 py-1 ">
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
-                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Assigned
-                                                user
+                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>{t("Assigned user")}
                                             </div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
                                                          onChange={(user) => {
@@ -333,7 +334,7 @@ export default function CardMenu({disabled, card, ...props}) {
 
                                     <div className="px-1 py-1 ">
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
-                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>Project</div>
+                                            <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>{t("Project")}</div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={
                                                 [{
                                                     "name": "Inbox",
@@ -357,7 +358,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                                             <PostIcon iconName={item.icon} css={item.css}/>
                                                         </div>
                                                         : ""}
-                                                    <div className={'whitespace-nowrap'}>{item.name}</div>
+                                                    <div className={'whitespace-nowrap'}>{t(item.name)}</div>
                                                 </button>
                                             </div>
                                         ))}

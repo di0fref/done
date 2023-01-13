@@ -11,8 +11,11 @@ import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
 import {getAuth} from "firebase/auth";
 import ChangeLog from "../task/ChangeLog";
+import {useTranslation} from "react-i18next";
 
 export default function LargeModal(props) {
+
+    const {t} = useTranslation();
 
     const _project_ = useSelector(state => state.projects.find(
         project => props.card ? (props.card.project_id === project.id) : null
@@ -72,14 +75,16 @@ export default function LargeModal(props) {
         props.setModalOpen(false)
     }
 
-    
+
     const showChangeLog = () => {
         setChangeLogOpen(true)
     }
-    
+
     const saveHandler = () => {
 
-
+        // console.log(format(new Date(due), dbDateFormat))
+        // console.log(format(new Date(props.card.due), dbDateFormat))
+        //     return
         /* Save the task to db */
         (async () => {
             try {
@@ -93,7 +98,7 @@ export default function LargeModal(props) {
                     text: text,
                     assigned_user_id: assignedUser.id,
                     changes: [
-                        (due !== props.card.due) ? {
+                        (format(new Date(due), dbDateFormat) !== format(new Date(props.card.due), dbDateFormat)) ? {
                             field: "due",
                             old: format(new Date(props.card.due), dbDateFormat),
                             new: format(new Date(due), dbDateFormat),
@@ -109,7 +114,7 @@ export default function LargeModal(props) {
                             assigned_user_id: props.card.assigned_user_id,
                             type: "string"
                         } : {},
-                        (project.id !== props.card.project_id) ? {
+                        (project && project.id !== props.card.project_id) ? {
                             field: "project",
                             old: props.card.project_id,
                             new: project.id,
@@ -181,13 +186,11 @@ export default function LargeModal(props) {
                                                 setDirty(true);
                                             }}/>
                                         </div>
-                                        <div><ChangeLog open={true} card={props.card}/></div>
                                     </div>
                                     <div className={'w-1/3 border-l px-4 dark:border-gray-700'}>
 
                                         <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
-                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Assigned
-                                                user
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>{t("assigned_user_name")}
                                             </div>
                                             <div className={'text-md'}>
                                                 <BaseListbox
@@ -203,8 +206,7 @@ export default function LargeModal(props) {
                                         </div>
 
                                         <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
-                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Due
-                                                date
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>{t("due")}
                                             </div>
                                             <div className={'text-md'}>
                                                 <CustomDatePicker disabled={!!props.card.deleted} bg={false} onClick={false} date={due} onDateChange={(date) => {
@@ -215,7 +217,7 @@ export default function LargeModal(props) {
                                         </div>
 
                                         <div className={'py-4 border-b dark:border-gray-700 text-sm'}>
-                                            <div className={'text-md text-neutral-400 dark:text-neutral-200  font-medium mb-2'}>Project</div>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200  font-medium mb-2'}>{t("project")}</div>
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(project) => {
                                                 setProject(project)
                                                 setDirty(true)
@@ -227,14 +229,14 @@ export default function LargeModal(props) {
 
 
                                         <div className={'py-4 text-sm mb-4 border-b dark:border-gray-700'}>
-                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>Priority</div>
+                                            <div className={'text-md text-neutral-400 dark:text-neutral-200 font-medium mb-2'}>{t("prio")}</div>
                                             <BaseListbox disabled={!!props.card.deleted} onChange={(prio) => {
                                                 setPrio(prio.prio)
                                                 setDirty(true)
                                             }} items={priorities} selected={priorities.find(p => p.prio === prio)}/>
                                         </div>
                                         <div className={'w-full text-right mb-3'}>
-                                            <button onClick={showChangeLog} className={'pr-2 text-xs font-semibold text-blue-400 hover:underline'}>Change log</button>
+                                            <ChangeLog card={props.card}/>
                                         </div>
                                     </div>
                                 </div>
@@ -244,14 +246,14 @@ export default function LargeModal(props) {
                                         className="cancel-btn"
                                         type="button"
                                         onClick={closeModal}>
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         className="save-btn"
                                         type="button"
                                         disabled={!dirty}
                                         onClick={saveHandler}>
-                                        Save
+                                        {t("save")}
                                     </button>
                                 </div>
                             </div>

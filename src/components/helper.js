@@ -80,7 +80,7 @@ export const groupBy = (consolidatedHeroes, sortBy) => {
 export const priorities = [
     {
         "prio": "low",
-        "name": "Low",
+        "name": t("Low"),
         "icon": "BsFlag",
         "css": "text-neutral-500",
         "id": "1"

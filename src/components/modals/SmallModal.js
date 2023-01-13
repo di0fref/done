@@ -25,7 +25,7 @@ export default function SmallModal(props) {
             {/* Full-screen container to center the panel */}
             <div className="fixed inset-0 flex items-center justify-center text-gray-600 ">
                 {/* The actual dialog panel  */}
-                <Dialog.Panel className="md:max-w-lg w-11/12 transform overflow-hidden_ rounded-md bg-white dark:bg-gray-800 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className=" md:max-w-xl w-11/12 transform  rounded-md bg-white dark:bg-gray-800 text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
                         <div className={'border-b dark:border-gray-700 h-10 flex justify-between items-center'}>
                             <div className={'ml-3 font-semibold text-sm text-neutral-600 dark:text-neutral-200'}>{props.title}</div>
@@ -34,8 +34,9 @@ export default function SmallModal(props) {
                             </button>
                         </div>
                     </Dialog.Title>
-
-                    {props.children}
+                    <div className={'max-h-[24rem] overflow-auto'}>
+                        {props.children}
+                    </div>
 
                 </Dialog.Panel>
             </div>

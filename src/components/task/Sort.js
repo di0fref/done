@@ -3,6 +3,7 @@ import {useLocalStorage} from "usehooks-ts";
 import BaseListbox from "../BaseListbox";
 import BaseMenu from "../BaseMenu";
 import {BsFilterCircle, BsFilterLeft} from "react-icons/bs";
+import {useTranslation} from "react-i18next";
 
 
 export const sortF = (a, b, sortBy) => {
@@ -26,6 +27,7 @@ export const sortF = (a, b, sortBy) => {
 }
 
 export default function Sort() {
+    const {t} = useTranslation();
 
     const onChange = (e, option) => {
         setSort(option.value)
@@ -35,7 +37,7 @@ export default function Sort() {
 
     const options = [
         {
-            "name": "Due date (default)",
+            "name": t("Due date (default)"),
             "value": "due",
             "id": "sort_due",
             "icon": "BsCalendar",
@@ -43,7 +45,7 @@ export default function Sort() {
             "action": onChange
         },
         {
-            "name": "Project",
+            "name": t("Project"),
             "value": "project",
             "id": "sort_project",
             "icon": "BsGrid",
@@ -51,7 +53,7 @@ export default function Sort() {
             "action": onChange
         },
         {
-            "name": "Assigned user",
+            "name": t("Assigned user"),
             "value": "assigned_user_name",
             "id": "sort_assigned",
             "icon": "BsPerson",
@@ -59,7 +61,7 @@ export default function Sort() {
             "action": onChange
         },
         {
-            "name": "Priority",
+            "name": t("prio"),
             "value": "prio",
             "id": "sort_prio",
             "icon": "BsFlag",

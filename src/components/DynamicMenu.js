@@ -14,11 +14,11 @@ import {dateFormat, dbDateFormat, formatDate} from "./helper";
 import {useDispatch} from "react-redux";
 import {getAuth} from "firebase/auth";
 import CustomDatePicker from "./badges/CustomDatePicker";
-import {Tooltip} from "react-tooltip";
-import {BsSunFill, BsSunriseFill} from "react-icons/bs";
-import DatePickerIcon from "./badges/DatePickerIcon";
+import {useTranslation} from "react-i18next";
 
 export default function DynamicMenu({p, overdue}) {
+
+    const {t} = useTranslation();
 
     const [project, setProject] = useState(p)
     const [open, setOpen] = useState(false)
@@ -69,7 +69,7 @@ export default function DynamicMenu({p, overdue}) {
 
     let taskMenuitems = [
         {
-            "name": (showCompleted ? "Hide" : "Show") + " completed",
+            "name": (showCompleted ? t("Hide") : t("Show")) + " " + t("completed"),
             "icon": "BsCheckSquare",
             allow: true,
             "id": "10",
@@ -78,7 +78,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": (showDetails ? "Hide" : "Show") + " details",
+            "name": (showDetails ? "Hide" : "Show") + " " + t("details"),
             "icon": "BsListNested",
             "id": "20",
             allow: true,
@@ -87,7 +87,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": "Postpone",
+            "name": t("Postpone"),
             "icon": "BsCalendar",
             allow: true,
             "id": "30",
@@ -99,7 +99,7 @@ export default function DynamicMenu({p, overdue}) {
 
     const projectMenuItems = [
         {
-            "name": "Edit project",
+            "name": t("Edit project"),
             "icon": "BsPencil",
             "id": "2",
             allow: (project && project.user_id === getAuth().currentUser.uid),
@@ -108,7 +108,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": (showCompleted ? "Hide" : "Show") + " completed",
+            "name": (showCompleted ? t("Hide") : t("Show")) + " " + t("completed"),
             "icon": "BsCheckSquare",
             "id": "10",
             allow: true,
@@ -117,7 +117,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": (showDetails ? "Hide" : "Show") + " details",
+            "name": (showDetails ? "Hide" : "Show") + " " + t("details"),
             "icon": "BsListNested",
             "id": "20",
             allow: true,
@@ -126,7 +126,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": "Share project",
+            "name": t("Share project"),
             "icon": "BsShare",
             "id": "3",
             allow: (project && project.user_id === getAuth().currentUser.uid),
@@ -135,7 +135,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": "Postpone",
+            "name": t("Postpone"),
             "icon": "BsCalendar",
             allow: true,
             "id": "31",
@@ -144,7 +144,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": "Delete project",
+            "name": t("Delete project"),
             "icon": "BsTrash",
             "id": "4",
             allow: (project && project.user_id === getAuth().currentUser.uid),
@@ -210,7 +210,7 @@ export default function DynamicMenu({p, overdue}) {
             <SmallModal open={postponeOpen} closeModal={closeModal} title={"Postpone tasks"}>
                 <div className={'px-4 pt-2'}>
                     <div className={'dark:bg-gray-800 flex items-center'}>
-                        <div className={'mr-3 dark:text-gray-300 text-neutral-500'}>Postpone <b>overdue</b> tasks to:</div>
+                        <div className={'mr-3 dark:text-gray-300 text-neutral-500'}>{t("Postpone")} <b>{t("overdue")}</b> {t("tasks to")}:</div>
 
 
                         <div id={`custom`} className={` rounded dark:hover:bg-gray-600 hover:bg-hov px-2 py-1 dark:text-neutral-200 text-neutral-400 ho_ver:text-neutral-600`}>
@@ -223,8 +223,8 @@ export default function DynamicMenu({p, overdue}) {
                 </div>
 
                 <div className={'flex items-center justify-end space-x-4 p-4'}>
-                    <button onClick={closeModal} className={'cancel-btn'}>Cancel</button>
-                    <button className={'save-btn'} onClick={postponeHandler}>Ok</button>
+                    <button onClick={closeModal} className={'cancel-btn'}>{("cancel")}</button>
+                    <button className={'save-btn'} onClick={postponeHandler}>{t("Ok")}</button>
                 </div>
 
             </SmallModal>

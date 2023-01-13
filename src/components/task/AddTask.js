@@ -8,6 +8,7 @@ import {getAuth} from "firebase/auth";
 import BaseListbox from "../BaseListbox";
 import {formatDate, priorities} from "../helper";
 import {useParams} from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 
 function useOnClickOutside(ref, handler) {
@@ -32,8 +33,9 @@ function useOnClickOutside(ref, handler) {
 }
 
 
-function getPlaceHolder(project, due) {
-    return '+ Add task in "' + project + '" on "' + formatDate(due)+'"';
+function getPlaceHolder(project, due, t) {
+
+    return '+ ' + t("Add task in") + ' "' + project + '" ' + t("on") + ' "' + formatDate(due) + '"';
 }
 
 export default function AddTask() {
@@ -58,6 +60,7 @@ export default function AddTask() {
     const [prio, setPrio] = useState("normal");
 
     const [placeHolder, setPlaceHolder] = useState()
+    const {t} = useTranslation();
 
     useOnClickOutside(ref, () => handleClickOutside());
 
@@ -67,7 +70,7 @@ export default function AddTask() {
     }, [_project_])
 
     useEffect(() => {
-        setPlaceHolder(getPlaceHolder(project.id ? project.name : "Inbox", due))
+        setPlaceHolder(getPlaceHolder(project.id ? project.name : "Inbox", due, t))
     }, [project, due])
 
     useEffect(() => {
@@ -88,7 +91,7 @@ export default function AddTask() {
 
         if (e.key === 'Enter') {
             if (!name) {
-                alert("Please give your task a title")
+                alert(t("Please give your task a title"))
                 return
             }
             (async () => {
@@ -125,13 +128,13 @@ export default function AddTask() {
     const onProjectChange = (project) => {
         setProject(project)
     }
-if(params.path === "trash"){
-    return <div></div>
-}
+    if (params.path === "trash") {
+        return <div></div>
+    }
 
     if (editing) {
         return (
-            <div  ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-md bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-md bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
@@ -149,7 +152,7 @@ if(params.path === "trash"){
                 <div className={'text-sm'}>
                     <BaseListbox items={projects} selected={project.id ? project : {
                         id: null,
-                        name: "Inbox",
+                        name: t("Inbox"),
                     }} onChange={onProjectChange}/></div>
                 <div className={'text-sm'}>
                     <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities[1]}/>
@@ -160,11 +163,11 @@ if(params.path === "trash"){
 
     return (
         <div className={'w-full'} onClick={() => {
-            if(params.path!=="trash"){
+            if (params.path !== "trash") {
                 setEditing(true)
             }
         }}>
-            <input disabled={true} placeholder={placeHolder} className={`${params.path==="trash"?"hover:cursor-not-allowed":""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-100  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path === "trash" ? "hover:cursor-not-allowed" : ""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-100  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }

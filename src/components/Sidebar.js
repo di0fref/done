@@ -11,11 +11,13 @@ import ProjectMenu from "./DynamicMenu";
 import {BsCheckSquareFill, BsTrash} from "react-icons/bs";
 import {useReadLocalStorage} from "usehooks-ts";
 import {SortableComponent} from "./project/ProjectList";
+import {useTranslation} from "react-i18next";
 
 
 export default function Sidebar(props) {
 
     const location = useLocation();
+    const {t} = useTranslation();
 
     const projects = [...useSelector(
         state => state.projects.filter((project) => !project.deleted)
@@ -65,7 +67,7 @@ export default function Sidebar(props) {
                             <li>
                                 <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     <div className={'text-gray-500'}>{getIcon("inbox")}</div>
-                                    <div className={'ml-3 flex-grow'}>Inbox</div>
+                                    <div className={'ml-3 flex-grow'}>{t("Inbox")}</div>
                                     {showSidebarCount ? <div className={'text-xs'}>{inbox_count}</div> : ""}
                                 </Link>
                             </li>
@@ -74,7 +76,7 @@ export default function Sidebar(props) {
 
                                     {/*<div className={'ml-3'}>*/}
                                     {getIcon("today")}
-                                    <div className={'ml-3 flex-grow'}>Today</div>
+                                    <div className={'ml-3 flex-grow'}>{t("Today")}</div>
                                     {showSidebarCount ? <div className={'text-xs'}>{today_count}</div> : ""}
                                     {/*</div>*/}
                                 </Link>
@@ -82,14 +84,14 @@ export default function Sidebar(props) {
                             <li>
                                 <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("upcoming")}
-                                    <div className={'ml-3 flex-grow'}>Upcoming</div>
+                                    <div className={'ml-3 flex-grow'}>{t("Upcoming")}</div>
                                     {showSidebarCount ? <div className={'text-xs'}>{upcoming_count}</div> : ""}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("all")}
-                                    <div className={'ml-3 flex-grow'}>All Tasks</div>
+                                    <div className={'ml-3 flex-grow'}>{t("All Tasks")}</div>
                                     {showSidebarCount ? <div className={'text-xs'}>{all_count}</div> : ""}
                                 </Link>
                             </li>
@@ -100,7 +102,7 @@ export default function Sidebar(props) {
                         <div className={'flex justify-between py-2'}>
                             <div className={'mb-2 pl-2 flex items-center space-x-2'}>
                                 <div>{getIcon("projects", "h-3 w-3")}</div>
-                                <div className={'text-neutral-500 font-semibold dark:text-neutral-300 text-sm'}>Projects</div>
+                                <div className={'text-neutral-500 font-semibold dark:text-neutral-300 text-sm'}>{t("Projects")}</div>
                             </div>
                             <AddProjectForm/>
                         </div>
@@ -130,7 +132,7 @@ export default function Sidebar(props) {
                     {projects.length ?
                         <SortableComponent items={projects}/>
                         : <div className={'bg-neutral-100 text-sm mx-2 p-2 text-neutral-600'}>
-                            Create your first project and start grouping tasks together.
+                            {t("Create your first project and start grouping tasks together.")}
                         </div>
                     }
 
@@ -138,12 +140,12 @@ export default function Sidebar(props) {
                         <div className={'inline-block pt-3'}>
                             <Link to={'/completed'} className={`${(location.pathname.includes("/completed")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                 <div className={'text-gray-500'}><BsCheckSquareFill className={'text-gray-500'}/></div>
-                                <span className={'ml-3'}>Completed</span>
+                                <span className={'ml-3'}>{t("completed")}</span>
                             </Link>
 
                             <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                 <div className={'text-gray-500'}><BsTrash className={'text-gray-500'}/></div>
-                                <span className={'ml-3'}>Trash</span>
+                                <span className={'ml-3'}>{t("Trash")}</span>
                             </Link>
                         </div>
                     </div>

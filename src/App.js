@@ -23,7 +23,6 @@ function App() {
                 hideProgressBar={true}
                 className={""}
                 position="bottom-right"/>
-            {/*<DndProvider backend={HTML5Backend}>*/}
                 <Tooltip
                     effect={"solid"}
                 />
@@ -36,7 +35,6 @@ function App() {
                     {/*<Route exact path="/" element={<Navigate to="/today" replace/>}/>*/}
                     <Route exact path={"/login"} element={<Login/>}/>
                 </Routes>
-            {/*</DndProvider>*/}
         </Provider>
     );
 }
