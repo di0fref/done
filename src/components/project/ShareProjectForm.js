@@ -10,6 +10,7 @@ import {Tooltip} from "react-tooltip";
 import {getAuth} from "firebase/auth";
 import {BsEnvelopeFill} from "react-icons/bs";
 import axios from "axios";
+import {useTranslation} from "react-i18next";
 
 export default function ShareProjectForm({p, ...props}) {
 
@@ -18,6 +19,7 @@ export default function ShareProjectForm({p, ...props}) {
     const [currentEmail, setCurrentEmail] = useState("")
     const [emailError, setEmailError] = useState("")
     const [shares, setShares] = useState([])
+    const {t} = useTranslation();
 
     async function shareHandler(share) {
         /* Create new */
@@ -68,7 +70,7 @@ useEffect(() => {
 
     const validateEmail = (currentEmail) => {
         if (!validator.isEmail(currentEmail)) {
-            setEmailError('Please enter valid Email!')
+            setEmailError(t("Please enter valid Email!"))
             return false
         } else {
             setEmailError('')
@@ -95,7 +97,7 @@ useEffect(() => {
             setShares([...shares, share])
 
         } else {
-            setEmailError("User is already invited")
+            setEmailError(t("User is already invited"))
         }
     }
 
@@ -112,7 +114,7 @@ useEffect(() => {
                             setCurrentEmail(e.target.value)
                             setEmailError("")
                         }} type="text" id="shareEmail" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type email and press enter"/>
-                        <button className={'save-btn hover:bg-orange-700 bg-orange-600'} onClick={onEmailAdd}>Invite</button>
+                        <button className={'save-btn hover:bg-orange-700 bg-orange-600'} onClick={onEmailAdd}>{t("Invite")}</button>
                     </div>
                 </div>
                 <div className={'text-sm text-red-400 mt-1'}>{emailError}</div>
@@ -144,11 +146,11 @@ useEffect(() => {
                                     </div>}
 
 
-                                <div className={'text-sm text-neutral-500 dark:text-gray-400'}>{share.status && capitalize(share.status)}</div>
+                                <div className={'text-sm text-neutral-500 dark:text-gray-400'}>{share.status && t(capitalize(share.status))}</div>
 
                                 {share.user_id !== getAuth().currentUser.uid ? (
                                     <>
-                                        <Tooltip anchorId={share.id} content={"Delete"}/>
+                                        <Tooltip anchorId={share.id} content={t("Delete")}/>
                                         <button id={share.id} onClick={() => deleteShare(share)} className={'p-1 text-red-400 hover:bg-neutral-100 rounded'}>
                                             <HiOutlineXMark/>
                                         </button>

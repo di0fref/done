@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {getIcon} from "../helper"
+import {capitalize, getIcon} from "../helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import Sort from "./Sort";
@@ -20,7 +20,7 @@ export default function TaskHeader({overdue}) {
 
     useEffect(() => {
         if (params.path === "project") {
-            setName(project.name.charAt(0).toUpperCase() + project.name.slice(1));
+            setName(project.name);
             setIcon(
                 <div style={{
                     background: project.color
@@ -29,10 +29,10 @@ export default function TaskHeader({overdue}) {
         } else {
             switch (params.path) {
                 case "all":
-                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1) + " " + t("Tasks"))
+                    setName(t(capitalize(params.path)) + " " + t("Tasks"))
                     break
                 default:
-                    setName(params.path.charAt(0).toUpperCase() + params.path.slice(1));
+                    setName(t(capitalize(params.path)));
             }
 
             setIcon(getIcon(params.path))

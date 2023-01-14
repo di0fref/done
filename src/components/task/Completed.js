@@ -5,12 +5,13 @@ import {sortF} from "./Sort";
 import TopHeader from "./TopHeader";
 import {capitalize, formatDate, groupBy} from "../helper";
 import TaskGroup from "./TaskGroup";
+import {useTranslation} from "react-i18next";
 
 export default function Completed({renderCard}) {
+    const {t} = useTranslation();
 
     const sortBy = useReadLocalStorage("sort")
     const _data_ = {
-
         completed: groupBy([...useSelector(
             state => state.tasks.filter(
                 task => (task.completed && !task.deleted)
@@ -38,7 +39,7 @@ export default function Completed({renderCard}) {
                     )
                 }) : <div className={'w-full my-12 flex items-center justify-center'}>
                     <div className={'text-neutral-500 dark:text-gray-500 text-center'}>
-                        <div className={'text-base mb-1'}>Nothing to see here, move along.</div>
+                        <div className={'text-base mb-1'}>{t("Nothing to see here, move along.")}</div>
                     </div>
                 </div>}
 

@@ -1,5 +1,4 @@
 {
-  "_comment_1": "Task",
   "due": "Due date",
   "prio": "Priority",
   "assigned_user_name": "Assigned user",
@@ -19,6 +18,7 @@
   "Edit project": "Edit project",
   "Share project": "Share project",
   "Delete project": "Delete project",
+  "All": "All",
   "Inbox": "Inbox",
   "Today": "Today",
   "Upcoming": "Upcoming",
@@ -30,7 +30,6 @@
   "Ok": "Ok",
   "Move to trash": "Move to trash",
   "Delete forever": "Delete forever",
-  "_comment_2": "Project",
   "project": "Project",
   "Project": "Project",
   "_comment_3": "Common",
@@ -45,6 +44,30 @@
   "Due date (default)": "Due date (default)",
   "Group tasks by": "Group tasks by",
   "Add task in": "Add task in",
-  "on": "on"
+  "on": "on",
+  "Tasks": "Tasks",
+  "Create your first project and start grouping tasks together": "Create your first project and start grouping tasks together",
+  "Please give your task a title": "Please give your task a title",
+  "Sync": "Sync",
+  "Settings": "Settings",
+  "Sign out": "Sign out",
+  "Create project": "Create project",
+  "Completed": "Completed",
+  "Name": "Name",
+  "Choose Color": "Choose Color",
+  "Done": "Done",
+  "Owner": "Owner",
+  "Pending": "Pending",
+  "Delete": "Delete",
+  "Please enter valid Email!": "Please enter valid Email!",
+  "was completed":"was completed",
+  "axios_error": "Uh oh, something went wrong. Please try again",
+  "New project": "New project",
+  "Not implemented": "Not implemented",
+  "Task activity": "Task activity",
+  "Postpone tasks": "Postpone tasks",
+  "User is already invited": "User is already invited",
+  "Invite": "Invite"
+
 
 }

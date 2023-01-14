@@ -8,23 +8,25 @@ import {useState} from "react";
 import {PostIcon} from "./BaseListbox";
 import {FaUserCircle} from "react-icons/fa";
 import {GoogleHead} from "./helper";
+import {useTranslation} from "react-i18next";
 
 
 export default function MainMenu() {
     const [open, setOpen] = useState(false)
+    const {t} = useTranslation();
 
     const navigate = useNavigate();
 
     const items = [
         {
-            "name": "Sync",
+            "name": t("Sync")   ,
             "id": "sync",
             "icon": "VscSync",
             "action": () => {
             }
         },
         {
-            "name": "Settings",
+            "name": t("Settings"),
             "id": "settings",
             "icon": "VscSettingsGear",
             "action": () => {
@@ -35,7 +37,7 @@ export default function MainMenu() {
         //     "name": "divider"
         // },
         {
-            "name": "Sign out",
+            "name": t("Sign out"),
             "id": "signout",
             "icon": "HiLogout",
             "action": () => {

@@ -195,9 +195,9 @@ export default function CardMenu({disabled, card, ...props}) {
             project_id: project.id,
             changes: [
                 {
-                    field: "project_id",
-                    old: card.project_id,
-                    new: project.id,
+                    field: "project",
+                    old: card.project,
+                    new: project.name,
                     user_id: getAuth().currentUser.uid,
                     assigned_user_id: card.assigned_user_id,
                     type: "project_id"

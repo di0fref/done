@@ -80,14 +80,14 @@ export const groupBy = (consolidatedHeroes, sortBy) => {
 export const priorities = [
     {
         "prio": "low",
-        "name": t("Low"),
+        "name": "low",
         "icon": "BsFlag",
         "css": "text-neutral-500",
         "id": "1"
     },
     {
         "prio": "normal",
-        "name": "Normal",
+        "name": "normal",
         "icon": "BsFlag",
         "css": "text-blue-600",
         "id": "2"
@@ -95,7 +95,7 @@ export const priorities = [
     },
     {
         "prio": "high",
-        "name": "High",
+        "name": "high",
         "icon": "BsFlag",
         "css": "text-red-500",
         "id": "3"

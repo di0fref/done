@@ -3,6 +3,7 @@ import {TwitterPicker} from "react-color";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
 import {addProject, updateProject} from "../../redux/projectSlice";
+import {useTranslation} from "react-i18next";
 
 export default function EditProjectForm({p, ...props}) {
 
@@ -11,6 +12,7 @@ export default function EditProjectForm({p, ...props}) {
     const [color, setColor] = useState(p.color)
     const dispatch = useDispatch()
     const [project, setProject] = useState(p)
+    const {t} = useTranslation();
 
     const ref = useRef(null)
 
@@ -45,7 +47,7 @@ export default function EditProjectForm({p, ...props}) {
     return (
         <div className={''}>
             <div className={'p-4'}>
-                <label htmlFor={"name"} className={'text-label'}>Name</label>
+                <label htmlFor={"name"} className={'text-label'}>{t("Name")}</label>
                 <input ref={ref} value={name} placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setName(e.currentTarget.value)}/>
             </div>
             <div>
@@ -55,7 +57,7 @@ export default function EditProjectForm({p, ...props}) {
                         <div style={{
                             background: color
                         }} className={`h-3 w-3 rounded-full`}> </div>
-                        <div className={'text-sm font-medium'}>Choose Color</div>
+                        <div className={'text-sm font-medium'}>{t("Choose Color")}</div>
                     </button>
 
                     {displayColorPicker ?
@@ -66,8 +68,8 @@ export default function EditProjectForm({p, ...props}) {
 
             </div>
             <div className={'rounded-b border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
-                <button onClick={props.closeModal} className={'cancel-btn'}>Cancel</button>
-                <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>Save</button>
+                <button onClick={props.closeModal} className={'cancel-btn'}>{t("cancel")}</button>
+                <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>{t("save")}</button>
             </div>
         </div>
     )

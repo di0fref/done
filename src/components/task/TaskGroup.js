@@ -7,7 +7,7 @@ import {useTranslation} from "react-i18next";
 export default function TaskGroup(props) {
 
     const [open, setOpen] = useLocalStorage(props.view + props.title, true)
-    const {t, i18n} = useTranslation('common');
+    const {t} = useTranslation();
 
     return (
         <div className={'z-10'}>

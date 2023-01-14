@@ -13,8 +13,10 @@ import {useReadLocalStorage} from "usehooks-ts";
 import Editor from "../TextEditor";
 import ProjectBadge from "../project/ProjectBadge";
 import {getAuth} from "firebase/auth";
+import {useTranslation} from "react-i18next";
 
 export const Card4 = ({card}) => {
+    const {t} = useTranslation();
 
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [name, setName] = useState(card.name);
@@ -74,16 +76,16 @@ export const Card4 = ({card}) => {
 
 
                 event.target.checked && toast.success(
-                    <div>{card.name} was completed
+                    <div>{card.name} {t("was completed")}
                         <button className={'ml-4 hover:underline text-red-700'} onClick={() => {
                             undo(id)
-                        }}>undo
+                        }}>{t("undo")}
                         </button>
                     </div>)
 
             } catch (err) {
                 console.log(err);
-                toast.error(`Uh oh, something went wrong. Please try again`)
+                toast.error(t("axios_error"))
             }
         })(event)
 

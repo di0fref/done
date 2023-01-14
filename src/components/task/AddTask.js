@@ -116,7 +116,7 @@ export default function AddTask() {
 
                 } catch (err) {
                     console.log(err);
-                    toast.error(`Something went wrong. Please contact support`)
+                    toast.error(t("axios_error"))
                 }
             })()
         }

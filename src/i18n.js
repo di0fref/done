@@ -20,6 +20,12 @@ i18n
     // init i18next
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
+        saveMissing: true,
+        backend: {
+            loadPath: '/locales/{{lng}}/{{ns}}.json',
+            addPath: 'http://localhost:3001/locales/add/{{lng}}/{{ns}}',
+
+        },
         fallbackLng: 'en',
         debug: true,
 

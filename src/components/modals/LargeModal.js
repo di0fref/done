@@ -116,8 +116,8 @@ export default function LargeModal(props) {
                         } : {},
                         (project && project.id !== props.card.project_id) ? {
                             field: "project",
-                            old: props.card.project_id,
-                            new: project.id,
+                            old: props.card.project,
+                            new: project.name,
                             user_id: getAuth().currentUser.uid,
                             assigned_user_id: props.card.assigned_user_id,
                             type: "project_id"
@@ -136,7 +136,7 @@ export default function LargeModal(props) {
                 closeModal()
             } catch (err) {
                 console.log(err);
-                toast.error(`Uh oh, something went wrong. Please try again`)
+                toast.error(t("axios_error"))
             }
         })()
     }

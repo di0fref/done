@@ -32,13 +32,13 @@ export default function ChangeLog({card, ...props}) {
                 Activity
             </button>
 
-            <SmallModal open={isOpen} closeModal={closeModal} title={"Task activity"}>
-                <div className={'text-md px-4'}>
+            <SmallModal open={isOpen} closeModal={closeModal} title={t("Task activity")}>
+                <div className={'text-md px-8'}>
 
                     {Object.keys(changes).map(group => {
                         return (
-                            <>
-                                <div className={'font-semibold text-md mt-6'}>{formatDate(new Date(group))}</div>
+                            <div key={group}>
+                                <div  className={'font-semibold text-md mt-6'}>{formatDate(new Date(group))}</div>
 
                                 {Object.values(changes[group]).map(change => {
                                     return (
@@ -50,7 +50,7 @@ export default function ChangeLog({card, ...props}) {
                                         </div>
                                     )
                                 })}
-                            </>)
+                            </div>)
                     })}
 
                 </div>

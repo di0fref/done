@@ -78,7 +78,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": (showDetails ? "Hide" : "Show") + " " + t("details"),
+            "name": (showDetails ? t("Hide") : t("Show")) + " " + t("details"),
             "icon": "BsListNested",
             "id": "20",
             allow: true,
@@ -117,7 +117,7 @@ export default function DynamicMenu({p, overdue}) {
             }
         },
         {
-            "name": (showDetails ? "Hide" : "Show") + " " + t("details"),
+            "name": (showDetails ? t("Hide") : t("Show")) + " " + t("details"),
             "icon": "BsListNested",
             "id": "20",
             allow: true,
@@ -149,7 +149,7 @@ export default function DynamicMenu({p, overdue}) {
             "id": "4",
             allow: (project && project.user_id === getAuth().currentUser.uid),
             "action": () => {
-                toast.error("Not implemented")
+                toast.error(t("Not implemented"))
             }
         },
     ]
@@ -201,13 +201,13 @@ export default function DynamicMenu({p, overdue}) {
                     </div>
                 </div>
             </div>
-            <SmallModal open={open} closeModal={closeModal} title={"Edit project"}>
+            <SmallModal open={open} closeModal={closeModal} title={t("Edit project")}>
                 <EditProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
-            <SmallModal open={openShare} closeModal={closeModal} title={`Share project "${project && project.name}"`}>
+            <SmallModal open={openShare} closeModal={closeModal} title={t("Share project") + " " + (project && project.name)}>
                 <ShareProjectForm p={{...project}} open={false} closeModal={closeModal}/>
             </SmallModal>
-            <SmallModal open={postponeOpen} closeModal={closeModal} title={"Postpone tasks"}>
+            <SmallModal open={postponeOpen} closeModal={closeModal} title={t("Postpone tasks")}>
                 <div className={'px-4 pt-2'}>
                     <div className={'dark:bg-gray-800 flex items-center'}>
                         <div className={'mr-3 dark:text-gray-300 text-neutral-500'}>{t("Postpone")} <b>{t("overdue")}</b> {t("tasks to")}:</div>
@@ -223,7 +223,7 @@ export default function DynamicMenu({p, overdue}) {
                 </div>
 
                 <div className={'flex items-center justify-end space-x-4 p-4'}>
-                    <button onClick={closeModal} className={'cancel-btn'}>{("cancel")}</button>
+                    <button onClick={closeModal} className={'cancel-btn'}>{t("cancel")}</button>
                     <button className={'save-btn'} onClick={postponeHandler}>{t("Ok")}</button>
                 </div>
 

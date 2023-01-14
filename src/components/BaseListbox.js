@@ -12,6 +12,7 @@ import {
 } from "react-icons/bs";
 import {useEffect, useState} from "react";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
+import {useTranslation} from "react-i18next";
 
 const icons = {
     "BsFlag": BsFlag,
@@ -40,6 +41,7 @@ export const PostIcon = (props) => {
 }
 
 export default function BaseListbox({disabled, placement, ...props}) {
+    const {t} = useTranslation();
 
     const [items, setItems] = useState(props.items)
     const [selected, setSelected] = useState(props.selected)
@@ -71,7 +73,7 @@ export default function BaseListbox({disabled, placement, ...props}) {
                         backgroundColor: selected.color
                     }} className={'rounded-full h-2 w-2 mr-2'}/> : ""}
 
-                    <div className={'text-sm flex-grow text-neutral-500 dark:text-neutral-300  whitespace-nowrap'}>{selected ? selected.name : ""}</div>
+                    <div className={'text-sm flex-grow text-neutral-500 dark:text-neutral-300  whitespace-nowrap'}>{selected ? t(selected.name) : ""}</div>
                     <HiChevronDown className={''}/>
 
                 </Listbox.Button>
@@ -94,7 +96,7 @@ export default function BaseListbox({disabled, placement, ...props}) {
                                                 <PostIcon iconName={item.icon} css={item.css}/>
                                             </div>
                                             : ""}
-                                        <div className={'whitespace-nowrap dark:text-neutral-300'}>{item.name}</div>
+                                        <div className={'whitespace-nowrap dark:text-neutral-300'}>{t(item.name)}</div>
                                     </div>
                                 </button>
                             )}
