@@ -23,9 +23,9 @@ export default function SmallModal(props) {
             <div className="fixed inset-0 bg-black/50" aria-hidden="true"/>
 
             {/* Full-screen container to center the panel */}
-            <div className="fixed inset-0 flex items-center justify-center text-gray-600 ">
+            <div className="justify-center items-center flex  fixed top-[20vh] left-0 right-0 z-40 outline-none focus:outline-none">
                 {/* The actual dialog panel  */}
-                <Dialog.Panel className=" md:max-w-xl w-11/12 transform  rounded-md bg-white dark:bg-gray-800 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className=" md:max-w-xl w-11/12 transform  rounded-lg bg-white dark:bg-gray-800 text-left align-middle shadow-xl transition-all">
                     <Dialog.Title>
                         <div className={'border-b dark:border-gray-700 h-10 flex justify-between items-center'}>
                             <div className={'ml-3 font-semibold text-sm text-neutral-600 dark:text-neutral-200'}>{props.title}</div>

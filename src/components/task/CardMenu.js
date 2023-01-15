@@ -4,7 +4,7 @@ import {
     BsSunFill, BsSunriseFill
 } from "react-icons/bs";
 import {useEffect, useState} from "react";
-import BaseListbox, {PostIcon} from "../BaseListbox";
+import BaseListbox, {Avatar, PostIcon} from "../BaseListbox";
 import {Tooltip} from "react-tooltip";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteTask, updateTask} from "../../redux/taskSlice";
@@ -34,17 +34,16 @@ export default function CardMenu({disabled, card, ...props}) {
 
     const [users, setUsers] = useState([])
 
-    const [assignedUser, setAssignedUser] = useState({
-        id: card.assigned_user_id,
-        name: card.assigned_user_name
-    })
+    const [assignedUser, setAssignedUser] = useState({})
 
     useEffect(() => {
         /* Load users that can be assigned */
         isOpen && project && axios.get("/projects_users/" + project.id).then(response => {
             setUsers(response.data)
+            setAssignedUser(response.data.find(user => user.user_id === card.assigned_user_id))
         })
     }, [isOpen])
+
 
     const items =
         [
@@ -88,7 +87,7 @@ export default function CardMenu({disabled, card, ...props}) {
                                 new: 1,
                                 user_id: getAuth().currentUser.uid,
                                 assigned_user_id: card.assigned_user_id,
-                                 type: "bool"
+                                type: "bool"
                             }
                         ]
                     })).unwrap()
@@ -145,7 +144,7 @@ export default function CardMenu({disabled, card, ...props}) {
                     new: date ? format(date, "Y-MM-dd") : null,
                     user_id: getAuth().currentUser.uid,
                     assigned_user_id: card.assigned_user_id,
-                     type: "date"
+                    type: "date"
                 }
             ]
         })).unwrap()
@@ -229,11 +228,15 @@ export default function CardMenu({disabled, card, ...props}) {
                                                     <PostIcon iconName={item.icon} css={item.css}/>
                                                 </div>
                                                 : ""}
+                                            {item.image_url ?
+                                                <div className={'mr-2'}>
+                                                    <Avatar img={item.image_url} css={item.css}/>
+                                                </div>
+                                                : ""}
                                             <div className={'whitespace-nowrap'}>{t(item.name)}</div>
                                         </button>
                                     </div>
                                 ))}
-
                             </Popover.Panel>
                         </>
                     )}
@@ -250,8 +253,8 @@ export default function CardMenu({disabled, card, ...props}) {
                 {({open}) => {
 
                     return <>
-                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible z-50 p-1 rounded flex items-center  justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
-                            <BsList className={'h-5 w-5 text-neutral-400 dark:text-gray-400'}/>
+                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible z-50 p-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
+                            <BsList className={'h-5 w-5 hover:text-neutral-600 text-neutral-400 dark:text-gray-400'}/>
                         </Popover.Button>
                         <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {({close}) => (
@@ -324,10 +327,10 @@ export default function CardMenu({disabled, card, ...props}) {
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>{t("Assigned user")}
                                             </div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
-                                                         onChange={(user) => {
-                                                             onUserChange(user)
-                                                             close()
-                                                         }}/>
+                                               onChange={(user) => {
+                                                   onUserChange(user)
+                                                   close()
+                                               }}/>
                                         </div>
                                     </div>
 
@@ -338,12 +341,17 @@ export default function CardMenu({disabled, card, ...props}) {
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={
                                                 [{
                                                     "name": "Inbox",
-                                                    "id": null
-                                                }, ...projects]} selected={project || {"name": "Inbox", "id": null}}
-                                                         onChange={(project) => {
-                                                             onProjectChange(project)
-                                                             close()
-                                                         }}/>
+                                                    "id": null,
+                                                    "icon": "BsInbox"
+                                                }, ...projects]} selected={project || {
+                                                "name": "Inbox",
+                                                "id": null,
+                                                "icon": "BsInbox"
+                                            }}
+                                             onChange={(project) => {
+                                                 onProjectChange(project)
+                                                 close()
+                                             }}/>
                                         </div>
                                     </div>
                                     <div className={'mt-2_'}>

@@ -134,14 +134,14 @@ export default function AddTask() {
 
     if (editing) {
         return (
-            <div ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-md bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
+            <div ref={ref} className={'lg:flex-nowrap md:pb-0 pb-3 flex-wrap ring-1 min-h-[40px] rounded-xl bg-white dark:bg-gray-600 flex items-center space-x-2 pr-2'}>
                 <div className={'w-full'}>
                     <input
                         onKeyDown={onKeyDownHandler}
                         type={"text"}
                         ref={inputReference}
                         onChange={(e) => setName(e.target.value)}
-                        className={'dark:placeholder:text-gray-500 placeholder:text-sm placeholder:text-neutral-300 w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-md dark:bg-gray-600'}
+                        className={'dark:placeholder:text-gray-500 placeholder:text-sm placeholder:text-neutral-300 w-full border-0 focus:ring-0 focus:border-0 focus:ring-0 rounded-xl dark:bg-gray-600'}
                         placeholder={placeHolder}
                         value={name}>
                     </input>

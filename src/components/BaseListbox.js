@@ -8,7 +8,7 @@ import {
     BsSortDown,
     BsPinAngle,
     BsArrowRightSquare,
-    BsTrash, BsPencil, BsShare, BsCheckSquare, BsListNested, BsPerson, BsGrid
+    BsTrash, BsPencil, BsShare, BsCheckSquare, BsListNested, BsPerson, BsGrid, BsInbox
 } from "react-icons/bs";
 import {useEffect, useState} from "react";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
@@ -31,13 +31,20 @@ const icons = {
     "BsCheckSquare": BsCheckSquare,
     "BsListNested": BsListNested,
     "BsPerson": BsPerson,
-    "BsGrid": BsGrid
+    "BsGrid": BsGrid,
+    "BsInbox": BsInbox
 
 }
 
 export const PostIcon = (props) => {
     const Icon = icons[props.iconName];
     return <Icon className={props.css}/>
+}
+
+export const Avatar = (props) => {
+    return (
+        <img src={props.img} className={'rounded-full '}/>
+    )
 }
 
 export default function BaseListbox({disabled, placement, ...props}) {
@@ -49,7 +56,7 @@ export default function BaseListbox({disabled, placement, ...props}) {
     const onChange = (value) => {
         setSelected(value)
         props.onChange(value)
-        if(value.action) {
+        if (value.action) {
             value.action()
         }
     }
@@ -73,16 +80,22 @@ export default function BaseListbox({disabled, placement, ...props}) {
                         backgroundColor: selected.color
                     }} className={'rounded-full h-2 w-2 mr-2'}/> : ""}
 
+                    {selected && selected.image_url ?
+                        <div className={'mr-2 h-4 w-4'}>
+                            <Avatar img={selected.image_url} css={selected.css}/>
+                        </div>
+                        : ""}
+
                     <div className={'text-sm flex-grow text-neutral-500 dark:text-neutral-300  whitespace-nowrap'}>{selected ? t(selected.name) : ""}</div>
                     <HiChevronDown className={''}/>
 
                 </Listbox.Button>
 
-                <Listbox.Options className={`${placement ? placement : "right-0_"}  z-50 absolute mt-1 w-fit _w-44 max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm`}>
+                <Listbox.Options className={`${placement ? placement : "right-0_"} max-w-fit z-50 absolute mt-1  max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm`}>
 
                     {items.map((item, index, {length}) => (
 
-                        <Listbox.Option value={item} key={item.id} className={({active}) => `${(index + 1 === length)?"border-t":""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
+                        <Listbox.Option value={item} key={item.id} className={({active}) => `${(index + 1 === length) ? "border-t_" : ""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
                             {({active}) => (
                                 <button className={`block truncate font-normal`}>
                                     <div className={'flex items-center space-x-3'}>
@@ -94,6 +107,12 @@ export default function BaseListbox({disabled, placement, ...props}) {
                                         {item.icon ?
                                             <div>
                                                 <PostIcon iconName={item.icon} css={item.css}/>
+                                            </div>
+                                            : ""}
+                                        {item.image_url ?
+                                            <div className={'mr-2 h-4 w-4'}>
+
+                                            <Avatar img={item.image_url} css={item.css}/>
                                             </div>
                                             : ""}
                                         <div className={'whitespace-nowrap dark:text-neutral-300'}>{t(item.name)}</div>

@@ -1,6 +1,5 @@
 import {format, formatRelative} from "date-fns";
-import {FaArchive, FaInbox, FaStar, FaUserCircle} from "react-icons/fa";
-import {BsCalendar, BsCheckSquareFill, BsGrid, BsList, BsTrash} from "react-icons/bs";
+import {BsArchive, BsCalendar, BsCheckSquareFill, BsGrid, BsInbox, BsStar, BsTrash} from "react-icons/bs";
 import {enGB} from "date-fns/locale";
 import {getAuth} from "firebase/auth";
 import {createSelector} from "@reduxjs/toolkit";
@@ -18,6 +17,7 @@ export const selectPinned = createSelector(
         })
     }
 )
+
 export const GoogleHead = (props) => {
 
     if(getAuth().currentUser && getAuth().currentUser.uid) {
@@ -26,7 +26,6 @@ export const GoogleHead = (props) => {
             <img {...props} alt="Avatar" src={image}/>
         )
     }
-
     return null
 }
 
@@ -117,7 +116,7 @@ export function getIcon(path, classes) {
 
     switch (path) {
         case "today":
-            return <FaStar className={'text-gray-500'}/>
+            return <BsStar className={'text-gray-500'}/>
         case "upcoming":
             return (
                 <div className={'relative_'}>
@@ -125,9 +124,9 @@ export function getIcon(path, classes) {
                 </div>
             )
         case "all":
-            return <FaArchive className={'text-gray-500'}/>
+            return <BsArchive className={'text-gray-500'}/>
         case "inbox":
-            return <FaInbox className={'text-gray-500'}/>
+            return <BsInbox className={'text-gray-500'}/>
         case "projects":
             return <BsGrid className={`${classes} text-gray-500`}/>
         case "trash":

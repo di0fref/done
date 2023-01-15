@@ -33,7 +33,7 @@ export default function ChangeLog({card, ...props}) {
             </button>
 
             <SmallModal open={isOpen} closeModal={closeModal} title={t("Task activity")}>
-                <div className={'text-md px-8'}>
+                <div className={'text-md px-4 mb-8'}>
 
                     {Object.keys(changes).map(group => {
                         return (

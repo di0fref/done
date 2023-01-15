@@ -12,40 +12,41 @@ import {BsCheckSquareFill, BsTrash} from "react-icons/bs";
 import {useReadLocalStorage} from "usehooks-ts";
 import {SortableComponent} from "./project/ProjectList";
 import {useTranslation} from "react-i18next";
+import {createSelector} from "@reduxjs/toolkit";
 
+const selectProjects = createSelector(
+    (state) => state.projects,
+    (projects) => (
+        projects.filter((project) => !project.deleted)
+    )
+)
+
+const selectCount = createSelector(
+    (state) => state.tasks,
+    (tasks) => {
+        return {
+            today: tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted).length,
+            upcoming: tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted).length,
+            inbox: tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed && task.project_id === "" && !task.deleted)).length,
+            all: tasks.filter((task) => (!task.completed && !task.deleted)).length,
+            completed: tasks.filter((task) => (task.completed)).length,
+            trash: tasks.filter((task) => (task.deleted)).length,
+        }
+    }
+)
 
 export default function Sidebar(props) {
 
     const location = useLocation();
     const {t} = useTranslation();
-
-    const projects = [...useSelector(
-        state => state.projects.filter((project) => !project.deleted)
-    )].sort((a, b) => {
-        return a.name.localeCompare(b.name)
-    })
-
     const showSidebarCount = useReadLocalStorage("showSidebarCount");
 
-    const today_count = useSelector(state => state.tasks.filter(
-        task => (new Date(task.due).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted
-    )).length
+    const projects = useSelector(selectProjects)
+    const counts = useSelector(selectCount)
 
-    const upcoming_count = useSelector(state => state.tasks.filter(
-        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed) && !task.deleted
-    )).length
+    // const project_count = groupByCount(useSelector(state => state.tasks.filter(task => !task.completed && !task.deleted)), "project_id")
 
-    const inbox_count = useSelector(state => state.tasks.filter(
-        task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && (!task.completed && task.project_id === "" && !task.deleted)
-    )).length
-
-    const all_count = useSelector(state => state.tasks.filter(
-        task => !task.completed && !task.deleted
-    )).length
-
-    const project_count = groupByCount(useSelector(state => state.tasks.filter(task => !task.completed && !task.deleted)), "project_id")
-
-    const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
+    // const currentProject = useSelector(state => state.projects.find(project => props.id === project.id))
 
     return (
         // <div>
@@ -68,7 +69,7 @@ export default function Sidebar(props) {
                                 <Link to={'/inbox'} className={`${(location.pathname.includes("/inbox")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     <div className={'text-gray-500'}>{getIcon("inbox")}</div>
                                     <div className={'ml-3 flex-grow'}>{t("Inbox")}</div>
-                                    {showSidebarCount ? <div className={'text-xs'}>{inbox_count}</div> : ""}
+                                    {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["inbox"]}</div> : ""}
                                 </Link>
                             </li>
                             <li>
@@ -77,7 +78,7 @@ export default function Sidebar(props) {
                                     {/*<div className={'ml-3'}>*/}
                                     {getIcon("today")}
                                     <div className={'ml-3 flex-grow'}>{t("Today")}</div>
-                                    {showSidebarCount ? <div className={'text-xs'}>{today_count}</div> : ""}
+                                    {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["today"]}</div> : ""}
                                     {/*</div>*/}
                                 </Link>
                             </li>
@@ -85,14 +86,14 @@ export default function Sidebar(props) {
                                 <Link to={'/upcoming'} className={`${(location.pathname.includes("/upcoming")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("upcoming")}
                                     <div className={'ml-3 flex-grow'}>{t("Upcoming")}</div>
-                                    {showSidebarCount ? <div className={'text-xs'}>{upcoming_count}</div> : ""}
+                                    {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["upcoming"]}</div> : ""}
                                 </Link>
                             </li>
                             <li>
                                 <Link to={'/all'} className={`${(location.pathname.includes("/all")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                     {getIcon("all")}
                                     <div className={'ml-3 flex-grow'}>{t("All Tasks")}</div>
-                                    {showSidebarCount ? <div className={'text-xs'}>{all_count}</div> : ""}
+                                    {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["all"]}</div> : ""}
                                 </Link>
                             </li>
 
@@ -140,12 +141,14 @@ export default function Sidebar(props) {
                         <div className={'inline-block pt-3'}>
                             <Link to={'/completed'} className={`${(location.pathname.includes("/completed")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                 <div className={'text-gray-500'}><BsCheckSquareFill className={'text-gray-500'}/></div>
-                                <span className={'ml-3'}>{t("completed")}</span>
+                                <div className={'ml-3 flex-grow'}>{t("Completed")}</div>
+                                {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["completed"]}</div> : ""}
                             </Link>
 
                             <Link to={'/trash'} className={`${(location.pathname.includes("/trash")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>
                                 <div className={'text-gray-500'}><BsTrash className={'text-gray-500'}/></div>
-                                <span className={'ml-3'}>{t("Trash")}</span>
+                                <div className={'ml-3 flex-grow'}>{t("Trash")}</div>
+                                {showSidebarCount ? <div className={'text-xs pr-1'}>{counts["trash"]}</div> : ""}
                             </Link>
                         </div>
                     </div>
@@ -153,5 +156,6 @@ export default function Sidebar(props) {
             </div>
         </Disclosure>
         // </div>
-    );
+    )
+        ;
 }

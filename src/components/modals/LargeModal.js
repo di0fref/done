@@ -52,6 +52,7 @@ export default function LargeModal(props) {
         /* Load users that can be assigned */
         project && axios.get("/projects_users/" + project.id).then(response => {
             setUsers(response.data)
+            setAssignedUser(response.data.find(user => user.user_id === props.card.assigned_user_id))
         })
     }, [])
 
@@ -147,7 +148,7 @@ export default function LargeModal(props) {
                     <div className="justify-center items-center flex  fixed top-[15vh] left-0 right-0 z-40 outline-none focus:outline-none">
                         <div className="relative w-auto my-6_ mx-auto w-[56rem]">
                             {/*content*/}
-                            <div className="border-0 rounded shadow-lg relative flex flex-col w-full bg-white dark:bg-gray-800 outline-none focus:outline-none">
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white dark:bg-gray-800 outline-none focus:outline-none">
                                 {/*header*/}
                                 <div className="flex items-start justify-between py-3 px-4 dark:border-gray-700 border-b border-solid border-slate-200 rounded-t">
 
@@ -223,8 +224,9 @@ export default function LargeModal(props) {
                                                 setDirty(true)
                                             }} items={[{
                                                 "name": "Inbox",
-                                                "id": null
-                                            }, ...projects]} selected={project || {"name": "Inbox", "id": null}}/>
+                                                "id": null,
+                                                "icon": "BsInbox"
+                                            }, ...projects]} selected={project || {"name": "Inbox", "id": null, "icon": "BsInbox"}}/>
                                         </div>
 
 

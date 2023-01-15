@@ -67,7 +67,7 @@ export default function EditProjectForm({p, ...props}) {
                 </div>
 
             </div>
-            <div className={'rounded-b border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
+            <div className={'rounded-b-lg border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
                 <button onClick={props.closeModal} className={'cancel-btn'}>{t("cancel")}</button>
                 <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>{t("save")}</button>
             </div>

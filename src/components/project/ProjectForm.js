@@ -45,7 +45,7 @@ export default function ProjectForm(props) {
     return (
         <div className={''}>
             <div className={'p-4'}>
-                <label htmlFor={"name"} className={'text-label'}>{t("Name")}></label>
+                <label htmlFor={"name"} className={'text-label'}>{t("Name")}</label>
                 <input ref={ref} placeholder={""} className={`text-input`} id="name" type={"text"} onChange={(e) => setName(e.currentTarget.value)}/>
             </div>
             <div>
@@ -65,7 +65,7 @@ export default function ProjectForm(props) {
                 </div>
 
             </div>
-            <div className={'rounded-b border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
+            <div className={' rounded-b-lg border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30 flex justify-end space-x-2 p-4'}>
                 <button onClick={props.closeModal} className={'cancel-btn'}>{t("cancel")}</button>
                 <button disabled={!name ? true : ""} className={'save-btn'} onClick={saveProject}>{t("save")}</button>
             </div>
