@@ -6,33 +6,37 @@ import TopHeader from "./TopHeader";
 import {capitalize, formatDate, groupBy} from "../helper";
 import TaskGroup from "./TaskGroup";
 import {useTranslation} from "react-i18next";
+import {createSelector} from "@reduxjs/toolkit";
+
+const selectTasks = createSelector(
+    (state) => state.tasks,
+    (state, sortBy) => sortBy,
+
+    (tasks, sortBy) => (
+        groupBy(tasks.filter(
+            task => (task.completed && !task.deleted)
+        ).sort((a, b) => {
+            return sortF(a, b, sortBy)
+        }), sortBy)
+    )
+)
 
 export default function Completed({renderCard}) {
     const {t} = useTranslation();
 
     const sortBy = useReadLocalStorage("sort")
-    const _data_ = {
-        completed: groupBy([...useSelector(
-            state => state.tasks.filter(
-                task => (task.completed && !task.deleted)
-            )
-        )].sort((a, b) => {
-            return sortF(a, b, sortBy)
-        }), sortBy),
+    const completed = useSelector((state) => selectTasks(state, sortBy))
 
-    }
-
-    console.log(_data_.completed);
 
     return (
         <div>
             <TopHeader/>
 
-            {Object.keys(_data_.completed).length ?
-                Object.keys(_data_.completed).map((group) => {
+            {Object.keys(completed).length ?
+                Object.keys(completed).map((group) => {
                     return (
-                        <TaskGroup count={Object.values(_data_.completed[group]).length} key={"completed" + group} view={"completed"} title={(sortBy === "due" || sortBy === "completed_at") ? formatDate(group, true) : capitalize(group)}>
-                            {Object.values(_data_.completed[group]).map((task, i) => {
+                        <TaskGroup count={Object.values(completed[group]).length} key={"completed" + group} view={"completed"} title={(sortBy === "due" || sortBy === "completed_at") ? formatDate(group, true) : capitalize(group)}>
+                            {Object.values(completed[group]).map((task, i) => {
                                 return renderCard(task, i)
                             })}
                         </TaskGroup>

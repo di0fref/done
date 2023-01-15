@@ -250,8 +250,8 @@ export default function CardMenu({disabled, card, ...props}) {
                 {({open}) => {
 
                     return <>
-                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
-                            <BsList className={'h-5 w-5 text-neutral-500 dark:text-gray-400'}/>
+                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible z-50 p-1 rounded flex items-center  justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
+                            <BsList className={'h-5 w-5 text-neutral-400 dark:text-gray-400'}/>
                         </Popover.Button>
                         <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {({close}) => (

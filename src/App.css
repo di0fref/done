@@ -55,11 +55,13 @@
 
 .checkbox {
 	@apply shrink-0 mt-0.5
-	border-neutral-400/90
+	/*border-neutral-400/90*/
+		border-0
+		bg-neutral-200
 	rounded
 	text-amber-500 focus:ring-0
 	dark:bg-gray-700 dark:border-gray-600 h-4 w-4
-	hover:bg-neutral-100
+	hover:bg-neutral-300
 	disabled:hover:cursor-not-allowed
 }
 

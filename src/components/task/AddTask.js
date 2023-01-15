@@ -167,7 +167,7 @@ export default function AddTask() {
                 setEditing(true)
             }
         }}>
-            <input disabled={true} placeholder={placeHolder} className={`${params.path === "trash" ? "hover:cursor-not-allowed" : ""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-md bg-neutral-100  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
+            <input disabled={true} placeholder={placeHolder} className={`${params.path === "trash" ? "hover:cursor-not-allowed" : ""} h-[40px] placeholder:text-sm placeholder:text-neutral-400 dark:placeholder:text-gray-500 rounded-xl bg-[#dfe0e2]  dark:bg-gray-700 w-full border-0 focus:ring-0 focus:border-0`} type={"text"}/>
         </div>
     )
 }

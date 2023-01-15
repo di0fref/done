@@ -59,7 +59,7 @@ export default function Sidebar(props) {
                     aria-hidden="true"
                 />
             </Disclosure.Button>
-            <div className="z-30 overflow-auto shadow-xl md:shadow-none  border-r dark:border-gray-700  md:relative absolute px-4 py-4 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
+            <div className=" z-30 overflow-auto shadow-xl md:shadow-none  border-r dark:border-gray-700  md:relative absolute px-4 py-4 w-80 lg:w-64 h-screen bg-white dark:bg-gray-800 fixed top-0 -left-80 md:left-0 lg:w-80 md:w-64 peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
                 {/*<SearchDialog/>*/}
                 <div className="flex flex-col justify-start item-center h-full">
                     <div className={'pb-3'}>

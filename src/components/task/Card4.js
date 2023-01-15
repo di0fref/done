@@ -25,7 +25,7 @@ export const Card4 = ({card}) => {
     const [text, setText] = useState(card.text)
     const dispatch = useDispatch()
     const error = useSelector(state => state.error)
-
+    const [isHovering, setIsHovering] = useState(false)
     const showDetails = useReadLocalStorage("showDetails")
 
     const nav = useNavigate()
@@ -65,8 +65,8 @@ export const Card4 = ({card}) => {
                     changes: [
                         {
                             field: "completed",
-                            old: card.completed?1:0,
-                            new: event.target.checked?1:0,
+                            old: card.completed ? 1 : 0,
+                            new: event.target.checked ? 1 : 0,
                             user_id: getAuth().currentUser.uid,
                             assigned_user_id: card.assigned_user_id,
                             type: "bool"
@@ -108,18 +108,16 @@ export const Card4 = ({card}) => {
     }
 
     return (
-        <>
-            <div className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} flex space-x-2 px-3 _items-center hover:cursor-pointer border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
+
+        <div className={' group flex items-center'}>
+            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
                 <div className={'py-2.5 mr-2'}>
-                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>
+                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 _mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
 
-                <div onClick={clickHandler} className={'flex-grow py-2.5'}>
-                    <span className={`${card.completed ? "line-through " : ""} font-medium_ text-sm`}>{name}</span>
-                    {/*<div className={'flex items-center space-x-2 mt-1'}>*/}
-                    {/*    <div><img src={card.image_url} className={'rounded-full h-4 w-4'}/></div>*/}
-                    {/*    <div className={'text-xs text-neutral-500'}>{card.assigned_user_name}</div>*/}
-                    {/*</div>*/}
+                <div onClick={clickHandler} className={'flex-grow py-3'}>
+                    <span className={`${card.completed ? "line-through " : ""} text-neutral-500 font-medium text-sm`}>{name}</span>
+
                     {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}>
                         <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/>
                     </div> : ""}
@@ -129,54 +127,16 @@ export const Card4 = ({card}) => {
                     <>
 
                         <div className={'py-2.5'}>
-                            {(!currentProject.id && card.project) ? <ProjectBadge project={taskProject}/> : ""}
+                            {(!currentProject.id && card.project) ?
+                                <ProjectBadge project={taskProject}/>
+                                : ""}
                         </div>
-                        <div className={'py-2.5'}>
-                            <span className={'text-xs text-neutral-500'}>{card.assigned_user_name}</span>
-                        </div>
-                        <div className={'py-2.5'}>
-                            <PrioBadge value={card.prio}/>
-                        </div>
-                        <div className={'py-2.5'}>
-                            <CardMenu disabled={card.deleted} card={card}/>
-                        </div>
+
                     </>
                     : ""}
             </div>
+            <div className={'w-12 bg-red-300_ py-2.5 mb-2'}><CardMenu disabled={card.deleted} card={card} hover={isHovering}/></div>
 
-
-            {/*<div*/}
-            {/*    // style={{borderLeft: _project_?`1px solid ${_project_.color}`:"none"}}*/}
-
-            {/*    className={` pl-3_ flex items-center_ py-3_  group ${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200  hover:cursor-pointer`}>*/}
-            {/*    <div onClick={clickHandler} className={'flex items-center_ flex-grow space-x-4  pl-3  py-3 '}>*/}
-            {/*        <div>*/}
-            {/*            <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 mb-1`} type={"checkbox"} checked={taskCompleted}/>*/}
-            {/*        </div>*/}
-            {/*        <div className={'w-full'}>*/}
-            {/*            <div>*/}
-            {/*                <div className={`${card.completed ? "line-through " : ""} font-medium text-sm `}>*/}
-            {/*                    <div className={'text-neutral-700 dark:text-neutral-300'}>*/}
-            {/*                        <div className={'mt-0.5'}>{name} old</div>*/}
-            {/*                        {showDetails*/}
-            {/*                            ? <div className={'text-sm mt-2 text-neutral-400'}>*/}
-            {/*                                <Editor initial={card.text} editable={true} small={true}/>*/}
-            {/*                            </div>*/}
-            {/*                            : ""}*/}
-            {/*                    </div>*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-
-            {/*    {!card.completed ? (*/}
-            {/*            <div className={'flex items mr-4 space-x-3'}>*/}
-            {/*                {(!currentProject.id && card.project) ? <ProjectBadge project={taskProject}/> : ""}*/}
-            {/*                <div className={''}><PrioBadge value={card.prio}/></div>*/}
-            {/*                <div className={''}><CardMenu disabled={card.deleted} card={card}/></div>*/}
-            {/*            </div>)*/}
-            {/*        : ""}*/}
-            {/*           </div>*/}
-            {/*</div>*/}
-        </>
+        </div>
     )
 }

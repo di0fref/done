@@ -45,7 +45,7 @@ export const Container = (props) => {
 
         return (
             <div className={'flex h-full dark:text-neutral-300 bg-gray-50_ '}>
-                <div className={'flex-grow px-8'}>
+                <div className={'flex-grow pl-12 px-4'}>
                     {(() => {
                         switch (props.filter) {
                             case "trash":
