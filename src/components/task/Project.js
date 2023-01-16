@@ -21,8 +21,8 @@ const selectTasks = createSelector(
 
             return (
                 !showCompleted
-                    ? task.project_id === project_id && !task.deleted && !task.completed
-                    : task.project_id === project_id && !task.deleted
+                    ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted && !task.completed
+                    : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) &&task.project_id === project_id && !task.deleted
             )
 
         }), sortBy).sort((a, b) => {
@@ -36,7 +36,7 @@ const selectOverdue = createSelector(
     (state, sortBy, project_id) => project_id,
 
     (tasks, sortBy, project_id) => {
-        return groupBy(tasks.filter(task => task.project_id === project_id && (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)), sortBy).sort((a, b) => {
+        return tasks.filter(task => task.project_id === project_id && (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
             return sortF(a, b, sortBy)
         })
     }
@@ -62,17 +62,17 @@ export default function Project({renderCard, ...props}) {
             <TopHeader overdue={overdue}/>
             {(showPinned && pinned.length) ?
                 <TaskGroup key={"projectpinned"} view={"project"} title={"Pinned"}>
-                    {Object.values(pinned).map((card, i) => renderCard(card, i))}
+                    {pinned.map((card, i) => renderCard(card, i))}
                 </TaskGroup>
                 : ""}
 
-            {/*{(overdue.length && showOverdue) ?*/}
-            {/*    (*/}
-            {/*        <TaskGroup count={Object.values(overdue).length} key={"projectoverdue"} view={"project"} title={"Overdue"}>*/}
-            {/*            {Object.values(overdue).map((card, i) => renderCard(card, i))}*/}
-            {/*        </TaskGroup>*/}
-            {/*    )*/}
-            {/*    : ""}*/}
+            {(overdue.length && showOverdue) ?
+                (
+                    <TaskGroup count={Object.values(overdue).length} key={"projectoverdue"} view={"project"} title={"Overdue"}>
+                        {overdue.map((card, i) => renderCard(card, i))}
+                    </TaskGroup>
+                )
+                : ""}
 
             {Object.keys(tasks).length ?
                 Object.keys(tasks).map((group) => {

@@ -1,12 +1,9 @@
-import {useEffect, useState} from 'react';
-import {arrayMove, SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {BiMenu} from "react-icons/bi";
-import {updateTask} from "../../redux/taskSlice";
-import {move, updateProject} from "../../redux/projectSlice";
-import {sortF} from "../task/Sort";
+import {move} from "../../redux/projectSlice";
 import {VscGripper} from "react-icons/vsc";
+import ProjectMenu from "./ProjectMenu";
 
 
 const SortableItem = SortableElement(({project, id}) => {
@@ -24,11 +21,12 @@ const SortableItem = SortableElement(({project, id}) => {
     return (
         <div className={`${(currentProject.id === project.id)?"sidebar-active":""} group py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded`}>
             <div className={'flex items-center'}>
-                <DragHandle/>
+                {/*<DragHandle/>*/}
                 <Link to={"/project/" + project.id} className={'flex items-center flex-grow'}>
-                    <div className={'flex-grow hover:text-gray-600 dark:hover:text-neutral-100 dark:text-neutral-300 text-gray-500 text-sm'}>{project.name}</div>
-                    <div className={'w-2 h-2 rounded-full mr-3'} style={{backgroundColor: project.color}}/>
+                    <div className={'w-2 h-2 rounded-full mx-3'} style={{backgroundColor: project.color}}/>
+                    <div className={'hover:text-gray-600 dark:hover:text-neutral-100 dark:text-neutral-300 text-gray-500 text-sm'}>{project.name}</div>
                 </Link>
+                <ProjectMenu p={project}/>
             </div>
         </div>
     )
@@ -63,5 +61,15 @@ export function SortableComponent() {
 
     }
 
-    return <SortableList lockAxis={"y"} helperClass="draggable-item" useDragHandle projects={projects} onSortEnd={onSortEnd}/>;
+    const shouldCancelStart = (e) => {
+        if (e.target.tagName.toLowerCase() === 'a') {
+            return true; // Return true to cancel sorting
+        }
+    }
+
+    return <SortableList lockAxis={"y"} helperClass="draggable-item"
+                         distance={1}
+                         // useDragHandle
+                         shouldCancelStart={shouldCancelStart}
+                         projects={projects} onSortEnd={onSortEnd}/>;
 }

@@ -31,7 +31,7 @@ const selectOverdue = createSelector(
     (state) => state.tasks,
     (_, sortBy) => sortBy,
     (tasks, sortBy) => {
-        return groupBy(tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)), sortBy).sort((a, b) => {
+        return tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
             sortF(a, b, sortBy)
         })
     }
@@ -56,10 +56,14 @@ export default function Today({renderCard}) {
             <TopHeader overdue={overdue}/>
             {(showPinned && pinned.length) ?
                 <TaskGroup key={"todaypinned"} view={"today"} title={"Pinned"}>
-                    {Object.values(pinned).map((card, i) => renderCard(card, i))}
+                    {pinned.map((card, i) => renderCard(card, i))}
                 </TaskGroup>
                 : ""}
-
+            {(showOverdue && overdue.length) ?
+                <TaskGroup key={"todayoverdue"} view={"today"} title={"Overdue"}>
+                    {overdue.map((card, i) => renderCard(card, i))}
+                </TaskGroup>
+                : ""}
 
             {Object.keys(tasks).length ?
                 Object.keys(tasks).map((group) => {

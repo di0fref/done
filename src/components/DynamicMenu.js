@@ -1,39 +1,30 @@
 import {PostIcon} from "./BaseListbox";
 import {Menu} from "@headlessui/react";
 import {HiOutlineDotsHorizontal} from "react-icons/hi";
-import EditProjectForm from "./project/EditProjectForm";
 import {useEffect, useState} from "react";
 import SmallModal from "./modals/SmallModal";
 import {toast} from "react-toastify";
-import ShareProjectForm from "./project/ShareProjectForm"
-import {useParams} from "react-router-dom";
 import {useLocalStorage} from "usehooks-ts";
 import {updateTask} from "../redux/taskSlice";
 import {format} from "date-fns";
 import {dateFormat, dbDateFormat, formatDate} from "./helper";
 import {useDispatch} from "react-redux";
-import {getAuth} from "firebase/auth";
 import CustomDatePicker from "./badges/CustomDatePicker";
 import {useTranslation} from "react-i18next";
 
-export default function DynamicMenu({p, overdue}) {
+export default function DynamicMenu({overdue}) {
 
     const {t} = useTranslation();
 
-    const [project, setProject] = useState(p)
-    const [open, setOpen] = useState(false)
-    const [openShare, setOpenShare] = useState(false)
     const [postponeOpen, setPostponeOpen] = useState(false)
     const [useMenu, setUseMenu] = useState([])
-    const params = useParams()
 
     const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
     const [showDetails, setShowDetails] = useLocalStorage("showDetails", null)
     const dispatch = useDispatch()
     const [due, setDue] = useState(new Date())
     const closeModal = () => {
-        setOpen(false)
-        setOpenShare(false)
+
         setPostponeOpen(false)
     }
 
@@ -62,10 +53,6 @@ export default function DynamicMenu({p, overdue}) {
             setPostponeOpen(false)
         }
     }
-
-    useEffect(() => {
-        setProject(p)
-    }, [p])
 
     let taskMenuitems = [
         {
@@ -97,76 +84,12 @@ export default function DynamicMenu({p, overdue}) {
         },
     ]
 
-    const projectMenuItems = [
-        {
-            "name": t("Edit project"),
-            "icon": "BsPencil",
-            "id": "2",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
-            "action": () => {
-                setOpen(true)
-            }
-        },
-        {
-            "name": (showCompleted ? t("Hide") : t("Show")) + " " + t("completed"),
-            "icon": "BsCheckSquare",
-            "id": "10",
-            allow: true,
-            "action": () => {
-                setShowCompleted(prev => !prev)
-            }
-        },
-        {
-            "name": (showDetails ? t("Hide") : t("Show")) + " " + t("details"),
-            "icon": "BsListNested",
-            "id": "20",
-            allow: true,
-            "action": () => {
-                setShowDetails(prev => !prev)
-            }
-        },
-        {
-            "name": t("Share project"),
-            "icon": "BsShare",
-            "id": "3",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
-            "action": () => {
-                setOpenShare(true)
-            }
-        },
-        {
-            "name": t("Postpone"),
-            "icon": "BsCalendar",
-            allow: true,
-            "id": "31",
-            "action": () => {
-                setPostponeOpen(true)
-            }
-        },
-        {
-            "name": t("Delete project"),
-            "icon": "BsTrash",
-            "id": "4",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
-            "action": () => {
-                toast.error(t("Not implemented"))
-            }
-        },
-    ]
     useEffect(() => {
 
-        setUseMenu(
-            (params.path === "project")
-                ? [...projectMenuItems]
-                : [...taskMenuitems]
-        )
+        setUseMenu([...taskMenuitems])
 
+    }, [showCompleted, showDetails])
 
-    }, [params.path, showCompleted, showDetails])
-
-    useEffect(() => {
-        setProject(p)
-    }, [p])
 
     return (
         <div>
@@ -201,12 +124,7 @@ export default function DynamicMenu({p, overdue}) {
                     </div>
                 </div>
             </div>
-            <SmallModal open={open} closeModal={closeModal} title={t("Edit project")}>
-                <EditProjectForm p={{...project}} open={false} closeModal={closeModal}/>
-            </SmallModal>
-            <SmallModal open={openShare} closeModal={closeModal} title={t("Share project") + " " + (project && project.name)}>
-                <ShareProjectForm p={{...project}} open={false} closeModal={closeModal}/>
-            </SmallModal>
+
             <SmallModal open={postponeOpen} closeModal={closeModal} title={t("Postpone tasks")}>
                 <div className={'px-4 pt-2'}>
                     <div className={'dark:bg-gray-800 flex items-center'}>

@@ -34,8 +34,8 @@ function useOnClickOutside(ref, handler) {
 
 
 function getPlaceHolder(project, due, t) {
-
-    return '+ ' + t("Add task in") + ' "' + project + '" ' + t("on") + ' "' + formatDate(due) + '"';
+    const date = due ? '" ' + t("on") + ' "' + formatDate(due) + '"' : ""
+    return '+ ' + t("Add task in") + ' "' + project + date
 }
 
 export default function AddTask() {
@@ -52,18 +52,18 @@ export default function AddTask() {
     const projects = [{
         id: null,
         name: "Inbox",
+        icon: "BsInbox"
     }, ...extracted]
 
     const [name, setName] = useState("");
     const [project, setProject] = useState(_project_);
-    const [due, setDue] = useState(new Date());
+    const [due, setDue] = useState(project.id ? new Date() : null);
     const [prio, setPrio] = useState("normal");
 
     const [placeHolder, setPlaceHolder] = useState()
     const {t} = useTranslation();
 
     useOnClickOutside(ref, () => handleClickOutside());
-
 
     useEffect(() => {
         setProject(_project_)
@@ -129,7 +129,7 @@ export default function AddTask() {
         setProject(project)
     }
     if (params.path === "trash") {
-        return <div></div>
+        return <div/>
     }
 
     if (editing) {
@@ -147,12 +147,13 @@ export default function AddTask() {
                     </input>
                 </div>
                 <div className={'text-sm'}>
-                    <CustomDatePicker bg={false} onDateChange={onDateChange} date={new Date()}/>
+                    <CustomDatePicker bg={false} onDateChange={onDateChange} date={due}/>
                 </div>
                 <div className={'text-sm'}>
                     <BaseListbox items={projects} selected={project.id ? project : {
                         id: null,
                         name: t("Inbox"),
+                        icon: "BsInbox"
                     }} onChange={onProjectChange}/></div>
                 <div className={'text-sm'}>
                     <BaseListbox onChange={(prio) => setPrio(prio.prio)} items={priorities} selected={priorities[1]}/>

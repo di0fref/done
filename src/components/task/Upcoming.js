@@ -33,7 +33,7 @@ export default function Upcoming({renderCard}) {
 
             {(showPinned && pinned.length) ?
                 <TaskGroup key={"pinnedupcoming"} view={"upcoming"} title={"Pinned"}>
-                    {Object.values(pinned).map((card, i) => renderCard(card, i))}
+                    {pinned.map((card, i) => renderCard(card, i))}
                 </TaskGroup>
                 : ""}
 

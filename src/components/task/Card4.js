@@ -110,7 +110,7 @@ export const Card4 = ({card}) => {
     return (
 
         <div className={' group flex items-center'}>
-            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
+            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} shadow hover:shadow-md flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  _hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
                 <div className={'py-2.5 mr-2'}>
                     <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 _mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>

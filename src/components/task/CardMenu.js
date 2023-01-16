@@ -27,11 +27,8 @@ export default function CardMenu({disabled, card, ...props}) {
     const {t} = useTranslation();
 
     const [pinned, setPinned] = useState(card.pinned)
-
     const [project, setProject] = useState(_project_);
-
     const [isOpen, setIsOpen] = useState(false)
-
     const [users, setUsers] = useState([])
 
     const [assignedUser, setAssignedUser] = useState({})
@@ -256,7 +253,7 @@ export default function CardMenu({disabled, card, ...props}) {
                         <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible z-50 p-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
                             <BsList className={'h-5 w-5 hover:text-neutral-600 text-neutral-400 dark:text-gray-400'}/>
                         </Popover.Button>
-                        <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-6  mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {({close}) => (
 
                                 <div className="px-1 py-1 w-56">

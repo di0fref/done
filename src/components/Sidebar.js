@@ -107,28 +107,6 @@ export default function Sidebar(props) {
                             </div>
                             <AddProjectForm/>
                         </div>
-                        {/*{projects.length ?*/}
-                        {/*    <ul className={'space-y-1'}>*/}
-                        {/*        {*/}
-                        {/*            Object.values(projects).map((project, i) => {*/}
-                        {/*                return (*/}
-                        {/*                    <li key={project.id} className={`${(currentProject && project.id === currentProject.id) ? "sidebar-active" : ""} group pl-2 px-1 py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded`}>*/}
-                        {/*                        <Link to={"/project/" + project.id} className={'flex items-center'}>*/}
-                        {/*                            <div style={{background: project.color}} className={'w-2 h-2 rounded-full'}/>*/}
-                        {/*                            <div className={'flex items-center hover:text-gray-600 dark:hover:text-neutral-100 ml-3 dark:text-neutral-300 text-gray-500 text-sm flex-grow '}>*/}
-                        {/*                                <div className={'flex-grow'}>{project.name}</div>*/}
-                        {/*                            </div>*/}
-                        {/*                        </Link>*/}
-                        {/*                    </li>*/}
-                        {/*                )*/}
-                        {/*            })*/}
-                        {/*        }*/}
-                        {/*    </ul>*/}
-                        {/*    :*/}
-                        {/*    <div className={'bg-neutral-100 text-sm mx-2 p-2 text-neutral-600'}>*/}
-                        {/*        Create your first project and start grouping tasks together.*/}
-                        {/*    </div>*/}
-                        {/*}*/}
                     </div>
                     {projects.length ?
                         <SortableComponent items={projects}/>

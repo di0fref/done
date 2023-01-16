@@ -13,6 +13,7 @@ import {
 import {useEffect, useState} from "react";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
 import {useTranslation} from "react-i18next";
+import {getAuth} from "firebase/auth";
 
 const icons = {
     "BsFlag": BsFlag,
@@ -43,7 +44,7 @@ export const PostIcon = (props) => {
 
 export const Avatar = (props) => {
     return (
-        <img src={props.img} className={'rounded-full '}/>
+        <img src={props.img} className={'rounded-full'} referrerPolicy={"no-referrer"}/>
     )
 }
 
@@ -112,7 +113,7 @@ export default function BaseListbox({disabled, placement, ...props}) {
                                         {item.image_url ?
                                             <div className={'mr-2 h-4 w-4'}>
 
-                                            <Avatar img={item.image_url} css={item.css}/>
+                                                <Avatar img={item.image_url} css={item.css}/>
                                             </div>
                                             : ""}
                                         <div className={'whitespace-nowrap dark:text-neutral-300'}>{t(item.name)}</div>

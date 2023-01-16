@@ -23,7 +23,7 @@ export const GoogleHead = (props) => {
     if(getAuth().currentUser && getAuth().currentUser.uid) {
         const image = getAuth().currentUser.photoURL
         return (
-            <img {...props} alt="Avatar" src={image}/>
+            <img {...props} alt="Avatar" src={image} referrerPolicy={"no-referrer"}/>
         )
     }
     return null

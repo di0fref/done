@@ -10,13 +10,14 @@ import {createSelector} from "@reduxjs/toolkit";
 
 
 const selectTasks = createSelector(
-
     (state) => state.tasks,
     (state, sortBy) => sortBy,
     (state, sortBy, showCompleted) => showCompleted,
 
     (tasks, sortBy, showCompleted) => {
-        return groupBy(tasks.filter(task => !task.completed && !task.deleted && !showCompleted?task.completed === false:true), sortBy).sort((a, b) => {
+        return groupBy(tasks.filter(
+            task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && !task.completed && !task.deleted
+        ), sortBy).sort((a, b) => {
             sortF(a, b, sortBy)
         })
     }
@@ -25,15 +26,13 @@ const selectOverdue = createSelector(
     (state) => state.tasks,
     (_, sortBy) => sortBy,
     (tasks, sortBy) => {
-        return groupBy(tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)), sortBy).sort((a, b) => {
+        return tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
             sortF(a, b, sortBy)
         })
     }
 )
 
 export default function All({renderCard}) {
-
-    const params = useParams()
 
     const sortBy = useReadLocalStorage("sort")
     const showCompleted = useReadLocalStorage("showCompleted")
@@ -42,15 +41,22 @@ export default function All({renderCard}) {
     const tasks = useSelector((state) => selectTasks(state, sortBy, showCompleted))
     const overdue = useSelector((state) => selectOverdue(state, sortBy))
     const pinned = useSelector((state) => selectPinned(state, sortBy))
+    const showOverdue = useReadLocalStorage("showOverdue")
 
 
     return (
 
         <div>
-            <TopHeader overdue={[]}/>
+            <TopHeader overdue={overdue}/>
             {(showPinned && pinned.length) ?
                 <TaskGroup key={"pinnedall"} view={"all"} title={"Pinned"}>
-                    {Object.values(pinned).map((card, i) => renderCard(card, i))}
+                    {pinned.map((card, i) => renderCard(card, i))}
+                </TaskGroup>
+                : ""}
+
+            {(showOverdue && overdue.length) ?
+                <TaskGroup key={"overdueall"} view={"all"} title={"Overdue"}>
+                    {overdue.map((card, i) => renderCard(card, i))}
                 </TaskGroup>
                 : ""}
 
