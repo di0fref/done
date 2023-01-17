@@ -28,7 +28,7 @@ export default function Upcoming({renderCard}) {
     const pinned = useSelector((state) => selectPinned(state, sortBy))
 
     return (
-        <div>
+        <div className={'pb-12'}>
             <TopHeader overdue={[]}/>
 
             {(showPinned && pinned.length) ?

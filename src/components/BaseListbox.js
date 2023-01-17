@@ -38,6 +38,11 @@ const icons = {
 }
 
 export const PostIcon = (props) => {
+
+    if(!props.iconName){
+        return ""
+    }
+
     const Icon = icons[props.iconName];
     return <Icon className={props.css}/>
 }
@@ -92,14 +97,14 @@ export default function BaseListbox({disabled, placement, ...props}) {
 
                 </Listbox.Button>
 
-                <Listbox.Options className={`${placement ? placement : "right-0_"} max-w-fit z-50 absolute mt-1  max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm`}>
+                <Listbox.Options className={`${placement ? placement : "right-0_"}  max-w-fit z-50 absolute mt-1  max-h-72 w-full  rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm`}>
 
                     {items.map((item, index, {length}) => (
 
                         <Listbox.Option value={item} key={item.id} className={({active}) => `${(index + 1 === length) ? "border-t_" : ""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
                             {({active}) => (
-                                <button className={`block truncate font-normal`}>
-                                    <div className={'flex items-center space-x-3'}>
+                                <button className={`block truncate font-normal w-full`}>
+                                    <div className={'flex items-center space-x-3 w-full'}>
                                         {item.color ?
                                             <div style={{
                                                 backgroundColor: item.color
@@ -112,7 +117,6 @@ export default function BaseListbox({disabled, placement, ...props}) {
                                             : ""}
                                         {item.image_url ?
                                             <div className={'mr-2 h-4 w-4'}>
-
                                                 <Avatar img={item.image_url} css={item.css}/>
                                             </div>
                                             : ""}

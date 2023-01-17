@@ -45,19 +45,19 @@ export default function CardMenu({disabled, card, ...props}) {
     const items =
         [
             {
-                "name": "Pin",
+                "name": card.pinned ? t("Unpin") : t("Pin"),
                 "id": "pin",
                 "icon": "BsPinAngle",
                 "action": () => {
-                    setPinned(!pinned)
+                    setPinned(prev => !prev)
                     dispatch(updateTask({
                         id: card.id,
-                        pinned: !pinned,
+                        pinned: !card.pinned,
                         changes: [
                             {
                                 field: "pinned",
-                                old: pinned ? 1 : 0,
-                                new: !pinned ? 1 : 0,
+                                old: card.pinned ? 1 : 0,
+                                new: !card.pinned ? 1 : 0,
                                 user_id: getAuth().currentUser.uid,
                                 assigned_user_id: card.assigned_user_id,
                                 type: "bool"
@@ -65,12 +65,12 @@ export default function CardMenu({disabled, card, ...props}) {
                         ]
                     })).unwrap()
 
-                    toast.success("Task " + (pinned ? "pinned" : "unpinned"))
+                    toast.success(t("Task") + " " + (!card.pinned ? t("pinned") : t("unpinned")))
                 },
                 "disabled": disabled
             },
             {
-                "name": "Move to trash",
+                "name": t("Move to trash"),
                 "id": "delete",
                 "icon": "BsTrash",
                 "action": () => {
@@ -324,10 +324,10 @@ export default function CardMenu({disabled, card, ...props}) {
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>{t("Assigned user")}
                                             </div>
                                             <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
-                                               onChange={(user) => {
-                                                   onUserChange(user)
-                                                   close()
-                                               }}/>
+                                                         onChange={(user) => {
+                                                             onUserChange(user)
+                                                             close()
+                                                         }}/>
                                         </div>
                                     </div>
 
@@ -345,10 +345,10 @@ export default function CardMenu({disabled, card, ...props}) {
                                                 "id": null,
                                                 "icon": "BsInbox"
                                             }}
-                                             onChange={(project) => {
-                                                 onProjectChange(project)
-                                                 close()
-                                             }}/>
+                                                         onChange={(project) => {
+                                                             onProjectChange(project)
+                                                             close()
+                                                         }}/>
                                         </div>
                                     </div>
                                     <div className={'mt-2_'}>

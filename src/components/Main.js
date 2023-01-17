@@ -43,11 +43,11 @@ export default function Main() {
         waitForLocalStorage("AccessToken", function (value) {
 
             /* Make sure we have a sort value in LS */
-            const sort = localStorage.getItem("sort");
-            if (!sort) {
-                localStorage.setItem("sort", JSON.stringify("due"))
-                localStorage.setItem("showCompleted", JSON.stringify(true))
-            }
+            // const sort = localStorage.getItem("sort");
+            // if (!sort) {
+            //     localStorage.setItem("sort", JSON.stringify("due"))
+            //     localStorage.setItem("showCompleted", JSON.stringify(true))
+            // }
             try {
                 dispatch(getTasks()).unwrap()
                 dispatch(getProjects()).unwrap()
@@ -143,7 +143,16 @@ export default function Main() {
     } else {
         return (
 
-            <div className={"relative h-screen md:flex bg-[#EAECEF] dark:bg-gray-900 _bg-gray-50"}>
+            <div className={`
+                relative 
+                h-screen 
+                md:flex 
+                bg-[#EAECEF] 
+                dark:bg-gray-900    
+                _bg-gray-50
+                _bg-gradient-to-br to-blue-100/50 from-[#EAECEF]
+                `
+            }>
                 <main className={"flex h-full flex-grow _pt-12"}>
                     <div className={'sidebar-active w-[50px] border-r dark:border-gray-700 px-2 py-4'}>
                         <MainMenu/>

@@ -36,7 +36,10 @@ export default function DynamicMenu({overdue}) {
                     await overdue.map(task => {
                         dispatch(updateTask({
                             id: task.id,
-                            due: format(due, dbDateFormat)
+                            due: format(due, dbDateFormat),
+                            changes:[{
+                                due: format(due, dbDateFormat),
+                            }]
                         }))
                     })
                 } catch (error) {
@@ -49,7 +52,7 @@ export default function DynamicMenu({overdue}) {
                 setDue(new Date())
             })
         } else {
-            toast.warning("No overdue tasks to postpone")
+            toast.warning(t("No overdue tasks to postpone"))
             setPostponeOpen(false)
         }
     }

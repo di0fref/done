@@ -20,7 +20,7 @@ export const selectPinned = createSelector(
 
 export const GoogleHead = (props) => {
 
-    if(getAuth().currentUser && getAuth().currentUser.uid) {
+    if (getAuth().currentUser && getAuth().currentUser.uid) {
         const image = getAuth().currentUser.photoURL
         return (
             <img {...props} alt="Avatar" src={image} referrerPolicy={"no-referrer"}/>
@@ -70,14 +70,14 @@ export const groupByCount = (consolidatedHeroes, sortBy) => {
     }, []);
 };
 
-export const groupBy = (consolidatedHeroes, sortBy) => {
+export const groupBy = (consolidatedHeroes, groupBy) => {
     return Object.keys(consolidatedHeroes).reduce((groups, key) => {
         const currentHero = consolidatedHeroes[key];
         let groupId = "";
-        if (sortBy === "due" || sortBy === "completed_at") {
-            groupId = format(new Date(currentHero[sortBy]), "Y-MM-dd")
+        if (groupBy === "due" || groupBy === "completed_at") {
+            groupId = currentHero[groupBy] ? format(new Date(currentHero[groupBy]), "Y-MM-dd") : "No due date"
         } else {
-            groupId = currentHero[sortBy];
+            groupId = currentHero[groupBy];
         }
         if (!groups[groupId]) {
             groups[groupId] = [];
@@ -156,17 +156,34 @@ export function capitalize(value) {
     return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-function getFormat(date, token) {
+function getFormat(date, token, include_day) {
 
-    const format = dateFormat + (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY');
+    let format = "";
+    let formatRelativeLocale = {}
+    if (!include_day) {
+        format = dateFormat + (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY');
 
-    const formatRelativeLocale = {
-        lastWeek: format,
-        yesterday: "'Yesterday'",
-        today: "'Today'",
-        tomorrow: "'Tomorrow'",
-        nextWeek: format,
-        other: format,
+        formatRelativeLocale = {
+            lastWeek: format,
+            yesterday: "'Yesterday'",
+            today: "'Today'",
+            tomorrow: "'Tomorrow'",
+            nextWeek: format,
+            other: format,
+        }
+
+    } else {
+        format = dateFormat + (date.getFullYear() === new Date().getFullYear() ? '' : ', YYY') + " ‧ EEEE";
+
+        formatRelativeLocale = {
+            lastWeek: format,
+            yesterday: "'Yesterday' ‧ EEEE",
+            today: "'Today' ‧ EEEE",
+            tomorrow: "'Tomorrow' ‧ EEEE",
+            nextWeek: format,
+            other: format,
+        }
+
     }
     return formatRelativeLocale[token]
 }
@@ -175,7 +192,7 @@ Date.prototype.isValid = function () {
     return this instanceof Date && isFinite(this.getTime())
 };
 
-export function formatRelativeDate(date) {
+export function formatRelativeDate(date, include_day) {
 
 
     date = new Date(date);
@@ -186,13 +203,14 @@ export function formatRelativeDate(date) {
 
     const locale = {
         ...enGB,
-        formatRelative: (token) => getFormat(date, token)//formatRelativeLocale[token],
+        formatRelative: (token) => getFormat(date, token, include_day)//formatRelativeLocale[token],
     };
     return formatRelative(date, new Date(), {locale});
 }
 
-export function formatDate(date) {
-    return formatRelativeDate(date);
+export function formatDate(date, include_day) {
+
+    return formatRelativeDate(date, include_day);
 }
 
 

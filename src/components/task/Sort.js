@@ -1,11 +1,3 @@
-import {useState} from "react";
-import {useLocalStorage} from "usehooks-ts";
-import BaseListbox from "../BaseListbox";
-import BaseMenu from "../BaseMenu";
-import {BsFilterCircle, BsFilterLeft} from "react-icons/bs";
-import {useTranslation} from "react-i18next";
-
-
 export const sortF = (a, b, sortBy) => {
 
     const prio = {
@@ -26,60 +18,10 @@ export const sortF = (a, b, sortBy) => {
     return a[sortBy].localeCompare(b[sortBy])
 }
 
-export default function Sort() {
-    const {t} = useTranslation();
 
-    const onChange = (e, option) => {
-        setSort(option.value)
-        setSelectedOption(option)
-    }
-
-
-    const options = [
-        {
-            "name": t("Due date (default)"),
-            "value": "due",
-            "id": "sort_due",
-            "icon": "BsCalendar",
-            "allow": true,
-            "action": onChange
-        },
-        {
-            "name": t("Project"),
-            "value": "project",
-            "id": "sort_project",
-            "icon": "BsGrid",
-            "allow": true,
-            "action": onChange
-        },
-        {
-            "name": t("Assigned user"),
-            "value": "assigned_user_name",
-            "id": "sort_assigned",
-            "icon": "BsPerson",
-            "allow": true,
-            "action": onChange
-        },
-        {
-            "name": t("prio"),
-            "value": "prio",
-            "id": "sort_prio",
-            "icon": "BsFlag",
-            "allow": true,
-            "action": onChange
-
-        },
-    ]
-
-    const [sort, setSort] = useLocalStorage("sort", "due")
-    const [selectedOption, setSelectedOption] = useState(options.find(o => o.value === sort))
-
-
-    return (
-        <div className={'relative'}>
-            <BaseMenu def={"due"} showTitle={false} title={"Group tasks by"} icon={
-                <BsFilterLeft className={'h-5 w-5'}/>} items={options} selected={selectedOption}/>
-            {/*<BaseListbox onChange={onChange} items={options} selected={selectedOption} placement={'right-0'}/>*/}
-        </div>
-    )
+export function sortGroup(obj) {
+    return Object.keys(obj).sort().reduce(function (result, key) {
+        result[key] = obj[key];
+        return result;
+    }, {});
 }

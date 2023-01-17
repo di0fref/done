@@ -25,7 +25,7 @@ export default function BaseMenu({def, items, selected, icon, title, showTitle, 
                                     <div className={'ml-2'}>{selected.name}</div>
                                 }
                             </Menu.Button>
-                            <Menu.Items static={false} className={'z-50 absolute mt-1 min-w-[14rem] right-0 max-h-72 w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
+                            <Menu.Items static={false} className={'z-50 absolute mt-1 min-w-[14rem] right-0 max-h-72 w-full overflow-visible rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
 
                                 {title && <div className={'px-4 py-2 text-neutral-600 font-semibold'}>{t(title)}</div>}
 

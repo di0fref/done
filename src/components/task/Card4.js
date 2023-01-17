@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {delay, paths} from "../helper";
+import {delay, formatDate, paths} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
@@ -14,6 +14,7 @@ import Editor from "../TextEditor";
 import ProjectBadge from "../project/ProjectBadge";
 import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
+import DateBadge from "../badges/DateBadge";
 
 export const Card4 = ({card}) => {
     const {t} = useTranslation();
@@ -140,6 +141,9 @@ export const Card4 = ({card}) => {
                 <div className={'py-2.5'}>
                     <PrioBadge value={card.prio}/>
                 </div>
+                {/*<div className={'py-2.5'}>*/}
+                    <DateBadge date={card.due}/>
+                {/*</div>*/}
 
 
             </div>
