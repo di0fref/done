@@ -42,7 +42,7 @@ export default function Upcoming({renderCard}) {
 
     return (
         <div className={'pb-12'}>
-            <TopHeader overdue={[]}/>
+            {/*<TopHeader overdue={[]}/>*/}
 
             {(showPinned && pinned.length) ?
                 <TaskGroup key={"pinnedupcoming"} view={"upcoming"} title={"Pinned"}>

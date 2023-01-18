@@ -45,8 +45,8 @@ export default function Main() {
             /* Make sure we have a sort value in LS */
             const sort = localStorage.getItem("sort");
             if (!sort) {
-                localStorage.setItem("sort", JSON.stringify("due"))
-                localStorage.setItem("group", JSON.stringify(""))
+                localStorage.setItem("sort", JSON.stringify("name"))
+                localStorage.setItem("group", JSON.stringify("due"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
             }
             try {

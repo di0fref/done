@@ -1,7 +1,7 @@
 import {useTranslation} from "react-i18next";
 import {Menu} from "@headlessui/react";
 import {BsFilterLeft} from "react-icons/bs";
-import BaseListbox from "./components/BaseListbox";
+import BaseListbox from "./BaseListbox";
 import {TbArrowsSort} from "react-icons/tb";
 
 import {VscGroupByRefType} from "react-icons/vsc";
@@ -55,14 +55,14 @@ export default function SortMenu() {
     ]
 
     const groupOptions = [
-        {
-            "name": t("None"),
-            "value": "",
-            "id": "group_none",
-            "icon": "BsCalendar",
-            "allow": true,
-            // "action": onChange
-        },
+        // {
+        //     "name": t("None"),
+        //     "value": "",
+        //     "id": "group_none",
+        //     "icon": "BsCalendar",
+        //     "allow": true,
+        //     // "action": onChange
+        // },
         {
             "name": t("Due date"),
             "value": "due",

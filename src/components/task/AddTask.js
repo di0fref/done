@@ -138,7 +138,7 @@ export default function AddTask({sendJsonMessage}) {
     const onProjectChange = (project) => {
         setProject(project)
     }
-    if (params.path === "trash") {
+    if (params.path === "trash" || params.path === "completed") {
         return <div/>
     }
 

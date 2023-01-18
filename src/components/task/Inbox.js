@@ -16,7 +16,7 @@ const selectTasks = createSelector(
 
     (tasks, sortBy) => {
         return tasks.filter(
-            task => (!task.completed && task.project_id === "" && !task.deleted && (task.due === null || task.due === ""))
+            task => (!task.completed && task.project_id === "" && !task.deleted)
         ).sort((a, b) => {
             return sortF(a, b, sortBy)
         })
@@ -36,7 +36,7 @@ export default function Inbox({renderCard}) {
 
     return (
         <div>
-            <TopHeader overdue={[]}/>
+            {/*<TopHeader overdue={[]}/>*/}
 
             {/*{(showPinned && pinned.length) ? (*/}
             {/*        <TaskGroup key={"pinnedinbox"} view={"inbox"} title={"Pinned"}>*/}

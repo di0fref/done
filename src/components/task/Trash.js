@@ -21,7 +21,7 @@ export default function Trash({renderCard}) {
 
     return (
         <>
-            <TopHeader/>
+            {/*<TopHeader/>*/}
             {Object.keys(_data_.trash.tasks).length ? (
                 Object.values(_data_.trash.tasks).map((task, i) => {
                     return renderCard(task, i)

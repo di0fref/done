@@ -63,17 +63,17 @@ export default function Today({renderCard}) {
     return (
         <div>
 
-            <TopHeader overdue={overdue}/>
+            {/*<TopHeader overdue={overdue}/>*/}
             {/*{(showPinned && pinned.length) ?*/}
             {/*    <TaskGroup key={"todaypinned"} view={"today"} title={"Pinned"}>*/}
             {/*        {pinned.map((card, i) => renderCard(card, i))}*/}
             {/*    </TaskGroup>*/}
             {/*    : ""}*/}
-            {/*{(showOverdue && overdue.length) ?*/}
-            {/*    <TaskGroup key={"todayoverdue"} view={"today"} title={"Overdue"}>*/}
-            {/*        {overdue.map((card, i) => renderCard(card, i))}*/}
-            {/*    </TaskGroup>*/}
-            {/*    : ""}*/}
+            {(showOverdue && overdue.length) ?
+                <TaskGroup key={"todayoverdue"} view={"today"} title={"Overdue"}>
+                    {overdue.map((card, i) => renderCard(card, i))}
+                </TaskGroup>
+                : ""}
 
             {Object.keys(tasks).length ?
                 Object.keys(tasks).map((group) => {

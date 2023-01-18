@@ -66,7 +66,7 @@ export default function All({renderCard}) {
     return (
 
         <div className={'pb-12'}>
-            <TopHeader overdue={overdue}/>
+            {/*<TopHeader overdue={overdue}/>*/}
 
             {/*{(showPinned && pinned.length) ?*/}
             {/*    <TaskGroup key={"pinnedall"} view={"all"} title={"Pinned"}>*/}

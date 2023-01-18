@@ -8,18 +8,6 @@ import TaskGroup from "./TaskGroup";
 import {useTranslation} from "react-i18next";
 import {createSelector} from "@reduxjs/toolkit";
 
-const s1electTasks = createSelector(
-    (state) => state.tasks,
-    (state, sortBy) => sortBy,
-    (state, sortBy, group) => group,
-
-    (tasks, sortBy, group) => (
-        groupBy(tasks.filter(
-            task => (task.completed && !task.deleted)
-        ), sortBy)
-    )
-)
-
 
 const selectTasks = createSelector(
     (state) => state.tasks,
@@ -49,12 +37,12 @@ export default function Completed({renderCard}) {
     const sortBy = useReadLocalStorage("sort")
     const groupBy = useReadLocalStorage("group")
 
-    const completed = useSelector((state) => selectTasks(state, sortBy, groupBy))
+    const completed = useSelector((state) => selectTasks(state, sortBy, "completed_at"))
 
 
     return (
         <div>
-            <TopHeader/>
+            {/*<TopHeader/>*/}
 
             {Object.keys(completed).length ?
                 Object.keys(completed).map((group) => {

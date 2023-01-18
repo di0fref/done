@@ -2,10 +2,9 @@ import {useEffect, useState} from "react";
 import {capitalize, getIcon} from "../helper"
 import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import Sort from "./Sort";
 import DynamicMenu from "../DynamicMenu";
 import {useTranslation} from "react-i18next";
-import SortMenu from "../../SortMenu";
+import SortMenu from "../SortMenu";
 
 export default function TaskHeader({overdue}) {
 
