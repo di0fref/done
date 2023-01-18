@@ -14,14 +14,18 @@ const selectTasks = createSelector(
     (state) => state.tasks,
     (state, sortBy) => sortBy,
     (state, sortBy, group) => group,
+    (state, sortBy, group, showCompleted) => showCompleted,
 
 
-    (tasks, sortBy, group) => {
+    (tasks, sortBy, group, showCompleted) => {
 
         const groups = groupBy(tasks.filter(
             // task => (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && !task.completed && !task.deleted
-            task => !task.completed && !task.deleted
-
+            task => {
+                return showCompleted
+                    ? !task.deleted
+                    : !task.completed && !task.deleted
+            }
         ), group)
 
         const sortedGroups = sortGroup(groups)
@@ -58,11 +62,6 @@ export default function All({renderCard}) {
     const overdue = useSelector((state) => selectOverdue(state, sortBy))
     const pinned = useSelector((state) => selectPinned(state, sortBy))
     const showOverdue = useReadLocalStorage("showOverdue")
-
-    useEffect(() => {
-        console.log(tasks)
-    }, [tasks])
-    // console.log(tasks)
 
     return (
 

@@ -88,55 +88,39 @@ export default function Settings(props) {
                                                 />
                                             </Switch>
                                         </div>
+
                                         {/*<div className={'flex items-center space-x-4'}>*/}
-                                        {/*    <p className={'flex-grow'}>Show completed tasks</p>*/}
+                                        {/*    <p className={'flex-grow'}>Show pinned tasks</p>*/}
 
                                         {/*    <Switch*/}
-                                        {/*        checked={showCompleted}*/}
-                                        {/*        onChange={onShowCompletedChange}*/}
+                                        {/*        checked={showPinned}*/}
+                                        {/*        onChange={onShowPinnedChange}*/}
                                         {/*        className={`${*/}
-                                        {/*            showCompleted ? 'bg-blue-600' : 'bg-gray-200'*/}
+                                        {/*            showPinned ? 'bg-blue-600' : 'bg-gray-200'*/}
                                         {/*        } relative inline-flex h-6 w-11 items-center rounded-full`}>*/}
                                         {/*        <span*/}
                                         {/*            className={`${*/}
-                                        {/*                showCompleted ? 'translate-x-6' : 'translate-x-1'*/}
+                                        {/*                showPinned ? 'translate-x-6' : 'translate-x-1'*/}
                                         {/*            } inline-block h-4 w-4 transform rounded-full bg-white transition`}*/}
                                         {/*        />*/}
                                         {/*    </Switch>*/}
                                         {/*</div>*/}
+                                        {/*<div className={'flex items-center space-x-4'}>*/}
+                                        {/*    <p className={'flex-grow'}>Pinn overdue tasks on top</p>*/}
 
-                                        <div className={'flex items-center space-x-4'}>
-                                            <p className={'flex-grow'}>Show pinned tasks</p>
-
-                                            <Switch
-                                                checked={showPinned}
-                                                onChange={onShowPinnedChange}
-                                                className={`${
-                                                    showPinned ? 'bg-blue-600' : 'bg-gray-200'
-                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
-                                                <span
-                                                    className={`${
-                                                        showPinned ? 'translate-x-6' : 'translate-x-1'
-                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                                                />
-                                            </Switch>
-                                        </div>
-                                        <div className={'flex items-center space-x-4'}>
-                                            <p className={'flex-grow'}>Pinn overdue tasks on top</p>
-
-                                            <Switch
-                                                checked={showOverdue}
-                                                onChange={onShowOverdueChange}
-                                                className={`${
-                                                    showOverdue ? 'bg-blue-600' : 'bg-gray-200'
-                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
-                                                <span
-                                                    className={`${
-                                                        showOverdue ? 'translate-x-6' : 'translate-x-1'
-                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-                                                />
-                                            </Switch>
-                                        </div>
+                                        {/*    <Switch*/}
+                                        {/*        checked={showOverdue}*/}
+                                        {/*        onChange={onShowOverdueChange}*/}
+                                        {/*        className={`${*/}
+                                        {/*            showOverdue ? 'bg-blue-600' : 'bg-gray-200'*/}
+                                        {/*        } relative inline-flex h-6 w-11 items-center rounded-full`}>*/}
+                                        {/*        <span*/}
+                                        {/*            className={`${*/}
+                                        {/*                showOverdue ? 'translate-x-6' : 'translate-x-1'*/}
+                                        {/*            } inline-block h-4 w-4 transform rounded-full bg-white transition`}*/}
+                                        {/*        />*/}
+                                        {/*    </Switch>*/}
+                                        {/*</div>*/}
 
                                           <div className={'flex items-center space-x-4'}>
                                             <p className={'flex-grow'}>Show count in sidebar</p>

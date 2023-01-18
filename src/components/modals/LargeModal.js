@@ -165,7 +165,7 @@ export default function LargeModal(props) {
                                     </button>
                                 </div>
                                 {/*body*/}
-                                <div className="relative px-6 flex h-full ">
+                                <div className="relative px-6 flex h-full overflow-auto">
                                     <div className="w-2/3 ">
                                         <div className="flex items-center space-x-3 w-full pt-3 ">
                                             <div>

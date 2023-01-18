@@ -123,31 +123,31 @@ export const Card4 = ({card}) => {
                         <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/>
                     </div> : ""}
                 </div>
-                {!card.completed ?
+                <div className={'md:flex flex-none md:items-center md:space-x-4 md:py-0 py-2'}>
 
-                    <>
+              {/*{!card.completed ?*/}
 
-                        <div className={'py-2.5'}>
-                            {(!currentProject.id && card.project) ?
-                                <ProjectBadge project={taskProject}/>
-                                : ""}
-                        </div>
+              {/*      <>*/}
 
-                    </>
-                    : ""}
-                {/*<div className={'py-2.5'}>*/}
-                {/*    <span className={'text-xs text-neutral-500'}>{card.assigned_user_name}</span>*/}
-                {/*</div>*/}
-                <div className={'py-2.5'}>
-                    <PrioBadge value={card.prio}/>
+              {/*          <div className={'md:py-2.5 py-1'}>*/}
+              {/*              {(!currentProject.id && card.project) ?*/}
+              {/*                  <ProjectBadge project={taskProject}/>*/}
+              {/*                  : ""}*/}
+              {/*          </div>*/}
+
+              {/*      </>*/}
+              {/*      : ""}*/}
+                    <div className={'md:py-2.5 py-1'}>
+                        <PrioBadge value={card.prio}/>
+                    </div>
+                    <div className={'md:py-2.5 py-1'}>
+                        <DateBadge date={card.due}/>
+                    </div>
+
                 </div>
-                {/*<div className={'py-2.5'}>*/}
-                    <DateBadge date={card.due}/>
-                {/*</div>*/}
-
-
             </div>
-            <div className={'w-12 bg-red-300_ py-2.5 mb-2'}><CardMenu disabled={card.deleted} card={card} hover={isHovering}/></div>
+            <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
+                <CardMenu disabled={card.deleted} card={card} hover={isHovering}/></div>
 
         </div>
     )

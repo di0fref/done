@@ -1,5 +1,5 @@
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Main from "./components/Main";
 import {Tooltip} from "react-tooltip";
 import Login from "./components/Login";
@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import Web from "./pages/Web";
 import React, { Suspense } from 'react';
+import Kanban from "./components/project/Board";
 
 function App() {
 
@@ -27,12 +28,15 @@ function App() {
                     effect={"solid"}
                 />
                 <Routes>
-                    <Route exact path={'/'} element={<Web/>}/>
+
+                    <Route exact path={'/board'} element={<Kanban/>}/>
+
+                    {/*<Route exact path={'/'} element={<Web/>}/>*/}
                     <Route path={'/:path/:id'} element={<Main/>}/>
                     <Route path={'/:path/:id/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path/:path2/:id2'} element={<Main/>}/>
                     <Route path={'/:path'} element={<Main/>}/>
-                    {/*<Route exact path="/" element={<Navigate to="/today" replace/>}/>*/}
+                    <Route exact path="/" element={<Navigate to="/today" replace/>}/>
                     <Route exact path={"/login"} element={<Login/>}/>
                 </Routes>
             </Provider>

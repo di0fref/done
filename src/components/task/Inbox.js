@@ -15,10 +15,10 @@ const selectTasks = createSelector(
     (state, sortBy) => sortBy,
 
     (tasks, sortBy) => {
-        return groupBy(tasks.filter(
+        return tasks.filter(
             task => (!task.completed && task.project_id === "" && !task.deleted && (task.due === null || task.due === ""))
-        ), null).sort((a, b) => {
-            return sortF(a, b, "name")
+        ).sort((a, b) => {
+            return sortF(a, b, sortBy)
         })
     }
 )
@@ -38,25 +38,18 @@ export default function Inbox({renderCard}) {
         <div>
             <TopHeader overdue={[]}/>
 
-            {(showPinned && pinned.length) ? (
-                    <TaskGroup key={"pinnedinbox"} view={"inbox"} title={"Pinned"}>
-                        {pinned.map((card, i) => renderCard(card, i))}
-                    </TaskGroup>)
-                : ""}
+            {/*{(showPinned && pinned.length) ? (*/}
+            {/*        <TaskGroup key={"pinnedinbox"} view={"inbox"} title={"Pinned"}>*/}
+            {/*            {pinned.map((card, i) => renderCard(card, i))}*/}
+            {/*        </TaskGroup>)*/}
+            {/*    : ""}*/}
 
 
             {Object.keys(tasks).length ?
-                Object.keys(tasks).map((group) => {
-                    return (
-                        <TaskGroup count={Object.values(tasks[group]).length} key={"inbox" + group} view={"inbox"} title={t("Tasks")}>
-                            <div className={''}>
-                                {Object.values(tasks[group]).map((task, i) => {
-                                    return renderCard(task, i)
-                                })}
-                            </div>
-                        </TaskGroup>
-                    )
-                }) : <NoTasks/>}
+                Object.values(tasks).map((task, i) => {
+                    return renderCard(task, i)
+                })
+                : <NoTasks/>}
 
         </div>
     )

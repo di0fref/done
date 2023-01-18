@@ -1,4 +1,5 @@
 import {useTranslation} from "react-i18next";
+import {BsFlag} from "react-icons/bs";
 
 
 const colors = {
@@ -10,7 +11,19 @@ const colors = {
 export default function PrioBadge({value, ...props}) {
     const {t} = useTranslation();
 
-    return (
-        <div className={`${colors[value]||"text-neutral-400 dark:text-gray-400 "} px-1 py-1.5 rounded-md text-xs`}>{t(value)}</div>
-    )
+
+    // return (
+    //     <div className={'flex items-center'}>
+    //         <BsFlag/>
+    //         <div className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} rounded-md text-xs`}>{t(value)}</div>
+    //     </div>
+    //
+
+
+        return (
+      <div className={'flex items-center space-x-1'}>
+            <BsFlag className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} h-2.5 w-2.5`}/>
+            <div className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} text-xs `}>{t(value)}</div>
+        </div>
+        )
 }
