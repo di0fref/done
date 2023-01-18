@@ -1,40 +1,80 @@
-import express from "express"
-import i18next from "i18next";
-import * as i18nextMiddleware from "i18next-express-middleware";
-import FilesystemBackend from "i18next-fs-backend"
-import cors from "cors";
-
-const app = express()
-app.use(express.json())
-app.use(function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, accept, access-control-allow-origin');
-
-    if ('OPTIONS' === req.method) res.send(200);
-    else next();
-});// i18next = require('i18next'),
-// FilesystemBackend = require('i18next-fs-backend'),
-// i18nextMiddleware = require('i18next-http-middleware'),
-const port = 3001
-
-i18next
-    // .use(i18nextMiddleware.LanguageDetector)
-    .use(FilesystemBackend)
-    .init({preload: ['en']}, () => {
-
-    })
-app.post('/locales/add/en/common', (req, res) => {
-    console.log(req.body)
-    res.send('POST request to the homepage')
-})
-app.post('/locales/add/en/translation', (req, res) => {
-    console.log(req.body)
-    res.send('POST request to the homepage')
-})
-app.use(i18nextMiddleware.handle(i18next))
-app.listen(port, () => {
-    console.log('Server listening on port', port)
-})
+import { WebSocket, WebSocketServer } from "ws"
+import http from "http";
+import { uuid } from 'uuidv4';
 
 
+// Spinning the http server and the WebSocket server.
+const server = http.createServer();
+const wsServer = new WebSocketServer({ server });
+const port = 8000;
+server.listen(port, () => {
+    console.log(`WebSocket server is running on port ${port}`);
+});
+
+// I'm maintaining all active connections in this object
+const clients = {};
+// I'm maintaining all active users in this object
+const users = {};
+// The current editor content is maintained here.
+let editorContent = null;
+// User activity history.
+let userActivity = [];
+
+// Event types
+const typesDef = {
+    USER_EVENT: 'userevent',
+    CONTENT_CHANGE: 'contentchange'
+}
+
+function broadcastMessage(json) {
+    // We are sending the current data to all connected clients
+    const data = JSON.stringify(json);
+    for(let userId in clients) {
+        let client = clients[userId];
+        if(client.readyState === WebSocket.OPEN) {
+            client.send(data);
+        }
+    };
+}
+
+function handleMessage(message, userId) {
+    console.log(userId)
+    const dataFromClient = JSON.parse(message.toString());
+    console.log(dataFromClient)
+    console.log("------------------")
+    const json = { type: dataFromClient.type };
+    if (dataFromClient.type === typesDef.USER_EVENT) {
+        users[userId] = dataFromClient;
+        userActivity.push(`${dataFromClient.username} joined to edit the document`);
+        json.data = { users, userActivity };
+    } else if (dataFromClient.type === typesDef.CONTENT_CHANGE) {
+        editorContent = dataFromClient.content;
+        json.data = { editorContent, userActivity };
+    }
+    broadcastMessage(json);
+}
+
+function handleDisconnect(userId) {
+    console.log(`${userId} disconnected.`);
+    const json = { type: typesDef.USER_EVENT };
+    const username = users[userId]?.username || userId;
+    userActivity.push(`${username} left the document`);
+    json.data = { users, userActivity };
+    delete clients[userId];
+    delete users[userId];
+    broadcastMessage(json);
+}
+
+// A new client connection request received
+wsServer.on('connection', function(connection) {
+    // Generate a unique code for every user
+    const userId = uuid();
+    console.log('Recieved a new connection');
+
+    // Store the new connection and handle messages
+    clients[userId] = connection;
+    console.log(`${userId} connected.`);
+    connection.on('message', (message) => handleMessage(message, userId));
+    // User disconnected
+    connection.on('close', () => handleDisconnect(userId));
+});

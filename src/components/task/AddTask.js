@@ -38,7 +38,7 @@ function getPlaceHolder(project, due, t) {
     return '+ ' + t("Add task in") + ' "' + project + date
 }
 
-export default function AddTask() {
+export default function AddTask({sendJsonMessage}) {
 
     const params = useParams();
     const [editing, setEditing] = useState(false)
@@ -109,6 +109,16 @@ export default function AddTask() {
                         assigned_user_id: getAuth().currentUser.uid,
                     })).unwrap()
 
+                    if(task.project_id) {
+                        sendJsonMessage({
+                            type: 'contentchange',
+                            content: {
+                                action: "new",
+                                type: "task",
+                                id: task.id,
+                            }
+                        });
+                    }
 
                     task && toast.success(
                         <div>1 task was created</div>

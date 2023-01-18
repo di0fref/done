@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {delay, formatDate, paths} from "../helper";
+import {delay, formatDate, paths, WS_URL} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
@@ -16,7 +16,7 @@ import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 import DateBadge from "../badges/DateBadge";
 
-export const Card4 = ({card}) => {
+export const Card4 = ({card, sendJsonMessage}) => {
     const {t} = useTranslation();
 
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
@@ -32,9 +32,6 @@ export const Card4 = ({card}) => {
     const nav = useNavigate()
 
     const currentTask = useSelector(state => state.current.task)
-    const currentProject = useSelector(state => state.current.project)
-
-    const taskProject = useSelector(state => state.projects).find(project => project.id === card.project_id)
 
     const clickHandler = (e) => {
 
@@ -50,7 +47,9 @@ export const Card4 = ({card}) => {
         })).unwrap()
 
     }
-
+    useEffect(() => {
+        setTaskCompleted(card.completed)
+    }, [card.completed])
 
     const onStatusChange = (event) => {
 
@@ -75,6 +74,16 @@ export const Card4 = ({card}) => {
                     ]
                 })).unwrap()
 
+                if (card.project_id) {
+                    sendJsonMessage({
+                        type: 'contentchange',
+                        content: {
+                            action: "update",
+                            type: "task",
+                            id: card.id,
+                        }
+                    });
+                }
 
                 event.target.checked && toast.success(
                     <div>{card.name} {t("was completed")}
@@ -91,6 +100,7 @@ export const Card4 = ({card}) => {
         })(event)
 
     }
+
 
     useEffect(() => {
         if (paths.find(p => params.path === p)) {
@@ -125,18 +135,18 @@ export const Card4 = ({card}) => {
                 </div>
                 <div className={'md:flex flex-none md:items-center md:space-x-4 md:py-0 py-2'}>
 
-              {/*{!card.completed ?*/}
+                    {/*{!card.completed ?*/}
 
-              {/*      <>*/}
+                    {/*      <>*/}
 
-              {/*          <div className={'md:py-2.5 py-1'}>*/}
-              {/*              {(!currentProject.id && card.project) ?*/}
-              {/*                  <ProjectBadge project={taskProject}/>*/}
-              {/*                  : ""}*/}
-              {/*          </div>*/}
+                    {/*          <div className={'md:py-2.5 py-1'}>*/}
+                    {/*              {(!currentProject.id && card.project) ?*/}
+                    {/*                  <ProjectBadge project={taskProject}/>*/}
+                    {/*                  : ""}*/}
+                    {/*          </div>*/}
 
-              {/*      </>*/}
-              {/*      : ""}*/}
+                    {/*      </>*/}
+                    {/*      : ""}*/}
                     <div className={'md:py-2.5 py-1'}>
                         <PrioBadge value={card.prio}/>
                     </div>
@@ -147,7 +157,7 @@ export const Card4 = ({card}) => {
                 </div>
             </div>
             <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
-                <CardMenu disabled={card.deleted} card={card} hover={isHovering}/></div>
+                <CardMenu sendJsonMessage={sendJsonMessage} disabled={card.deleted} card={card} hover={isHovering}/></div>
 
         </div>
     )

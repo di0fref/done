@@ -17,7 +17,7 @@ import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 
 
-export default function CardMenu({disabled, card, ...props}) {
+export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
 
     const projects = useSelector(state => state.projects)
@@ -44,31 +44,31 @@ export default function CardMenu({disabled, card, ...props}) {
 
     const items =
         [
-            {
-                "name": card.pinned ? t("Unpin") : t("Pin"),
-                "id": "pin",
-                "icon": "BsPinAngle",
-                "action": () => {
-                    setPinned(prev => !prev)
-                    dispatch(updateTask({
-                        id: card.id,
-                        pinned: !card.pinned,
-                        changes: [
-                            {
-                                field: "pinned",
-                                old: card.pinned ? 1 : 0,
-                                new: !card.pinned ? 1 : 0,
-                                user_id: getAuth().currentUser.uid,
-                                assigned_user_id: card.assigned_user_id,
-                                type: "bool"
-                            }
-                        ]
-                    })).unwrap()
-
-                    toast.success(t("Task") + " " + (!card.pinned ? t("pinned") : t("unpinned")))
-                },
-                "disabled": disabled
-            },
+        //     {
+        //         "name": card.pinned ? t("Unpin") : t("Pin"),
+        //         "id": "pin",
+        //         "icon": "BsPinAngle",
+        //         "action": () => {
+        //             setPinned(prev => !prev)
+        //             dispatch(updateTask({
+        //                 id: card.id,
+        //                 pinned: !card.pinned,
+        //                 changes: [
+        //                     {
+        //                         field: "pinned",
+        //                         old: card.pinned ? 1 : 0,
+        //                         new: !card.pinned ? 1 : 0,
+        //                         user_id: getAuth().currentUser.uid,
+        //                         assigned_user_id: card.assigned_user_id,
+        //                         type: "bool"
+        //                     }
+        //                 ]
+        //             })).unwrap()
+        //             sendMessage()
+        //             toast.success(t("Task") + " " + (!card.pinned ? t("pinned") : t("unpinned")))
+        //         },
+        //         "disabled": disabled
+        //     },
             {
                 "name": t("Move to trash"),
                 "id": "delete",
@@ -88,7 +88,7 @@ export default function CardMenu({disabled, card, ...props}) {
                             }
                         ]
                     })).unwrap()
-
+                    sendMessage()
                     toast.success(t("Task moved to trash"))
                 },
                 "disabled": disabled
@@ -107,7 +107,7 @@ export default function CardMenu({disabled, card, ...props}) {
                         id: card.id,
                         deleted: 0
                     })).unwrap()
-
+                    sendMessage()
                     toast.success(t("Task restored"))
                 },
                 "disabled": disabled,
@@ -120,7 +120,7 @@ export default function CardMenu({disabled, card, ...props}) {
                     dispatch(deleteTask({
                         id: card.id,
                     })).unwrap()
-
+                    sendMessage()
                     toast.success(t("Task deleted forever"))
                 },
                 "disabled": disabled,
@@ -129,6 +129,19 @@ export default function CardMenu({disabled, card, ...props}) {
         ]
 
     const dispatch = useDispatch()
+
+    const sendMessage = (project_id) => {
+        if (card.project_id || project_id) {
+            sendJsonMessage({
+                type: 'contentchange',
+                content: {
+                    action: "update",
+                    type: "task",
+                    id: card.id,
+                }
+            });
+        }
+    }
 
     const setDue = (date) => {
         dispatch(updateTask({
@@ -145,7 +158,7 @@ export default function CardMenu({disabled, card, ...props}) {
                 }
             ]
         })).unwrap()
-
+        sendMessage()
         toast.success(t("Due date set to ") + formatDate(date))
     }
 
@@ -163,7 +176,9 @@ export default function CardMenu({disabled, card, ...props}) {
                     type: "assigned_user_id"
                 }
             ]
-        }))
+        })).unwrap()
+        sendMessage()
+        toast.success(t("Assigned user changed"))
     }
 
     const setPrio = (prio) => {
@@ -181,7 +196,7 @@ export default function CardMenu({disabled, card, ...props}) {
                 }
             ]
         })).unwrap()
-
+        sendMessage()
         toast.success(t("Priority set to ") + prio)
     }
 
@@ -200,7 +215,7 @@ export default function CardMenu({disabled, card, ...props}) {
                 }
             ]
         })).unwrap()
-
+        sendMessage(project.id)
         toast.success(t("Task moved to project ") + project.name)
         setProject(project)
     }

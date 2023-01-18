@@ -138,6 +138,10 @@ export function getIcon(path, classes) {
     }
 }
 
+export function isChangeEvent(message) {
+    let evt = JSON.parse(message.data);
+    return evt.type === 'contentchange';
+}
 export const dateFormat = "d MMM"
 
 export const paths = [
@@ -148,6 +152,7 @@ export const paths = [
     "trash",
     "completed"
 ];
+export const WS_URL = 'ws://127.0.0.1:8000';
 
 export function capitalize(value) {
 

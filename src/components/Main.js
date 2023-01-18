@@ -43,11 +43,12 @@ export default function Main() {
         waitForLocalStorage("AccessToken", function (value) {
 
             /* Make sure we have a sort value in LS */
-            // const sort = localStorage.getItem("sort");
-            // if (!sort) {
-            //     localStorage.setItem("sort", JSON.stringify("due"))
-            //     localStorage.setItem("showCompleted", JSON.stringify(true))
-            // }
+            const sort = localStorage.getItem("sort");
+            if (!sort) {
+                localStorage.setItem("sort", JSON.stringify("due"))
+                localStorage.setItem("group", JSON.stringify(""))
+                localStorage.setItem("showCompleted", JSON.stringify(true))
+            }
             try {
                 dispatch(getTasks()).unwrap()
                 dispatch(getProjects()).unwrap()

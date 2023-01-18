@@ -39,7 +39,7 @@ const selectOverdue = createSelector((state) => state.tasks, (state, sortBy) => 
     })
 
 
-export default function Project({renderCard, ...props}) {
+export default function Project({renderCard, sendJsonMessage, ...props}) {
 
     const sortBy = useReadLocalStorage("sort")
     const groupBy = useReadLocalStorage("group")
@@ -88,7 +88,7 @@ export default function Project({renderCard, ...props}) {
     // )
 
     return (<div>
-        <TopHeader overdue={overdue}/>
+        {/*<TopHeader overdue={overdue} sendJsonMessage={sendJsonMessage}/>*/}
         {(showPinned && pinned.length) ? <TaskGroup key={"projectpinned"} view={"project"} title={"Pinned"}>
             {pinned.map((card, i) => renderCard(card, i))}
         </TaskGroup> : ""}

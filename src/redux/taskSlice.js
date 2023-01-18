@@ -37,6 +37,19 @@ export const deleteTask = createAsyncThunk(
     }
 )
 
+export const fetchNewTask = createAsyncThunk(
+    'tasks/fetchNewTask',
+    async (id, thunkAPI) => {
+        return await axios.get("/tasks/" + id).then(response => response.data)
+    }
+)
+export const fetchUpdatedTask = createAsyncThunk(
+    'tasks/fetchUpdatedTask',
+    async (id, thunkAPI) => {
+        return await axios.get("/tasks/" + id).then(response => response.data)
+    }
+)
+
 export const taskSlice = createSlice({
     name: 'task',
     initialState,
@@ -75,6 +88,16 @@ export const taskSlice = createSlice({
             .addCase(deleteTask.fulfilled, (state, action) => {
                 const index = state.findIndex(task => task.id === action.payload.id);
                 state.splice(index, 1)
+            })
+            .addCase(fetchNewTask.fulfilled, (state, action) => {
+                state.unshift(action.payload)
+            })
+            .addCase(fetchUpdatedTask.fulfilled, (state, action) => {
+                const index = state.findIndex(task => task.id === action.payload.id);
+                state[index] = {
+                    ...state[index],
+                    ...action.payload,
+                };
             })
     }
 })

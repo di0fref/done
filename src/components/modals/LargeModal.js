@@ -13,7 +13,7 @@ import {getAuth} from "firebase/auth";
 import ChangeLog from "../task/ChangeLog";
 import {useTranslation} from "react-i18next";
 
-export default function LargeModal(props) {
+export default function LargeModal({sendJsonMessage, ...props}) {
 
     const {t} = useTranslation();
 
@@ -97,7 +97,7 @@ export default function LargeModal(props) {
                     project_id: project ? project.id : null,
                     completed: taskCompleted,
                     text: text,
-                    assigned_user_id: assignedUser.id,
+                    assigned_user_id: assignedUser?.id,
                     changes: [
                         (format(new Date(due), dbDateFormat) !== format(new Date(props.card.due), dbDateFormat)) ? {
                             field: "due",
@@ -134,6 +134,20 @@ export default function LargeModal(props) {
                     ]
                 }
                 await dispatch(updateTask(task)).unwrap();
+
+                if(props.card.project_id) {
+                    console.log("s")
+                    sendJsonMessage({
+                        type: 'contentchange',
+                        content: {
+                            action: "update",
+                            type: "task",
+                            id: props.card.id,
+                        }
+                    });
+                }
+
+
                 closeModal()
             } catch (err) {
                 console.log(err);

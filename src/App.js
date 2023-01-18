@@ -11,10 +11,35 @@ import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import Web from "./pages/Web";
-import React, { Suspense } from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import Kanban from "./components/project/Board";
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+import {WS_URL} from "./components/helper";
+
 
 function App() {
+    const [username, setUsername] = useState('kalle');
+
+    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
+        onOpen: () => {
+            console.log('WebSocket connection established.');
+        },
+        share: true,
+        filter: () => false,
+        retryOnError: true,
+        shouldReconnect: () => true
+    });
+
+
+    useEffect(() => {
+        if(readyState === ReadyState.OPEN) {
+            sendJsonMessage({
+                username,
+                type: 'userevent'
+            });
+        }
+    }, [sendJsonMessage, readyState]);
+
 
     return (
         <Suspense fallback={<div>Loading... </div>}>
