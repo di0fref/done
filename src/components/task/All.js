@@ -50,7 +50,7 @@ const selectOverdue = createSelector(
     }
 )
 
-export default function All({renderCard}) {
+export default function All({renderCard, setOverDue}) {
 
     const sortBy = useReadLocalStorage("sort")
     const groupBy = useReadLocalStorage("group")
@@ -62,6 +62,10 @@ export default function All({renderCard}) {
     const overdue = useSelector((state) => selectOverdue(state, sortBy))
     const pinned = useSelector((state) => selectPinned(state, sortBy))
     const showOverdue = useReadLocalStorage("showOverdue")
+
+    useEffect(() => {
+        setOverDue(overdue)
+    }, [overdue])
 
     return (
 

@@ -135,7 +135,7 @@ export default function LargeModal({sendJsonMessage, ...props}) {
                 }
                 await dispatch(updateTask(task)).unwrap();
 
-                if(props.card.project_id) {
+                if (props.card.project_id) {
                     console.log("s")
                     sendJsonMessage({
                         type: 'contentchange',
@@ -215,7 +215,7 @@ export default function LargeModal({sendJsonMessage, ...props}) {
                                                         name: user.name
                                                     })
                                                     setDirty(true)
-                                                }} items={users} selected={assignedUser}/>
+                                                }} items={users} selected={assignedUser || []}/>
                                             </div>
 
                                         </div>
@@ -240,7 +240,11 @@ export default function LargeModal({sendJsonMessage, ...props}) {
                                                 "name": "Inbox",
                                                 "id": null,
                                                 "icon": "BsInbox"
-                                            }, ...projects]} selected={project || {"name": "Inbox", "id": null, "icon": "BsInbox"}}/>
+                                            }, ...projects]} selected={project || {
+                                                "name": "Inbox",
+                                                "id": null,
+                                                "icon": "BsInbox"
+                                            }}/>
                                         </div>
 
 

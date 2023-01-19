@@ -26,12 +26,15 @@ const typesDef = {
     CONTENT_CHANGE: 'contentchange'
 }
 
-function broadcastMessage(json) {
+function broadcastMessage(json, user) {
     // We are sending the current data to all connected clients
     const data = JSON.stringify(json);
     for(let userId in clients) {
         let client = clients[userId];
-        if(client.readyState === WebSocket.OPEN) {
+
+        console.log(userId, user);
+
+        if(userId !== user && client.readyState === WebSocket.OPEN) {
             client.send(data);
         }
     };
@@ -51,7 +54,7 @@ function handleMessage(message, userId) {
         editorContent = dataFromClient.content;
         json.data = { editorContent, userActivity };
     }
-    broadcastMessage(json);
+    broadcastMessage(json, userId);
 }
 
 function handleDisconnect(userId) {
@@ -69,7 +72,7 @@ function handleDisconnect(userId) {
 wsServer.on('connection', function(connection) {
     // Generate a unique code for every user
     const userId = uuid();
-    console.log('Recieved a new connection');
+    console.log('Received a new connection');
 
     // Store the new connection and handle messages
     clients[userId] = connection;

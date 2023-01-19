@@ -26,24 +26,29 @@ export const Container = (props) => {
             filter: isChangeEvent
         });
 
+        const [overdue, setOverDue] = useState([]);
+
         useEffect(() => {
 
-            console.log(lastJsonMessage?.data.editorContent)
+                console.log(lastJsonMessage?.data.editorContent)
 
-                /* Check if I have access to the project in question */
-                const user_access = allProjects.find(project => project.users.find(user => user.id === getAuth().currentUser.uid))
-            console.log(user_access)
-                if (user_access) {
-                    switch (lastJsonMessage?.data.editorContent.action) {
-                        case "new":
-                            dispatch(fetchNewTask(lastJsonMessage?.data.editorContent.id))
-                            break;
-                        case "update":
-                            dispatch(fetchUpdatedTask(lastJsonMessage?.data.editorContent.id))
-                            break;
-                        default:
-                            return
+                if (lastJsonMessage?.data.editorContent) {
 
+                    /* Check if I have access to the project in question */
+                    const user_access = allProjects.find(project => project.users.find(user => user.id === getAuth().currentUser.uid))
+                    console.log(user_access)
+                    if (user_access) {
+                        switch (lastJsonMessage?.data.editorContent.action) {
+                            case "new":
+                                dispatch(fetchNewTask(lastJsonMessage?.data.editorContent.id))
+                                break;
+                            case "update":
+                                dispatch(fetchUpdatedTask(lastJsonMessage?.data.editorContent.id))
+                                break;
+                            default:
+                                return
+
+                        }
                     }
                 }
             }, [lastJsonMessage]
@@ -84,7 +89,7 @@ export const Container = (props) => {
             <div className={'flex h-full dark:text-neutral-300 bg-gray-50_ '}>
                 <div className={'flex-grow pl-12 px-4'}>
 
-                    <TopHeader overdue={[]} sendJsonMessage={sendJsonMessage}/>
+                    <TopHeader overdue={overdue} sendJsonMessage={sendJsonMessage}/>
                     {(() => {
                         switch (props.filter) {
                             case "trash":
@@ -101,11 +106,11 @@ export const Container = (props) => {
                                 )
                             case "all":
                                 return (
-                                    <All renderCard={renderCard}/>
+                                    <All setOverDue={setOverDue} renderCard={renderCard}/>
                                 )
                             case "project":
                                 return (
-                                    <Project id={props.id} renderCard={renderCard}/>
+                                    <Project setOverDue={setOverDue} id={props.id} renderCard={renderCard}/>
                                 )
                             case "completed":
                                 return (
@@ -113,7 +118,7 @@ export const Container = (props) => {
                                 )
                             default:
                                 return (
-                                    <Today renderCard={renderCard}/>
+                                    <Today setOverDue={setOverDue} renderCard={renderCard}/>
                                 )
                         }
                     })()}

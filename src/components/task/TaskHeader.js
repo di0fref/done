@@ -6,7 +6,7 @@ import DynamicMenu from "../DynamicMenu";
 import {useTranslation} from "react-i18next";
 import SortMenu from "../SortMenu";
 
-export default function TaskHeader({overdue}) {
+export default function TaskHeader({overdue, sendJsonMessage}) {
 
     const [icon, setIcon] = useState("")
     const [name, setName] = useState("")
@@ -47,7 +47,7 @@ export default function TaskHeader({overdue}) {
             <div className={'flex space-x-4'}>
                 <div className={'text-sm flex items-center space-x-2'}>
                     <SortMenu/>
-                    <DynamicMenu p={project} overdue={overdue}/>
+                    <DynamicMenu sendJsonMessage={sendJsonMessage} p={project} overdue={overdue}/>
                 </div>
             </div>
         </div>

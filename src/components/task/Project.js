@@ -11,6 +11,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import Kanban from "../project/Board";
 import PrioBadge from "../badges/PrioBadge";
 import DateBadge from "../badges/DateBadge";
+import {useEffect} from "react";
 
 
 const selectTasks = createSelector((state) => state.tasks, (state, sortBy) => sortBy, (state, sortBy, project_id) => project_id, (state, sortBy, project_id, showCompleted) => showCompleted, (state, sortBy, project_id, showCompleted, group) => group,
@@ -39,7 +40,7 @@ const selectOverdue = createSelector((state) => state.tasks, (state, sortBy) => 
     })
 
 
-export default function Project({renderCard, sendJsonMessage, ...props}) {
+export default function Project({renderCard, setOverDue, ...props}) {
 
     const sortBy = useReadLocalStorage("sort")
     const groupBy = useReadLocalStorage("group")
@@ -52,6 +53,10 @@ export default function Project({renderCard, sendJsonMessage, ...props}) {
     const tasks = useSelector((state) => selectTasks(state, sortBy, props.id, showCompleted, groupBy))
     const overdue = useSelector((state) => selectOverdue(state, sortBy, props.id))
     const pinned = useSelector((state) => selectPinned(state, sortBy))
+
+    useEffect(() => {
+        setOverDue(overdue)
+    }, [overdue])
 
     // return (
     //     <Kanban project_id={props.id}/>

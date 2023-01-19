@@ -4,7 +4,7 @@ import Main from "./components/Main";
 import {Tooltip} from "react-tooltip";
 import Login from "./components/Login";
 import {store} from './redux/store'
-import {Provider} from 'react-redux'
+import {Provider, useSelector} from 'react-redux'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import "./editor.css"
@@ -13,33 +13,14 @@ import 'react-tooltip/dist/react-tooltip.css';
 import Web from "./pages/Web";
 import React, {Suspense, useEffect, useState} from 'react';
 import Kanban from "./components/project/Board";
-import useWebSocket, { ReadyState } from 'react-use-websocket';
-import {WS_URL} from "./components/helper";
+import useWebSocket, {ReadyState} from 'react-use-websocket';
+import {waitForLocalStorage, WS_URL} from "./components/helper";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
 
+const auth = getAuth();
 
 function App() {
-    const [username, setUsername] = useState('kalle');
-
-    const { sendJsonMessage, readyState } = useWebSocket(WS_URL, {
-        onOpen: () => {
-            console.log('WebSocket connection established.');
-        },
-        share: true,
-        filter: () => false,
-        retryOnError: true,
-        shouldReconnect: () => true
-    });
-
-
-    useEffect(() => {
-        if(readyState === ReadyState.OPEN) {
-            sendJsonMessage({
-                username,
-                type: 'userevent'
-            });
-        }
-    }, [sendJsonMessage, readyState]);
-
+    const [username, setUsername] = useState("psfhgo");
 
     return (
         <Suspense fallback={<div>Loading... </div>}>

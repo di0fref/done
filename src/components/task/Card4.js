@@ -43,9 +43,20 @@ export const Card4 = ({card, sendJsonMessage}) => {
     const undo = (id) => {
         dispatch(updateTask({
             id: id,
-            completed: false
+            completed: false,
+            changes: []
         })).unwrap()
-
+        if (card.project_id) {
+            sendJsonMessage({
+                type: 'contentchange',
+                content: {
+                    action: "update",
+                    type: "task",
+                    id: card.id,
+                    project_id: card.project_id
+                }
+            });
+        }
     }
     useEffect(() => {
         setTaskCompleted(card.completed)
@@ -81,6 +92,7 @@ export const Card4 = ({card, sendJsonMessage}) => {
                             action: "update",
                             type: "task",
                             id: card.id,
+                            project_id: card.project_id
                         }
                     });
                 }
@@ -157,7 +169,8 @@ export const Card4 = ({card, sendJsonMessage}) => {
                 </div>
             </div>
             <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
-                <CardMenu sendJsonMessage={sendJsonMessage} disabled={card.deleted} card={card} hover={isHovering}/></div>
+                <CardMenu sendJsonMessage={sendJsonMessage} disabled={card.deleted} card={card} hover={isHovering}/>
+            </div>
 
         </div>
     )

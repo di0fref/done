@@ -10,11 +10,13 @@ import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
 import {setCurrent} from "../redux/currentSlice";
-import {isLoggedIn, paths} from "./helper";
+import {isLoggedIn, paths, waitForLocalStorage, WS_URL} from "./helper";
 import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./search/SearchDialog";
 import {toast} from "react-toastify";
 import "../service/http-common"
+import useWebSocket, {ReadyState} from 'react-use-websocket';
+
 
 export default function Main() {
 
@@ -26,18 +28,6 @@ export default function Main() {
     const allTasks = useSelector(state => state.tasks)
     const allProjects = useSelector(state => state.projects)
 
-
-    function waitForLocalStorage(key, cb, timer) {
-        if (!localStorage.getItem(key)) {
-
-            return timer = setTimeout(waitForLocalStorage.bind(null, key, cb), 100)
-        }
-        clearTimeout(timer)
-        if (typeof cb !== 'function') {
-            return localStorage.getItem(key)
-        }
-        return cb(localStorage.getItem(key))
-    }
 
     useEffect(() => {
         waitForLocalStorage("AccessToken", function (value) {
@@ -59,17 +49,53 @@ export default function Main() {
         })
     }, [])
 
+    const {sendJsonMessage, readyState} = useWebSocket(WS_URL, {
+
+        onOpen: () => {
+            console.log('WebSocket connection established.');
+        },
+        share: true,
+        filter: () => false,
+        retryOnError: true,
+        shouldReconnect: () => true
+    });
+
+
+    // useEffect(() => {
+    //     if (readyState === ReadyState.OPEN) {
+    //         sendJsonMessage({
+    //             username,
+    //             type: 'userevent'
+    //         });
+    //     }
+    // }, [sendJsonMessage, readyState]);
+
+
     const showTaskDetail = (id) => {
         console.log(id)
     }
 
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-        } else {
-            console.log("User logged out firebase");
-            localStorage.removeItem("AccessToken")
+            if (user) {
+                if (readyState === ReadyState.OPEN) {
+                    sendJsonMessage({
+                        username: auth.currentUser.uid,
+                        type: 'userevent',
+                        projects: allProjects.map(project => project.id)
+                    });
+                }
+                // sendJsonMessage({
+                //     type: "subscribe",
+                //     username: auth.currentUser.uid,
+                //     projects: allProjects.map(project => project.id)
+                // })
+            } else {
+                console.log("User logged out firebase");
+                localStorage.removeItem("AccessToken")
+            }
         }
-    });
+    )
+
 
     useEffect(() => {
         isLoggedIn().then((response) => {

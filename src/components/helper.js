@@ -233,3 +233,15 @@ export function getDateColor(date) {
             ? "whitespace-nowrap text-green-600 "
             : "whitespace-nowrap text-primary "
 }
+
+export function waitForLocalStorage(key, cb, timer) {
+    if (!localStorage.getItem(key)) {
+
+        return timer = setTimeout(waitForLocalStorage.bind(null, key, cb), 100)
+    }
+    clearTimeout(timer)
+    if (typeof cb !== 'function') {
+        return localStorage.getItem(key)
+    }
+    return cb(localStorage.getItem(key))
+}

@@ -7,6 +7,8 @@ import TaskGroup from "./TaskGroup";
 import {capitalize, formatDate, groupBy, selectPinned} from "../helper";
 import {useParams} from "react-router-dom";
 import {createSelector} from "@reduxjs/toolkit";
+import {useTranslation} from "react-i18next";
+import {useEffect} from "react";
 
 const selectTasks = createSelector(
     (state) => state.tasks,
@@ -40,25 +42,30 @@ const selectOverdue = createSelector(
     (state) => state.tasks,
     (_, sortBy) => sortBy,
     (tasks, sortBy) => {
-        return tasks.filter(task => (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
+        return tasks.filter(task => !task.completed && !task.deleted && (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
             sortF(a, b, sortBy)
         })
     }
 )
 
-export default function Today({renderCard}) {
+export default function Today({renderCard, setOverDue}) {
 
     const params = useParams()
 
     const sortBy = useReadLocalStorage("sort")
     const showCompleted = useReadLocalStorage("showCompleted")
-    const showPinned = useReadLocalStorage("showPinned")
+    // const showPinned = useReadLocalStorage("showPinned")
     const showOverdue = useReadLocalStorage("showOverdue")
     const groupBy = useReadLocalStorage("group")
 
     const tasks = useSelector((state) => selectTasks(state, sortBy, showCompleted, groupBy))
     const overdue = useSelector((state) => selectOverdue(state, sortBy))
-    const pinned = useSelector((state) => selectPinned(state, sortBy))
+    // const pinned = useSelector((state) => selectPinned(state, sortBy))
+    const {t} = useTranslation();
+
+    useEffect(() => {
+        setOverDue(overdue)
+    },[overdue])
 
     return (
         <div>
@@ -70,7 +77,7 @@ export default function Today({renderCard}) {
             {/*    </TaskGroup>*/}
             {/*    : ""}*/}
             {(showOverdue && overdue.length) ?
-                <TaskGroup key={"todayoverdue"} view={"today"} title={"Overdue"}>
+                <TaskGroup key={"todayoverdue"} view={"today"} title={t("Overdue")}>
                     {overdue.map((card, i) => renderCard(card, i))}
                 </TaskGroup>
                 : ""}

@@ -9,6 +9,8 @@ import {PostIcon} from "./BaseListbox";
 import {FaUserCircle} from "react-icons/fa";
 import {GoogleHead} from "./helper";
 import {useTranslation} from "react-i18next";
+import SmallUserCard from "./user/SmallUserCard";
+import {BsGear} from "react-icons/bs";
 
 
 export default function MainMenu() {
@@ -19,9 +21,16 @@ export default function MainMenu() {
 
     const items = [
         {
-            "name": t("Sync")   ,
+            "name": <SmallUserCard user={getAuth().currentUser}/>,
+            "id": "user",
+            "disabled": true,
+
+        },
+        {
+            "name": t("Sync"),
             "id": "sync",
             "icon": "VscSync",
+            "styles": "space-x-3",
             "action": () => {
             }
         },
@@ -29,6 +38,7 @@ export default function MainMenu() {
             "name": t("Settings"),
             "id": "settings",
             "icon": "VscSettingsGear",
+            "styles": "space-x-3",
             "action": () => {
                 setOpen(true)
             }
@@ -40,6 +50,7 @@ export default function MainMenu() {
             "name": t("Sign out"),
             "id": "signout",
             "icon": "HiLogout",
+            "styles": "space-x-3",
             "action": () => {
                 signOutFireBase().then(() => {
                     navigate("/")
@@ -56,17 +67,17 @@ export default function MainMenu() {
 
                     <Menu as={"div"}>
                         <Menu.Button>
-                            <GoogleHead className={'rounded-full w-10'}/>
+                            <BsGear className={'rounded-full w-6 h-6 text-neutral-500 hover:text-neutral-700'}/>
                         </Menu.Button>
-                        <Menu.Items className={'z-50 absolute mt-1 min-w-[14rem] w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
+                        <Menu.Items className={'z-50 absolute mt-1 min-w-[16rem] w-full overflow-auto rounded-md bg-white dark:bg-gray-700 py-1  shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none text-sm'}>
                             {items.map((item, index, {length}) => (
 
 
-                                <Menu.Item onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `${(index + 1 === length)?"":""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
+                                <Menu.Item disabled={item.disabled} onClick={() => item.action()} as={"div"} value={item} key={item.id} className={({active}) => `${(index + 1 === length) ? "" : ""} relative cursor-pointer select-none py-2 pl-4 pr-10 ${active ? 'bg-hov dark:bg-gray-600' : ''} text-neutral-600 dark:text-neutral-300`}>
 
                                     <button className={`block truncate font-normal`}>
-                                        <div className={'flex items-center space-x-3'}>
-                                            <div><PostIcon iconName={item.icon}/> </div>
+                                        <div className={`${item.styles} flex items-center`}>
+                                            <div><PostIcon iconName={item.icon}/></div>
                                             <div>{item.name}</div>
                                         </div>
                                     </button>
