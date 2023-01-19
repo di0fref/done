@@ -11,6 +11,7 @@ import {dateFormat, dbDateFormat, formatDate} from "./helper";
 import {useDispatch} from "react-redux";
 import CustomDatePicker from "./badges/CustomDatePicker";
 import {useTranslation} from "react-i18next";
+import {ws_broadcast} from "./ws";
 
 export default function DynamicMenu({overdue, sendJsonMessage}) {
 
@@ -40,19 +41,16 @@ export default function DynamicMenu({overdue, sendJsonMessage}) {
                             changes: [{
                                 due: format(due, dbDateFormat),
                             }]
-                        })).unwrap()
-
-                        if (task.project_id) {
-                            sendJsonMessage({
-                                type: 'contentchange',
-                                content: {
-                                    action: "update",
-                                    type: "task",
-                                    id: task.id,
+                        })).then(r => {
+                            ws_broadcast({
+                                room: task.project_id,
+                                type: "update",
+                                module: "tasks",
+                                params: {
+                                    id: task.id
                                 }
-                            });
-                        }
-
+                            })
+                        })
                     })
                 } catch (error) {
                     toast.error(error)

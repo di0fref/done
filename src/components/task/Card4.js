@@ -15,6 +15,7 @@ import ProjectBadge from "../project/ProjectBadge";
 import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 import DateBadge from "../badges/DateBadge";
+import {ws_broadcast} from "../ws";
 
 export const Card4 = ({card, sendJsonMessage}) => {
     const {t} = useTranslation();
@@ -45,18 +46,20 @@ export const Card4 = ({card, sendJsonMessage}) => {
             id: id,
             completed: false,
             changes: []
-        })).unwrap()
-        if (card.project_id) {
-            sendJsonMessage({
-                type: 'contentchange',
-                content: {
-                    action: "update",
-                    type: "task",
-                    id: card.id,
-                    project_id: card.project_id
-                }
-            });
-        }
+        })).then(response => {
+            if (card.project_id) {
+                ws_broadcast({
+                    room: card.project_id,
+                    type: "update",
+                    module: "tasks",
+                    params: {
+                        id: card.id
+                    }
+                })
+            }
+        })
+
+
     }
     useEffect(() => {
         setTaskCompleted(card.completed)
@@ -86,15 +89,14 @@ export const Card4 = ({card, sendJsonMessage}) => {
                 })).unwrap()
 
                 if (card.project_id) {
-                    sendJsonMessage({
-                        type: 'contentchange',
-                        content: {
-                            action: "update",
-                            type: "task",
-                            id: card.id,
-                            project_id: card.project_id
+                    ws_broadcast({
+                        room: card.project_id,
+                        type: "update",
+                        module: "tasks",
+                        params: {
+                            id: card.id
                         }
-                    });
+                    })
                 }
 
                 event.target.checked && toast.success(

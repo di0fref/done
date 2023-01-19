@@ -10,13 +10,12 @@ import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
 import {setCurrent} from "../redux/currentSlice";
-import {isLoggedIn, paths, waitForLocalStorage, WS_URL} from "./helper";
+import {isLoggedIn, paths, waitForLocalStorage} from "./helper";
 import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./search/SearchDialog";
 import {toast} from "react-toastify";
 import "../service/http-common"
-import useWebSocket, {ReadyState} from 'react-use-websocket';
-
+import {ws, ws_join} from "./ws";
 
 export default function Main() {
 
@@ -49,53 +48,22 @@ export default function Main() {
         })
     }, [])
 
-    const {sendJsonMessage, readyState} = useWebSocket(WS_URL, {
-
-        onOpen: () => {
-            console.log('WebSocket connection established.');
-        },
-        share: true,
-        filter: () => false,
-        retryOnError: true,
-        shouldReconnect: () => true
-    });
-
-
-    // useEffect(() => {
-    //     if (readyState === ReadyState.OPEN) {
-    //         sendJsonMessage({
-    //             username,
-    //             type: 'userevent'
-    //         });
-    //     }
-    // }, [sendJsonMessage, readyState]);
-
-
     const showTaskDetail = (id) => {
         console.log(id)
     }
 
     onAuthStateChanged(auth, (user) => {
-            if (user) {
-                if (readyState === ReadyState.OPEN) {
-                    sendJsonMessage({
-                        username: auth.currentUser.uid,
-                        type: 'userevent',
-                        projects: allProjects.map(project => project.id)
-                    });
-                }
-                // sendJsonMessage({
-                //     type: "subscribe",
-                //     username: auth.currentUser.uid,
-                //     projects: allProjects.map(project => project.id)
-                // })
-            } else {
-                console.log("User logged out firebase");
+            if (!user) {
                 localStorage.removeItem("AccessToken")
             }
         }
     )
 
+    useEffect(() => {
+        if (ws.readyState === 1) {
+            allProjects.map(project => ws_join(project.id))
+        }
+    }, [ws.readyState])
 
     useEffect(() => {
         isLoggedIn().then((response) => {

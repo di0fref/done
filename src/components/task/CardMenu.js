@@ -15,6 +15,7 @@ import {formatDate} from "../helper";
 import axios from "axios";
 import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
+import {ws_broadcast} from "../ws";
 
 
 export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
@@ -44,31 +45,31 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
     const items =
         [
-        //     {
-        //         "name": card.pinned ? t("Unpin") : t("Pin"),
-        //         "id": "pin",
-        //         "icon": "BsPinAngle",
-        //         "action": () => {
-        //             setPinned(prev => !prev)
-        //             dispatch(updateTask({
-        //                 id: card.id,
-        //                 pinned: !card.pinned,
-        //                 changes: [
-        //                     {
-        //                         field: "pinned",
-        //                         old: card.pinned ? 1 : 0,
-        //                         new: !card.pinned ? 1 : 0,
-        //                         user_id: getAuth().currentUser.uid,
-        //                         assigned_user_id: card.assigned_user_id,
-        //                         type: "bool"
-        //                     }
-        //                 ]
-        //             })).unwrap()
-        //             sendMessage()
-        //             toast.success(t("Task") + " " + (!card.pinned ? t("pinned") : t("unpinned")))
-        //         },
-        //         "disabled": disabled
-        //     },
+            //     {
+            //         "name": card.pinned ? t("Unpin") : t("Pin"),
+            //         "id": "pin",
+            //         "icon": "BsPinAngle",
+            //         "action": () => {
+            //             setPinned(prev => !prev)
+            //             dispatch(updateTask({
+            //                 id: card.id,
+            //                 pinned: !card.pinned,
+            //                 changes: [
+            //                     {
+            //                         field: "pinned",
+            //                         old: card.pinned ? 1 : 0,
+            //                         new: !card.pinned ? 1 : 0,
+            //                         user_id: getAuth().currentUser.uid,
+            //                         assigned_user_id: card.assigned_user_id,
+            //                         type: "bool"
+            //                     }
+            //                 ]
+            //             })).unwrap()
+            //             sendMessage()
+            //             toast.success(t("Task") + " " + (!card.pinned ? t("pinned") : t("unpinned")))
+            //         },
+            //         "disabled": disabled
+            //     },
             {
                 "name": t("Move to trash"),
                 "id": "delete",
@@ -132,14 +133,14 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
     const sendMessage = (project_id) => {
         if (card.project_id || project_id) {
-            sendJsonMessage({
-                type: 'contentchange',
-                content: {
-                    action: "update",
-                    type: "task",
-                    id: card.id,
+            ws_broadcast({
+                room: card.project_id,
+                type: "update",
+                module: "tasks",
+                params: {
+                    id: card.id
                 }
-            });
+            })
         }
     }
 
@@ -157,8 +158,10 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     type: "date"
                 }
             ]
-        })).unwrap()
-        sendMessage()
+        })).then(r => {
+            sendMessage()
+        })
+
         toast.success(t("Due date set to ") + formatDate(date))
     }
 
@@ -176,8 +179,9 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     type: "assigned_user_id"
                 }
             ]
-        })).unwrap()
-        sendMessage()
+        })).then(r => {
+            sendMessage()
+        })
         toast.success(t("Assigned user changed"))
     }
 
@@ -195,8 +199,9 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     type: "string"
                 }
             ]
-        })).unwrap()
-        sendMessage()
+        })).then(r => {
+            sendMessage()
+        })
         toast.success(t("Priority set to ") + prio)
     }
 
@@ -214,8 +219,9 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     type: "project_id"
                 }
             ]
-        })).unwrap()
-        sendMessage(project.id)
+        })).then(r => {
+            sendMessage(project.id)
+        })
         toast.success(t("Task moved to project ") + project.name)
         setProject(project)
     }

@@ -11,49 +11,14 @@ import Today from "./task/Today";
 import Trash from "./task/Trash";
 import Completed from "./task/Completed";
 import md5 from "md5";
-import useWebSocket from "react-use-websocket";
-import {isChangeEvent, WS_URL} from "./helper";
-import {fetchNewTask, fetchUpdatedTask} from "../redux/taskSlice";
 import TopHeader from "./task/TopHeader";
-import {getAuth} from "firebase/auth";
 
 export const Container = (props) => {
     {
-        const dispatch = useDispatch()
-        const allProjects = useSelector(state => state.projects)
-        const {lastJsonMessage, sendJsonMessage} = useWebSocket(WS_URL, {
-            share: true,
-            filter: isChangeEvent
-        });
-
+        const sendJsonMessage = () => {
+            console.error("sendJsonMessage")
+        }
         const [overdue, setOverDue] = useState([]);
-
-        useEffect(() => {
-
-                console.log(lastJsonMessage?.data.editorContent)
-
-                if (lastJsonMessage?.data.editorContent) {
-
-                    /* Check if I have access to the project in question */
-                    const user_access = allProjects.find(project => project.users.find(user => user.id === getAuth().currentUser.uid))
-                    console.log(user_access)
-                    if (user_access) {
-                        switch (lastJsonMessage?.data.editorContent.action) {
-                            case "new":
-                                dispatch(fetchNewTask(lastJsonMessage?.data.editorContent.id))
-                                break;
-                            case "update":
-                                dispatch(fetchUpdatedTask(lastJsonMessage?.data.editorContent.id))
-                                break;
-                            default:
-                                return
-
-                        }
-                    }
-                }
-            }, [lastJsonMessage]
-        )
-
 
         const [open, setOpen] = useState(false)
         const selectedTask = useSelector(state => state.current.task)
@@ -123,7 +88,7 @@ export const Container = (props) => {
                         }
                     })()}
                 </div>
-                <LargeModal sendJsonMessage={sendJsonMessage} card={{...selectedTask}} key={selectedTask.id} open={open} setModalOpen={setOpen}/>
+                <LargeModal card={{...selectedTask}} key={selectedTask.id} open={open} setModalOpen={setOpen}/>
             </div>
         )
     }
