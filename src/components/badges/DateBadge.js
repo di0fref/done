@@ -6,11 +6,6 @@ export default function DateBadge(props) {
 
     const [date, setDate] = useState(props.date)
 
-    useEffect(() => {
-
-    }, [props.date])
-
-
     if (!date) {
         return <></>
     }
@@ -24,7 +19,7 @@ export default function DateBadge(props) {
     return (
         <div className={'flex items-center space-x-1'}>
             <BsCalendar className={`${color} h-2.5 w-2.5`}/>
-            <div className={`${color} text-xs `}>{formatDate(date)}</div>
+            <div className={`${color} text-xs`}>{formatDate(date)}</div>
         </div>
     )
 }

@@ -16,6 +16,7 @@ import SearchDialog from "./search/SearchDialog";
 import {toast} from "react-toastify";
 import "../service/http-common"
 import {ws, ws_join} from "./ws";
+import {useReadLocalStorage} from "usehooks-ts";
 
 export default function Main() {
 
@@ -37,7 +38,10 @@ export default function Main() {
                 localStorage.setItem("sort", JSON.stringify("name"))
                 localStorage.setItem("group", JSON.stringify("due"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
+                localStorage.setItem("showAssignedUser", JSON.stringify(true))
+                localStorage.setItem("showDetails", JSON.stringify(true))
             }
+
             try {
                 dispatch(getTasks()).unwrap()
                 dispatch(getProjects()).unwrap()

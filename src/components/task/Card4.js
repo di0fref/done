@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {delay, formatDate, paths, WS_URL} from "../helper";
+import {delay, formatDate, GoogleHead, paths, WS_URL} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleCompleted, updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
@@ -16,6 +16,8 @@ import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 import DateBadge from "../badges/DateBadge";
 import {ws_broadcast} from "../ws";
+import {Avatar} from "../BaseListbox";
+import UserBadge from "../badges/UserBadge";
 
 export const Card4 = ({card, sendJsonMessage}) => {
     const {t} = useTranslation();
@@ -29,6 +31,7 @@ export const Card4 = ({card, sendJsonMessage}) => {
     const error = useSelector(state => state.error)
     const [isHovering, setIsHovering] = useState(false)
     const showDetails = useReadLocalStorage("showDetails")
+    const showAssignedUser = useReadLocalStorage("showAssignedUser")
 
     const nav = useNavigate()
 
@@ -146,29 +149,51 @@ export const Card4 = ({card, sendJsonMessage}) => {
                     {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}>
                         <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/>
                     </div> : ""}
-                </div>
-                <div className={'md:flex flex-none md:items-center md:space-x-4 md:py-0 py-2'}>
 
-                    {/*{!card.completed ?*/}
+                    {/*{(card.project_id && card.assigned_user_name && showAssignedUser) ? (*/}
+                    {/*    <div className={'flex items-center space-x-2 my-2'}>*/}
+                    {/*        <Avatar className={"h-4 w-4 rounded-full"} img={card.image_url}/>*/}
+                    {/*        <div className={'text-xs'}>{card.assigned_user_name}</div>*/}
+                    {/*    </div>*/}
 
-                    {/*      <>*/}
-
-                    {/*          <div className={'md:py-2.5 py-1'}>*/}
-                    {/*              {(!currentProject.id && card.project) ?*/}
-                    {/*                  <ProjectBadge project={taskProject}/>*/}
-                    {/*                  : ""}*/}
-                    {/*          </div>*/}
-
-                    {/*      </>*/}
-                    {/*      : ""}*/}
-                    <div className={'md:py-2.5 py-1'}>
-                        <PrioBadge value={card.prio}/>
-                    </div>
-                    <div className={'md:py-2.5 py-1'}>
-                        <DateBadge date={card.due}/>
-                    </div>
+                    {/*) : ""}*/}
 
                 </div>
+                {/*<div className={'md:flex flex-none md:items-center md:space-x-4 md:py-0 py-2'}>*/}
+
+                {/*    /!*{!card.completed ?*!/*/}
+
+                {/*    /!*      <>*!/*/}
+
+                {/*    /!*          <div className={'md:py-2.5 py-1'}>*!/*/}
+                {/*    /!*              {(!currentProject.id && card.project) ?*!/*/}
+                {/*    /!*                  <ProjectBadge project={taskProject}/>*!/*/}
+                {/*    /!*                  : ""}*!/*/}
+                {/*    /!*          </div>*!/*/}
+
+                {/*    /!*      </>*!/*/}
+                {/*    /!*      : ""}*!/*/}
+                {/*    {(card.project_id && card.assigned_user_name && showAssignedUser) ? (*/}
+                {/*        <div className={'flex items-center space-x-2 my-2'}>*/}
+                {/*            <Avatar className={"h-4 w-4 rounded-full"} img={card.image_url}/>*/}
+                {/*            <div className={'text-xs text-neutral-600'}>{card.assigned_user_name}</div>*/}
+                {/*        </div>*/}
+
+                {/*    ) : ""}*/}
+                {/*    <div className={'md:py-2.5 py-1'}>*/}
+                {/*        <PrioBadge value={card.prio}/>*/}
+                {/*    </div>*/}
+                {/*    <div className={'md:py-2.5 py-1'}>*/}
+                {/*        <DateBadge date={card.due}/>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+
+                <div className={'md:grid grid-flow-col py-3.5 gap-x-2_ '}>
+                    <div className={'w-16 md:p-0 py-1 text-right'}><PrioBadge value={card.prio}/></div>
+                    <div className={'w-16 md:p-0 py-1 text-right'}><DateBadge date={card.due}/></div>
+                    <div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>
+                </div>
+
             </div>
             <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
                 <CardMenu sendJsonMessage={sendJsonMessage} disabled={card.deleted} card={card} hover={isHovering}/>

@@ -13,7 +13,6 @@ import {
 import {useEffect, useState} from "react";
 import {VscSettingsGear, VscSync} from "react-icons/vsc";
 import {useTranslation} from "react-i18next";
-import {getAuth} from "firebase/auth";
 
 const icons = {
     "BsFlag": BsFlag,
@@ -47,9 +46,9 @@ export const PostIcon = (props) => {
     return <Icon className={props.css}/>
 }
 
-export const Avatar = (props) => {
+export const Avatar = ({img, ...props}) => {
     return (
-        <img src={props.img} className={'rounded-full'} referrerPolicy={"no-referrer"}/>
+        <img src={img} className={`${props.className} rounded-full`} referrerPolicy={"no-referrer"}/>
     )
 }
 

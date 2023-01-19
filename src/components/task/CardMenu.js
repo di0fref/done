@@ -344,7 +344,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                                         <div className={'p-2 border-b dark:border-b-gray-600'}>
                                             <div className={'dark:text-neutral-200 text-neutral-400 text-xs'}>{t("Assigned user")}
                                             </div>
-                                            <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser}
+                                            <BaseListbox disabled={disabled} placement={"right-48 text-sm"} items={users} selected={assignedUser || []}
                                                          onChange={(user) => {
                                                              onUserChange(user)
                                                              close()

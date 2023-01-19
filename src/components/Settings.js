@@ -12,6 +12,9 @@ export default function Settings(props) {
     const [showCompleted, setShowCompleted] = useLocalStorage("showCompleted", null)
     const [showOverdue, setShowOverdue] = useLocalStorage("showOverdue", null)
     const [showSidebarCount, setShowSidebarCount] = useLocalStorage("showSidebarCount", null)
+    const [showAssignedUser, setShowAssignedUser] = useLocalStorage("showAssignedUser", null)
+
+
 
     useEffect(() => {
 
@@ -49,6 +52,10 @@ export default function Settings(props) {
 
     const onshowSidebarCountChange = (checked) => {
         setShowSidebarCount(checked)
+    }
+
+    const onShowAssignedUserChange = (checked) => {
+      setShowAssignedUser(checked)
     }
     return (
         <>
@@ -106,6 +113,23 @@ export default function Settings(props) {
                                         {/*    </Switch>*/}
                                         {/*</div>*/}
                                         <div className={'flex items-center space-x-4'}>
+                                            <p className={'flex-grow'}>Show assigned user on task cards</p>
+
+                                            <Switch
+                                                checked={showAssignedUser}
+                                                onChange={onShowAssignedUserChange}
+                                                className={`${
+                                                    showAssignedUser ? 'bg-blue-600' : 'bg-gray-200'
+                                                } relative inline-flex h-6 w-11 items-center rounded-full`}>
+                                                <span
+                                                    className={`${
+                                                        showAssignedUser ? 'translate-x-6' : 'translate-x-1'
+                                                    } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                                                />
+                                            </Switch>
+                                        </div>
+
+                                        <div className={'flex items-center space-x-4'}>
                                             <p className={'flex-grow'}>Pinn overdue tasks on top</p>
 
                                             <Switch
@@ -122,8 +146,9 @@ export default function Settings(props) {
                                             </Switch>
                                         </div>
 
+
                                           <div className={'flex items-center space-x-4'}>
-                                            <p className={'flex-grow'}>Show count in sidebar</p>
+                                            <p className={'flex-grow'}>Show task count in sidebar</p>
 
                                             <Switch
                                                 checked={showSidebarCount}

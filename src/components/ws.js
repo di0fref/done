@@ -1,7 +1,12 @@
 import {store} from "../redux/store"
 import {fetchUpdatedTask} from "../redux/taskSlice";
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
-export const ws = new WebSocket("ws://localhost:8000");
+export const ws = new ReconnectingWebSocket("ws://localhost:8000",[],
+    {
+        debug: true
+    }
+);
 
 
 ws.onopen = function () {
