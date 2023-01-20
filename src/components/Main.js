@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getTasks} from "../redux/taskSlice";
 import {getProjects} from "../redux/projectSlice";
 import {onAuthStateChanged} from "firebase/auth"
-import {setCurrent} from "../redux/currentSlice";
+import {setCurrentProject, setCurrentTask, setCurrentUser} from "../redux/currentSlice";
 import {isLoggedIn, paths, waitForLocalStorage} from "./helper";
 import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./search/SearchDialog";
@@ -17,6 +17,7 @@ import {toast} from "react-toastify";
 import "../service/http-common"
 import {ws, ws_join} from "./ws";
 import {useReadLocalStorage} from "usehooks-ts";
+import axios from "axios";
 
 export default function Main() {
 
@@ -59,6 +60,10 @@ export default function Main() {
     onAuthStateChanged(auth, (user) => {
             if (!user) {
                 localStorage.removeItem("AccessToken")
+            } else {
+                axios.get("users/" + auth.currentUser.uid).then((response) => {
+                    dispatch(setCurrentUser(response.data))
+                })
             }
         }
     )
@@ -81,41 +86,33 @@ export default function Main() {
     useEffect(() => {
 
         if (params.path === "project" && params.path2 === "task") {
-            dispatch(setCurrent({
-                    task: allTasks.find(task => task.id === params.id2),
-                    project: allProjects.find(project => project.id === params.id)
-                }
-            ))
+            dispatch(setCurrentTask(
+                allTasks.find(task => task.id === params.id2))
+            )
+            dispatch(setCurrentProject(
+                allProjects.find(project => project.id === params.id))
+            )
             return
         }
 
 
         if (params.path === "project") {
-            dispatch(setCurrent({
-                    task: {},
-                    project: allProjects.find(project => project.id === params.id)
-                }
+            dispatch(setCurrentProject(
+                allProjects.find(project => project.id === params.id)
             ))
             return
         }
 
-
         if (paths.find(p => params.path === p) && params.path2 === "task") {
-            dispatch(setCurrent({
-                    task: allTasks.find(task => task.id === params.id2),
-                    project: {}
-                }
+            dispatch(setCurrentTask(
+                allTasks.find(task => task.id === params.id2),
             ))
             return
         }
 
         if (paths.find(p => params.path === p)) {
-            dispatch(setCurrent({
-                    task: {},
-                    project: {}
-                }
-            ))
-            return
+            dispatch(setCurrentTask({}))
+            dispatch(setCurrentProject({}))
         }
 
 

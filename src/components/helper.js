@@ -4,6 +4,7 @@ import {enGB} from "date-fns/locale";
 import {getAuth} from "firebase/auth";
 import {createSelector} from "@reduxjs/toolkit";
 import {sortF} from "./task/Sort";
+import {useSelector} from "react-redux";
 
 export const dbDateFormat = "Y-MM-dd"
 
@@ -20,13 +21,11 @@ export const selectPinned = createSelector(
 
 export const GoogleHead = (props) => {
 
-    if (getAuth().currentUser && getAuth().currentUser.uid) {
-        const image = getAuth().currentUser.photoURL
-        return (
-            <img {...props} alt="Avatar" src={image} referrerPolicy={"no-referrer"}/>
-        )
-    }
-    return null
+    const user = useSelector(state => state.current.user)
+    return (
+        <img {...props} alt="Avatar" src={user.image_url} referrerPolicy={"no-referrer"}/>
+    )
+
 }
 
 export async function isLoggedIn() {
@@ -142,6 +141,7 @@ export function isChangeEvent(message) {
     let evt = JSON.parse(message.data);
     return evt.type === 'contentchange';
 }
+
 export const dateFormat = "d MMM"
 
 export const paths = [

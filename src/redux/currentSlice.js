@@ -1,18 +1,25 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-    task:{},
-    project:{}
+    task: {},
+    project: {},
+    user: {}
 }
 
 export const currentSlice = createSlice({
-    name: 'currentTask',
+    name: 'setCurrent',
     initialState,
     reducers: {
-        setCurrent: (state, action) => {
-            return action.payload
-         },
+        setCurrentTask: (state, action) => {
+            state["task"] = action.payload
+        },
+        setCurrentProject: (state, action) => {
+            state["project"] = action.payload
+        },
+        setCurrentUser: (state, action) => {
+            state["user"] = action.payload
+        },
     },
 })
-export const {setCurrent} = currentSlice.actions
+export const {setCurrentTask, setCurrentProject, setCurrentUser} = currentSlice.actions
 export default currentSlice.reducer

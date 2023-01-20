@@ -4,7 +4,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export const ws = new ReconnectingWebSocket("ws://localhost:8000",[],
     {
-        debug: true
+        debug: false
     }
 );
 

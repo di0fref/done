@@ -57,7 +57,7 @@ export default function AddTask({sendJsonMessage}) {
 
     const [name, setName] = useState("");
     const [project, setProject] = useState(_project_);
-    const [due, setDue] = useState(project.id ? new Date() : null);
+    const [due, setDue] = useState(project?.id ? new Date() : null);
     const [prio, setPrio] = useState("normal");
 
     const [placeHolder, setPlaceHolder] = useState()

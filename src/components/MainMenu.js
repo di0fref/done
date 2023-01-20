@@ -11,6 +11,7 @@ import {GoogleHead} from "./helper";
 import {useTranslation} from "react-i18next";
 import SmallUserCard from "./user/SmallUserCard";
 import {BsGear} from "react-icons/bs";
+import {useSelector} from "react-redux";
 
 
 export default function MainMenu() {
@@ -21,7 +22,7 @@ export default function MainMenu() {
 
     const items = [
         {
-            "name": <SmallUserCard user={getAuth().currentUser}/>,
+            "name": <SmallUserCard/>,
             "id": "user",
             "disabled": true,
 
