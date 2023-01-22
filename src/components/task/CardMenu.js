@@ -13,19 +13,18 @@ import DatePickerIcon from "../badges/DatePickerIcon";
 import {toast} from "react-toastify";
 import {formatDate} from "../helper";
 import axios from "axios";
-import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
 
 
 export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
-
     const projects = useSelector(state => state.projects)
     const _project_ = useSelector(state => state.projects.find(
         project => card ? (card.project_id === project.id) : null
     ))
     const {t} = useTranslation();
+    const currentUser = useSelector(state => state.current.user)
 
     const [pinned, setPinned] = useState(card.pinned)
     const [project, setProject] = useState(_project_);
@@ -59,7 +58,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
             //                         field: "pinned",
             //                         old: card.pinned ? 1 : 0,
             //                         new: !card.pinned ? 1 : 0,
-            //                         user_id: getAuth().currentUser.uid,
+            //                         user_id: currentUser.id,
             //                         assigned_user_id: card.assigned_user_id,
             //                         type: "bool"
             //                     }
@@ -83,7 +82,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                                 field: "deleted",
                                 old: 0,
                                 new: 1,
-                                user_id: getAuth().currentUser.uid,
+                                user_id: currentUser.id,
                                 assigned_user_id: card.assigned_user_id,
                                 type: "bool"
                             }
@@ -153,7 +152,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     field: "due",
                     old: card.due,
                     new: date ? format(date, "Y-MM-dd") : null,
-                    user_id: getAuth().currentUser.uid,
+                    user_id: currentUser.id,
                     assigned_user_id: card.assigned_user_id,
                     type: "date"
                 }
@@ -174,9 +173,18 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     field: "assigned_user_id",
                     old: card.due,
                     new: user.assigned_user_id,
-                    user_id: getAuth().currentUser.uid,
+                    user_id: currentUser.id,
                     assigned_user_id: card.assigned_user_id,
                     type: "assigned_user_id"
+                }
+            ],
+            notifications: [
+                {
+                    notify_user_id: user.user_id,
+                    action: "assign",
+                    module_id: card.id,
+                    action_user_id: currentUser.id,
+                    module: "task"
                 }
             ]
         })).then(r => {
@@ -194,7 +202,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     field: "prio",
                     old: card.priod,
                     new: prio,
-                    user_id: getAuth().currentUser.uid,
+                    user_id: currentUser.id,
                     assigned_user_id: card.assigned_user_id,
                     type: "string"
                 }
@@ -214,7 +222,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     field: "project",
                     old: card.project,
                     new: project.name,
-                    user_id: getAuth().currentUser.uid,
+                    user_id: currentUser.id,
                     assigned_user_id: card.assigned_user_id,
                     type: "project_id"
                 }
@@ -228,15 +236,15 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
     if (disabled) {
         return (
-            <div className={'relative'}>
+            // <div className={'relative'}>
 
-                <Popover as={"div"}>
+                <Popover as={"div"} className={"relative"}>
                     {({open}) => (
                         <>
-                            <Popover.Button className={'z-50 py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
+                            <Popover.Button className={'py-1 px-2 rounded flex items-center w-full justify-start text-left hover:bg-neutral-100 dark:hover:bg-gray-600'}>
                                 <BsList className={'h-5 w-5 text-neutral-500 dark:text-gray-400'}/>
                             </Popover.Button>
-                            <Popover.Panel className="w-36 z-50 bg-white dark:bg-gray-700 absolute right-0 mt-2 min-w-fit w-full origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Popover.Panel className=" w-36 bg-white dark:bg-gray-700 absolute right-0 mt-2   origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 
                                 {disabledItems.map((item, index) => (
                                     <div className={``} key={item.id + card.id}>
@@ -260,7 +268,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                     )}
 
                 </Popover>
-            </div>
+             // </div>
         )
     }
 
@@ -271,10 +279,10 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                 {({open}) => {
 
                     return <>
-                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible z-50 p-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
+                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible  p-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
                             <BsList className={'h-5 w-5 hover:text-neutral-600 text-neutral-400 dark:text-gray-400'}/>
                         </Popover.Button>
-                        <Popover.Panel className="z-50 bg-white dark:bg-gray-700 absolute right-6  mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Popover.Panel className=" bg-white dark:bg-gray-700 absolute right-6  mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             {({close}) => (
 
                                 <div className="px-1 py-1 w-56">

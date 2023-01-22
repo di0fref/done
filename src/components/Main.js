@@ -18,6 +18,9 @@ import "../service/http-common"
 import {ws, ws_join} from "./ws";
 import {useReadLocalStorage} from "usehooks-ts";
 import axios from "axios";
+import Notifications from "./Notifications";
+import {getNotifications} from "../redux/notificationSlice";
+import {current} from "@reduxjs/toolkit";
 
 export default function Main() {
 
@@ -29,7 +32,6 @@ export default function Main() {
     const allTasks = useSelector(state => state.tasks)
     const allProjects = useSelector(state => state.projects)
 
-
     useEffect(() => {
         waitForLocalStorage("AccessToken", function (value) {
 
@@ -40,12 +42,17 @@ export default function Main() {
                 localStorage.setItem("group", JSON.stringify("due"))
                 localStorage.setItem("showCompleted", JSON.stringify(true))
                 localStorage.setItem("showAssignedUser", JSON.stringify(true))
-                localStorage.setItem("showDetails", JSON.stringify(true))
+                localStorage.setItem("showDetails", JSON.stringify(false))
+                localStorage.setItem("showOverdue", JSON.stringify(true))
             }
-
             try {
+                dispatch(
+                    setCurrentUser(
+                        JSON.parse(localStorage.getItem("user")))
+                )
                 dispatch(getTasks()).unwrap()
                 dispatch(getProjects()).unwrap()
+                dispatch(getNotifications()).unwrap()
             } catch (err) {
                 console.log(err)
                 toast.error(err.message)
@@ -60,10 +67,14 @@ export default function Main() {
     onAuthStateChanged(auth, (user) => {
             if (!user) {
                 localStorage.removeItem("AccessToken")
+                localStorage.removeItem("user")
+
             } else {
-                axios.get("users/" + auth.currentUser.uid).then((response) => {
-                    dispatch(setCurrentUser(response.data))
-                })
+                // if(!currentUser) {
+                //     axios.get("users/" + auth.currentUser.uid).then((response) => {
+                //         dispatch(setCurrentUser(response.data))
+                //     })
+                // }
             }
         }
     )
@@ -100,6 +111,7 @@ export default function Main() {
             dispatch(setCurrentProject(
                 allProjects.find(project => project.id === params.id)
             ))
+            dispatch(setCurrentTask({}))
             return
         }
 
@@ -114,7 +126,6 @@ export default function Main() {
             dispatch(setCurrentTask({}))
             dispatch(setCurrentProject({}))
         }
-
 
     }, [params, allTasks, allProjects])
 
@@ -155,13 +166,14 @@ export default function Main() {
                         <div className={'flex flex-col items-center space-y-6 mt-6'}>
                             <div><FaCheckSquare className={'w-6 h-6 text-blue-500'}/></div>
                             <div><SearchDialog/></div>
+                            <div><Notifications/></div>
                         </div>
                     </div>
 
                     <Sidebar id={params.id ? params.id : null}/>
                     <div className={'h-screen overflow-y-auto w-full flex'}>
                         <div className={'flex-grow container'}>
-                            <div className={'max-w-4xl mx-auto h-full _md:px-12 '}>
+                            <div className={'max-w-4xl mx-auto h-full '}>
                                 <Container showTaskDetail={showTaskDetail} filter={params.path} id={params.id ? params.id : null}/>
                             </div>
                         </div>

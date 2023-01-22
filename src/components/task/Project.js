@@ -14,12 +14,19 @@ import DateBadge from "../badges/DateBadge";
 import {useEffect} from "react";
 
 
-const selectTasks = createSelector((state) => state.tasks, (state, sortBy) => sortBy, (state, sortBy, project_id) => project_id, (state, sortBy, project_id, showCompleted) => showCompleted, (state, sortBy, project_id, showCompleted, group) => group,
+const selectTasks = createSelector(
+    (state) => state.tasks,
+    (state, sortBy) => sortBy,
+    (state, sortBy, project_id) => project_id,
+    (state, sortBy, project_id, showCompleted) => showCompleted,
+    (state, sortBy, project_id, showCompleted, group) => group,
 
     (tasks, sortBy, project_id, showCompleted, group) => {
         const groups = groupBy(tasks.filter(task => {
 
-            return (!showCompleted ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted && !task.completed : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted)
+            return (!showCompleted
+                ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted && !task.completed
+                : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted)
 
         }), group)
 

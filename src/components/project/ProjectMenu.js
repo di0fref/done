@@ -8,10 +8,13 @@ import SmallModal from "../modals/SmallModal";
 import EditProjectForm from "./EditProjectForm";
 import ShareProjectForm from "./ShareProjectForm";
 import {useState} from "react";
+import {useSelector} from "react-redux";
 
 export default function ProjectMenu({p}) {
 
     const [project, setProject] = useState(p)
+
+    const currentUser = useSelector(state => state.current.user)
 
     const {t} = useTranslation();
     const [open, setOpen] = useState(false)
@@ -22,7 +25,7 @@ export default function ProjectMenu({p}) {
             "name": t("Edit project"),
             "icon": "BsPencil",
             "id": "2",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
+            allow: (project && project.user_id === currentUser?.id),
             "action": () => {
                 setOpen(true)
             }
@@ -32,7 +35,7 @@ export default function ProjectMenu({p}) {
             "name": t("Share project"),
             "icon": "BsShare",
             "id": "3",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
+            allow: (project && project.user_id === currentUser?.id),
             "action": () => {
                 setOpenShare(true)
             }
@@ -42,7 +45,7 @@ export default function ProjectMenu({p}) {
             "name": t("Delete project"),
             "icon": "BsTrash",
             "id": "4",
-            allow: (project && project.user_id === getAuth().currentUser.uid),
+            allow: (project && project.user_id === currentUser?.id),
             "action": () => {
                 toast.error(t("Not implemented"))
             }

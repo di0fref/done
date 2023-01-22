@@ -38,6 +38,8 @@ export async function isLoggedIn() {
                     } else {
                         // console.log("User logged out firebase");
                         localStorage.removeItem("AccessToken")
+                        localStorage.removeItem("user")
+
                         reject('no user logged in')
                         // navigate("login")
                     }

@@ -1,8 +1,8 @@
 import {useEffect, useState} from 'react'
 
-import {delay, formatDate, GoogleHead, paths, WS_URL} from "../helper";
+import {delay,paths} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleCompleted, updateTask} from "../../redux/taskSlice";
+import {updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
 import {format} from 'date-fns'
 
@@ -11,16 +11,15 @@ import CardMenu from "./CardMenu";
 import PrioBadge from "../badges/PrioBadge";
 import {useReadLocalStorage} from "usehooks-ts";
 import Editor from "../TextEditor";
-import ProjectBadge from "../project/ProjectBadge";
 import {getAuth} from "firebase/auth";
 import {useTranslation} from "react-i18next";
 import DateBadge from "../badges/DateBadge";
 import {ws_broadcast} from "../ws";
-import {Avatar} from "../BaseListbox";
-import UserBadge from "../badges/UserBadge";
+import {Transition} from "@headlessui/react";
 
-export const Card4 = ({card, sendJsonMessage}) => {
+export const Card4 = ({card, sendJsonMessage, showing}) => {
     const {t} = useTranslation();
+    const [isShowing, setIsShowing] = useState(showing||false)
 
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [name, setName] = useState(card.name);
@@ -136,8 +135,17 @@ export const Card4 = ({card, sendJsonMessage}) => {
     }
 
     return (
-
-        <div className={' group flex items-center'}>
+        <Transition
+            appear={true}
+            show={isShowing}
+            enter="transition-opacity duration-500"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-500"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+        >
+        <div className={'z-10 group flex items-center'}>
             <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} shadow hover:shadow-md flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  _hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
                 <div className={'py-2.5 mr-2'}>
                     <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 _mb-1`} type={"checkbox"} checked={taskCompleted}/>
@@ -200,5 +208,6 @@ export const Card4 = ({card, sendJsonMessage}) => {
             </div>
 
         </div>
+        </Transition>
     )
 }

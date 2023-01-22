@@ -51,7 +51,7 @@ const Shares = () => {
                 console.error(err);
             })
         }
-    }, [user])
+    }, [])
 
 
     return (

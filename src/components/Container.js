@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {motion, AnimatePresence} from "framer-motion"
 import {Card4} from "./task/Card4";
 import LargeModal from "./modals/LargeModal";
 import All from "./task/All";
@@ -12,6 +11,12 @@ import Trash from "./task/Trash";
 import Completed from "./task/Completed";
 import md5 from "md5";
 import TopHeader from "./task/TopHeader";
+import {Transition} from "@headlessui/react";
+
+
+const RenderCard = () => {
+  
+}
 
 export const Container = (props) => {
     {
@@ -27,34 +32,49 @@ export const Container = (props) => {
             if (selectedTask.id) {
                 setOpen(true)
             }
+
+            console.log(selectedTask)
         }, [selectedTask])
 
         const renderCard = useCallback((card, index) => {
             return (
-                <motion.div
-                    key={card.id}
-                    initial={{opacity: 0}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}>
-                    <AnimatePresence>
+                // <AnimatePresence>
+
+                // <motion.div
+                //     key={card.id}
+                //     initial={{opacity: 0}}
+                //     animate={{opacity: 1}}
+                //     exit={{opacity: 0}}>
+                // <Transition
+                //     appear={true}
+                //     show={isShowing}
+                //     enter="transition-opacity duration-75"
+                //     enterFrom="opacity-0"
+                //     enterTo="opacity-100"
+                //     leave="transition-opacity duration-1000"
+                //     leaveFrom="opacity-100"
+                //     leaveTo="opacity-0"
+                // >
                         <Card4
-                            sendJsonMessage={sendJsonMessage}
                             oM={setOpen}
                             key={md5(card.name + card.text + card.id + card.assigned_user_id + card.prio + card.project_id)}
                             index={index}
                             id={card.id}
                             card={card}
+                            showing={true}
                         />
-                    </AnimatePresence>
-                </motion.div>
+                // </Transition>
+                // </motion.div>
+                // </AnimatePresence>
+
             )
         }, [])
 
         return (
-            <div className={'flex h-full dark:text-neutral-300 bg-gray-50_ '}>
+            <div className={'flex h-full dark:text-neutral-300'}>
                 <div className={'flex-grow pl-12 px-4'}>
 
-                    <TopHeader overdue={overdue} sendJsonMessage={sendJsonMessage}/>
+                    <TopHeader overdue={overdue}/>
                     {(() => {
                         switch (props.filter) {
                             case "trash":

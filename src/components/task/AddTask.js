@@ -9,6 +9,7 @@ import BaseListbox from "../BaseListbox";
 import {formatDate, priorities} from "../helper";
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import {ws_broadcast} from "../ws";
 
 
 function useOnClickOutside(ref, handler) {
@@ -110,14 +111,14 @@ export default function AddTask({sendJsonMessage}) {
                     })).unwrap()
 
                     if(task.project_id) {
-                        sendJsonMessage({
-                            type: 'contentchange',
-                            content: {
-                                action: "new",
-                                type: "task",
-                                id: task.id,
+                        ws_broadcast({
+                            room: task.project_id,
+                            type: "update",
+                            module: "tasks",
+                            params: {
+                                id: task.id
                             }
-                        });
+                        })
                     }
 
                     task && toast.success(

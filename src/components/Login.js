@@ -3,7 +3,7 @@ import {browserLocalPersistence, getAuth, GoogleAuthProvider, setPersistence, si
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {setCurrent, setCurrentUser} from "../redux/currentSlice";
+import {setCurrentUser} from "../redux/currentSlice";
 
 export default function Login() {
 
@@ -41,15 +41,8 @@ export default function Login() {
                             .then(CheckError)
                             .then((response) => {
                                 localStorage.setItem("AccessToken", response.data.access_token)
-                                console.log("API: user logged in")
-
-
-                                axios.get("/users/" + response.data.user.id).then((response) => {
-                                    dispatch(setCurrentUser(response))
-                                })
-
-                                // dispatch(setCurrentUser(response.data.user))
-
+                                localStorage.setItem("user", JSON.stringify(response.data.user))
+                                dispatch(setCurrentUser(response.data.user))
                                 navigate('/today')
                             })
                             .catch((error) => {

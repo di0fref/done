@@ -4,23 +4,16 @@ import Main from "./components/Main";
 import {Tooltip} from "react-tooltip";
 import Login from "./components/Login";
 import {store} from './redux/store'
-import {Provider, useSelector} from 'react-redux'
+import {Provider} from 'react-redux'
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
-import Web from "./pages/Web";
-import React, {Suspense, useEffect, useState} from 'react';
+import React, {Suspense} from 'react';
 import Kanban from "./components/project/Board";
-import useWebSocket, {ReadyState} from 'react-use-websocket';
-import {waitForLocalStorage, WS_URL} from "./components/helper";
-import {getAuth, onAuthStateChanged} from "firebase/auth";
-
-const auth = getAuth();
 
 function App() {
-    const [username, setUsername] = useState("psfhgo");
 
     return (
         <Suspense fallback={<div>Loading... </div>}>
@@ -29,7 +22,7 @@ function App() {
                 <ToastContainer
                     hideProgressBar={true}
                     className={""}
-                    position="bottom-right"/>
+                    position="bottom-left"/>
                 <Tooltip
                     effect={"solid"}
                 />
