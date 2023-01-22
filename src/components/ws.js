@@ -4,7 +4,7 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 
 export const ws = new ReconnectingWebSocket("ws://localhost:8000",[],
     {
-        debug: false
+        debug: true
     }
 );
 
@@ -21,7 +21,6 @@ ws.onclose = function (e) {
 
 ws.onmessage = function (ms) {
     const msg = JSON.parse(ms.data)
-    console.log(msg)
 
     switch (msg.type) {
         case "update":

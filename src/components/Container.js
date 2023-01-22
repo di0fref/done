@@ -11,18 +11,11 @@ import Trash from "./task/Trash";
 import Completed from "./task/Completed";
 import md5 from "md5";
 import TopHeader from "./task/TopHeader";
-import {Transition} from "@headlessui/react";
 
-
-const RenderCard = () => {
-  
-}
 
 export const Container = (props) => {
     {
-        const sendJsonMessage = () => {
-            console.error("sendJsonMessage")
-        }
+
         const [overdue, setOverDue] = useState([]);
 
         const [open, setOpen] = useState(false)
@@ -32,8 +25,6 @@ export const Container = (props) => {
             if (selectedTask.id) {
                 setOpen(true)
             }
-
-            console.log(selectedTask)
         }, [selectedTask])
 
         const renderCard = useCallback((card, index) => {
@@ -55,14 +46,14 @@ export const Container = (props) => {
                 //     leaveFrom="opacity-100"
                 //     leaveTo="opacity-0"
                 // >
-                        <Card4
-                            oM={setOpen}
-                            key={md5(card.name + card.text + card.id + card.assigned_user_id + card.prio + card.project_id)}
-                            index={index}
-                            id={card.id}
-                            card={card}
-                            showing={true}
-                        />
+                <Card4
+                    oM={setOpen}
+                    key={md5(card.name + card.text + card.id + card.assigned_user_id + card.prio + card.project_id)}
+                    index={index}
+                    id={card.id}
+                    card={card}
+                    showing={true}
+                />
                 // </Transition>
                 // </motion.div>
                 // </AnimatePresence>

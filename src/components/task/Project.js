@@ -8,7 +8,6 @@ import {capitalize, formatDate, groupBy, selectPinned} from "../helper";
 import TaskGroup from "./TaskGroup";
 import {useParams} from "react-router-dom";
 import {createSelector} from "@reduxjs/toolkit";
-import Kanban from "../project/Board";
 import PrioBadge from "../badges/PrioBadge";
 import DateBadge from "../badges/DateBadge";
 import {useEffect} from "react";

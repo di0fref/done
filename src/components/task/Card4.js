@@ -17,7 +17,7 @@ import DateBadge from "../badges/DateBadge";
 import {ws_broadcast} from "../ws";
 import {Transition} from "@headlessui/react";
 
-export const Card4 = ({card, sendJsonMessage, showing}) => {
+export const Card4 = ({card, showing}) => {
     const {t} = useTranslation();
     const [isShowing, setIsShowing] = useState(showing||false)
 
@@ -138,21 +138,21 @@ export const Card4 = ({card, sendJsonMessage, showing}) => {
         <Transition
             appear={true}
             show={isShowing}
-            enter="transition-opacity duration-500"
+            enter="transition-opacity duration-200"
             enterFrom="opacity-0"
             enterTo="opacity-100"
-            leave="transition-opacity duration-500"
+            leave="transition-opacity duration-200"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
         >
         <div className={'z-10 group flex items-center'}>
-            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50 " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} shadow hover:shadow-md flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  _hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
+            <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50_ " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} shadow hover:shadow-md flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  _hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
                 <div className={'py-2.5 mr-2'}>
-                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${(card.prio === "high" && !card.completed) ? "border-red-600_" : ""} checkbox ml-2 _mb-1`} type={"checkbox"} checked={taskCompleted}/>
+                    <input disabled={!!card.deleted} onChange={(checked) => onStatusChange(checked)} className={`${card.completed ? "opacity-50" : ""} checkbox ml-2 _mb-1`} type={"checkbox"} checked={taskCompleted}/>
                 </div>
 
                 <div onClick={clickHandler} className={'flex-grow py-3'}>
-                    <span className={`${card.completed ? "line-through " : ""} text-neutral-500 font-medium text-sm`}>{name}</span>
+                    <span className={`${card.completed ? "line-through opacity-50 " : ""} text-neutral-500 font-medium text-sm`}>{name}</span>
 
                     {showDetails ? <div className={'text-sm mt-1 text-neutral-400'}>
                         <Editor onTextChange={(e) => setText(JSON.stringify(e))} initial={text} editable={true} small={true}/>
@@ -167,44 +167,16 @@ export const Card4 = ({card, sendJsonMessage, showing}) => {
                     {/*) : ""}*/}
 
                 </div>
-                {/*<div className={'md:flex flex-none md:items-center md:space-x-4 md:py-0 py-2'}>*/}
 
-                {/*    /!*{!card.completed ?*!/*/}
-
-                {/*    /!*      <>*!/*/}
-
-                {/*    /!*          <div className={'md:py-2.5 py-1'}>*!/*/}
-                {/*    /!*              {(!currentProject.id && card.project) ?*!/*/}
-                {/*    /!*                  <ProjectBadge project={taskProject}/>*!/*/}
-                {/*    /!*                  : ""}*!/*/}
-                {/*    /!*          </div>*!/*/}
-
-                {/*    /!*      </>*!/*/}
-                {/*    /!*      : ""}*!/*/}
-                {/*    {(card.project_id && card.assigned_user_name && showAssignedUser) ? (*/}
-                {/*        <div className={'flex items-center space-x-2 my-2'}>*/}
-                {/*            <Avatar className={"h-4 w-4 rounded-full"} img={card.image_url}/>*/}
-                {/*            <div className={'text-xs text-neutral-600'}>{card.assigned_user_name}</div>*/}
-                {/*        </div>*/}
-
-                {/*    ) : ""}*/}
-                {/*    <div className={'md:py-2.5 py-1'}>*/}
-                {/*        <PrioBadge value={card.prio}/>*/}
-                {/*    </div>*/}
-                {/*    <div className={'md:py-2.5 py-1'}>*/}
-                {/*        <DateBadge date={card.due}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-
-                <div className={'md:grid grid-flow-col py-3.5 gap-x-2_ '}>
-                    <div className={'w-16 md:p-0 py-1 text-right'}><PrioBadge value={card.prio}/></div>
-                    <div className={'w-16 md:p-0 py-1 text-right'}><DateBadge date={card.due}/></div>
-                    <div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>
+                <div className={'md:_ grid grid-flow-col py-3.5 gap-x-2_ '}>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right`}><PrioBadge value={card.prio}/></div>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right`}><DateBadge date={card.due}/></div>
+                    {/*<div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>*/}
                 </div>
 
             </div>
             <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
-                <CardMenu sendJsonMessage={sendJsonMessage} disabled={card.deleted} card={card} hover={isHovering}/>
+                <CardMenu disabled={card.deleted} card={card} hover={isHovering}/>
             </div>
 
         </div>

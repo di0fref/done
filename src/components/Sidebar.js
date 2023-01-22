@@ -15,6 +15,7 @@ import {useTranslation} from "react-i18next";
 import {createSelector} from "@reduxjs/toolkit";
 import axios from "axios";
 import ProjectBadge from "./project/ProjectBadge";
+import {toast} from "react-toastify";
 
 const selectProjects = createSelector(
     (state) => state.projects,
@@ -53,6 +54,17 @@ const Shares = () => {
         }
     }, [])
 
+    const onClick = (share) => {
+        axios.put("projects_users/" + share.id, {
+            "status": "accepted",
+            "module_id": share.project_id,
+            "module_name": share.name
+        }).then(response => {
+            console.log(response)
+        }).catch(err => {
+            toast.error(err)
+        })
+    }
 
     return (
         <>
@@ -60,9 +72,9 @@ const Shares = () => {
                 <div><BsShare className={'h-3 w-3'}/></div>
                 <div className={'text-neutral-500 font-semibold dark:text-neutral-300 text-sm'}>{t("Pending invitations")}</div>
             </div>
-            {shares.map(share => {
+            {shares?.map(share => {
                 return <div className={`group w-full py-1.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded hover:cursor-pointer`}>
-                    <button onClick={() => console.log("Clicked")} className={' flex items-center flex-grow w-full '}>
+                    <button onClick={e => onClick(share)} className={' flex items-center flex-grow w-full '}>
                         <div className={'w-2 h-2 rounded-full mx-3'} style={{backgroundColor: share.color}}/>
                         <div className={'hover:text-gray-600 dark:hover:text-neutral-100 dark:text-neutral-300 text-gray-500 text-sm'}>{share.name}</div>
                     </button>
@@ -175,7 +187,7 @@ export default function Sidebar(props) {
                             {t("Create your first project and start grouping tasks together.")}
                         </div>
                     }
-                    <Shares/>
+                    {/*<Shares/>*/}
                     <div className={'flex flex-col justify-end_ h-full border-t dark:border-gray-700 mt-3'}>
                         <div className={'inline-block pt-3'}>
                             <Link to={'/completed'} className={`${(location.pathname.includes("/completed")) ? "sidebar-active" : ""} flex items-center p-2 text-base font-normal text-gray-700 rounded-lg dark:text-white hover:bg-hov dark:hover:bg-gray-900/30`}>

@@ -11,7 +11,7 @@ import {deleteTask, updateTask} from "../../redux/taskSlice";
 import {format} from "date-fns";
 import DatePickerIcon from "../badges/DatePickerIcon";
 import {toast} from "react-toastify";
-import {formatDate} from "../helper";
+import {dbDateFormat, formatDate} from "../helper";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
@@ -146,12 +146,12 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
     const setDue = (date) => {
         dispatch(updateTask({
             id: card.id,
-            due: date ? format(date, "Y-MM-dd") : null,
+            due: date ? format(date, dbDateFormat) : null,
             changes: [
                 {
                     field: "due",
                     old: card.due,
-                    new: date ? format(date, "Y-MM-dd") : null,
+                    new: date ? format(date, dbDateFormat) : null,
                     user_id: currentUser.id,
                     assigned_user_id: card.assigned_user_id,
                     type: "date"
@@ -181,10 +181,10 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
             notifications: [
                 {
                     notify_user_id: user.user_id,
-                    action: "assign",
+                    action: "assigned",
                     module_id: card.id,
                     action_user_id: currentUser.id,
-                    module: "task"
+                    module: "tasks"
                 }
             ]
         })).then(r => {

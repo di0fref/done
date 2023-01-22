@@ -13,8 +13,9 @@ import {getAuth} from "firebase/auth";
 import ChangeLog from "../task/ChangeLog";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
+import {Dialog} from "@headlessui/react";
 
-export default function LargeModal({sendJsonMessage, ...props}) {
+export default function LargeModal({...props}) {
 
     const {t} = useTranslation();
 
@@ -155,10 +156,10 @@ export default function LargeModal({sendJsonMessage, ...props}) {
     }
     return (
         <>
-            {showModal ? (
-                <>
+            {/*{showModal ? (*/}
+                <Dialog as={"div"} open={showModal} onClose={closeModal}>
                     <div className="justify-center items-center flex fixed top-[5vh] left-0 right-0 z-40 outline-none focus:outline-none">
-                        <div className="relative w-auto my-6_ mx-auto w-[64rem] ">
+                        <Dialog.Panel className="relative w-auto my-6_ mx-auto w-[64rem] ">
                             {/*content*/}
                             <div className="h-[80vh] border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white dark:bg-gray-800 outline-none focus:outline-none">
                                 {/*header*/}
@@ -275,11 +276,11 @@ export default function LargeModal({sendJsonMessage, ...props}) {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </Dialog.Panel>
                     </div>
                     <div className="opacity-50 fixed inset-0 z-30 bg-black"/>
-                </>
-            ) : null}
+                </Dialog>
+            {/*) : null}*/}
         </>
     );
 }

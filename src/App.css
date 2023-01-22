@@ -13,7 +13,7 @@
 
 	.cancel-btn {
 		@apply
-		text-gray-700 hover:bg-gray-50 border-gray-300 border bg-white font-medium px-3 py-1 rounded text-sm
+		text-neutral-500 hover:bg-gray-50 border-gray-300 border bg-white font-medium px-3 py-1 rounded text-sm
 	}
 
 	.save-btn {

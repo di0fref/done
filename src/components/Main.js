@@ -21,6 +21,7 @@ import axios from "axios";
 import Notifications from "./Notifications";
 import {getNotifications} from "../redux/notificationSlice";
 import {current} from "@reduxjs/toolkit";
+import {signOutFireBase} from "../auth/firebase";
 
 export default function Main() {
 
@@ -28,6 +29,7 @@ export default function Main() {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const auth = getAuth();
+    const currentUser = useSelector(state => state.current.user)
 
     const allTasks = useSelector(state => state.tasks)
     const allProjects = useSelector(state => state.projects)
@@ -52,7 +54,7 @@ export default function Main() {
                 )
                 dispatch(getTasks()).unwrap()
                 dispatch(getProjects()).unwrap()
-                dispatch(getNotifications()).unwrap()
+                // dispatch(getNotifications()).unwrap()
             } catch (err) {
                 console.log(err)
                 toast.error(err.message)
@@ -68,13 +70,6 @@ export default function Main() {
             if (!user) {
                 localStorage.removeItem("AccessToken")
                 localStorage.removeItem("user")
-
-            } else {
-                // if(!currentUser) {
-                //     axios.get("users/" + auth.currentUser.uid).then((response) => {
-                //         dispatch(setCurrentUser(response.data))
-                //     })
-                // }
             }
         }
     )
@@ -84,6 +79,19 @@ export default function Main() {
             allProjects.map(project => ws_join(project.id))
         }
     }, [ws.readyState])
+    //
+    // useEffect(() => {
+    //     axios.get("me/" + currentUser.id).then(response => {
+    //         console.log(response)
+    //     }).catch(err => {
+    //         localStorage.removeItem("AccessToken")
+    //         localStorage.removeItem("user")
+    //         signOutFireBase().then(response => {
+    //             navigate("/login")
+    //         })
+    //     })
+    // }, [currentUser])
+
 
     useEffect(() => {
         isLoggedIn().then((response) => {

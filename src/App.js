@@ -11,7 +11,6 @@ import "./editor.css"
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import React, {Suspense} from 'react';
-import Kanban from "./components/project/Board";
 
 function App() {
 
@@ -27,8 +26,6 @@ function App() {
                     effect={"solid"}
                 />
                 <Routes>
-
-                    <Route exact path={'/board'} element={<Kanban/>}/>
 
                     {/*<Route exact path={'/'} element={<Web/>}/>*/}
                     <Route path={'/:path/:id'} element={<Main/>}/>

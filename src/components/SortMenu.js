@@ -127,7 +127,7 @@ export default function SortMenu() {
                     {({close}) => (
                         <>
                             <VscGroupByRefType className={'h-5 w-5 text-neutral-500'}/>
-                            <div className={'flex-grow text-neutral-600'}>Grouping</div>
+                            <div className={'flex-grow text-neutral-500'}>Grouping</div>
                             <div><BaseListbox onChange={onChangeGroup} items={groupOptions} selected={selectedGroupOption}/>
                             </div>
                         </>
@@ -136,7 +136,7 @@ export default function SortMenu() {
 
                 <Menu.Item as={"div"} className={`select-none py-1 px-4 flex items-center space-x-2`}>
                     <TbArrowsSort className={'h-5 w-5 text-neutral-500'}/>
-                    <div className={'flex-grow text-neutral-600'}>Sorting</div>
+                    <div className={'flex-grow text-neutral-500'}>Sorting</div>
                     <div><BaseListbox onChange={onChangeSort} items={sortOptions} selected={selectedSortOption}/></div>
                 </Menu.Item>
 

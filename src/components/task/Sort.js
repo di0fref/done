@@ -1,5 +1,9 @@
 export const sortF = (a, b, sortBy) => {
 
+    if(!a && !b){
+        return false
+    }
+
     const prio = {
         "low": 0,
         "normal": 1,
