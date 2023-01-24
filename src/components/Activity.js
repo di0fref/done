@@ -38,7 +38,7 @@ export const NotificationType = ({notification}) => {
                 setData({
                     0: "assigned ",
                     1: notification.bean.name,
-                    2: " to you.",
+                    2: " to " + notification.to_user.name,
                 })
                 break;
             case "joined":
@@ -75,11 +75,13 @@ export default function Activity({notification}) {
         <div key={notification.module_id} className={'w-full border-b py-3'}>
             <div className={'flex space-x-2 '}>
                 <div className={'w-12'}>
-                    <Avatar img={user.image_url} className={'w-10 h-10'}/>
+                    <Avatar img={notification.by_user.image_url} className={'w-10 h-10'}/>
                 </div>
                 <div className={'flex w-full  justify-between'}>
                     <div className={'text-sm text-neutral-700'}>
-                        <div>{(notification.user_id === user.id) ? "You" : notification.user.name}</div>
+
+                        <div>{(notification.by_user_id === user.id) ? "You" : notification.to_user.name}</div>
+                        {/*<div>{notification.by_user.name}</div>*/}
                         <div className={'text-xs mt-2'}><NotificationType notification={notification}/></div>
                     </div>
                     <div className={'text-xs text-neutral-400'}>{formatDate(notification.created_at)}</div>

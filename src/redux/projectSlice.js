@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import axios from "axios";
 import {arrayMoveImmutable} from "array-move";
 
-const initialState = []
+const initialState = null
 
 export const getProjects = createAsyncThunk(
     'project/getProjects',

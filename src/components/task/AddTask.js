@@ -113,7 +113,7 @@ export default function AddTask({sendJsonMessage}) {
                     if(task.project_id) {
                         ws_broadcast({
                             room: task.project_id,
-                            type: "update",
+                            type: "new",
                             module: "tasks",
                             params: {
                                 id: task.id

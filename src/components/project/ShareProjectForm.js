@@ -11,6 +11,8 @@ import {getAuth} from "firebase/auth";
 import {BsEnvelopeFill} from "react-icons/bs";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
+import {ws_broadcast, ws_leave} from "../ws";
+
 
 export default function ShareProjectForm({p, ...props}) {
 
@@ -27,24 +29,26 @@ export default function ShareProjectForm({p, ...props}) {
         return response.data
     }
 
+
     async function deleteShare(share) {
-        const response = await axios.delete("/projects_users/" + share.id)
+        // const response = await axios.delete("/projects_users/" + share.id)
+        // console.log(share)
+        // setShares(shares.filter(s => {
+        //     return s.id !== share.id
+        // }))
+        // toast.success(share.email + ' removed from "' + p.name + '"')
+        //
+        console.log("deleteShare")
+        ws_leave({
+            room: share.project_id
+        })
+        // return response.data
 
-        setShares(shares.filter(s => {
-            return s.id !== share.id
-        }))
-        toast.success(share.email + ' removed from "' + p.name + '"')
 
-        return response.data
+
+
     }
 
-    const onPermissionChange = (value, share, index) => {
-        shares[index] = {
-            ...shares[index],
-            edit: value.edit,
-        };
-        setShares(shares)
-    }
 
     useEffect(() => {
         axios.get("/projects_users/" + p.id).then(response => {
@@ -52,21 +56,9 @@ export default function ShareProjectForm({p, ...props}) {
         })
     }, [])
 
-useEffect(() => {
-    console.log(shares)
-}, [shares])
-    const sharePermissionItems = [
-        {
-            "name": "Can Edit",
-            "edit": 1,
-            "id": "1",
-        },
-        {
-            "name": "Read Only",
-            "edit": 0,
-            "id": "2",
-        },
-    ]
+    useEffect(() => {
+        console.log(shares)
+    }, [shares])
 
     const validateEmail = (currentEmail) => {
         if (!validator.isEmail(currentEmail)) {

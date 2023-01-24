@@ -135,16 +135,16 @@ export const Card4 = ({card, showing}) => {
     }
 
     return (
-        <Transition
-            appear={true}
-            show={isShowing}
-            enter="transition-opacity duration-200"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-        >
+        // <Transition
+        //     appear={true}
+        //     show={isShowing}
+        //     enter="transition-opacity duration-200"
+        //     enterFrom="opacity-0"
+        //     enterTo="opacity-100"
+        //     leave="transition-opacity duration-200"
+        //     leaveFrom="opacity-100"
+        //     leaveTo="opacity-0"
+        // >
         <div className={'z-10 group flex items-center'}>
             <div onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} className={`${card.completed ? "opacity-50_ " : ""} ${currentTask.id === card.id ? "sidebar-active" : ""} shadow hover:shadow-md flex-grow  mb-2 bg-white rounded-xl flex space-x-2 px-3 _items-center hover:cursor-pointer _border-b dark:border-gray-800 border-b-gray-100  _hover:bg-hov dark:hover:bg-gray-800  dark:text-neutral-200`}>
                 <div className={'py-2.5 mr-2'}>
@@ -168,18 +168,18 @@ export const Card4 = ({card, showing}) => {
 
                 </div>
 
-                <div className={'md:_ grid grid-flow-col py-3.5 gap-x-2_ '}>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right`}><PrioBadge value={card.prio}/></div>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right`}><DateBadge date={card.due}/></div>
+                <div className={'flex py-3.5 space-x-3_ items-center'}>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-14 md:p-0 py-1 text-right_ _min-w-[3rem]`}><PrioBadge value={card.prio}/></div>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right_ _min-w-[4rem]`}><DateBadge date={card.due}/></div>
                     {/*<div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>*/}
                 </div>
 
             </div>
-            <div className={'w-12 bg-red-300_ py-2.5 mb-2'}>
+            <div className={'w-8 bg-red-100_ py-2.5 mb-2'}>
                 <CardMenu disabled={card.deleted} card={card} hover={isHovering}/>
             </div>
 
         </div>
-        </Transition>
+        // </Transition>
     )
 }

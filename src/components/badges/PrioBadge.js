@@ -14,7 +14,7 @@ export default function PrioBadge({value, ...props}) {
 
     return (
         <div className={'flex items-center space-x-1'}>
-            <BsFlag className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} h-2.5 w-2.5`}/>
+            {/*<BsFlag className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} h-2.5 w-2.5`}/>*/}
             <div className={`${colors[value] || "text-neutral-400 dark:text-gray-400 "} text-xs `}>{t(value)}</div>
         </div>
     )

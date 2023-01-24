@@ -180,11 +180,11 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
             ],
             notifications: [
                 {
-                    notify_user_id: user.user_id,
                     action: "assigned",
                     module_id: card.id,
-                    action_user_id: currentUser.id,
-                    module: "tasks"
+                    by_user_id: currentUser.id,
+                    module: "Task",
+                    user_id: user.user_id
                 }
             ]
         })).then(r => {
@@ -279,7 +279,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
                 {({open}) => {
 
                     return <>
-                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2 group-hover:visible invisible  p-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
+                        <Popover.Button onClick={() => setIsOpen(!isOpen)} className={'ml-2_ group-hover:visible invisible  w-8 pl-1 rounded flex items-center  justify-start text-left dark:hover:bg-gray-600'}>
                             <BsList className={'h-5 w-5 hover:text-neutral-600 text-neutral-400 dark:text-gray-400'}/>
                         </Popover.Button>
                         <Popover.Panel className=" bg-white dark:bg-gray-700 absolute right-6  mt-2 origin-top-right rounded shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">

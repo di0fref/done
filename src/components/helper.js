@@ -247,3 +247,5 @@ export function waitForLocalStorage(key, cb, timer) {
     }
     return cb(localStorage.getItem(key))
 }
+
+

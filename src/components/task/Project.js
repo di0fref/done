@@ -23,9 +23,9 @@ const selectTasks = createSelector(
     (tasks, sortBy, project_id, showCompleted, group) => {
         const groups = groupBy(tasks.filter(task => {
 
-            return (!showCompleted
-                ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted && !task.completed
-                : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted)
+            return (showCompleted
+                ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted
+                : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted  && !task.completed)
 
         }), group)
 
@@ -40,7 +40,11 @@ const selectTasks = createSelector(
 const selectOverdue = createSelector((state) => state.tasks, (state, sortBy) => sortBy, (state, sortBy, project_id) => project_id,
 
     (tasks, sortBy, project_id) => {
-        return tasks.filter(task => task.project_id === project_id && (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) && (!task.completed)).sort((a, b) => {
+        return tasks.filter(task =>
+            task.project_id === project_id &&
+            (new Date(task.due).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)) &&
+            (!task.completed)
+        ).sort((a, b) => {
             return sortF(a, b, sortBy)
         })
     })

@@ -1,83 +1,109 @@
-import { WebSocket, WebSocketServer } from "ws"
 import http from "http";
-import { uuid } from 'uuidv4';
+import express from "express"
+import {WebSocketServer} from 'ws';
 
+const app = express();
 
-// Spinning the http server and the WebSocket server.
-const server = http.createServer();
-const wsServer = new WebSocketServer({ server });
-const port = 8000;
-server.listen(port, () => {
-    console.log(`WebSocket server is running on port ${port}`);
+app.use(express.static('public'));
+const bserver = http.createServer(app);
+const webPort = 8000;
+
+bserver.listen(webPort, function () {
+    console.log('Web server start. http://localhost:' + webPort);
 });
-
-// I'm maintaining all active connections in this object
-const clients = {};
-// I'm maintaining all active users in this object
-const users = {};
-// The current editor content is maintained here.
-let editorContent = null;
-// User activity history.
-let userActivity = [];
-
-// Event types
-const typesDef = {
-    USER_EVENT: 'userevent',
-    CONTENT_CHANGE: 'contentchange'
-}
-
-function broadcastMessage(json, user) {
-    // We are sending the current data to all connected clients
-    const data = JSON.stringify(json);
-    for(let userId in clients) {
-        let client = clients[userId];
-
-        console.log(userId, user);
-
-        if(userId !== user && client.readyState === WebSocket.OPEN) {
-            client.send(data);
-        }
-    };
-}
-
-function handleMessage(message, userId) {
-    console.log(userId)
-    const dataFromClient = JSON.parse(message.toString());
-    console.log(dataFromClient)
-    console.log("------------------")
-    const json = { type: dataFromClient.type };
-    if (dataFromClient.type === typesDef.USER_EVENT) {
-        users[userId] = dataFromClient;
-        userActivity.push(`${dataFromClient.username} joined to edit the document`);
-        json.data = { users, userActivity };
-    } else if (dataFromClient.type === typesDef.CONTENT_CHANGE) {
-        editorContent = dataFromClient.content;
-        json.data = { editorContent, userActivity };
+const wss = new WebSocketServer({
+    server: bserver,
+    verifyClient: function (info, cb) {
+        // console.log(info.req.headers)
+        cb(true)
     }
-    broadcastMessage(json, userId);
-}
-
-function handleDisconnect(userId) {
-    console.log(`${userId} disconnected.`);
-    const json = { type: typesDef.USER_EVENT };
-    const username = users[userId]?.username || userId;
-    userActivity.push(`${username} left the document`);
-    json.data = { users, userActivity };
-    delete clients[userId];
-    delete users[userId];
-    broadcastMessage(json);
-}
-
-// A new client connection request received
-wsServer.on('connection', function(connection) {
-    // Generate a unique code for every user
-    const userId = uuid();
-    console.log('Received a new connection');
-
-    // Store the new connection and handle messages
-    clients[userId] = connection;
-    console.log(`${userId} connected.`);
-    connection.on('message', (message) => handleMessage(message, userId));
-    // User disconnected
-    connection.on('close', () => handleDisconnect(userId));
 });
+
+
+wss.getUniqueID = function () {
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+    }
+
+    return s4() + s4() + '-' + s4();
+};
+
+wss.on('connection', (ws, req) => {
+    ws.room = [];
+    ws.id = wss.getUniqueID();
+    ws.isAlive = true;
+    ws.on('pong', heartbeat);
+
+    ws.on('message', message => {
+
+        let messag = JSON.parse(message);
+
+        if (messag.leave) {
+            let index = ws.room.findIndex(room => room === messag.leave)
+            ws.room = ws.room.slice(index, 1)
+        }
+
+        if (messag.join) {
+            if (!ws.room.includes(messag.join)) {
+                ws.room.push(messag.join)
+                // console.log("Joining: ", messag.join)
+                // console.log("joining")
+            }
+        }
+
+        if (messag.room) {
+            broadcast(message, ws);
+            debug(message)
+        }
+
+        if (messag.msg) {
+            console.log('message: ', messag.msg)
+        }
+
+    })
+
+    ws.on('error', e => console.log(e))
+    ws.on('close', (e) => console.log('websocket closed' + e))
+
+})
+function heartbeat() {
+    // console.log("Pong")
+    this.isAlive = true;
+}
+const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+        if (ws.isAlive === false){
+            console.log("Closing", ws.id)
+            return ws.terminate();
+        }
+
+        ws.isAlive = false;
+        console.log("Ping", ws.id)
+        ws.ping();
+    });
+    console.log("-------------------------------------")
+}, 30000);
+
+function debug(message) {
+    wss.clients.forEach(client => {
+        // if (client.room.indexOf(JSON.parse(message).room) > -1) {
+        //     console.log("Client", client.room)
+        // }
+    })
+}
+function broadcast(message, ws) {
+
+    wss.clients.forEach(client => {
+        if (client.room.indexOf(JSON.parse(message).room) > -1) {
+            if (client !== ws) {
+                console.log("-------------------------------------")
+                console.log("Broadcasting to client", client.id)
+                console.log("-------------------------------------")
+                client.send(JSON.stringify(JSON.parse(message)))
+            }
+            else{
+                // console.log("Not broadcasting to", client.id, client.room)
+            }
+        }
+    })
+}

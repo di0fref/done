@@ -63,7 +63,7 @@ export const Container = (props) => {
 
         return (
             <div className={'flex h-full dark:text-neutral-300'}>
-                <div className={'flex-grow pl-12 px-4'}>
+                <div className={'flex-grow pl-8 _px-4'}>
 
                     <TopHeader overdue={overdue}/>
                     {(() => {

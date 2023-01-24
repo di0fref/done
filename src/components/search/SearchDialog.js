@@ -18,7 +18,7 @@ export default function SearchDialog() {
     return (
         <>
             <div className="flex items-center justify-center">
-                <div onClick={openModal} className={'cursor-pointer active:border-none active:ring-0 text-gray-400 hover:text-gray-600  focus:border-0 focus:ring-0'}>
+                <div onClick={openModal} className={'cursor-pointer active:border-none active:ring-0 text-gray-500 hover:text-gray-600  focus:border-0 focus:ring-0'}>
                     <FaSearch className={'w-6 h-6'}/>
                 </div>
             </div>

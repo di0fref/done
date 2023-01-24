@@ -16,12 +16,9 @@ import SearchDialog from "./search/SearchDialog";
 import {toast} from "react-toastify";
 import "../service/http-common"
 import {ws, ws_join} from "./ws";
-import {useReadLocalStorage} from "usehooks-ts";
-import axios from "axios";
 import Notifications from "./Notifications";
 import {getNotifications} from "../redux/notificationSlice";
-import {current} from "@reduxjs/toolkit";
-import {signOutFireBase} from "../auth/firebase";
+
 
 export default function Main() {
 
@@ -53,14 +50,22 @@ export default function Main() {
                         JSON.parse(localStorage.getItem("user")))
                 )
                 dispatch(getTasks()).unwrap()
-                dispatch(getProjects()).unwrap()
-                // dispatch(getNotifications()).unwrap()
+                dispatch(getNotifications()).unwrap()
+
+                dispatch(getProjects()).then(res => {
+
+                })
+
+
             } catch (err) {
                 console.log(err)
                 toast.error(err.message)
             }
         })
     }, [])
+
+
+
 
     const showTaskDetail = (id) => {
         console.log(id)
@@ -75,25 +80,6 @@ export default function Main() {
     )
 
     useEffect(() => {
-        if (ws.readyState === 1) {
-            allProjects.map(project => ws_join(project.id))
-        }
-    }, [ws.readyState])
-    //
-    // useEffect(() => {
-    //     axios.get("me/" + currentUser.id).then(response => {
-    //         console.log(response)
-    //     }).catch(err => {
-    //         localStorage.removeItem("AccessToken")
-    //         localStorage.removeItem("user")
-    //         signOutFireBase().then(response => {
-    //             navigate("/login")
-    //         })
-    //     })
-    // }, [currentUser])
-
-
-    useEffect(() => {
         isLoggedIn().then((response) => {
             if (!response) {
                 navigate("/login")
@@ -106,10 +92,10 @@ export default function Main() {
 
         if (params.path === "project" && params.path2 === "task") {
             dispatch(setCurrentTask(
-                allTasks.find(task => task.id === params.id2))
+                allTasks?.find(task => task.id === params.id2))
             )
             dispatch(setCurrentProject(
-                allProjects.find(project => project.id === params.id))
+                allProjects?.find(project => project.id === params.id))
             )
             return
         }
@@ -117,7 +103,7 @@ export default function Main() {
 
         if (params.path === "project") {
             dispatch(setCurrentProject(
-                allProjects.find(project => project.id === params.id)
+                allProjects?.find(project => project.id === params.id)
             ))
             dispatch(setCurrentTask({}))
             return
@@ -125,7 +111,7 @@ export default function Main() {
 
         if (paths.find(p => params.path === p) && params.path2 === "task") {
             dispatch(setCurrentTask(
-                allTasks.find(task => task.id === params.id2),
+                allTasks?.find(task => task.id === params.id2),
             ))
             return
         }
