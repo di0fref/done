@@ -14,6 +14,7 @@ import ChangeLog from "../task/ChangeLog";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
 import {Dialog} from "@headlessui/react";
+import {emit} from "../../socket/socket.io";
 
 export default function LargeModal({...props}) {
 
@@ -137,14 +138,7 @@ export default function LargeModal({...props}) {
                 }
                 await dispatch(updateTask(task)).then(response => {
                     if (props.card.project_id) {
-                        ws_broadcast({
-                            room: props.card.project_id,
-                            type: "update",
-                            module: "tasks",
-                            params: {
-                                id: props.card.id
-                            }
-                        });
+                        emit("update", props.card.id, props.card.project_id, "tasks")
                     }
                 });
                 closeModal()

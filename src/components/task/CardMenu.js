@@ -15,6 +15,7 @@ import {dbDateFormat, formatDate} from "../helper";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
+import {emit} from "../../socket/socket.io";
 
 
 export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
@@ -132,14 +133,7 @@ export default function CardMenu({disabled, card, sendJsonMessage, ...props}) {
 
     const sendMessage = (project_id) => {
         if (card.project_id || project_id) {
-            ws_broadcast({
-                room: card.project_id,
-                type: "update",
-                module: "tasks",
-                params: {
-                    id: card.id
-                }
-            })
+            emit("update", card.id, card.project_id, "tasks")
         }
     }
 

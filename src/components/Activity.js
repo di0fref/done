@@ -48,6 +48,13 @@ export const NotificationType = ({notification}) => {
                     2: ".",
                 })
                 break;
+            case "rejected":
+                setData({
+                    0: "rejected to join project ",
+                    1: notification.bean.name,
+                    2: ".",
+                })
+                break;
         }
     }, [])
 

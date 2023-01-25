@@ -12,6 +12,9 @@ import {BsEnvelopeFill} from "react-icons/bs";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast, ws_leave} from "../ws";
+import io from 'socket.io-client'
+import {useSelector} from "react-redux";
+import {leave, socket} from "../../socket/socket.io";
 
 
 export default function ShareProjectForm({p, ...props}) {
@@ -31,21 +34,13 @@ export default function ShareProjectForm({p, ...props}) {
 
 
     async function deleteShare(share) {
-        // const response = await axios.delete("/projects_users/" + share.id)
-        // console.log(share)
-        // setShares(shares.filter(s => {
-        //     return s.id !== share.id
-        // }))
-        // toast.success(share.email + ' removed from "' + p.name + '"')
-        //
-        console.log("deleteShare")
-        ws_leave({
-            room: share.project_id
+        axios.delete("/projects_users/" + share.id).then(response => {
+            setShares(shares.filter(s => {
+                return s.id !== share.id
+            }))
+            toast.success(share.email + ' removed from "' + p.name + '"')
+            leave(share.project_id)
         })
-        // return response.data
-
-
-
 
     }
 

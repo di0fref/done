@@ -12,6 +12,7 @@ import {useDispatch} from "react-redux";
 import CustomDatePicker from "./badges/CustomDatePicker";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "./ws";
+import {emit} from "../socket/socket.io";
 
 export default function DynamicMenu({overdue, sendJsonMessage}) {
 
@@ -42,14 +43,7 @@ export default function DynamicMenu({overdue, sendJsonMessage}) {
                                 due: format(due, dbDateFormat),
                             }]
                         })).then(r => {
-                            ws_broadcast({
-                                room: task.project_id,
-                                type: "update",
-                                module: "tasks",
-                                params: {
-                                    id: task.id
-                                }
-                            })
+                            emit()
                         })
                     })
                 } catch (error) {

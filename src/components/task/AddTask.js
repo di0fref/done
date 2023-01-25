@@ -10,6 +10,7 @@ import {formatDate, priorities} from "../helper";
 import {useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {ws_broadcast} from "../ws";
+import {emit} from "../../socket/socket.io";
 
 
 function useOnClickOutside(ref, handler) {
@@ -71,7 +72,7 @@ export default function AddTask({sendJsonMessage}) {
     }, [_project_])
 
     useEffect(() => {
-        setPlaceHolder(getPlaceHolder(project.id ? project.name : "Inbox", due, t))
+        setPlaceHolder(getPlaceHolder(project?.id ? project?.name : "Inbox", due, t))
     }, [project, due])
 
     useEffect(() => {
@@ -110,17 +111,9 @@ export default function AddTask({sendJsonMessage}) {
                         assigned_user_id: getAuth().currentUser.uid,
                     })).unwrap()
 
-                    if(task.project_id) {
-                        ws_broadcast({
-                            room: task.project_id,
-                            type: "new",
-                            module: "tasks",
-                            params: {
-                                id: task.id
-                            }
-                        })
+                    if (task.project_id) {
+                        emit("new", task.id, task.project_id, "tasks")
                     }
-
                     task && toast.success(
                         <div>1 task was created</div>
                     )
@@ -141,6 +134,10 @@ export default function AddTask({sendJsonMessage}) {
     }
     if (params.path === "trash" || params.path === "completed") {
         return <div/>
+    }
+
+    if(params.path === "project" && !project){
+        return ""
     }
 
     if (editing) {

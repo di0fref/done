@@ -20,10 +20,10 @@ export default function TaskHeader({overdue, sendJsonMessage}) {
 
     useEffect(() => {
         if (params.path === "project") {
-            setName(project.name);
+            setName(project?.name);
             setIcon(
                 <div style={{
-                    background: project.color
+                    background: project?.color
                 }} className={'w-2 h-2 rounded-full'}/>
             )
         } else {
@@ -38,6 +38,10 @@ export default function TaskHeader({overdue, sendJsonMessage}) {
             setIcon(getIcon(params.path))
         }
     }, [params.path, params.id])
+
+    if(params.path === "project" && !project){
+        return ""
+    }
 
     return (
 

@@ -11,6 +11,7 @@ import {createSelector} from "@reduxjs/toolkit";
 import PrioBadge from "../badges/PrioBadge";
 import DateBadge from "../badges/DateBadge";
 import {useEffect} from "react";
+import {BsExclamationCircleFill} from "react-icons/bs";
 
 
 const selectTasks = createSelector(
@@ -25,7 +26,7 @@ const selectTasks = createSelector(
 
             return (showCompleted
                 ? (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted
-                : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted  && !task.completed)
+                : (new Date(task.due).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)) && task.project_id === project_id && !task.deleted && !task.completed)
 
         }), group)
 
@@ -68,39 +69,16 @@ export default function Project({renderCard, setOverDue, ...props}) {
         setOverDue(overdue)
     }, [overdue])
 
-    // return (
-    //     <Kanban project_id={props.id}/>
-    // )
 
-    // return (
-    //     <div className={''}>
-    //         <TopHeader overdue={overdue}/>
-    //         <div className={'rounded-md bg-white mr-12'}>
-    //             <div className={'grid grid-cols-5 pb-2 px-3 pt-3 '}>
-    //                 <div className={'text-xs uppercase font-semibold tracking-wider col-span-2'}>Title</div>
-    //                 <div className={'text-xs uppercase font-semibold tracking-wider'}>Due</div>
-    //                 <div className={'text-xs uppercase font-semibold tracking-wider'}>Priority</div>
-    //                 {/*<div className={'text-xs uppercase font-semibold tracking-wider'}>Assigned user</div>*/}
-    //                 <div className={'text-xs uppercase font-semibold tracking-wider'}>Project</div>
-    //             </div>
-    //
-    //
-    //             {Object.keys(tasks).map((group) => {
-    //                 return Object.values(tasks[group]).map((task, i) => {
-    //                     return (
-    //                         <div className={'grid grid-cols-5 hover:cursor-pointer hover:bg-hov px-3'}>
-    //                             <div className={'text-sm col-span-2 py-1'}>{task.name}</div>
-    //                             <div className={'text-sm py-1'}><DateBadge date={task.due}/></div>
-    //                             <div className={'text-sm py-1'}><PrioBadge value={task.prio}/></div>
-    //                             {/*<div className={'text-sm py-1'}>{task.assigned_user_name}</div>*/}
-    //                             <div className={'text-sm py-1'}>{task.project}</div>
-    //                         </div>
-    //                     )
-    //                 })
-    //             })}
-    //         </div>
-    //     </div>
-    // )
+    if (!_project_) {
+        return (
+            <div className={'flex items-center space-x-2 mx-auto'}>
+                <BsExclamationCircleFill className={'text-red-600'}/>
+                <div>There is no such project, or you dont have access to it.</div>
+            </div>
+        )
+
+    }
 
     return (<div>
         {/*<TopHeader overdue={overdue} sendJsonMessage={sendJsonMessage}/>*/}

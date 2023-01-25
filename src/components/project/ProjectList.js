@@ -19,7 +19,7 @@ const SortableItem = SortableElement(({project, id}) => {
     });
 
     return (
-        <div className={`${(currentProject.id === project.id)?"sidebar-active":""} group py-0.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded`}>
+        <div className={`${(currentProject?.id === project.id)?"sidebar-active":""} group py-0.5 dark:text-white hover:bg-hov dark:hover:bg-gray-900/30 rounded`}>
             <div className={'flex items-center'}>
                 {/*<DragHandle/>*/}
                 <Link to={"/project/" + project.id} className={'flex items-center flex-grow'}>

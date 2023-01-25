@@ -13,29 +13,39 @@ import LoadingSpinner from "./LoadingSpinner";
 import {getProjects} from "../redux/projectSlice";
 import {ws_join} from "./ws";
 import {getTasks} from "../redux/taskSlice";
+import {join} from "../socket/socket.io";
+import {getNotifications} from "../redux/notificationSlice";
 
 export function ShareDecider({share}) {
 
     const dispatch = useDispatch()
 
     const onClick = (share, status) => {
+
         axios.put("projects_users/" + share.id, {
             "status": status,
             "module_id": share.project_id,
             "module_name": share.name
         }).then(response => {
 
-            /* Get project and tasks */
-            dispatch(getProjects()).then(response => {
-                /* Subscribe */
-                ws_join(share.project_id)
-                toast.success("You have joined project " + share.project_name)
-                dispatch(getTasks())
-            })
+            if (status === "accept") {
+                /* Get project and tasks */
+                dispatch(getProjects()).then(response => {
+                    /* Subscribe */
+                    join(share.project_id)
+                    toast.success("You have joined project " + share.project_name)
+                    dispatch(getTasks())
+                    dispatch(getNotifications())
+                })
+            } else {
+                toast.success("You have rejected to join project " + share.project_name)
+                dispatch(getNotifications())
+            }
 
         }).catch(err => {
             toast.error(err)
         })
+
     }
 
     return (
@@ -89,9 +99,9 @@ export default function Notifications() {
                 <Popover className="relative">
                     <Popover.Button onClick={e => setOpen(true)} className={'text-neutral-500 dark:text-gray-400 hover:text-neutral-700'}>
                         <BsBellFill className={'w-6 h-6'}/>
-                        {new_count.length > 0?
+                        {new_count.length > 0 ?
                             <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-1.5 dark:border-gray-900">{new_count.length}</div>
-                            :""}
+                            : ""}
                     </Popover.Button>
                     <Popover.Panel static={false} className="z-30 absolute left-5 _mt-3 w-screen max-w-sm ">
                         <div className="z-30 bg-white scrollbar-hide  p-4 overflow-auto rounded-md shadow-xl ring-1 ring-black ring-opacity-5">

@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 
-import {delay,paths} from "../helper";
+import {delay, paths} from "../helper";
 import {useDispatch, useSelector} from "react-redux";
 import {updateTask} from "../../redux/taskSlice";
 import {toast} from "react-toastify";
@@ -16,10 +16,12 @@ import {useTranslation} from "react-i18next";
 import DateBadge from "../badges/DateBadge";
 import {ws_broadcast} from "../ws";
 import {Transition} from "@headlessui/react";
+import {emit} from "../../socket/socket.io";
+
 
 export const Card4 = ({card, showing}) => {
     const {t} = useTranslation();
-    const [isShowing, setIsShowing] = useState(showing||false)
+    const [isShowing, setIsShowing] = useState(showing || false)
 
     const [taskCompleted, setTaskCompleted] = useState(card.completed)
     const [name, setName] = useState(card.name);
@@ -31,6 +33,8 @@ export const Card4 = ({card, showing}) => {
     const [isHovering, setIsHovering] = useState(false)
     const showDetails = useReadLocalStorage("showDetails")
     const showAssignedUser = useReadLocalStorage("showAssignedUser")
+    const user = useSelector(state => state.current.user)
+
 
     const nav = useNavigate()
 
@@ -50,14 +54,7 @@ export const Card4 = ({card, showing}) => {
             changes: []
         })).then(response => {
             if (card.project_id) {
-                ws_broadcast({
-                    room: card.project_id,
-                    type: "update",
-                    module: "tasks",
-                    params: {
-                        id: card.id
-                    }
-                })
+                emit("update", card.id, card.project_id, "tasks")
             }
         })
 
@@ -69,7 +66,9 @@ export const Card4 = ({card, showing}) => {
 
     const onStatusChange = (event) => {
 
+
         (async () => {
+
             setTaskCompleted(event.target.checked)
             await delay(500);
             try {
@@ -91,14 +90,7 @@ export const Card4 = ({card, showing}) => {
                 })).unwrap()
 
                 if (card.project_id) {
-                    ws_broadcast({
-                        room: card.project_id,
-                        type: "update",
-                        module: "tasks",
-                        params: {
-                            id: card.id
-                        }
-                    })
+                    emit("update", card.id, card.project_id, "tasks")
                 }
 
                 event.target.checked && toast.success(
@@ -169,8 +161,10 @@ export const Card4 = ({card, showing}) => {
                 </div>
 
                 <div className={'flex py-3.5 space-x-3_ items-center'}>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-14 md:p-0 py-1 text-right_ _min-w-[3rem]`}><PrioBadge value={card.prio}/></div>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right_ _min-w-[4rem]`}><DateBadge date={card.due}/></div>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-14 md:p-0 py-1 text-right_ _min-w-[3rem]`}>
+                        <PrioBadge value={card.prio}/></div>
+                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right_ _min-w-[4rem]`}>
+                        <DateBadge date={card.due}/></div>
                     {/*<div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>*/}
                 </div>
 

@@ -15,9 +15,10 @@ import {FaCheckSquare} from "react-icons/fa";
 import SearchDialog from "./search/SearchDialog";
 import {toast} from "react-toastify";
 import "../service/http-common"
-import {ws, ws_join} from "./ws";
 import Notifications from "./Notifications";
 import {getNotifications} from "../redux/notificationSlice";
+import {socket} from "../App";
+import {store} from "../redux/store";
 
 
 export default function Main() {
@@ -30,6 +31,7 @@ export default function Main() {
 
     const allTasks = useSelector(state => state.tasks)
     const allProjects = useSelector(state => state.projects)
+
 
     useEffect(() => {
         waitForLocalStorage("AccessToken", function (value) {
@@ -51,11 +53,7 @@ export default function Main() {
                 )
                 dispatch(getTasks()).unwrap()
                 dispatch(getNotifications()).unwrap()
-
-                dispatch(getProjects()).then(res => {
-
-                })
-
+                dispatch(getProjects()).unwrap()
 
             } catch (err) {
                 console.log(err)
@@ -63,7 +61,6 @@ export default function Main() {
             }
         })
     }, [])
-
 
 
 
@@ -99,7 +96,6 @@ export default function Main() {
             )
             return
         }
-
 
         if (params.path === "project") {
             dispatch(setCurrentProject(
