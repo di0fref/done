@@ -19,6 +19,7 @@ import Notifications from "./Notifications";
 import {getNotifications} from "../redux/notificationSlice";
 import {socket} from "../App";
 import {store} from "../redux/store";
+import {signOutFireBase} from "../auth/firebase";
 
 
 export default function Main() {
@@ -122,7 +123,8 @@ export default function Main() {
 
     const [user, loading, error] = useAuthState(auth);
 
-    if (error) {
+    if (error || !localStorage.getItem("user")) {
+        signOutFireBase()
         navigate("/login")
     }
     if (loading) {

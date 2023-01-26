@@ -4,6 +4,7 @@ import {capitalize, formatDate, paths} from "./helper";
 import {forwardRef, useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {Popover} from '@headlessui/react'
+import Badge from "./badges/Badge";
 
 const getLink = (card, params) => {
     let link = ""
@@ -50,7 +51,7 @@ export const NotificationType = ({notification}) => {
                 break;
             case "rejected":
                 setData({
-                    0: "rejected to join project ",
+                    0: "rejected the invitation to join ",
                     1: notification.bean.name,
                     2: ".",
                 })
@@ -77,7 +78,7 @@ export const NotificationType = ({notification}) => {
 export default function Activity({notification}) {
 
     const user = useSelector(state => state.current.user)
-
+console.log(notification);
     return (
         <div key={notification.module_id} className={'w-full border-b py-3'}>
             <div className={'flex space-x-2 '}>
@@ -86,12 +87,16 @@ export default function Activity({notification}) {
                 </div>
                 <div className={'flex w-full  justify-between'}>
                     <div className={'text-sm text-neutral-700'}>
-
                         <div>{(notification.by_user_id === user.id) ? "You" : notification.to_user.name}</div>
-                        {/*<div>{notification.by_user.name}</div>*/}
                         <div className={'text-xs mt-2'}><NotificationType notification={notification}/></div>
                     </div>
-                    <div className={'text-xs text-neutral-400'}>{formatDate(notification.created_at)}</div>
+                    <div className={'text-xs text-neutral-400 relative'}>
+                        {notification?.status === "new"
+                            ? <div className={'bg-red-500 h-1.5 w-1.5 rounded-full absolute -left-2.5'}/>
+                            : ""
+                        }
+                        <div>{formatDate(notification.created_at)}</div>
+                    </div>
                 </div>
             </div>
         </div>

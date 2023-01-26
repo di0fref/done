@@ -161,9 +161,9 @@ export const Card4 = ({card, showing}) => {
                 </div>
 
                 <div className={'flex py-3.5 space-x-3_ items-center'}>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-14 md:p-0 py-1 text-right_ _min-w-[3rem]`}>
+                    <div className={`${card.completed ? "line-through opacity-50_ " : ""} w-14 md:p-0 py-1 text-right_ _min-w-[3rem]`}>
                         <PrioBadge value={card.prio}/></div>
-                    <div className={`${card.completed ? "line-through opacity-50 " : ""} w-16 md:p-0 py-1 text-right_ _min-w-[4rem]`}>
+                    <div className={`${card.completed ? "line-through opacity-50_ " : ""} w-16 md:p-0 py-1 text-right_ _min-w-[4rem]`}>
                         <DateBadge date={card.due}/></div>
                     {/*<div className={'w-28 md:p-0 py-1 text-xs text-neutral-600 text-right'}>{card.assigned_user_name}</div>*/}
                 </div>

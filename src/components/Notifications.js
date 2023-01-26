@@ -15,6 +15,7 @@ import {ws_join} from "./ws";
 import {getTasks} from "../redux/taskSlice";
 import {join} from "../socket/socket.io";
 import {getNotifications} from "../redux/notificationSlice";
+import Badge from "./badges/Badge";
 
 export function ShareDecider({share}) {
 
@@ -70,7 +71,13 @@ export function ShareDecider({share}) {
                             </div>
                         </div>
                     </div>
-                    <div className={'text-xs text-neutral-400'}>{formatDate(share.created_at)}</div>
+                    <div className={'text-xs text-neutral-400 relative'}>
+                        {share?.status === "pending"
+                            ? <div className={'bg-red-500 h-1.5 w-1.5 rounded-full absolute -left-2.5'}/>
+                            : ""
+                        }
+                        <div>{formatDate(share.created_at)}</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,12 +89,17 @@ export default function Notifications() {
     const [data, setData] = useState({notifications: [], shares: []})
     const [loading, setLoading] = useState(false)
     const [o, setOpen] = useState(true)
-
+    const [count, setCount] = useState(0);
     const notifications = useSelector(state => state.notifications)
-    const new_count = useSelector(state => state.notifications.notifications.filter(notification => notification.status === "new"))
 
-    // console.log(new_count.length)z
+    const new_count = useSelector(state => state.notifications.notifications?.filter(notification => notification.status === "new"))
+    const new_count_shares = useSelector(state => state.notifications.shares?.filter(share => share.status === "pending"))
 
+    // console.log(new_count_shares.length)
+
+    useEffect(() => {
+        setCount(new_count_shares.length + new_count.length)
+    }, [new_count_shares.length, new_count.length])
 
     // console.log(Object.keys(new_count))
 
@@ -99,8 +111,8 @@ export default function Notifications() {
                 <Popover className="relative">
                     <Popover.Button onClick={e => setOpen(true)} className={'text-neutral-500 dark:text-gray-400 hover:text-neutral-700'}>
                         <BsBellFill className={'w-6 h-6'}/>
-                        {new_count.length > 0 ?
-                            <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-1.5 dark:border-gray-900">{new_count.length}</div>
+                        {count > 0 ?
+                            <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-1.5 dark:border-gray-900">{count}</div>
                             : ""}
                     </Popover.Button>
                     <Popover.Panel static={false} className="z-30 absolute left-5 _mt-3 w-screen max-w-sm ">
